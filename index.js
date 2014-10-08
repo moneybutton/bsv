@@ -1,6 +1,6 @@
 var fullnode = module.exports;
 
-//main bitcoin library
+//main bitcoin library - bitcoin protocols and standards
 fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
@@ -34,10 +34,12 @@ fullnode.expmt.AES = require('./lib/expmt/aes');
 fullnode.expmt.AESCBC = require('./lib/expmt/aescbc');
 fullnode.expmt.CBC = require('./lib/expmt/cbc');
 fullnode.expmt.ECIES = require('./lib/expmt/ecies');
-fullnode.expmt.StealthAddress = require('./lib/expmt/stealthaddress');
-fullnode.expmt.Stealthkey = require('./lib/expmt/stealthkey');
-fullnode.expmt.StealthMessage = require('./lib/expmt/stealthmessage');
-fullnode.expmt.StealthTx = require('./lib/expmt/stealthtx');
+
+//experimental stealth address support
+fullnode.expmt.stealth.SAddress = require('./lib/expmt/stealth/address');
+fullnode.expmt.stealth.SKey = require('./lib/expmt/stealth/key');
+fullnode.expmt.stealth.SMessage = require('./lib/expmt/stealth/message');
+fullnode.expmt.stealth.STransaction = require('./lib/expmt/stealth/transaction');
 
 //dependencies, subject to change
 fullnode.deps = {};

@@ -1,6 +1,6 @@
 var should = require('chai').should();
-var Hash = require('../lib/hash');
-var AES = require('../lib/expmt/aes');
+var Hash = require('../../lib/hash');
+var AES = require('../../lib/expmt/aes');
 
 describe('AES', function() {
   var m128 = Hash.sha256(new Buffer('test1')).slice(0, 128 / 8);

@@ -1,14 +1,14 @@
 var should = require('chai').should();
-var Stealthkey = require('../lib/expmt/stealthkey');
-var Keypair = require('../lib/keypair');
-var Privkey = require('../lib/privkey');
-var Pubkey = require('../lib/pubkey');
-var BN = require('../lib/bn');
-var Hash = require('../lib/hash');
+var SKey = require('../../../lib/expmt/stealth/key');
+var Keypair = require('../../../lib/keypair');
+var Privkey = require('../../../lib/privkey');
+var Pubkey = require('../../../lib/pubkey');
+var BN = require('../../../lib/bn');
+var Hash = require('../../../lib/hash');
 
-describe('Stealthkey', function() {
+describe('SKey', function() {
   
-  var stealthkey = Stealthkey();
+  var stealthkey = SKey();
   stealthkey.payloadKeypair = Keypair();
   stealthkey.payloadKeypair.privkey = Privkey();
   stealthkey.payloadKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 1')));
@@ -24,19 +24,19 @@ describe('Stealthkey', function() {
   senderKeypair.privkey2pubkey();
 
   it('should create a new stealthkey', function() {
-    var stealthkey = new Stealthkey();
+    var stealthkey = new SKey();
     should.exist(stealthkey);
   });
 
   it('should create a new stealthkey without using "new"', function() {
-    var stealthkey = Stealthkey();
+    var stealthkey = SKey();
     should.exist(stealthkey);
   });
 
   it('should create a new stealthkey with both keypairs in the constructor', function() {
     var keypair1 = Keypair();
     var keypair2 = Keypair();
-    var stealthkey = Stealthkey(keypair1, keypair2);
+    var stealthkey = SKey(keypair1, keypair2);
     should.exist(stealthkey.payloadKeypair);
     should.exist(stealthkey.scanKeypair);
   });
@@ -44,7 +44,7 @@ describe('Stealthkey', function() {
   describe('#set', function() {
 
     it('should set payload key', function() {
-      should.exist(Stealthkey().set({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
+      should.exist(SKey().set({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
     });
 
   });
@@ -52,7 +52,7 @@ describe('Stealthkey', function() {
   describe('#fromJSON', function() {
     
     it('should make a stealthkey from this JSON', function() {
-      var sk = Stealthkey().fromJSON({
+      var sk = SKey().fromJSON({
         payloadKeypair: stealthkey.payloadKeypair.toJSON(),
         scanKeypair: stealthkey.scanKeypair.toJSON()
       });
@@ -66,7 +66,7 @@ describe('Stealthkey', function() {
     
     it('should convert this stealthkey to json', function() {
       var json = stealthkey.toJSON()
-      var json2 = Stealthkey().fromJSON(json).toJSON();
+      var json2 = SKey().fromJSON(json).toJSON();
       json.payloadKeypair.privkey.should.equal(json2.payloadKeypair.privkey);
       json.scanKeypair.privkey.should.equal(json2.scanKeypair.privkey);
     });
@@ -76,7 +76,7 @@ describe('Stealthkey', function() {
   describe('#fromRandom', function() {
 
     it('should create a new stealthkey from random', function() {
-      var stealthkey = Stealthkey().fromRandom();
+      var stealthkey = SKey().fromRandom();
       should.exist(stealthkey.payloadKeypair.privkey.bn.gt(0));
       should.exist(stealthkey.scanKeypair.privkey.bn.gt(0));
     });

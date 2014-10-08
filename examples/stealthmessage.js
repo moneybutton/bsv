@@ -1,17 +1,17 @@
 var Pubkey = require('../lib/pubkey');
 var Address = require('../lib/address');
-var Stealthkey = require('../lib/expmt/stealthkey');
-var StealthAddress = require('../lib/expmt/stealthaddress');
-var StealthMessage = require('../lib/expmt/stealthmessage');
+var SKey = require('../lib/expmt/stealth/key');
+var SAddress = require('../lib/expmt/stealth/address');
+var SMessage = require('../lib/expmt/stealth/message');
 var Keypair = require('../lib/keypair')
 
 //First, the person receiving must make a stealth key.
 
-var sk = Stealthkey().fromRandom();
+var sk = SKey().fromRandom();
 
 //It has an associated stealth address.
 
-var sa = StealthAddress().fromStealthkey(sk);
+var sa = SAddress().fromSKey(sk);
 
 console.log('Stealth address: ' + sa);
 
@@ -21,7 +21,7 @@ var messagebuf = new Buffer('Hello there. Only you know this message is to you, 
 
 //Encrypt the message with the stealth address.
 
-var encbuf = StealthMessage.encrypt(messagebuf, sa);
+var encbuf = SMessage.encrypt(messagebuf, sa);
 
 console.log('Hex of the encrypted message: ' + encbuf.toString('hex'));
 
@@ -41,23 +41,23 @@ console.log('Nonce public key: ' + pubkey);
 
 //The owner of the stealth key can check to see if it is for them.
 
-console.log('Is the message for me? ' + (StealthMessage.isForMe(encbuf, sk) ? "yes" : "no"));
+console.log('Is the message for me? ' + (SMessage.isForMe(encbuf, sk) ? "yes" : "no"));
 
 //The owner can decrypt it.
 
-var messagebuf2 = StealthMessage.decrypt(encbuf, sk);
+var messagebuf2 = SMessage.decrypt(encbuf, sk);
 
 console.log('Decrypted message: ' + messagebuf2.toString());
 
 //If you do not have the payload privkey, you can still use isForMe.
 sk.payloadKeypair.privkey = undefined;
 
-console.log('Without payload privkey, is the message for me? ' + (StealthMessage.isForMe(encbuf, sk) ? "yes" : "no"));
+console.log('Without payload privkey, is the message for me? ' + (SMessage.isForMe(encbuf, sk) ? "yes" : "no"));
 
 //...but not decrypt
 
 try {
-  StealthMessage.decrypt(encbuf, sk);
+  SMessage.decrypt(encbuf, sk);
 } catch (e) {
   console.log("...but without the payload privkey, I can't decrypt.");
 }

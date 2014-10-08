@@ -1,7 +1,7 @@
-var ECIES = require('../lib/expmt/ecies');
+var ECIES = require('../../lib/expmt/ecies');
 var should = require('chai').should();
-var Keypair = require('../lib/keypair');
-var Hash = require('../lib/hash');
+var Keypair = require('../../lib/keypair');
+var Hash = require('../../lib/hash');
 
 describe('#ECIES', function() {
   

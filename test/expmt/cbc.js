@@ -1,6 +1,6 @@
-var AES = require('../lib/expmt/aes');
+var AES = require('../../lib/expmt/aes');
 var should = require('chai').should();
-var CBC = require('../lib/expmt/cbc');
+var CBC = require('../../lib/expmt/cbc');
 
 describe('CBC', function() {
 
