@@ -33,6 +33,7 @@ describe('Address', function() {
   describe('#fromBuffer', function() {
     
     it('should make an address from a buffer', function() {
+      Address().fromBuffer(buf).toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'));
       Address().fromBuffer(buf).toString().should.equal(str);
     });
 
@@ -43,8 +44,8 @@ describe('Address', function() {
     it('should make an address from a hashbuf', function() {
       Address().fromHashbuf(pubkeyhash).toString().should.equal(str);
       var a = Address().fromHashbuf(pubkeyhash, 'testnet', 'scripthash');
-      a.networkstr.should.equal('testnet');
-      a.typestr.should.equal('scripthash');
+      a.network().should.equal('testnet');
+      a.type().should.equal('scripthash');
     });
 
     it('should throw an error for invalid length hashbuf', function() {
@@ -103,7 +104,7 @@ describe('Address', function() {
     it('should derive from this known address string testnet', function() {
       var address = new Address();
       address.fromString(str);
-      address.networkstr = 'testnet';
+      address.version = constants['testnet']['pubkeyhash'];
       address.fromString(address.toString());
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98');
     });
@@ -111,8 +112,7 @@ describe('Address', function() {
     it('should derive from this known address string mainnet scripthash', function() {
       var address = new Address();
       address.fromString(str);
-      address.networkstr = 'mainnet';
-      address.typestr = 'scripthash';
+      address.version = constants['mainnet']['scripthash'];
       address.fromString(address.toString());
       address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
     });
@@ -120,8 +120,7 @@ describe('Address', function() {
     it('should derive from this known address string testnet scripthash', function() {
       var address = new Address();
       address.fromString(str);
-      address.networkstr = 'testnet';
-      address.typestr = 'scripthash';
+      address.version = constants['testnet']['scripthash'];
       address.fromString(address.toString());
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4');
     });
@@ -136,18 +135,33 @@ describe('Address', function() {
       address.isValid().should.equal(true);
     });
 
-    it('should describe this address with unknown network as invalid', function() {
+    it('should describe this address with unknown version as invalid', function() {
       var address = new Address();
       address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
-      address.networkstr = 'unknown';
+      address.version = 1;
       address.isValid().should.equal(false);
     });
 
-    it('should describe this address with unknown type as invalid', function() {
-      var address = new Address();
-      address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
-      address.typestr = 'unknown';
-      address.isValid().should.equal(false);
+  });
+
+  describe('#network', function() {
+    
+    it('should give mainnet for this mainnet address', function() {
+      var addr = Address().fromString(str);
+      addr.network().should.equal('mainnet');
+      addr.version = 1;
+      addr.network().should.equal('unknown');
+    });
+
+  });
+
+  describe('#type', function() {
+    
+    it('should give pubkeyhash for this address', function() {
+      var addr = Address().fromString(str);
+      addr.type().should.equal('pubkeyhash');
+      addr.version = 1;
+      addr.type().should.equal('unknown');
     });
 
   });
@@ -180,22 +194,13 @@ describe('Address', function() {
       should.exist(address.validate());
     });
 
-    it('should throw an error on this invalid network', function() {
+    it('should throw an error on this invalid version', function() {
       var address = new Address();
       address.fromString(str);
-      address.networkstr = 'unknown';
+      address.version = 1;
       (function() {
         address.validate();
-      }).should.throw('networkstr must be "mainnet" or "testnet"');
-    });
-
-    it('should throw an error on this invalid type', function() {
-      var address = new Address();
-      address.fromString(str);
-      address.typestr = 'unknown';
-      (function() {
-        address.validate();
-      }).should.throw('typestr must be "pubkeyhash" or "scripthash"');
+      }).should.throw('invalid version');
     });
 
   });
