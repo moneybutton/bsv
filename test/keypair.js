@@ -82,7 +82,7 @@ describe('Keypair', function() {
 
   });
 
-  describe("#fromString()", function() {
+  describe("#fromString", function() {
     
     it('should recover a key creating with toString', function() {
       var key = new Keypair();
@@ -152,7 +152,7 @@ describe('Keypair', function() {
 
   });
 
-  describe("#toString()", function() {
+  describe("#toString", function() {
     
     it('should exist', function() {
       var key = new Keypair();
