@@ -89,6 +89,25 @@ describe("ECDSA", function() {
 
   });
 
+  describe('#deterministicK', function() {
+
+    it('should generate the same deterministic k', function() {
+      ecdsa.deterministicK();
+      ecdsa.k.toBuffer().toString('hex').should.equal('fcce1de7a9bcd6b2d3defade6afa1913fb9229e3b7ddf4749b55c4848b2a196e');
+    });
+
+    it('should compute this test vector correctly', function() {
+      // test vector from bitcoinjs
+      // https://github.com/bitcoinjs/bitcoinjs-lib/blob/10630873ebaa42381c5871e20336fbfb46564ac8/test/fixtures/ecdsa.json#L6
+      var ecdsa = new ECDSA();
+      ecdsa.hashbuf = Hash.sha256(new Buffer('Everything should be made as simple as possible, but not simpler.'));
+      ecdsa.keypair = Keypair().fromPrivkey(Privkey().set({bn: BN(1)}));
+      ecdsa.deterministicK();
+      ecdsa.k.toBuffer().toString('hex').should.equal('ec633bd56a5774a0940cb97e27a9e4e51dc94af737596a0c5cbb3d30332d92a5');
+    });
+
+  });
+
   describe('#sig2pubkey', function() {
 
     it('should calculate the correct public key', function() {
@@ -161,6 +180,15 @@ describe("ECDSA", function() {
 
     it('should produce a signature', function() {
       ecdsa.signRandomK();
+      should.exist(ecdsa.sig);
+    });
+
+  });
+
+  describe('#signDeterministicK', function() {
+
+    it('should produce a signature', function() {
+      ecdsa.signDeterministicK();
       should.exist(ecdsa.sig);
     });
 
