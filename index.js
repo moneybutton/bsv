@@ -36,6 +36,7 @@ fullnode.expmt.CBC = require('./lib/expmt/cbc');
 fullnode.expmt.ECIES = require('./lib/expmt/ecies');
 
 //experimental stealth address support
+fullnode.expmt.stealth = {};
 fullnode.expmt.stealth.SAddress = require('./lib/expmt/stealth/address');
 fullnode.expmt.stealth.SKey = require('./lib/expmt/stealth/key');
 fullnode.expmt.stealth.SMessage = require('./lib/expmt/stealth/message');
