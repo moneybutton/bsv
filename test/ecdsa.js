@@ -34,10 +34,12 @@ describe("ECDSA", function() {
       });
     });
     
-    fixture.invalid.recoverPubKey.forEach(function() {
+    fixture.invalid.recoverPubKey.forEach(function(obj, i) {
+      //TODO: test recoverPubKey fixtures
     });
 
-    fixture.invalid.verifyRaw.forEach(function() {
+    fixture.invalid.verifyRaw.forEach(function(obj, i) {
+      //TODO: test verifyRaw fixtures
     });
 
   });
