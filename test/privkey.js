@@ -77,6 +77,15 @@ describe('Privkey', function() {
 
   });
 
+  describe('#fromBN', function() {
+
+    it('should create a privkey from a bignum', function() {
+      var privkey = Privkey().fromBN(BN(5));
+      privkey.bn.toString().should.equal('5');
+    });
+
+  });
+
   describe('#fromWIF', function() {
 
     it('should parse this compressed testnet address correctly', function() {
