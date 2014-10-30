@@ -7,8 +7,40 @@ var Signature = require('../lib/signature');
 var BN = require('../lib/bn');
 var point = require('../lib/point');
 var should = require('chai').should();
+var fixture = require('./fixtures/ecdsa');
 
 describe("ECDSA", function() {
+
+  describe('test fixtures', function() {
+
+    fixture.valid.forEach(function(obj, i) {
+      it('should validate verify fixture ' + i, function() {
+        var ecdsa = ECDSA().set({
+          keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
+          k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
+          hashbuf: Hash.sha256(new Buffer(obj.message)),
+          sig: Signature().set({
+            r: BN(obj.signature.r),
+            s: BN(obj.signature.s),
+            i: obj.i
+          })
+        });
+        var ecdsa2 = ECDSA(ecdsa);
+        ecdsa2.sign();
+        ecdsa2.calci();
+        ecdsa2.sig.toString().should.equal(ecdsa.sig.toString());
+        ecdsa2.sig.i.should.equal(ecdsa.sig.i);
+        ecdsa.verify().should.equal(true);
+      });
+    });
+    
+    fixture.invalid.recoverPubKey.forEach(function() {
+    });
+
+    fixture.invalid.verifyRaw.forEach(function() {
+    });
+
+  });
 
   it('should create a blank ecdsa', function() {
     var ecdsa = new ECDSA();
