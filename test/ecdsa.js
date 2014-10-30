@@ -219,15 +219,6 @@ describe("ECDSA", function() {
 
   });
 
-  describe('#signDeterministicK', function() {
-
-    it('should produce a signature', function() {
-      ecdsa.signDeterministicK();
-      should.exist(ecdsa.sig);
-    });
-
-  });
-
   describe('#toString', function() {
     
     it('should convert this to a string', function() {
