@@ -195,6 +195,19 @@ describe("ECDSA", function() {
       }).should.throw('hashbuf must be a 32 byte buffer');
     });
 
+    it('should default to deterministicK', function() {
+      var ecdsa2 = new ECDSA(ecdsa);
+      ecdsa2.k = undefined;
+      var called = 0;
+      var deterministicK = ecdsa2.deterministicK.bind(ecdsa2);
+      ecdsa2.deterministicK = function() {
+        deterministicK();
+        called++;
+      };
+      ecdsa2.sign();
+      called.should.equal(1);
+    });
+
   });
 
   describe('#signRandomK', function() {
