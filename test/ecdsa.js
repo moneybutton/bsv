@@ -220,9 +220,12 @@ describe("ECDSA", function() {
 
   describe('#signRandomK', function() {
 
-    it('should produce a signature', function() {
+    it('should produce a signature, and be different when called twice', function() {
       ecdsa.signRandomK();
       should.exist(ecdsa.sig);
+      var ecdsa2 = ECDSA(ecdsa);
+      ecdsa2.signRandomK();
+      ecdsa.sig.toString().should.not.equal(ecdsa2.sig.toString());
     });
 
   });
