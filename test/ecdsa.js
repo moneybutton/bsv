@@ -14,7 +14,7 @@ describe("ECDSA", function() {
   describe('test fixtures', function() {
 
     fixture.valid.forEach(function(obj, i) {
-      it('should validate verify fixture ' + i, function() {
+      it('should validate valid fixture ' + i, function() {
         var ecdsa = ECDSA().set({
           keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
           k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
