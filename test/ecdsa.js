@@ -96,6 +96,14 @@ describe("ECDSA", function() {
       ecdsa.k.toBuffer().toString('hex').should.equal('fcce1de7a9bcd6b2d3defade6afa1913fb9229e3b7ddf4749b55c4848b2a196e');
     });
 
+    it('should generate the same deterministic k if badrs is set', function() {
+      ecdsa.deterministicK(0);
+      ecdsa.k.toBuffer().toString('hex').should.equal('fcce1de7a9bcd6b2d3defade6afa1913fb9229e3b7ddf4749b55c4848b2a196e');
+      ecdsa.deterministicK(1);
+      ecdsa.k.toBuffer().toString('hex').should.not.equal('fcce1de7a9bcd6b2d3defade6afa1913fb9229e3b7ddf4749b55c4848b2a196e');
+      ecdsa.k.toBuffer().toString('hex').should.equal('6f4dcca6fa7a137ae9d110311905013b3c053c732ad18611ec2752bb3dcef9d8');
+    });
+
     it('should compute this test vector correctly', function() {
       // test vector from bitcoinjs
       // https://github.com/bitcoinjs/bitcoinjs-lib/blob/10630873ebaa42381c5871e20336fbfb46564ac8/test/fixtures/ecdsa.json#L6
