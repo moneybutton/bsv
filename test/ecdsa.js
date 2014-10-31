@@ -30,7 +30,7 @@ describe("ECDSA", function() {
         ecdsa2.calci();
         ecdsa2.sig.toString().should.equal(ecdsa.sig.toString());
         ecdsa2.sig.i.should.equal(ecdsa.sig.i);
-        ecdsa.verify().should.equal(true);
+        ecdsa.verify().verified.should.equal(true);
       });
     });
     
@@ -223,7 +223,7 @@ describe("ECDSA", function() {
     it('should create a valid signature', function() {
       ecdsa.randomK();
       ecdsa.sign();
-      ecdsa.verify().should.equal(true);
+      ecdsa.verify().verified.should.equal(true);
     });
 
     it('should should throw an error if hashbuf is not 32 bytes', function() {
@@ -278,12 +278,12 @@ describe("ECDSA", function() {
     it('should verify a signature that was just signed', function() {
       ecdsa.sig = new Signature();
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827');
-      ecdsa.verify().should.equal(true);
+      ecdsa.verify().verified.should.equal(true);
     });
 
     it('should verify this known good signature', function() {
       ecdsa.signRandomK();
-      ecdsa.verify().should.equal(true);
+      ecdsa.verify().verified.should.equal(true);
     });
 
   });
