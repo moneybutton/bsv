@@ -4,7 +4,7 @@ var Hash = require('../lib/hash');
 
 describe('KDF', function() {
   
-  describe('#buf2keypair', function() {
+  describe('@buf2keypair', function() {
 
     it('should compute these known values', function() {
       var buf = Hash.sha256(new Buffer('test'));
@@ -15,7 +15,7 @@ describe('KDF', function() {
 
   });
 
-  describe('#sha256hmac2keypair', function() {
+  describe('@sha256hmac2keypair', function() {
 
     it('should compute these known values', function() {
       var buf = Hash.sha256(new Buffer('test'));
@@ -26,7 +26,7 @@ describe('KDF', function() {
 
   });
 
-  describe('#sha256hmac2privkey', function() {
+  describe('@sha256hmac2privkey', function() {
 
     it('should compute this known privkey', function() {
       var buf = Hash.sha256(new Buffer('test'));
