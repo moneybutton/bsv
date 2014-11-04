@@ -72,81 +72,10 @@
     }
   ],
   "invalid": {
-    "recoverPubKey": [
-      {
-        "description": "Invalid r value (< 0)",
-        "exception": "Invalid r value",
-        "e": "01",
-        "signature": {
-          "r": "-01",
-          "s": "02"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid r value (== 0)",
-        "exception": "Invalid r value",
-        "e": "01",
-        "signature": {
-          "r": "00",
-          "s": "02"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid s value (< 0)",
-        "exception": "Invalid s value",
-        "e": "01",
-        "signature": {
-          "r": "02",
-          "s": "-01"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid s value (== 0)",
-        "exception": "Invalid s value",
-        "e": "01",
-        "signature": {
-          "r": "02",
-          "s": "00"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid r value (nR is infinity)",
-        "exception": "nR is not a valid curve point",
-        "e": "01",
-        "signature": {
-          "r": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
-          "s": "01"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid curve point",
-        "exception": "Point is not on the curve",
-        "e": "01",
-        "signature": {
-          "r": "99999999999999999999999999999999999999",
-          "s": "01"
-        },
-        "i": 0
-      },
-      {
-        "description": "Invalid i value (> 3)",
-        "exception": "Recovery param is more than two bits",
-        "e": "01",
-        "signature": {
-          "r": "00",
-          "s": "02"
-        },
-        "i": 4
-      }
-    ],
-    "verifyRaw": [
+    "sigError": [
       {
         "description": "The wrong signature",
+        "exception": "Invalid signature",
         "d": "01",
         "message": "foo",
         "signature": {
@@ -156,60 +85,67 @@
       },
       {
         "description": "Invalid r value (< 0)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "-01",
-          "s": "02"
+          "r": "-1",
+          "s": "2"
         }
       },
       {
         "description": "Invalid r value (== 0)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "00",
-          "s": "02"
+          "r": "0",
+          "s": "2"
         }
       },
       {
         "description": "Invalid r value (>= n)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
-          "s": "02"
+          "r": "115792089237316195423570985008687907852837564279074904382605163141518161494337",
+          "s": "2"
         }
       },
       {
         "description": "Invalid s value (< 0)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "02",
-          "s": "-01"
+          "r": "2",
+          "s": "-1"
         }
       },
       {
         "description": "Invalid s value (== 0)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "02",
-          "s": "00"
+          "r": "2",
+          "s": "0"
         }
       },
       {
         "description": "Invalid s value (>= n)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {
-          "r": "02",
-          "s": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141"
+          "r": "2",
+          "s": "115792089237316195423570985008687907852837564279074904382605163141518161494337"
         }
       },
       {
         "description": "Invalid r, s values (r = s = -n)",
+        "exception": "r and s not in range",
         "d": "01",
         "message": "foo",
         "signature": {

@@ -36,12 +36,15 @@ describe("ECDSA", function() {
       });
     });
     
-    fixture.invalid.recoverPubKey.forEach(function(obj, i) {
-      //TODO: test recoverPubKey fixtures
-    });
-
-    fixture.invalid.verifyRaw.forEach(function(obj, i) {
-      //TODO: test verifyRaw fixtures
+    fixture.invalid.sigError.forEach(function(obj, i) {
+      it('should validate invalid.sigError fixture ' + i + ': ' + obj.description, function() {
+        var ecdsa = ECDSA().set({
+          keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
+          sig: Signature(BN(obj.signature.r), BN(obj.signature.s)),
+          hashbuf: Hash.sha256(new Buffer(obj.message))
+        });
+        ecdsa.sigError().should.equal(obj.exception);
+      });
     });
 
   });
