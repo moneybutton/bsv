@@ -1,8 +1,8 @@
 fullnode
 ========
 
-fullnode is a javascript implementation of bitcoin, forked from bitcore2,
-intended to satisfy certain goals:
+fullnode is a javascript implementation of bitcoin intended to satisfy certain
+goals:
 
 1) Support ease-of-use by being internally consistent. It should not be
 necessary to read the source code of a class or function to know how to use it.
