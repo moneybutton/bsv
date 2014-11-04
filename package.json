@@ -73,7 +73,8 @@
   "devDependencies": {
     "chai": "~1.9.1",
     "mocha": "~1.21.0",
-    "browserify": "~5.9.1"
+    "browserify": "~5.9.1",
+    "uglifyify": "~2.6.0"
   },
   "license": "MIT"
 }

@@ -2,4 +2,5 @@
 coverage
 node_modules
 browser/fullnode.js
+browser/fullnode-min.js
 browser/tests.js
