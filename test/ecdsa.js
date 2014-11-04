@@ -11,44 +11,6 @@ var fixture = require('./fixtures/ecdsa');
 
 describe("ECDSA", function() {
 
-  describe('test fixtures', function() {
-
-    fixture.valid.forEach(function(obj, i) {
-      it('should validate valid fixture ' + i, function() {
-        var ecdsa = ECDSA().set({
-          keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
-          k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
-          hashbuf: Hash.sha256(new Buffer(obj.message)),
-          sig: Signature().set({
-            r: BN(obj.signature.r),
-            s: BN(obj.signature.s),
-            i: obj.i
-          })
-        });
-        var ecdsa2 = ECDSA(ecdsa);
-        ecdsa2.k = undefined;
-        ecdsa2.sign();
-        ecdsa2.calci();
-        ecdsa2.k.toString().should.equal(ecdsa.k.toString());
-        ecdsa2.sig.toString().should.equal(ecdsa.sig.toString());
-        ecdsa2.sig.i.should.equal(ecdsa.sig.i);
-        ecdsa.verify().verified.should.equal(true);
-      });
-    });
-    
-    fixture.invalid.sigError.forEach(function(obj, i) {
-      it('should validate invalid.sigError fixture ' + i + ': ' + obj.description, function() {
-        var ecdsa = ECDSA().set({
-          keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
-          sig: Signature(BN(obj.signature.r), BN(obj.signature.s)),
-          hashbuf: Hash.sha256(new Buffer(obj.message))
-        });
-        ecdsa.sigError().should.equal(obj.exception);
-      });
-    });
-
-  });
-
   it('should create a blank ecdsa', function() {
     var ecdsa = new ECDSA();
   });
@@ -309,6 +271,44 @@ describe("ECDSA", function() {
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey).should.equal(true);
       var fakesig = Signature(sig.r.add(1), sig.s);
       ECDSA.verify(ecdsa.hashbuf, fakesig, ecdsa.keypair.pubkey).should.equal(false);
+    });
+
+  });
+
+  describe('fixtures', function() {
+
+    fixture.valid.forEach(function(obj, i) {
+      it('should validate valid fixture ' + i, function() {
+        var ecdsa = ECDSA().set({
+          keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
+          k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
+          hashbuf: Hash.sha256(new Buffer(obj.message)),
+          sig: Signature().set({
+            r: BN(obj.signature.r),
+            s: BN(obj.signature.s),
+            i: obj.i
+          })
+        });
+        var ecdsa2 = ECDSA(ecdsa);
+        ecdsa2.k = undefined;
+        ecdsa2.sign();
+        ecdsa2.calci();
+        ecdsa2.k.toString().should.equal(ecdsa.k.toString());
+        ecdsa2.sig.toString().should.equal(ecdsa.sig.toString());
+        ecdsa2.sig.i.should.equal(ecdsa.sig.i);
+        ecdsa.verify().verified.should.equal(true);
+      });
+    });
+    
+    fixture.invalid.sigError.forEach(function(obj, i) {
+      it('should validate invalid.sigError fixture ' + i + ': ' + obj.description, function() {
+        var ecdsa = ECDSA().set({
+          keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
+          sig: Signature(BN(obj.signature.r), BN(obj.signature.s)),
+          hashbuf: Hash.sha256(new Buffer(obj.message))
+        });
+        ecdsa.sigError().should.equal(obj.exception);
+      });
     });
 
   });
