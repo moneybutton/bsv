@@ -4,17 +4,17 @@
   "dependencies": {
     "aes": {
       "version": "0.1.0",
-      "from": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz",
+      "from": "aes@=0.1.0",
       "resolved": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz"
     },
     "bn.js": {
-      "version": "0.15.0",
-      "from": "bn.js@=0.15.0",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-0.15.0.tgz"
+      "version": "0.15.2",
+      "from": "bn.js@=0.15.2",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-0.15.2.tgz"
     },
     "bs58": {
       "version": "1.2.1",
-      "from": "https://registry.npmjs.org/bs58/-/bs58-1.2.1.tgz",
+      "from": "bs58@=1.2.1",
       "resolved": "https://registry.npmjs.org/bs58/-/bs58-1.2.1.tgz"
     },
     "elliptic": {
@@ -36,19 +36,19 @@
     },
     "hash.js": {
       "version": "0.3.1",
-      "from": "https://registry.npmjs.org/hash.js/-/hash.js-0.3.1.tgz",
+      "from": "hash.js@=0.3.1",
       "resolved": "https://registry.npmjs.org/hash.js/-/hash.js-0.3.1.tgz",
       "dependencies": {
         "inherits": {
           "version": "2.0.1",
-          "from": "inherits@2.0.1",
+          "from": "inherits@^2.0.1",
           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
         }
       }
     },
     "sha512": {
       "version": "0.0.1",
-      "from": "https://registry.npmjs.org/sha512/-/sha512-0.0.1.tgz",
+      "from": "sha512@=0.0.1",
       "resolved": "https://registry.npmjs.org/sha512/-/sha512-0.0.1.tgz"
     }
   }
