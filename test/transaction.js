@@ -173,6 +173,7 @@ describe('Transaction', function() {
     it('should add an input', function() {
       var txin = Txin();
       var tx = Transaction();
+      tx.txinsvi.toNumber().should.equal(0);
       tx.pushin(txin);
       tx.txinsvi.toNumber().should.equal(1);
       tx.txins.length.should.equal(1);
@@ -185,6 +186,7 @@ describe('Transaction', function() {
     it('should add an output', function() {
       var txout = Txout();
       var tx = Transaction();
+      tx.txoutsvi.toNumber().should.equal(0);
       tx.pushout(txout);
       tx.txoutsvi.toNumber().should.equal(1);
       tx.txouts.length.should.equal(1);
