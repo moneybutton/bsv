@@ -11,25 +11,29 @@ describe('BN', function() {
     bn = BN(50);
     bn.toString().should.equal('50');
     (bn instanceof BN).should.equal(true);
+    bn = BN('ff00', 16);
+    bn.toString(16).should.equal('ff00');
+    bn = new BN('ff00', 16);
+    bn.toString(16).should.equal('ff00');
   });
 
   it('should parse this number', function() {
-    var bn = new BN(999970000);
+    var bn = BN(999970000);
     bn.toString().should.equal('999970000');
   });
 
   it('should parse numbers below and at bn.js internal word size', function() {
-    var bn = new BN(Math.pow(2, 26) - 1);
+    var bn = BN(Math.pow(2, 26) - 1);
     bn.toString().should.equal((Math.pow(2, 26) - 1).toString());
-    var bn = new BN(Math.pow(2, 26));
+    var bn = BN(Math.pow(2, 26));
     bn.toString().should.equal((Math.pow(2, 26)).toString());
   });
   
   describe('#add', function() {
 
     it('should add two small numbers together', function() {
-      var bn1 = new BN(50);
-      var bn2 = new BN(75);
+      var bn1 = BN(50);
+      var bn2 = BN(75);
       var bn3 = bn1.add(bn2);
       bn3.toString().should.equal('125');
     });
@@ -39,8 +43,8 @@ describe('BN', function() {
   describe('#sub', function() {
 
     it('should subtract a small number', function() {
-      var bn1 = new BN(50);
-      var bn2 = new BN(25);
+      var bn1 = BN(50);
+      var bn2 = BN(25);
       var bn3 = bn1.sub(bn2);
       bn3.toString().should.equal('25');
     });
@@ -50,20 +54,20 @@ describe('BN', function() {
   describe('#gt', function() {
 
     it('should say 1 is greater than 0', function() {
-      var bn1 = new BN(1);
-      var bn0 = new BN(0);
+      var bn1 = BN(1);
+      var bn0 = BN(0);
       bn1.gt(bn0).should.equal(true);
     });
 
     it('should say a big number is greater than a small big number', function() {
-      var bn1 = new BN('24023452345398529485723980457');
-      var bn0 = new BN('34098234283412341234049357');
+      var bn1 = BN('24023452345398529485723980457');
+      var bn0 = BN('34098234283412341234049357');
       bn1.gt(bn0).should.equal(true);
     });
 
     it('should say a big number is great than a standard number', function() {
-      var bn1 = new BN('24023452345398529485723980457');
-      var bn0 = new BN(5);
+      var bn1 = BN('24023452345398529485723980457');
+      var bn0 = BN(5);
       bn1.gt(bn0).should.equal(true);
     });
 
@@ -133,22 +137,22 @@ describe('BN', function() {
   describe('#toBuffer', function() {
     
     it('should create a 4 byte buffer', function() {
-      var bn = new BN(1);
+      var bn = BN(1);
       bn.toBuffer({size: 4}).toString('hex').should.equal('00000001');
     });
 
     it('should create a 4 byte buffer in little endian', function() {
-      var bn = new BN(1);
+      var bn = BN(1);
       bn.toBuffer({size: 4, endian: 'little'}).toString('hex').should.equal('01000000');
     });
 
     it('should create a 2 byte buffer even if you ask for a 1 byte', function() {
-      var bn = new BN('ff00', 16);
+      var bn = BN('ff00', 16);
       bn.toBuffer({size: 1}).toString('hex').should.equal('ff00');
     });
 
     it('should create a 4 byte buffer even if you ask for a 1 byte', function() {
-      var bn = new BN('ffffff00', 16);
+      var bn = BN('ffffff00', 16);
       bn.toBuffer({size: 4}).toString('hex').should.equal('ffffff00');
     });
 
