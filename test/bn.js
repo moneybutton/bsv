@@ -8,6 +8,9 @@ describe('BN', function() {
     var bn = new BN(50);
     should.exist(bn);
     bn.toString().should.equal('50');
+    bn = BN(50);
+    bn.toString().should.equal('50');
+    (bn instanceof BN).should.equal(true);
   });
 
   it('should parse this number', function() {
