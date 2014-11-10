@@ -12,6 +12,24 @@ describe('Point', function() {
     (p instanceof Point).should.equal(true);
   });
 
+  it('should have the standard properties for a point', function() {
+    var p = Point();
+    var props = ['curve', 'type', 'precomputed', 'x', 'y', 'inf'];
+    var a = [];
+
+    //all enumerable, own properties should be in prop
+    for (var k in p) {
+      if (p.hasOwnProperty(k)) {
+        props.indexOf(k).should.not.equal(-1);
+      }
+    }
+
+    //all props should be properties of a point
+    props.forEach(function(k) {
+      (typeof p[k] === 'undefined').should.equal(false);
+    });
+  });
+
   describe('#getX', function() {
     
     it('should return 0', function() {
