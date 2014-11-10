@@ -44,3 +44,12 @@ Key features:
 * Proper message signing and verification
 * npm-shrinkwrap.json ensures npm install works as intended
 * byte-for-byte reading/writing scripts
+
+## Testing ##
+npm install -g mocha
+mocha
+
+## Browser bundle ##
+npm install -g browserify
+npm install -g uglifyify
+./browser/bundle
