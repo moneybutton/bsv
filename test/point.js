@@ -92,6 +92,16 @@ describe('Point', function() {
 
   });
 
+  describe('#fromX', function() {
+    
+    it('should return g', function() {
+      var g = Point.getG();
+      var p = Point().fromX(false, g.getX());
+      g.eq(p).should.equal(true);
+    });
+
+  });
+
   describe('#validate', function() {
 
     it('should validate this valid point', function() {
