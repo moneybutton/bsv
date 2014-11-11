@@ -49,7 +49,7 @@ Key features:
 
 <code>
 npm install -g groc<br>
-doc/build
+groc
 </code>
 
 ## Testing ##
