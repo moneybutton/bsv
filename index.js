@@ -53,9 +53,3 @@ fullnode.deps.Buffer = Buffer;
 fullnode.deps.elliptic = require('elliptic');
 fullnode.deps.hashjs = require('hash.js');
 fullnode.deps.sha512 = require('sha512');
-
-//fullnode.scriptexec = require('lib/scriptexec');
-//fullnode.tx = require('lib/tx');
-//fullnode.txpartial = require('lib/txpartial');
-
-//fullnode.bip70 = require('lib/bip70');
