@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 browserify index.js -o browser/fullnode.js
 browserify -g uglifyify index.js -o browser/fullnode-min.js
