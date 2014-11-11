@@ -173,4 +173,20 @@ describe('BN', function() {
 
   });
 
+  describe('#fromNumber', function() {
+
+    it('should convert from a number', function() {
+      BN().fromNumber(5).toNumber().should.equal(5);
+    });
+
+  });
+
+  describe('#toNumber', function() {
+
+    it('it should convert to a number', function() {
+      BN(5).toNumber().should.equal(5);
+    });
+
+  });
+
 });
