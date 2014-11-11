@@ -1,5 +1,7 @@
 var fullnode = module.exports;
 
+fullnode.version = require('./package').version;
+
 //main bitcoin library - bitcoin protocols and standards
 fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
