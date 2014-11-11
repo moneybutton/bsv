@@ -30,6 +30,58 @@ describe('Point', function() {
     });
   });
 
+  describe('#copy', function() {
+
+    it('should copy G', function() {
+      var point = Point.getG();
+      var point2;
+      (function() {
+        point.copy(point2);
+      }).should.throw(); //point2 is not a Point yet
+      var point2 = Point();
+      point.copy(point2);
+      point2.toString().should.equal(point.toString());
+    });
+
+  });
+
+  describe('#toJSON', function() {
+    
+    it('should print G to JSON', function() {
+      var G = Point.getG();
+      var json = G.toJSON();
+      json.isOdd.should.equal(G.x.isOdd());
+      json.x.should.equal(G.x.toString());
+    });
+
+  });
+
+  describe('#fromJSON', function() {
+
+    it('should recover G', function() {
+      Point().fromJSON(Point.getG().toJSON()).eq(Point.getG()).should.equal(true);
+    });
+
+  });
+
+  describe('#toString', function() {
+    
+    it('should convert G to a string', function() {
+      var G = Point.getG();
+      G.toString().should.equal(JSON.stringify(G.toJSON()));
+    });
+
+  });
+
+  describe('#fromString', function() {
+    
+    it('should convert a json string to G', function() {
+      var G = Point.getG();
+      Point().fromString(G.toString()).eq(G).should.equal(true);
+    });
+
+  });
+
   describe('#getX', function() {
     
     it('should return 0', function() {

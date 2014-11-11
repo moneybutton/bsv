@@ -28,6 +28,21 @@ describe('BN', function() {
     var bn = BN(Math.pow(2, 26));
     bn.toString().should.equal((Math.pow(2, 26)).toString());
   });
+
+  describe('#copy', function() {
+    
+    it('should copy 5', function() {
+      var bn = BN('5');
+      var bn2;
+      (function() {
+        bn.copy(bn2);
+      }).should.throw(); //bn2 is not a BN yet
+      bn2 = BN();
+      bn.copy(bn2);
+      bn2.toString().should.equal('5');
+    });
+
+  });
   
   describe('#add', function() {
 
