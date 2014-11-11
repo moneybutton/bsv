@@ -45,11 +45,24 @@ Key features:
 * npm-shrinkwrap.json ensures npm install works as intended
 * byte-for-byte reading/writing scripts
 
+## Documentation ##
+
+<code>
+npm install -g groc<br>
+doc/build
+</code>
+
 ## Testing ##
-npm install -g mocha
+
+<code>
+npm install -g mocha<br>
 mocha
+</code>
 
 ## Browser bundle ##
-npm install -g browserify
-npm install -g uglifyify
-./browser/bundle
+
+<code>
+npm install -g browserify<br>
+npm install -g uglifyify<br>
+browser/bundle
+</code>
