@@ -5,6 +5,34 @@ describe('Hash', function() {
   var buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
   var str = "test string";
 
+  describe('@sha1', function() {
+
+    it('should calculate the hash of this buffer correctly', function() {
+      var hash = Hash.sha1(buf);
+      hash.toString('hex').should.equal('de69b8a4a5604d0486e6420db81e39eb464a17b2');
+      hash = Hash.sha1(new Buffer(0));
+      hash.toString('hex').should.equal('da39a3ee5e6b4b0d3255bfef95601890afd80709');
+    });
+
+    it('should throw an error when the input is not a buffer', function() {
+      (function() {
+        Hash.sha1(str);
+      }).should.throw('sha1 hash must be of a buffer');
+    });
+
+  });
+
+  describe("@sha1hmac", function() {
+    
+    // http://tools.ietf.org/html/rfc2202.html
+
+    it('should calculate this known empty test vector correctly', function() {
+      var hex = 'b617318655057264e28bc0b6fb378c8ef146be00';
+      Hash.sha1hmac(new Buffer("Hi There"), new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')).toString('hex').should.equal(hex);
+    });
+
+  });
+
   describe('@sha256', function() {
 
     it('should calculate the hash of this buffer correctly', function() {

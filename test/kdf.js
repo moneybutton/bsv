@@ -1,8 +1,40 @@
 var should = require('chai').should();
 var KDF = require('../lib/kdf');
 var Hash = require('../lib/hash');
+var fixture = require('./fixtures/kdf');
 
 describe('KDF', function() {
+
+  describe('@PBKDF2', function() {
+
+    it('should return values of the right size', function() {
+      var passbuf = new Buffer([0]);
+      var saltbuf = new Buffer([0]);
+      var key1 = KDF.PBKDF2(passbuf, saltbuf);
+      key1.length.should.equal(512 / 8);
+      var key2 = KDF.PBKDF2(passbuf, saltbuf, 2);
+      key2.length.should.equal(512 / 8);
+      key1.toString('hex').should.not.equal(key2.toString('hex'));
+      var key3 = KDF.PBKDF2(passbuf, saltbuf, 2, 1024);
+      key3.length.should.equal(1024 / 8);
+      var key4 = KDF.PBKDF2(passbuf, saltbuf, 2, 256, Hash.sha256hmac);
+      key4.length.should.equal(256 / 8);
+    });
+
+    // Test fixtures from: http://tools.ietf.org/html/rfc6070#section-2
+    fixture.PBKDF2.valid.forEach(function(obj, i) {
+      it('should work for PBKDF2 test fixture ' + i, function() {
+        var passbuf = new Buffer(obj.p, 'hex');
+        var saltbuf = new Buffer(obj.s, 'hex');
+        var niterations = obj.c;
+        var keylenbits = obj.dkLen * 8;
+        var hmacf = Hash[obj.hmacf];
+        var key = KDF.PBKDF2(passbuf, saltbuf, niterations, keylenbits, hmacf);
+        key.toString('hex').should.equal(obj.key);
+      });
+    });
+
+  });
   
   describe('@buf2keypair', function() {
 
