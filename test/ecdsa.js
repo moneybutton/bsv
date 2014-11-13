@@ -7,7 +7,7 @@ var Signature = require('../lib/signature');
 var BN = require('../lib/bn');
 var point = require('../lib/point');
 var should = require('chai').should();
-var fixture = require('./fixtures/ecdsa');
+var vectors = require('./vectors/ecdsa');
 
 describe("ECDSA", function() {
 
@@ -106,7 +106,7 @@ describe("ECDSA", function() {
     });
 
     it('should compute this test vector correctly', function() {
-      // test vector from bitcoinjs
+      // test fixture from bitcoinjs
       // https://github.com/bitcoinjs/bitcoinjs-lib/blob/10630873ebaa42381c5871e20336fbfb46564ac8/test/fixtures/ecdsa.json#L6
       var ecdsa = new ECDSA();
       ecdsa.hashbuf = Hash.sha256(new Buffer('Everything should be made as simple as possible, but not simpler.'));
@@ -275,10 +275,10 @@ describe("ECDSA", function() {
 
   });
 
-  describe('fixtures', function() {
+  describe('vectors', function() {
 
-    fixture.valid.forEach(function(obj, i) {
-      it('should validate valid fixture ' + i, function() {
+    vectors.valid.forEach(function(obj, i) {
+      it('should validate valid vector ' + i, function() {
         var ecdsa = ECDSA().set({
           keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
           k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
@@ -300,8 +300,8 @@ describe("ECDSA", function() {
       });
     });
     
-    fixture.invalid.sigError.forEach(function(obj, i) {
-      it('should validate invalid.sigError fixture ' + i + ': ' + obj.description, function() {
+    vectors.invalid.sigError.forEach(function(obj, i) {
+      it('should validate invalid.sigError vector ' + i + ': ' + obj.description, function() {
         var ecdsa = ECDSA().set({
           keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
           sig: Signature(BN(obj.signature.r), BN(obj.signature.s)),

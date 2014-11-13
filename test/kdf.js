@@ -1,7 +1,7 @@
 var should = require('chai').should();
 var KDF = require('../lib/kdf');
 var Hash = require('../lib/hash');
-var fixture = require('./fixtures/kdf');
+var vectors = require('./vectors/kdf');
 
 describe('KDF', function() {
 
@@ -21,9 +21,9 @@ describe('KDF', function() {
       key4.length.should.equal(256 / 8);
     });
 
-    // Test fixtures from: http://tools.ietf.org/html/rfc6070#section-2
-    fixture.PBKDF2.valid.forEach(function(obj, i) {
-      it('should work for PBKDF2 test fixture ' + i, function() {
+    // Test vectors from: http://tools.ietf.org/html/rfc6070#section-2
+    vectors.PBKDF2.valid.forEach(function(obj, i) {
+      it('should work for PBKDF2 test vector ' + i, function() {
         var passbuf = new Buffer(obj.p, 'hex');
         var saltbuf = new Buffer(obj.s, 'hex');
         var niterations = obj.c;
