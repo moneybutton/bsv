@@ -7,6 +7,7 @@ fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
 fullnode.BIP32 = require('./lib/bip32');
+fullnode.BIP39 = require('./lib/bip39');
 fullnode.Block = require('./lib/block');
 fullnode.Blockheader = require('./lib/blockheader');
 fullnode.BN = require('./lib/bn');
