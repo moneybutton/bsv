@@ -36,7 +36,7 @@ describe('BufferReader', function() {
 
   });
 
-  describe('read', function() {
+  describe('#read', function() {
     
     it('should return the same buffer', function() {
       var buf = new Buffer([0]);
@@ -52,6 +52,16 @@ describe('BufferReader', function() {
       buf2.length.should.equal(2);
       br.eof().should.equal(false);
       br.pos.should.equal(2);
+    });
+
+  });
+
+  describe('#readReverse', function() {
+    
+    it('should reverse this [0, 1]', function() {
+      var buf = new Buffer([0, 1]);
+      var br = new BufferReader({buf: buf});
+      br.readReverse().toString('hex').should.equal('0100');
     });
 
   });
@@ -257,16 +267,6 @@ describe('BufferReader', function() {
       var buf = Buffer.concat([new Buffer([255]), new Buffer('ffffffffffffffff', 'hex')]);
       var br = new BufferReader({buf: buf});
       br.readVarintBN().toNumber().should.equal(Math.pow(2, 64));
-    });
-
-  });
-
-  describe('#reverse', function() {
-    
-    it('should reverse this [0, 1]', function() {
-      var buf = new Buffer([0, 1]);
-      var br = new BufferReader({buf: buf});
-      br.reverse().read().toString('hex').should.equal('0100');
     });
 
   });

@@ -55,6 +55,17 @@ describe('BufferWriter', function() {
 
   });
 
+  describe('#writeReverse', function() {
+
+    it('should write a buffer in reverse', function() {
+      var buf = new Buffer([0, 1]);
+      var bw = new BufferWriter();
+      bw.writeReverse(buf);
+      bw.concat().toString('hex').should.equal('0100');
+    });
+
+  });
+
   describe('#writeUInt8', function() {
     
     it('should write 1', function() {
