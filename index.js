@@ -53,4 +53,4 @@ fullnode.deps.bs58 = require('bs58');
 fullnode.deps.Buffer = Buffer;
 fullnode.deps.elliptic = require('elliptic');
 fullnode.deps.hashjs = require('hash.js');
-fullnode.deps.sha512 = require('sha512');
+fullnode.deps.pbkdf2compat = require('pbkdf2-compat');

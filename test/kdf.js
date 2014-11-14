@@ -17,7 +17,7 @@ describe('KDF', function() {
       key1.toString('hex').should.not.equal(key2.toString('hex'));
       var key3 = KDF.PBKDF2(passbuf, saltbuf, 2, 1024);
       key3.length.should.equal(1024 / 8);
-      var key4 = KDF.PBKDF2(passbuf, saltbuf, 2, 256, Hash.sha256hmac);
+      var key4 = KDF.PBKDF2(passbuf, saltbuf, 2, 256, 'sha256');
       key4.length.should.equal(256 / 8);
     });
 
@@ -28,7 +28,7 @@ describe('KDF', function() {
         var saltbuf = new Buffer(obj.s, 'hex');
         var niterations = obj.c;
         var keylenbits = obj.dkLen * 8;
-        var hmacf = Hash[obj.hmacf];
+        var hmacf = obj.hmacf;
         var key = KDF.PBKDF2(passbuf, saltbuf, niterations, keylenbits, hmacf);
         key.toString('hex').should.equal(obj.key);
       });

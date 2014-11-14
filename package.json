@@ -68,7 +68,7 @@
     "bs58": "=1.2.1",
     "elliptic": "=0.15.13",
     "hash.js": "=0.3.1",
-    "sha512": "=0.0.1"
+    "pbkdf2-compat": "=2.0.1"
   },
   "devDependencies": {
     "chai": "~1.9.1",
