@@ -45,22 +45,22 @@ Notable features:
 
 ## Documentation ##
 
-<code>
-npm install -g groc<br>
+```
+npm install -g groc
 groc
-</code>
+```
 
 ## Testing ##
 
-<code>
-npm install -g mocha<br>
+```
+npm install -g mocha
 mocha
-</code>
+```
 
 ## Browser bundle ##
 
-<code>
-npm install -g browserify<br>
-npm install -g uglifyify<br>
+```
+npm install -g browserify
+npm install -g uglifyify
 browser/build
-</code>
+```
