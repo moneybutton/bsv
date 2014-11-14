@@ -1,5 +1,5 @@
-fullnode
-========
+fullnode (alpha)
+================
 
 fullnode is a javascript implementation of bitcoin intended to satisfy certain
 goals:
