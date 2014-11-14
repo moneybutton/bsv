@@ -64,5 +64,5 @@ mocha
 <code>
 npm install -g browserify<br>
 npm install -g uglifyify<br>
-browser/bundle
+browser/build
 </code>
