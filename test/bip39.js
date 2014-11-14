@@ -16,8 +16,9 @@ describe('BIP39', function() {
     var phrase = BIP39.mnemonic(BIP39.wordlist_en, 128);
   });
 
-  vectors.english.forEach(function(vector, v) {
-    if (!process.env.TEST_SKIP_SLOW) {
+  describe('test vectors', function() {
+
+    vectors.english.forEach(function(vector, v) {
       it('should pass test vector ' + v, function() {
         var code = vector[0];
         var mnemonic = vector[1];
@@ -28,7 +29,8 @@ describe('BIP39', function() {
         mnemonic1.should.equal(mnemonic);
         seed1.toString('hex').should.equal(seed)
       });
-    }
+    });
+
   });
 
 });

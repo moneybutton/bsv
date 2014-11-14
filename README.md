@@ -59,12 +59,6 @@ npm install -g mocha<br>
 mocha
 </code>
 
-To skip the slow tests, which is valuable if you frequently run the tests and do not modify the slow code:
-
-<code>
-TEST_SKIP_SLOW=1 mocha
-</code>
-
 ## Browser bundle ##
 
 <code>
