@@ -8,6 +8,8 @@ describe('Script', function() {
   
   it('should make a new script', function() {
     var script = new Script();
+    Script().toString().should.equal('');
+    Script('').toString().should.equal('');
   });
 
   describe('#fromBuffer', function() {
@@ -158,6 +160,7 @@ describe('Script', function() {
       Script().fromString('OP_0 OP_PUSHDATA2 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA2 3 0x010203 OP_0');
       Script().fromString('OP_0 OP_PUSHDATA1 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA1 3 0x010203 OP_0');
       Script().fromString('OP_0 3 0x010203 OP_0').toString().should.equal('OP_0 3 0x010203 OP_0');
+      Script().fromString('').toString().should.equal('');
     });
 
   });
