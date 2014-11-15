@@ -25,6 +25,10 @@ describe('Txout', function() {
     Txout(valuebn, scriptvi, script).valuebn.toString().should.equal('5');
   });
 
+  it('should calculate scriptvi correctly when making a new txout', function() {
+    Txout(valuebn, script).scriptvi.toNumber().should.equal(1);
+  });
+
   describe('#set', function() {
     
     it('should set this object', function() {
@@ -36,6 +40,15 @@ describe('Txout', function() {
       should.exist(txout.valuebn);
       should.exist(txout.scriptvi);
       should.exist(txout.script);
+    });
+
+  });
+
+  describe('#setScript', function() {
+    
+    it('should set the script size correctly', function() {
+      var txout2 = Txout(txout);
+      txout2.setScript(Script('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
   });

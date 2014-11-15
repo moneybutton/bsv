@@ -35,6 +35,10 @@ describe('Txin', function() {
     }).should.throw('txidbuf must be 32 bytes');
   });
 
+  it('should calculate scriptvi correctly when creating a new txin', function() {
+    Txin(txin.txidbuf, txin.txoutnum, txin.script, txin.seqnum).scriptvi.toNumber().should.equal(1);
+  });
+
   describe('#set', function() {
     
     it('should set these vars', function() {
@@ -50,6 +54,15 @@ describe('Txin', function() {
       should.exist(txin.scriptvi);
       should.exist(txin.script);
       should.exist(txin.seqnum);
+    });
+
+  });
+
+  describe('#setScript', function() {
+    
+    it('should calculate the varint size correctly', function() {
+      var txin2 = Txin(txin);
+      txin2.setScript(Script('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
   });
