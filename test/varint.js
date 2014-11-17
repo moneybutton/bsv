@@ -19,6 +19,10 @@ describe('Varint', function() {
     Varint(Varint(0).toBuffer()).toNumber().should.equal(0);
     Varint(0).toNumber().should.equal(0);
     Varint(BN(0)).toNumber().should.equal(0);
+
+    //varints can have multiple buffer representations
+    Varint(0).toNumber().should.equal(Varint(new Buffer([0xFD, 0, 0])).toNumber())
+    Varint(0).toBuffer().toString('hex').should.not.equal(Varint().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
   });
 
   describe('#set', function() {
