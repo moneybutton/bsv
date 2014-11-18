@@ -54,6 +54,11 @@ describe('BufferReader', function() {
       br.pos.should.equal(2);
     });
 
+    it('should be able to read 0 bytes', function() {
+      var buf = new Buffer('0101', 'hex');
+      BufferReader(buf).read(0).length.should.equal(0);
+    });
+
   });
 
   describe('#readReverse', function() {
@@ -62,6 +67,11 @@ describe('BufferReader', function() {
       var buf = new Buffer([0, 1]);
       var br = new BufferReader({buf: buf});
       br.readReverse().toString('hex').should.equal('0100');
+    });
+
+    it('should be able to read 0 bytes', function() {
+      var buf = new Buffer('0101', 'hex');
+      BufferReader(buf).readReverse(0).length.should.equal(0);
     });
 
   });
