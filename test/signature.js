@@ -57,6 +57,18 @@ describe('Signature', function() {
 
   });
 
+  describe('#fromTxBuffer', function() {
+
+    it('should convert from this known tx-format buffer', function() {
+      var buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201000000', 'hex');
+      var sig = Signature().fromTxBuffer(buf);
+      sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      sig.nhashtype.should.equal(Signature.SIGHASH_ALL);
+    });
+
+  });
+
   describe('#fromString', function() {
     
     var buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex');
@@ -130,6 +142,19 @@ describe('Signature', function() {
       var sig = new Signature({r: r, s: s});
       var der = sig.toDER(r, s);
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+  });
+
+  describe('#toTxBuffer', function() {
+    
+    it('should convert these known r, s, nhashtype values into a known signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var nhashtype = Signature.SIGHASH_ALL;
+      var sig = new Signature(r, s, nhashtype);
+      var buf = sig.toTxBuffer();
+      buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201000000');
     });
 
   });
