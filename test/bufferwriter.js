@@ -75,11 +75,31 @@ describe('BufferWriter', function() {
 
   });
 
+  describe('#writeInt8', function() {
+    
+    it('should write 1', function() {
+      var bw = new BufferWriter();
+      bw.writeInt8(1).concat().toString('hex').should.equal('01');
+      BufferWriter().writeInt8(-1).concat().toString('hex').should.equal('ff');
+    });
+
+  });
+
   describe('#writeUInt16BE', function() {
     
     it('should write 1', function() {
       var bw = new BufferWriter();
       bw.writeUInt16BE(1).concat().toString('hex').should.equal('0001');
+    });
+
+  });
+
+  describe('#writeInt16BE', function() {
+    
+    it('should write 1', function() {
+      var bw = new BufferWriter();
+      bw.writeInt16BE(1).concat().toString('hex').should.equal('0001');
+      BufferWriter().writeInt16BE(-1).concat().toString('hex').should.equal('ffff');
     });
 
   });
@@ -93,6 +113,16 @@ describe('BufferWriter', function() {
 
   });
 
+  describe('#writeInt16LE', function() {
+    
+    it('should write 1', function() {
+      var bw = new BufferWriter();
+      bw.writeInt16LE(1).concat().toString('hex').should.equal('0100');
+      BufferWriter().writeInt16LE(-1).concat().toString('hex').should.equal('ffff');
+    });
+
+  });
+
   describe('#writeUInt32BE', function() {
     
     it('should write 1', function() {
@@ -102,11 +132,31 @@ describe('BufferWriter', function() {
 
   });
 
+  describe('#writeInt32BE', function() {
+    
+    it('should write 1', function() {
+      var bw = new BufferWriter();
+      bw.writeInt32BE(1).concat().toString('hex').should.equal('00000001');
+      BufferWriter().writeInt32BE(-1).concat().toString('hex').should.equal('ffffffff');
+    });
+
+  });
+
   describe('#writeUInt32LE', function() {
     
     it('should write 1', function() {
       var bw = new BufferWriter();
       bw.writeUInt32LE(1).concat().toString('hex').should.equal('01000000');
+    });
+
+  });
+
+  describe('#writeInt32LE', function() {
+    
+    it('should write 1', function() {
+      var bw = new BufferWriter();
+      bw.writeInt32LE(1).concat().toString('hex').should.equal('01000000');
+      BufferWriter().writeInt32LE(-1).concat().toString('hex').should.equal('ffffffff');
     });
 
   });

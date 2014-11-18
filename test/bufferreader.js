@@ -87,6 +87,18 @@ describe('BufferReader', function() {
 
   });
 
+  describe('#readInt8', function() {
+
+    it('should return 1', function() {
+      var buf = new Buffer(1);
+      buf.writeInt8(1, 0);
+      var br = new BufferReader({buf: buf});
+      br.readInt8().should.equal(1);
+      BufferReader(new Buffer('ff', 'hex')).readInt8().should.equal(-1);
+    });
+
+  });
+
   describe('#readUInt16BE', function() {
 
     it('should return 1', function() {
@@ -94,6 +106,18 @@ describe('BufferReader', function() {
       buf.writeUInt16BE(1, 0);
       var br = new BufferReader({buf: buf});
       br.readUInt16BE().should.equal(1);
+    });
+
+  });
+
+  describe('#readInt16BE', function() {
+
+    it('should return 1', function() {
+      var buf = new Buffer(2);
+      buf.writeInt16BE(1, 0);
+      var br = new BufferReader({buf: buf});
+      br.readInt16BE().should.equal(1);
+      BufferReader(new Buffer('ffff', 'hex')).readInt16BE().should.equal(-1);
     });
 
   });
@@ -109,6 +133,18 @@ describe('BufferReader', function() {
 
   });
 
+  describe('#readInt16LE', function() {
+
+    it('should return 1', function() {
+      var buf = new Buffer(2);
+      buf.writeInt16LE(1, 0);
+      var br = new BufferReader({buf: buf});
+      br.readInt16LE().should.equal(1);
+      BufferReader(new Buffer('ffff', 'hex')).readInt16LE().should.equal(-1);
+    });
+
+  });
+
   describe('#readUInt32BE', function() {
 
     it('should return 1', function() {
@@ -120,6 +156,18 @@ describe('BufferReader', function() {
 
   });
 
+  describe('#readInt32BE', function() {
+
+    it('should return 1', function() {
+      var buf = new Buffer(4);
+      buf.writeInt32BE(1, 0);
+      var br = new BufferReader({buf: buf});
+      br.readInt32BE().should.equal(1);
+      BufferReader(new Buffer('ffffffff', 'hex')).readInt32BE().should.equal(-1);
+    });
+
+  });
+
   describe('#readUInt32LE', function() {
 
     it('should return 1', function() {
@@ -127,6 +175,18 @@ describe('BufferReader', function() {
       buf.writeUInt32LE(1, 0);
       var br = new BufferReader({buf: buf});
       br.readUInt32LE().should.equal(1);
+    });
+
+  });
+
+  describe('#readInt32LE', function() {
+
+    it('should return 1', function() {
+      var buf = new Buffer(4);
+      buf.writeInt32LE(1, 0);
+      var br = new BufferReader({buf: buf});
+      br.readInt32LE().should.equal(1);
+      BufferReader(new Buffer('ffffffff', 'hex')).readInt32LE().should.equal(-1);
     });
 
   });
