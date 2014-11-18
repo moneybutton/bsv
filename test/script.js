@@ -199,6 +199,14 @@ describe('Script', function() {
 
   });
 
+  describe('#removeCodeseparators', function() {
+
+    it('should remove any OP_CODESEPARATORs', function() {
+      Script('OP_CODESEPARATOR OP_0 OP_CODESEPARATOR').removeCodeseparators().toString().should.equal('OP_0');
+    });
+
+  });
+
   describe('#isOpReturn', function() {
     
     it('should know this is a (blank) OP_RETURN script', function() {

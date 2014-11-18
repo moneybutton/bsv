@@ -27,11 +27,11 @@ describe('Txin', function() {
     should.exist(txin);
     var txidbuf = new Buffer(32);
     txidbuf.fill(0);
-    Txin(txidbuf).txidbuf.length.should.equal(32);
+    Txin(txidbuf, 0).txidbuf.length.should.equal(32);
     (function() {
       var txidbuf2 = new Buffer(33);
       txidbuf2.fill(0);
-      Txin(txidbuf2);
+      Txin(txidbuf2, 0);
     }).should.throw('txidbuf must be 32 bytes');
   });
 
