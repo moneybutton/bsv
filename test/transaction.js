@@ -176,8 +176,15 @@ describe('Transaction', function() {
 
   describe('#sighash', function() {
 
-    it('should has this transaction', function() {
+    it('should hash this transaction', function() {
       tx.sighash(0, 0, Script('')).length.should.equal(32);
+    });
+
+    it('should return 1 for the SIGHASH_SINGLE bug', function() {
+      var tx = Transaction(tx2buf);
+      tx.txouts.length = 1;
+      tx.txoutsvi = Varint(1);
+      tx.sighash(Signature.SIGHASH_SINGLE, 1, Script('')).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
     });
 
   });
