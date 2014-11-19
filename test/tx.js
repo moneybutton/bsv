@@ -1,5 +1,5 @@
 var Varint = require('../lib/varint');
-var Transaction = require('../lib/transaction');
+var Tx = require('../lib/tx');
 var Txin = require('../lib/txin');
 var Txout = require('../lib/txout');
 var should = require('chai').should();
@@ -8,12 +8,13 @@ var BufferWriter = require('../lib/bufferwriter');
 var vectors = require('./vectors/bitcoind/sighash');
 var Script = require('../lib/script');
 var Signature = require('../lib/signature');
+var Keypair = require('../lib/keypair');
 
-describe('Transaction', function() {
+describe('Tx', function() {
 
   var txin = Txin().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'));
   var txout = Txout().fromBuffer(new Buffer('050000000000000001ae', 'hex'));
-  var tx = Transaction().set({
+  var tx = Tx().set({
     version: 0,
     txinsvi: Varint(1),
     txins: [txin],
@@ -29,12 +30,12 @@ describe('Transaction', function() {
   var tx2buf = new Buffer(tx2hex, 'hex');
 
   it('should make a new transaction', function() {
-    var tx = new Transaction();
+    var tx = new Tx();
     should.exist(tx);
-    tx = Transaction();
+    tx = Tx();
     should.exist(tx);
 
-    Transaction(txbuf).toBuffer().toString('hex').should.equal(txhex);
+    Tx(txbuf).toBuffer().toString('hex').should.equal(txhex);
     
     //should set known defaults
     tx.version.should.equal(1);
@@ -48,7 +49,7 @@ describe('Transaction', function() {
   describe('#initialize', function() {
     
     it('should set these known defaults', function() {
-      var tx = new Transaction();
+      var tx = new Tx();
       tx.initialize();
       tx.version.should.equal(1);
       tx.txinsvi.toNumber().should.equal(0);
@@ -63,7 +64,7 @@ describe('Transaction', function() {
   describe('#set', function() {
 
     it('should set all the basic parameters', function() {
-      var tx = Transaction().set({
+      var tx = Tx().set({
         version: 0,
         txinsvi: Varint(1),
         txins: [txin],
@@ -84,7 +85,7 @@ describe('Transaction', function() {
   describe('#fromJSON', function() {
 
     it('should set all the basic parameters', function() {
-      var tx = Transaction().fromJSON({
+      var tx = Tx().fromJSON({
         version: 0,
         txinsvi: Varint(1).toJSON(),
         txins: [txin.toJSON()],
@@ -119,11 +120,11 @@ describe('Transaction', function() {
   describe('#fromBuffer', function() {
     
     it('should recover from this known tx', function() {
-      Transaction().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex);
+      Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex);
     });
 
     it('should recover from this known tx from the blockchain', function() {
-      Transaction().fromBuffer(tx2buf).toBuffer().toString('hex').should.equal(tx2hex);
+      Tx().fromBuffer(tx2buf).toBuffer().toString('hex').should.equal(tx2hex);
     });
 
   });
@@ -131,7 +132,7 @@ describe('Transaction', function() {
   describe('#fromBufferReader', function() {
     
     it('should recover from this known tx', function() {
-      Transaction().fromBufferReader(BufferReader(txbuf)).toBuffer().toString('hex').should.equal(txhex);
+      Tx().fromBufferReader(BufferReader(txbuf)).toBuffer().toString('hex').should.equal(txhex);
     });
 
   });
@@ -139,7 +140,7 @@ describe('Transaction', function() {
   describe('#toBuffer', function() {
     
     it('should produce this known tx', function() {
-      Transaction().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex);
+      Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex);
     });
 
   });
@@ -147,7 +148,7 @@ describe('Transaction', function() {
   describe('#toBufferWriter', function() {
     
     it('should produce this known tx', function() {
-      Transaction().fromBuffer(txbuf).toBufferWriter().concat().toString('hex').should.equal(txhex);
+      Tx().fromBuffer(txbuf).toBufferWriter().concat().toString('hex').should.equal(txhex);
     });
 
   });
@@ -159,7 +160,7 @@ describe('Transaction', function() {
     });
 
     it('should return 1 for the SIGHASH_SINGLE bug', function() {
-      var tx = Transaction(tx2buf);
+      var tx = Tx(tx2buf);
       tx.txouts.length = 1;
       tx.txoutsvi = Varint(1);
       tx.sighash(Signature.SIGHASH_SINGLE, 1, Script('')).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
@@ -167,10 +168,34 @@ describe('Transaction', function() {
 
   });
 
+  describe('#sign', function() {
+
+    it('should return a signature', function() {
+      var keypair = Keypair().fromRandom();
+      var sig1 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script(''));
+      should.exist(sig1);
+      var sig2 = tx.sign(keypair, Signature.SIGHASH_SINGLE, 0, Script(''));
+      var sig3 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script('OP_RETURN'));
+      sig1.toString(should.not.equal(sig2.toString()));
+      sig1.toString(should.not.equal(sig3.toString()));
+    });
+
+  });
+
+  describe('#verify', function() {
+
+    it('should return a signature', function() {
+      var keypair = Keypair().fromRandom();
+      var sig1 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script(''));
+      tx.verify(sig1, keypair.pubkey, 0, Script('')).should.equal(true);
+    });
+
+  });
+
   describe('#hash', function() {
 
     it('should correctly calculate the hash of this known transaction', function() {
-      var tx = Transaction().fromBuffer(tx2buf);
+      var tx = Tx().fromBuffer(tx2buf);
       var txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse());
       tx.hash().toString('hex').should.equal(txhashbuf.toString('hex'));
     });
@@ -180,7 +205,7 @@ describe('Transaction', function() {
   describe('#id', function() {
 
     it('should correctly calculate the id of this known transaction', function() {
-      var tx = Transaction().fromBuffer(tx2buf);
+      var tx = Tx().fromBuffer(tx2buf);
       tx.id().toString('hex').should.equal(tx2idhex);
     });
 
@@ -190,7 +215,7 @@ describe('Transaction', function() {
     
     it('should add an input', function() {
       var txin = Txin();
-      var tx = Transaction();
+      var tx = Tx();
       tx.txinsvi.toNumber().should.equal(0);
       tx.addTxin(txin);
       tx.txinsvi.toNumber().should.equal(1);
@@ -203,7 +228,7 @@ describe('Transaction', function() {
     
     it('should add an output', function() {
       var txout = Txout();
-      var tx = Transaction();
+      var tx = Tx();
       tx.txoutsvi.toNumber().should.equal(0);
       tx.addTxout(txout);
       tx.txoutsvi.toNumber().should.equal(1);
@@ -223,7 +248,7 @@ describe('Transaction', function() {
         var nin = vector[2];
         var nhashtype = vector[3];
         var sighashbuf = new Buffer(vector[4], 'hex');
-        var tx = Transaction().fromBuffer(txbuf);
+        var tx = Tx().fromBuffer(txbuf);
 
         //make sure transacion to/from buffer is isomorphic
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'));

@@ -26,7 +26,7 @@ fullnode.Pubkey = require('./lib/pubkey');
 fullnode.Random = require('./lib/random');
 fullnode.Script = require('./lib/script');
 fullnode.Signature = require('./lib/signature');
-fullnode.Transaction = require('./lib/transaction');
+fullnode.Tx = require('./lib/tx');
 fullnode.Txin = require('./lib/txin');
 fullnode.Txout = require('./lib/txout');
 fullnode.Varint = require('./lib/varint');
@@ -43,7 +43,7 @@ fullnode.expmt.stealth = {};
 fullnode.expmt.stealth.SAddress = require('./lib/expmt/stealth/address');
 fullnode.expmt.stealth.SKey = require('./lib/expmt/stealth/key');
 fullnode.expmt.stealth.SMessage = require('./lib/expmt/stealth/message');
-fullnode.expmt.stealth.STransaction = require('./lib/expmt/stealth/transaction');
+fullnode.expmt.stealth.STx = require('./lib/expmt/stealth/tx');
 
 //dependencies, subject to change
 fullnode.deps = {};
