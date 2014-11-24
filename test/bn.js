@@ -177,6 +177,8 @@ describe('BN', function() {
     
     it('should convert to SM', function() {
       var buf;
+      buf = BN().toSM();
+      buf.toString('hex').should.equal('');
       buf = BN(5).toSM();
       buf.toString('hex').should.equal('05');
       buf = BN(-5).toSM();
@@ -201,6 +203,8 @@ describe('BN', function() {
     
     it('should convert from SM', function() {
       var buf;
+      buf = new Buffer([0]);
+      BN().fromSM(buf).cmp(0).should.equal(0);
       buf = new Buffer('05', 'hex');
       BN().fromSM(buf).cmp(5).should.equal(0);
       buf = new Buffer('85', 'hex');
