@@ -173,6 +173,48 @@ describe('BN', function() {
 
   });
 
+  describe('#toSM', function() {
+    
+    it('should convert to SM', function() {
+      var buf;
+      buf = BN(5).toSM();
+      buf.toString('hex').should.equal('05');
+      buf = BN(-5).toSM();
+      buf.toString('hex').should.equal('85');
+      buf = BN(128).toSM();
+      buf.toString('hex').should.equal('0080');
+      buf = BN(-128).toSM();
+      buf.toString('hex').should.equal('8080');
+      buf = BN(128).toSM({endian: 'little'});
+      buf.toString('hex').should.equal('8000');
+      buf = BN(-128).toSM({endian: 'little'});
+      buf.toString('hex').should.equal('8080');
+    });
+
+  });
+
+  describe('#fromSM', function() {
+    
+    it('should convert from SM', function() {
+      var buf;
+      buf = new Buffer('05', 'hex');
+      BN().fromSM(buf).cmp(5).should.equal(0);
+      buf = new Buffer('85', 'hex');
+      BN().fromSM(buf).cmp(-5).should.equal(0);
+      buf = new Buffer('0080', 'hex');
+      BN().fromSM(buf).cmp(128).should.equal(0);
+      buf = new Buffer('8080', 'hex');
+      BN().fromSM(buf).cmp(-128).should.equal(0);
+      buf = new Buffer('8000', 'hex');
+      BN().fromSM(buf, {endian: 'little'}).cmp(128).should.equal(0);
+      buf = new Buffer('8080', 'hex');
+      BN().fromSM(buf, {endian: 'little'}).cmp(-128).should.equal(0);
+      buf = new Buffer('0080', 'hex'); //negative zero
+      BN().fromSM(buf, {endian: 'little'}).cmp(0).should.equal(0);
+    });
+
+  });
+
   describe('#fromNumber', function() {
 
     it('should convert from a number', function() {
