@@ -185,6 +185,10 @@ describe('BN', function() {
       buf.toString('hex').should.equal('0080');
       buf = BN(-128).toSM();
       buf.toString('hex').should.equal('8080');
+      buf = BN(127).toSM();
+      buf.toString('hex').should.equal('7f');
+      buf = BN(-127).toSM();
+      buf.toString('hex').should.equal('ff');
       buf = BN(128).toSM({endian: 'little'});
       buf.toString('hex').should.equal('8000');
       buf = BN(-128).toSM({endian: 'little'});
