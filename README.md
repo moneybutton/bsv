@@ -55,7 +55,14 @@ groc
 
 ```
 npm install -g mocha
-mocha --recursive
+npm test
+```
+
+## Coverage ##
+
+```
+npm install -g istanbul
+istanbul cover _mocha -- --recursive
 ```
 
 ## Browser bundle ##
