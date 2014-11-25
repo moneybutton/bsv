@@ -4,4 +4,4 @@ cd `dirname "${BASH_SOURCE[0]}"`
 cd ..
 browserify index.js -o browser/fullnode.js
 browserify -g uglifyify index.js -o browser/fullnode-min.js
-ls test/*.js | xargs browserify -o browser/tests.js
+find test/ -type f -name "*.js" | xargs browserify -o browser/tests.js
