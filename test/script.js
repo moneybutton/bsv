@@ -276,6 +276,17 @@ describe('Script', function() {
 
   });
 
+  describe('#findAndDelete', function() {
+    
+    it('should find and delete this buffer', function() {
+      Script('OP_RETURN 2 0xf0f0')
+        .findAndDelete(new Buffer('f0f0', 'hex'))
+        .toString()
+        .should.equal('OP_RETURN');
+    });
+
+  });
+
   describe('#writeOp', function() {
 
     it('should write these ops', function() {
