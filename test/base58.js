@@ -46,6 +46,7 @@ describe('Base58', function() {
 
     it('should decode this encoded value correctly', function() {
       Base58.decode(enc).toString('hex').should.equal(buf.toString('hex'));
+      Buffer.isBuffer(Base58.decode(enc)).should.equal(true);
     });
 
     it('should throw an error when Input is not a string', function() {
