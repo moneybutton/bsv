@@ -42,6 +42,7 @@ Notable features:
 * Proper message signing and verification
 * Proper handling of reading and writing big varInts
 * Exposed big number and point classes
+* Deterministic signatures
 
 ## Documentation ##
 
@@ -54,7 +55,7 @@ groc
 
 ```
 npm install -g mocha
-mocha
+mocha --recursive
 ```
 
 ## Browser bundle ##
