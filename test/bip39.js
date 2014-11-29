@@ -16,7 +16,7 @@ describe('BIP39', function() {
     var phrase = BIP39.mnemonic(BIP39.wordlist_en, 128);
   });
 
-  describe('test vectors', function() {
+  describe('vectors', function() {
 
     vectors.english.forEach(function(vector, v) {
       it('should pass test vector ' + v, function() {

@@ -237,7 +237,7 @@ describe('Tx', function() {
 
   });
 
-  describe('test vectors', function() {
+  describe('vectors', function() {
     vectors.forEach(function(vector, i) {
       if (i === 0)
         return;
