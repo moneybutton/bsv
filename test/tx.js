@@ -5,10 +5,12 @@ var Txout = require('../lib/txout');
 var should = require('chai').should();
 var BufferReader = require('../lib/bufferreader');
 var BufferWriter = require('../lib/bufferwriter');
-var vectors = require('./vectors/bitcoind/sighash');
 var Script = require('../lib/script');
 var Signature = require('../lib/signature');
 var Keypair = require('../lib/keypair');
+var vectors_sighash = require('./vectors/bitcoind/sighash');
+var vectors_tx_valid = require('./vectors/bitcoind/tx_valid');
+var vectors_tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
 describe('Tx', function() {
 
@@ -238,7 +240,8 @@ describe('Tx', function() {
   });
 
   describe('vectors', function() {
-    vectors.forEach(function(vector, i) {
+
+    vectors_sighash.forEach(function(vector, i) {
       if (i === 0)
         return;
       it('should pass sighash test vector ' + i, function() {
@@ -257,6 +260,33 @@ describe('Tx', function() {
         tx.sighash(nhashtype, nin, subscript).toString('hex').should.equal(sighashbuf.toString('hex'))
       });
     });
+    
+    var j = 0;
+    vectors_tx_valid.forEach(function(vector, i) {
+      if (vector.length === 1)
+        return;
+      it('should correctly serialized/deserialize tx_valid test vector ' + j, function() {
+        var txhex = vector[1];
+        var txbuf = new Buffer(vector[1], 'hex');
+        var tx = Tx(txbuf);
+        tx.toBuffer().toString('hex').should.equal(txhex);
+      });
+      j++;
+    });
+
+    var j = 0;
+    vectors_tx_invalid.forEach(function(vector, i) {
+      if (vector.length === 1)
+        return;
+      it('should correctly serialized/deserialize tx_invalid test vector ' + j, function() {
+        var txhex = vector[1];
+        var txbuf = new Buffer(vector[1], 'hex');
+        var tx = Tx(txbuf);
+        tx.toBuffer().toString('hex').should.equal(txhex);
+      });
+      j++;
+    });
+
   });
 
 });
