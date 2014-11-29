@@ -5,6 +5,7 @@ var BufferReader = require('../lib/bufferreader');
 var BufferWriter = require('../lib/bufferwriter');
 var script_valid = require('./vectors/bitcoind/script_valid');
 var script_invalid = require('./vectors/bitcoind/script_invalid');
+var BN = require('../lib/bn');
 
 describe('Script', function() {
   
@@ -163,6 +164,7 @@ describe('Script', function() {
       Script().fromString('OP_0 OP_PUSHDATA1 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA1 3 0x010203 OP_0');
       Script().fromString('OP_0 3 0x010203 OP_0').toString().should.equal('OP_0 3 0x010203 OP_0');
       Script().fromString('').toString().should.equal('');
+      Script().fromString().toString().should.equal('');
     });
 
   });
@@ -189,7 +191,10 @@ describe('Script', function() {
 
     it('should convert from this known string', function() {
       Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL');
-      Script().fromBitcoindString("'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL").toBitcoindString().should.equal('0x417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL');
+      Script().fromBitcoindString("'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL").toBitcoindString().should.equal('0x4b417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL');
+
+      var str = "0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601";
+      Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
     });
 
   });
@@ -315,6 +320,17 @@ describe('Script', function() {
 
   });
 
+  describe('#writeBN', function() {
+
+    it('should write these numbers', function() {
+      Script().writeBN(BN(0)).toBuffer().toString('hex').should.equal('00');
+      Script().writeBN(BN(1)).toBuffer().toString('hex').should.equal('51');
+      Script().writeBN(BN(16)).toBuffer().toString('hex').should.equal('60');
+      Script().writeBN(BN(-1)).toBuffer().toString('hex').should.equal('0181');
+    });
+
+  });
+
   describe('#writeBuffer', function() {
     
     it('should write these push data', function() {
@@ -360,6 +376,12 @@ describe('Script', function() {
           Script().fromBitcoindString(a[1]).toString();
           Script().fromBitcoindString(a[1]).toBitcoindString();
         }).should.not.throw();
+
+        //should be able to return the same output over and over
+        var str = Script().fromBitcoindString(a[0]).toBitcoindString();
+        Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
+        var str = Script().fromBitcoindString(a[1]).toBitcoindString();
+        Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
       });
     });
 
@@ -375,6 +397,12 @@ describe('Script', function() {
           Script().fromBitcoindString(a[1]).toString();
           Script().fromBitcoindString(a[1]).toBitcoindString();
         }).should.not.throw();
+
+        //should be able to return the same output over and over
+        var str = Script().fromBitcoindString(a[0]).toBitcoindString();
+        Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
+        var str = Script().fromBitcoindString(a[1]).toBitcoindString();
+        Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
       });
     });
 
