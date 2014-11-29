@@ -326,7 +326,8 @@ describe('Script', function() {
       Script().writeBN(BN(0)).toBuffer().toString('hex').should.equal('00');
       Script().writeBN(BN(1)).toBuffer().toString('hex').should.equal('51');
       Script().writeBN(BN(16)).toBuffer().toString('hex').should.equal('60');
-      Script().writeBN(BN(-1)).toBuffer().toString('hex').should.equal('0181');
+      Script().writeBN(BN(-1)).toBuffer().toString('hex').should.equal('4f');
+      Script().writeBN(BN(-2)).toBuffer().toString('hex').should.equal('0182');
     });
 
   });
@@ -358,6 +359,29 @@ describe('Script', function() {
       var buf = new Buffer(1);
       buf.fill(0);
       Script().write(buf).toString().should.equal('1 0x00');
+    });
+
+  });
+
+  describe('#checkMinimalPush', function() {
+
+    it('should check these minimal pushes', function() {
+      Script().writeBN(BN(1)).checkMinimalPush(0).should.equal(true);
+      Script().writeBN(BN(0)).checkMinimalPush(0).should.equal(true);
+      Script().writeBN(BN(-1)).checkMinimalPush(0).should.equal(true);
+      Script().writeBuffer(new Buffer([0])).checkMinimalPush(0).should.equal(true);
+
+      var buf = new Buffer(75);
+      buf.fill(1);
+      Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
+
+      var buf = new Buffer(76);
+      buf.fill(1);
+      Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
+
+      var buf = new Buffer(256);
+      buf.fill(1);
+      Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
     });
 
   });
