@@ -29,36 +29,6 @@ describe('Interpreter', function() {
     interpreter.flags.should.equal(0);
   });
 
-  describe('@checkMinimalPush', function() {
-
-    it('should check this minimal push', function() {
-      var chunk = Script().writeBN(BN(1)).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-      var chunk = Script().writeBN(BN(0)).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-      var chunk = Script().writeBN(BN(-1)).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-      var chunk = Script().writeBuffer(new Buffer([0])).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-
-      var buf = new Buffer(75);
-      buf.fill(1);
-      var chunk = Script().writeBuffer(buf).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-
-      var buf = new Buffer(76);
-      buf.fill(1);
-      var chunk = Script().writeBuffer(buf).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-
-      var buf = new Buffer(256);
-      buf.fill(1);
-      var chunk = Script().writeBuffer(buf).chunks[0];
-      Interpreter.checkMinimalPush(chunk.buf, chunk.opcodenum);
-    });
-
-  });
-
   describe('#verify', function() {
 
     it('should verify or unverify these trivial scripts', function() {
