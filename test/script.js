@@ -3,6 +3,8 @@ var should = require('chai').should();
 var Opcode = require('../lib/opcode');
 var BufferReader = require('../lib/bufferreader');
 var BufferWriter = require('../lib/bufferwriter');
+var script_valid = require('./vectors/bitcoind/script_valid');
+var script_invalid = require('./vectors/bitcoind/script_invalid');
 
 describe('Script', function() {
   
@@ -183,6 +185,23 @@ describe('Script', function() {
 
   });
 
+  describe('#fromBitcoindString', function() {
+
+    it('should convert from this known string', function() {
+      Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL');
+      Script().fromBitcoindString("'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL").toBitcoindString().should.equal('0x417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL');
+    });
+
+  });
+
+  describe('#fromBitcoindString', function() {
+
+    it('should convert to this known string', function() {
+      Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL');
+    });
+
+  });
+
   describe('#fromJSON', function() {
 
     it('should parse this known script', function() {
@@ -323,6 +342,40 @@ describe('Script', function() {
       var buf = new Buffer(1);
       buf.fill(0);
       Script().write(buf).toString().should.equal('1 0x00');
+    });
+
+  });
+
+  describe('vectors', function() {
+
+    script_valid.forEach(function(a, i) {
+      if (a.length === 1)
+        return;
+      it("should not fail when reading script_valid vector " + i, function() {
+        (function() {
+          Script().fromBitcoindString(a[0]).toString();
+          Script().fromBitcoindString(a[0]).toBitcoindString();
+        }).should.not.throw();
+        (function() {
+          Script().fromBitcoindString(a[1]).toString();
+          Script().fromBitcoindString(a[1]).toBitcoindString();
+        }).should.not.throw();
+      });
+    });
+
+    script_invalid.forEach(function(a, i) {
+      if (a.length === 1)
+        return;
+      it("should not fail when reading script_invalid vector " + i, function() {
+        (function() {
+          Script().fromBitcoindString(a[0]).toString();
+          Script().fromBitcoindString(a[0]).toBitcoindString();
+        }).should.not.throw();
+        (function() {
+          Script().fromBitcoindString(a[1]).toString();
+          Script().fromBitcoindString(a[1]).toBitcoindString();
+        }).should.not.throw();
+      });
     });
 
   });

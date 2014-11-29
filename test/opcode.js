@@ -53,12 +53,12 @@ describe('Opcode', function() {
   
   describe('@map', function() {
 
-    it('should have a map containing 116 elements', function() {
+    it('should have a map containing 119 elements', function() {
       var i = 0;
       for (var key in Opcode.map) {
         i++;
       }
-      i.should.equal(116);
+      i.should.equal(119);
     });
 
   });
