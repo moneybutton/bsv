@@ -1,8 +1,14 @@
 var should = require('chai').should();
 var Interpreter = require('../lib/interpreter');
 var Tx = require('../lib/tx');
+var Txin = require('../lib/txin');
+var Txout = require('../lib/txout');
 var Script = require('../lib/script');
 var BN = require('../lib/bn');
+var Keypair = require('../lib/keypair');
+var Privkey = require('../lib/privkey');
+var Pubkey = require('../lib/pubkey');
+var Signature = require('../lib/signature');
 
 describe('Interpreter', function() {
 
@@ -46,7 +52,7 @@ describe('Interpreter', function() {
 
   describe('#verify', function() {
 
-    it('should verify or unverify these trivial scripts', function() {
+    it('should verify or unverify these trivial scripts from script_valid.json', function() {
       var verified = Interpreter().verify(Script('OP_1'), Script('OP_1'), Tx(), 0);
       verified.should.equal(true);
       var verified = Interpreter().verify(Script('OP_1'), Script('OP_0'), Tx(), 0);
@@ -64,6 +70,21 @@ describe('Interpreter', function() {
       var verified = Interpreter().verify(Script('OP_1'), Script('OP_15 OP_ADD OP_16 OP_EQUAL'), Tx(), 0);
       verified.should.equal(true);
       var verified = Interpreter().verify(Script('OP_0'), Script('OP_IF OP_VER OP_ELSE OP_1 OP_ENDIF'), Tx(), 0);
+      verified.should.equal(true);
+    });
+
+    it('should verify this new pay-to-pubkey script', function() {
+      var keypair = Keypair().fromRandom();
+      var scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeOp('OP_CHECKSIG');
+      var hashbuf = new Buffer(32);
+      hashbuf.fill(0);
+      var gentx = Tx().addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff)).addTxout(Txout(BN(0), scriptPubkey));
+      var idbuf = gentx.hash();
+      var tx = Tx().addTxin(Txin(idbuf, 0, Script(), 0xffffffff)).addTxout(Txout(BN(0), Script()));
+      var sig = tx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
+      var scriptSig = Script().writeBuffer(sig.toTx());
+      var interp = Interpreter();
+      var verified = interp.verify(scriptSig, scriptPubkey, tx, 0);
       verified.should.equal(true);
     });
 
