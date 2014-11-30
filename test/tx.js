@@ -45,7 +45,7 @@ describe('Tx', function() {
     tx.txins.length.should.equal(0);
     tx.txoutsvi.toNumber().should.equal(0);
     tx.txouts.length.should.equal(0);
-    tx.nlocktime.should.equal(0xffffffff);
+    tx.nlocktime.should.equal(0);
   });
 
   describe('#initialize', function() {
@@ -58,7 +58,7 @@ describe('Tx', function() {
       tx.txins.length.should.equal(0);
       tx.txoutsvi.toNumber().should.equal(0);
       tx.txouts.length.should.equal(0);
-      tx.nlocktime.should.equal(0xffffffff);
+      tx.nlocktime.should.equal(0);
     });
 
   });
