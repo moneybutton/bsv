@@ -29,6 +29,21 @@ describe('Interpreter', function() {
     interpreter.flags.should.equal(0);
   });
 
+  describe('@castToBool', function() {
+
+    it('should cast these bufs to bool correctly', function() {
+      Interpreter.castToBool(BN(0).toSM({endian: 'little'})).should.equal(false);
+      Interpreter.castToBool(new Buffer('0080', 'hex')).should.equal(false); //negative 0
+      Interpreter.castToBool(BN(1).toSM({endian: 'little'})).should.equal(true);
+      Interpreter.castToBool(BN(-1).toSM({endian: 'little'})).should.equal(true);
+
+      var buf = new Buffer('00', 'hex');
+      var bool = BN().fromSM(buf, {endian: 'little'}).cmp(0) !== 0;
+      Interpreter.castToBool(buf).should.equal(bool);
+    });
+
+  });
+
   describe('#verify', function() {
 
     it('should verify or unverify these trivial scripts', function() {
