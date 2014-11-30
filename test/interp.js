@@ -88,6 +88,30 @@ describe('Interp', function() {
       verified.should.equal(true);
     });
 
+    it.skip('should verify this pay-to-pubkey script from script_valid.json', function() {
+      var scriptSig = Script('71 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501');
+      var scriptPubkey = Script('65 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG');
+
+      var hashbuf = new Buffer(32);
+      hashbuf.fill(0);
+      var credtx = Tx();
+      credtx.version = 1;
+      credtx.nlocktime = 0;
+      credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
+      credtx.addTxout(Txout(BN(0), scriptPubkey));
+
+      var idbuf = credtx.hash();
+      var spendtx = Tx();
+      spendtx.version = 1;
+      spendtx.nlocktime = 0;
+      spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
+      spendtx.addTxout(Txout(BN(0), Script()));
+
+      var interp = Interp();
+      var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0);
+      verified.should.equal(true);
+    });
+
   });
 
 });
