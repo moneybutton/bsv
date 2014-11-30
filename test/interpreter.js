@@ -40,6 +40,10 @@ describe('Interpreter', function() {
       verified.should.equal(true);
       var verified = Interpreter().verify(Script('OP_CODESEPARATOR'), Script('OP_1'), Tx(), 0);
       verified.should.equal(true);
+      var verified = Interpreter().verify(Script(''), Script('OP_DEPTH OP_0 OP_EQUAL'), Tx(), 0);
+      verified.should.equal(true);
+      var verified = Interpreter().verify(Script('OP_1 OP_2'), Script('OP_2 OP_EQUALVERIFY OP_1 OP_EQUAL'), Tx(), 0);
+      verified.should.equal(true);
     });
 
   });
