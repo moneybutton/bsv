@@ -223,6 +223,31 @@ describe('BN', function() {
 
   });
 
+  describe('#toCScriptNumBuffer', function() {
+
+    it('should output a little endian SM number', function() {
+      var bn = BN(-23434234);
+      bn.toCScriptNumBuffer().toString('hex').should.equal(bn.toSM({endian: 'little'}).toString('hex'));
+    });
+
+  });
+
+  describe('#fromCScriptNumBuffer', function() {
+    
+    it('should parse this normal number', function() {
+      BN().fromCScriptNumBuffer(new Buffer('01', 'hex')).toNumber().should.equal(1);
+      BN().fromCScriptNumBuffer(new Buffer('0080', 'hex')).toNumber().should.equal(0);
+      BN().fromCScriptNumBuffer(new Buffer('0180', 'hex')).toNumber().should.equal(-1);
+    });
+
+    it('should throw an error for a number over 4 bytes', function() {
+      (function() {
+        BN().fromCScriptNumBuffer(new Buffer('8100000000', 'hex')).toNumber().should.equal(-1);
+      }).should.throw('script number overflow');
+    });
+
+  });
+
   describe('#fromNumber', function() {
 
     it('should convert from a number', function() {
