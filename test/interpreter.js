@@ -44,6 +44,12 @@ describe('Interpreter', function() {
       verified.should.equal(true);
       var verified = Interpreter().verify(Script('OP_1 OP_2'), Script('OP_2 OP_EQUALVERIFY OP_1 OP_EQUAL'), Tx(), 0);
       verified.should.equal(true);
+      var verified = Interpreter().verify(Script('9 0x000000000000000010'), Script(''), Tx(), 0);
+      verified.should.equal(true);
+      var verified = Interpreter().verify(Script('OP_1'), Script('OP_15 OP_ADD OP_16 OP_EQUAL'), Tx(), 0);
+      verified.should.equal(true);
+      var verified = Interpreter().verify(Script('OP_0'), Script('OP_IF OP_VER OP_ELSE OP_1 OP_ENDIF'), Tx(), 0);
+      verified.should.equal(true);
     });
 
   });
