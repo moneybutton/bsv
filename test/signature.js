@@ -60,7 +60,7 @@ describe('Signature', function() {
   describe('#fromTx', function() {
 
     it('should convert from this known tx-format buffer', function() {
-      var buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201000000', 'hex');
+      var buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201', 'hex');
       var sig = Signature().fromTx(buf);
       sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130');
@@ -154,7 +154,7 @@ describe('Signature', function() {
       var nhashtype = Signature.SIGHASH_ALL;
       var sig = new Signature(r, s, nhashtype);
       var buf = sig.toTx();
-      buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201000000');
+      buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
     });
 
   });
