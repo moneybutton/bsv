@@ -101,9 +101,9 @@ describe('Interp', function() {
       verified.should.equal(true);
     });
 
-    it.skip('should verify this pay-to-pubkey script from script_valid.json', function() {
-      var scriptSig = Script('71 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501');
-      var scriptPubkey = Script('65 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG');
+    it('should verify this pay-to-pubkey script from script_valid.json', function() {
+      var scriptSig = Script().fromBitcoindString("0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501");
+      var scriptPubkey = Script().fromBitcoindString("0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG");
 
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
@@ -119,6 +119,10 @@ describe('Interp', function() {
       spendtx.nlocktime = 0;
       spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
       spendtx.addTxout(Txout(BN(0), Script()));
+      spendtx.id().toString('hex').should.equal('d50be6df12b1dc232c8352758ae7fe336c276dd982e1d4fb6bcc2c48bdab9349');
+      spendtx.sighash(1, 0, scriptPubkey).toString('hex').should.equal('f4a222b692e7f86c299f878c4b981242238f49b467b8d990219fbf5cfc0838cd');
+
+      var tx = Tx(spendtx.toBuffer());
 
       var interp = Interp();
       var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0);

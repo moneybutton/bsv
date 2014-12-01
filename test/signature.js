@@ -67,6 +67,13 @@ describe('Signature', function() {
       sig.nhashtype.should.equal(Signature.SIGHASH_ALL);
     });
 
+    it('should parse this known signature and rebuild it', function() {
+      var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
+      var buf = new Buffer(hex, 'hex');
+      var sig = Signature().fromTx(buf);
+      sig.toTx().toString('hex').should.equal(hex);
+    });
+
   });
 
   describe('#fromString', function() {

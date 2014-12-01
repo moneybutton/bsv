@@ -273,6 +273,15 @@ describe("ECDSA", function() {
       ECDSA.verify(ecdsa.hashbuf, fakesig, ecdsa.keypair.pubkey).should.equal(false);
     });
 
+    it('should work with big and little endian', function() {
+      var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair, 'big');
+      ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'big').should.equal(true);
+      ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'little').should.equal(false);
+      sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair, 'little');
+      ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'big').should.equal(false);
+      ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'little').should.equal(true);
+    });
+
   });
 
   describe('vectors', function() {
