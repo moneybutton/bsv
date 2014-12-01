@@ -80,15 +80,11 @@ describe('Interp', function() {
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
       var credtx = Tx();
-      credtx.version = 1;
-      credtx.nlocktime = 0;
       credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
       credtx.addTxout(Txout(BN(0), scriptPubkey));
 
       var idbuf = credtx.hash();
       var spendtx = Tx();
-      spendtx.version = 1;
-      spendtx.nlocktime = 0;
       spendtx.addTxin(Txin(idbuf, 0, Script(), 0xffffffff));
       spendtx.addTxout(Txout(BN(0), Script()));
 
@@ -108,21 +104,13 @@ describe('Interp', function() {
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
       var credtx = Tx();
-      credtx.version = 1;
-      credtx.nlocktime = 0;
       credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
       credtx.addTxout(Txout(BN(0), scriptPubkey));
 
       var idbuf = credtx.hash();
       var spendtx = Tx();
-      spendtx.version = 1;
-      spendtx.nlocktime = 0;
       spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
       spendtx.addTxout(Txout(BN(0), Script()));
-      spendtx.id().toString('hex').should.equal('d50be6df12b1dc232c8352758ae7fe336c276dd982e1d4fb6bcc2c48bdab9349');
-      spendtx.sighash(1, 0, scriptPubkey).toString('hex').should.equal('f4a222b692e7f86c299f878c4b981242238f49b467b8d990219fbf5cfc0838cd');
-
-      var tx = Tx(spendtx.toBuffer());
 
       var interp = Interp();
       var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0);
