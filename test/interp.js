@@ -76,15 +76,28 @@ describe('Interp', function() {
     it('should verify this new pay-to-pubkey script', function() {
       var keypair = Keypair().fromRandom();
       var scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeOp('OP_CHECKSIG');
+
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
-      var gentx = Tx().addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff)).addTxout(Txout(BN(0), scriptPubkey));
-      var idbuf = gentx.hash();
-      var tx = Tx().addTxin(Txin(idbuf, 0, Script(), 0xffffffff)).addTxout(Txout(BN(0), Script()));
-      var sig = tx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
+      var credtx = Tx();
+      credtx.version = 1;
+      credtx.nlocktime = 0;
+      credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
+      credtx.addTxout(Txout(BN(0), scriptPubkey));
+
+      var idbuf = credtx.hash();
+      var spendtx = Tx();
+      spendtx.version = 1;
+      spendtx.nlocktime = 0;
+      spendtx.addTxin(Txin(idbuf, 0, Script(), 0xffffffff));
+      spendtx.addTxout(Txout(BN(0), Script()));
+
+      var sig = spendtx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
       var scriptSig = Script().writeBuffer(sig.toTx());
+      spendtx.txins[0].setScript(scriptSig);
+
       var interp = Interp();
-      var verified = interp.verify(scriptSig, scriptPubkey, tx, 0);
+      var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0);
       verified.should.equal(true);
     });
 
