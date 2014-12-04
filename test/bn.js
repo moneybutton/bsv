@@ -246,6 +246,28 @@ describe('BN', function() {
       }).should.throw('script number overflow');
     });
 
+    it('should throw an error for number that is not a minimal size representation', function() {
+      //invalid
+      (function() {
+        BN().fromCScriptNumBuffer(new Buffer('80000000', 'hex'), true);
+      }).should.throw('non-minimally encoded script number');
+      (function() {
+        BN().fromCScriptNumBuffer(new Buffer('800000', 'hex'), true);
+      }).should.throw('non-minimally encoded script number');
+      (function() {
+        BN().fromCScriptNumBuffer(new Buffer('00', 'hex'), true);
+      }).should.throw('non-minimally encoded script number');
+
+      //valid
+      BN().fromCScriptNumBuffer(new Buffer('8000', 'hex'), true).toString().should.equal('128');
+      BN().fromCScriptNumBuffer(new Buffer('0081', 'hex'), true).toString().should.equal('-256');
+      BN().fromCScriptNumBuffer(new Buffer('', 'hex'), true).toString().should.equal('0');
+      BN().fromCScriptNumBuffer(new Buffer('01', 'hex'), true).toString().should.equal('1');
+
+      //invalid, but flag not set
+      BN().fromCScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0');
+    });
+
   });
 
   describe('#fromNumber', function() {
