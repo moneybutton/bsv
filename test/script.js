@@ -231,6 +231,19 @@ describe('Script', function() {
 
   });
 
+  describe('#isPushOnly', function() {
+
+    it("should know these scripts are or aren't push only", function() {
+      Script('OP_0').isPushOnly().should.equal(true);
+      Script('OP_0 OP_RETURN').isPushOnly().should.equal(false);
+      Script('OP_PUSHDATA1 5 0x1010101010').isPushOnly().should.equal(true);
+
+      // like bitcoind, we regard OP_RESERVED as being "push only"
+      Script('OP_RESERVED').isPushOnly().should.equal(true);
+    });
+
+  });
+
   describe('#isOpReturn', function() {
     
     it('should know this is a (blank) OP_RETURN script', function() {
