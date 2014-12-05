@@ -5,7 +5,7 @@
   "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "istanbul cover _mocha -- --recursive"
   },
   "contributors": [
     {
