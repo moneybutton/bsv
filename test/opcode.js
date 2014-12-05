@@ -7,6 +7,15 @@ describe('Opcode', function() {
     var opcode = new Opcode(5);
   });
   
+  it('should have 119 opcodes', function() {
+    var i = 0;
+    for (var key in Opcode) {
+      if (key.indexOf('OP_') !== -1)
+        i++;
+    }
+    i.should.equal(119);
+  });
+
   it('should convert to a string with this handy syntax', function() {
     Opcode(0).toString().should.equal('OP_0');
     Opcode(96).toString().should.equal('OP_16');
@@ -51,23 +60,11 @@ describe('Opcode', function() {
 
   });
   
-  describe('@map', function() {
-
-    it('should have a map containing 119 elements', function() {
-      var i = 0;
-      for (var key in Opcode.map) {
-        i++;
-      }
-      i.should.equal(119);
-    });
-
-  });
-
-  describe('@reverseMap', function() {
+  describe('@str', function() {
     
     it('should exist and have op 185', function() {
-      should.exist(Opcode.reverseMap);
-      Opcode.reverseMap[185].should.equal('OP_NOP10');
+      should.exist(Opcode.str);
+      Opcode.str[185].should.equal('OP_NOP10');
     });
 
   });

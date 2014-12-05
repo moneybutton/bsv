@@ -328,7 +328,7 @@ describe('Script', function() {
 
     it('should write these ops', function() {
       Script().writeOp('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG');
-      Script().writeOp(Opcode.map.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG');
+      Script().writeOp(Opcode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG');
     });
 
   });
@@ -368,7 +368,7 @@ describe('Script', function() {
 
     it('should write both pushdata and non-pushdata chunks', function() {
       Script().write('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG');
-      Script().write(Opcode.map.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG');
+      Script().write(Opcode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG');
       var buf = new Buffer(1);
       buf.fill(0);
       Script().write(buf).toString().should.equal('1 0x00');
