@@ -9,6 +9,10 @@ var Keypair = require('../lib/keypair');
 var Privkey = require('../lib/privkey');
 var Pubkey = require('../lib/pubkey');
 var Signature = require('../lib/signature');
+var script_valid = require('./vectors/bitcoind/script_valid');
+var script_invalid = require('./vectors/bitcoind/script_invalid');
+var tx_valid = require('./vectors/bitcoind/tx_valid');
+var tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
 describe('Interp', function() {
 
@@ -117,6 +121,65 @@ describe('Interp', function() {
       verified.should.equal(true);
     });
 
+  });
+
+  describe('vectors', function() {
+
+    function getFlags(flagstr) {
+      var flags = 0;
+      if (flagstr.indexOf('NONE') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_NONE;
+      if (flagstr.indexOf('P2SH') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_P2SH;
+      if (flagstr.indexOf('STRICTENC') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_STRICTENC;
+      if (flagstr.indexOf('DERSIG') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_DERSIG;
+      if (flagstr.indexOf('LOW_S') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_LOW_S;
+      if (flagstr.indexOf('NULLDUMMY') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_NULLDUMMY;
+      if (flagstr.indexOf('SIGPUSHONLY') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_SIGPUSHONLY;
+      if (flagstr.indexOf('MINIMALDATA') !== -1)
+        flags = flags | Interp.SCRIPT_VERIFY_MINIMALDATA;
+      return flags;
+    };
+
+    var c = 0;
+    script_valid.forEach(function(vector, i) {
+      c++;
+      if (vector.length === 1)
+        return;
+      if (c > 392)
+        return;
+      it('should pass script_valid vector ' + c, function() {
+        var scriptSig = Script().fromBitcoindString(vector[0]);
+        var scriptPubkey = Script().fromBitcoindString(vector[1]);
+        var flags = getFlags(vector[2]);
+        var descstr = vector[3];
+
+        var hashbuf = new Buffer(32);
+        hashbuf.fill(0);
+        var credtx = Tx();
+        credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
+        credtx.addTxout(Txout(BN(0), scriptPubkey));
+
+        var idbuf = credtx.hash();
+        var spendtx = Tx();
+        spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
+        spendtx.addTxout(Txout(BN(0), Script()));
+
+        var interp = Interp();
+        var verified = interp.verify(scriptSig, scriptPubkey, spendtx, flags);
+        verified.should.equal(true);
+      });
+    });
+
+    //TODO: script_invalid
+    //TODO: tx_valid
+    //TODO: tx_invalid
+    
   });
 
 });
