@@ -151,7 +151,7 @@ describe('Interp', function() {
       c++;
       if (vector.length === 1)
         return;
-      if (c > 392)
+      if (c > 569)
         return;
       it('should pass script_valid vector ' + c, function() {
         var scriptSig = Script().fromBitcoindString(vector[0]);
