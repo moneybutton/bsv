@@ -84,13 +84,13 @@ describe('Interp', function() {
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
       var credtx = Tx();
-      credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
-      credtx.addTxout(Txout(BN(0), scriptPubkey));
+      credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+      credtx.addTxout(BN(0), scriptPubkey);
 
       var idbuf = credtx.hash();
       var spendtx = Tx();
-      spendtx.addTxin(Txin(idbuf, 0, Script(), 0xffffffff));
-      spendtx.addTxout(Txout(BN(0), Script()));
+      spendtx.addTxin(idbuf, 0, Script(), 0xffffffff);
+      spendtx.addTxout(BN(0), Script());
 
       var sig = spendtx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
       var scriptSig = Script().writeBuffer(sig.toTx());
@@ -108,13 +108,13 @@ describe('Interp', function() {
       var hashbuf = new Buffer(32);
       hashbuf.fill(0);
       var credtx = Tx();
-      credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
-      credtx.addTxout(Txout(BN(0), scriptPubkey));
+      credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+      credtx.addTxout(BN(0), scriptPubkey);
 
       var idbuf = credtx.hash();
       var spendtx = Tx();
-      spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
-      spendtx.addTxout(Txout(BN(0), Script()));
+      spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff);
+      spendtx.addTxout(BN(0), Script());
 
       var interp = Interp();
       var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, 0);
@@ -162,13 +162,13 @@ describe('Interp', function() {
         var hashbuf = new Buffer(32);
         hashbuf.fill(0);
         var credtx = Tx();
-        credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
-        credtx.addTxout(Txout(BN(0), scriptPubkey));
+        credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+        credtx.addTxout(BN(0), scriptPubkey);
 
         var idbuf = credtx.hash();
         var spendtx = Tx();
-        spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
-        spendtx.addTxout(Txout(BN(0), Script()));
+        spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff);
+        spendtx.addTxout(BN(0), Script());
 
         var interp = Interp();
         var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags);
@@ -190,13 +190,13 @@ describe('Interp', function() {
         var hashbuf = new Buffer(32);
         hashbuf.fill(0);
         var credtx = Tx();
-        credtx.addTxin(Txin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff));
-        credtx.addTxout(Txout(BN(0), scriptPubkey));
+        credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+        credtx.addTxout(BN(0), scriptPubkey);
 
         var idbuf = credtx.hash();
         var spendtx = Tx();
-        spendtx.addTxin(Txin(idbuf, 0, scriptSig, 0xffffffff));
-        spendtx.addTxout(Txout(BN(0), Script()));
+        spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff);
+        spendtx.addTxout(BN(0), Script());
 
         var interp = Interp();
         var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags);
