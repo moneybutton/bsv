@@ -93,7 +93,7 @@ describe('Interp', function() {
       spendtx.addTxout(BN(0), Script());
 
       var sig = spendtx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
-      var scriptSig = Script().writeBuffer(sig.toTx());
+      var scriptSig = Script().writeBuffer(sig.toTxFormat());
       spendtx.txins[0].setScript(scriptSig);
 
       var interp = Interp();

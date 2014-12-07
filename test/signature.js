@@ -57,11 +57,11 @@ describe('Signature', function() {
 
   });
 
-  describe('#fromTx', function() {
+  describe('#fromTxFormat', function() {
 
     it('should convert from this known tx-format buffer', function() {
       var buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201', 'hex');
-      var sig = Signature().fromTx(buf);
+      var sig = Signature().fromTxFormat(buf);
       sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130');
       sig.nhashtype.should.equal(Signature.SIGHASH_ALL);
@@ -70,8 +70,8 @@ describe('Signature', function() {
     it('should parse this known signature and rebuild it', function() {
       var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
       var buf = new Buffer(hex, 'hex');
-      var sig = Signature().fromTx(buf);
-      sig.toTx().toString('hex').should.equal(hex);
+      var sig = Signature().fromTxFormat(buf);
+      sig.toTxFormat().toString('hex').should.equal(hex);
     });
 
   });
@@ -171,14 +171,14 @@ describe('Signature', function() {
 
   });
 
-  describe('#toTx', function() {
+  describe('#toTxFormat', function() {
     
     it('should convert these known r, s, nhashtype values into a known signature', function() {
       var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
       var nhashtype = Signature.SIGHASH_ALL;
       var sig = new Signature(r, s, nhashtype);
-      var buf = sig.toTx();
+      var buf = sig.toTxFormat();
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
     });
 
