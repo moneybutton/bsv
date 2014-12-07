@@ -223,49 +223,49 @@ describe('BN', function() {
 
   });
 
-  describe('#toCScriptNumBuffer', function() {
+  describe('#toScriptNumBuffer', function() {
 
     it('should output a little endian SM number', function() {
       var bn = BN(-23434234);
-      bn.toCScriptNumBuffer().toString('hex').should.equal(bn.toSM({endian: 'little'}).toString('hex'));
+      bn.toScriptNumBuffer().toString('hex').should.equal(bn.toSM({endian: 'little'}).toString('hex'));
     });
 
   });
 
-  describe('#fromCScriptNumBuffer', function() {
+  describe('#fromScriptNumBuffer', function() {
     
     it('should parse this normal number', function() {
-      BN().fromCScriptNumBuffer(new Buffer('01', 'hex')).toNumber().should.equal(1);
-      BN().fromCScriptNumBuffer(new Buffer('0080', 'hex')).toNumber().should.equal(0);
-      BN().fromCScriptNumBuffer(new Buffer('0180', 'hex')).toNumber().should.equal(-1);
+      BN().fromScriptNumBuffer(new Buffer('01', 'hex')).toNumber().should.equal(1);
+      BN().fromScriptNumBuffer(new Buffer('0080', 'hex')).toNumber().should.equal(0);
+      BN().fromScriptNumBuffer(new Buffer('0180', 'hex')).toNumber().should.equal(-1);
     });
 
     it('should throw an error for a number over 4 bytes', function() {
       (function() {
-        BN().fromCScriptNumBuffer(new Buffer('8100000000', 'hex')).toNumber().should.equal(-1);
+        BN().fromScriptNumBuffer(new Buffer('8100000000', 'hex')).toNumber().should.equal(-1);
       }).should.throw('script number overflow');
     });
 
     it('should throw an error for number that is not a minimal size representation', function() {
       //invalid
       (function() {
-        BN().fromCScriptNumBuffer(new Buffer('80000000', 'hex'), true);
+        BN().fromScriptNumBuffer(new Buffer('80000000', 'hex'), true);
       }).should.throw('non-minimally encoded script number');
       (function() {
-        BN().fromCScriptNumBuffer(new Buffer('800000', 'hex'), true);
+        BN().fromScriptNumBuffer(new Buffer('800000', 'hex'), true);
       }).should.throw('non-minimally encoded script number');
       (function() {
-        BN().fromCScriptNumBuffer(new Buffer('00', 'hex'), true);
+        BN().fromScriptNumBuffer(new Buffer('00', 'hex'), true);
       }).should.throw('non-minimally encoded script number');
 
       //valid
-      BN().fromCScriptNumBuffer(new Buffer('8000', 'hex'), true).toString().should.equal('128');
-      BN().fromCScriptNumBuffer(new Buffer('0081', 'hex'), true).toString().should.equal('-256');
-      BN().fromCScriptNumBuffer(new Buffer('', 'hex'), true).toString().should.equal('0');
-      BN().fromCScriptNumBuffer(new Buffer('01', 'hex'), true).toString().should.equal('1');
+      BN().fromScriptNumBuffer(new Buffer('8000', 'hex'), true).toString().should.equal('128');
+      BN().fromScriptNumBuffer(new Buffer('0081', 'hex'), true).toString().should.equal('-256');
+      BN().fromScriptNumBuffer(new Buffer('', 'hex'), true).toString().should.equal('0');
+      BN().fromScriptNumBuffer(new Buffer('01', 'hex'), true).toString().should.equal('1');
 
       //invalid, but flag not set
-      BN().fromCScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0');
+      BN().fromScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0');
     });
 
   });
