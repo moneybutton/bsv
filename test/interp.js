@@ -250,8 +250,12 @@ describe('Interp', function() {
        || c === 11 // coinbase
        || c === 12 // coinbase
        || c === 13 // null input
-       || c === 14 // TODO: Why doe this test fail?
        ) return;
+
+      if (c === 14) {
+        it.skip('TODO: fix this vector which fails for an unknown reason', function() {});
+        return;
+      }
 
       it('should pass tx_invalid vector ' + c, function() {
         var inputs = vector[0];
