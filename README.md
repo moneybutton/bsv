@@ -51,18 +51,12 @@ npm install -g groc
 groc
 ```
 
-## Testing ##
+## Testing and Coverage ##
 
 ```
 npm install -g mocha
-npm test
-```
-
-## Coverage ##
-
-```
 npm install -g istanbul
-istanbul cover _mocha -- --recursive
+npm test
 ```
 
 ## Browser bundle ##
