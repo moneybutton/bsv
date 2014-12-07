@@ -220,7 +220,7 @@ describe('Interp', function() {
           var txoutnum = input[1];
           if (txoutnum === -1)
             txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2].replace('OP_', ''));
+          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2]);
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
@@ -263,7 +263,7 @@ describe('Interp', function() {
           var txoutnum = input[1];
           if (txoutnum === -1)
             txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2].replace('OP_', ''));
+          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2]);
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
