@@ -205,6 +205,7 @@ describe('Interp', function() {
       });
     });
 
+    // TODO: move this test to txbuilder once txbuilder exists
     var c = 0;
     tx_valid.forEach(function(vector, i) {
       if (vector.length === 1)
@@ -237,6 +238,7 @@ describe('Interp', function() {
       });
     });
 
+    // TODO: move this test to txbuilder once txbuilder exists
     var c = 0;
     tx_invalid.forEach(function(vector, i) {
       if (vector.length === 1)
