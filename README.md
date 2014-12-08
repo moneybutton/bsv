@@ -39,10 +39,10 @@ Notable features:
 * 90%+ test coverage
 * Browserifiable
 * Stealth keys, addresses, message
-* Proper message signing and verification
-* Proper handling of reading and writing big varInts
+* Bitcoin-style message signing and verification
 * Exposed big number and point classes
 * Deterministic signatures
+* Script interpreter, validated against bitcoind tests
 
 ## Documentation ##
 
