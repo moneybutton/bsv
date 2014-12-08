@@ -252,11 +252,6 @@ describe('Interp', function() {
        || c === 13 // null input
        ) return;
 
-      if (c === 14) {
-        it.skip('TODO: fix this vector which fails for an unknown reason', function() {});
-        return;
-      }
-
       it('should pass tx_invalid vector ' + c, function() {
         var inputs = vector[0];
         var txhex = vector[1];
@@ -271,16 +266,18 @@ describe('Interp', function() {
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        tx.txins.forEach(function(txin, j) {
-          var scriptSig = txin.script;
-          var txidhex = BufferReader(txin.txidbuf).readReverse().toString('hex');
-          var txoutnum = txin.txoutnum;
-          var scriptPubkey = map[txidhex + ":" + txoutnum];
-          should.exist(scriptPubkey);
-          var interp = Interp();
-          var verified = interp.verify(scriptSig, scriptPubkey, tx, j, flags);
-          verified.should.equal(false);
-        });
+        if (tx.txins.length > 0) {
+          tx.txins.some(function(txin, j) {
+            var scriptSig = txin.script;
+            var txidhex = BufferReader(txin.txidbuf).readReverse().toString('hex');
+            var txoutnum = txin.txoutnum;
+            var scriptPubkey = map[txidhex + ":" + txoutnum];
+            should.exist(scriptPubkey);
+            var interp = Interp();
+            var verified = interp.verify(scriptSig, scriptPubkey, tx, j, flags);
+            return verified == false;
+          }).should.equal(true);
+        }
       });
     });
 
