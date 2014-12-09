@@ -3,7 +3,7 @@ var Hash = require('../lib/hash');
 var Keypair = require('../lib/keypair');
 var Privkey = require('../lib/privkey');
 var Pubkey = require('../lib/pubkey');
-var Signature = require('../lib/signature');
+var Sig = require('../lib/sig');
 var BN = require('../lib/bn');
 var point = require('../lib/point');
 var should = require('chai').should();
@@ -51,7 +51,7 @@ describe("ECDSA", function() {
       ecdsa.keypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test')));
       ecdsa.keypair.privkey2pubkey();
       ecdsa.hashbuf = hashbuf;
-      ecdsa.sig = new Signature({r: r, s: s});
+      ecdsa.sig = new Sig({r: r, s: s});
 
       ecdsa.calci();
       ecdsa.sig.i.should.equal(1);
@@ -133,7 +133,7 @@ describe("ECDSA", function() {
 
     it('should calculate the correct public key for this signature with low s', function() {
       ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10);
-      ecdsa.sig = Signature().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43');
+      ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43');
       ecdsa.sig.i = 0;
       var pubkey = ecdsa.sig2pubkey();
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true);
@@ -142,7 +142,7 @@ describe("ECDSA", function() {
     it('should calculate the correct public key for this signature with high s', function() {
       ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10);
       ecdsa.sign();
-      ecdsa.sig = Signature().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe');
+      ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe');
       ecdsa.sig.i = 1;
       var pubkey = ecdsa.sig2pubkey();
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true);
@@ -170,14 +170,14 @@ describe("ECDSA", function() {
       pk.fromDER(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'));
       ecdsa.keypair = new Keypair();
       ecdsa.keypair.pubkey = pk;
-      ecdsa.sig = new Signature();
+      ecdsa.sig = new Sig();
       ecdsa.sig.r = BN(0);
       ecdsa.sig.s = BN(0);
       ecdsa.sigError().should.equal("r and s not in range");
     });
 
     it('should return an error if the signature is incorrect', function() {
-      ecdsa.sig = new Signature();
+      ecdsa.sig = new Sig();
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827');
       ecdsa.sig.r = ecdsa.sig.r.add(BN(1));
       ecdsa.sigError().should.equal("Invalid signature");
@@ -243,7 +243,7 @@ describe("ECDSA", function() {
   describe('#verify', function() {
     
     it('should verify a signature that was just signed', function() {
-      ecdsa.sig = new Signature();
+      ecdsa.sig = new Sig();
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827');
       ecdsa.verify().verified.should.equal(true);
     });
@@ -259,7 +259,7 @@ describe("ECDSA", function() {
     
     it('should produce a signature', function() {
       var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair);
-      (sig instanceof Signature).should.equal(true);
+      (sig instanceof Sig).should.equal(true);
     });
 
   });
@@ -269,7 +269,7 @@ describe("ECDSA", function() {
     it('should verify a valid signature, and unverify an invalid signature', function() {
       var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair);
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey).should.equal(true);
-      var fakesig = Signature(sig.r.add(1), sig.s);
+      var fakesig = Sig(sig.r.add(1), sig.s);
       ECDSA.verify(ecdsa.hashbuf, fakesig, ecdsa.keypair.pubkey).should.equal(false);
     });
 
@@ -292,7 +292,7 @@ describe("ECDSA", function() {
           keypair: Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(new Buffer(obj.d, 'hex')))),
           k: BN().fromBuffer(new Buffer(obj.k, 'hex')),
           hashbuf: Hash.sha256(new Buffer(obj.message)),
-          sig: Signature().set({
+          sig: Sig().set({
             r: BN(obj.signature.r),
             s: BN(obj.signature.s),
             i: obj.i
@@ -313,7 +313,7 @@ describe("ECDSA", function() {
       it('should validate invalid.sigError vector ' + i + ': ' + obj.description, function() {
         var ecdsa = ECDSA().set({
           keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
-          sig: Signature(BN(obj.signature.r), BN(obj.signature.s)),
+          sig: Sig(BN(obj.signature.r), BN(obj.signature.s)),
           hashbuf: Hash.sha256(new Buffer(obj.message))
         });
         ecdsa.sigError().should.equal(obj.exception);

@@ -1,18 +1,18 @@
 var BN = require('../lib/bn');
 var should = require('chai').should();
-var Signature = require('../lib/signature');
+var Sig = require('../lib/sig');
 
-describe('Signature', function() {
+describe('Sig', function() {
 
   it('should make a blank signature', function() {
-    var sig = new Signature();
+    var sig = new Sig();
     should.exist(sig);
   });
 
   it('should work with conveniently setting r, s', function() {
     var r = BN();
     var s = BN();
-    var sig = new Signature(r, s);
+    var sig = new Sig(r, s);
     should.exist(sig);
     sig.r.toString().should.equal(r.toString());
     sig.s.toString().should.equal(s.toString());
@@ -21,7 +21,7 @@ describe('Signature', function() {
   describe('#set', function() {
     
     it('should set compressed', function() {
-      should.exist(Signature().set({compressed: true}));
+      should.exist(Sig().set({compressed: true}));
     });
 
   });
@@ -36,7 +36,7 @@ describe('Signature', function() {
         blank,
         blank
         ]);
-      var sig = new Signature();
+      var sig = new Sig();
       sig.fromCompact(compressed);
       sig.r.cmp(0).should.equal(0);
       sig.s.cmp(0).should.equal(0);
@@ -49,7 +49,7 @@ describe('Signature', function() {
     var buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex');
 
     it('should parse this DER format signature', function() {
-      var sig = new Signature();
+      var sig = new Sig();
       sig.fromDER(buf);
       sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277');
       sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2');
@@ -61,16 +61,16 @@ describe('Signature', function() {
 
     it('should convert from this known tx-format buffer', function() {
       var buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201', 'hex');
-      var sig = Signature().fromTxFormat(buf);
+      var sig = Sig().fromTxFormat(buf);
       sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      sig.nhashtype.should.equal(Signature.SIGHASH_ALL);
+      sig.nhashtype.should.equal(Sig.SIGHASH_ALL);
     });
 
     it('should parse this known signature and rebuild it', function() {
       var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
       var buf = new Buffer(hex, 'hex');
-      var sig = Signature().fromTxFormat(buf);
+      var sig = Sig().fromTxFormat(buf);
       sig.toTxFormat().toString('hex').should.equal(hex);
     });
 
@@ -81,7 +81,7 @@ describe('Signature', function() {
     var buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex');
 
     it('should parse this DER format signature in hex', function() {
-      var sig = new Signature();
+      var sig = new Sig();
       sig.fromString(buf.toString('hex'));
       sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277');
       sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2');
@@ -94,7 +94,7 @@ describe('Signature', function() {
     it('should parse this signature generated in node', function() {
       var sighex = '30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72';
       var sig = new Buffer(sighex, 'hex');
-      var parsed = Signature.parseDER(sig);
+      var parsed = Sig.parseDER(sig);
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(69)
       parsed.rlength.should.equal(33);
@@ -110,7 +110,7 @@ describe('Signature', function() {
     it('should parse this 69 byte signature', function() {
       var sighex = '3043021f59e4705959cc78acbfcf8bd0114e9cc1b389a4287fb33152b73a38c319b50302202f7428a27284c757e409bf41506183e9e49dfb54d5063796dfa0d403a4deccfa';
       var sig = new Buffer(sighex, 'hex');
-      var parsed = Signature.parseDER(sig);
+      var parsed = Sig.parseDER(sig);
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(67)
       parsed.rlength.should.equal(31);
@@ -126,7 +126,7 @@ describe('Signature', function() {
     it('should parse this 68 byte signature', function() {
       var sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a51';
       var sig = new Buffer(sighex, 'hex');
-      var parsed = Signature.parseDER(sig);
+      var parsed = Sig.parseDER(sig);
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(66)
       parsed.rlength.should.equal(30);
@@ -146,7 +146,7 @@ describe('Signature', function() {
     it('should know this is a DER signature', function() {
       var sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a5101';
       var sigbuf = new Buffer(sighex, 'hex');
-      Signature.isTxDER(sigbuf).should.equal(true);
+      Sig.isTxDER(sigbuf).should.equal(true);
     });
 
     it('should know this is not a DER signature', function() {
@@ -154,7 +154,7 @@ describe('Signature', function() {
       var sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a5101';
       var sigbuf = new Buffer(sighex, 'hex');
       sigbuf[0] = 0x31;
-      Signature.isTxDER(sigbuf).should.equal(false);
+      Sig.isTxDER(sigbuf).should.equal(false);
     });
 
   });
@@ -164,7 +164,7 @@ describe('Signature', function() {
     it('should convert these known r and s values into a known signature', function() {
       var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      var sig = new Signature({r: r, s: s});
+      var sig = new Sig({r: r, s: s});
       var der = sig.toDER(r, s);
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });
@@ -176,8 +176,8 @@ describe('Signature', function() {
     it('should convert these known r, s, nhashtype values into a known signature', function() {
       var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      var nhashtype = Signature.SIGHASH_ALL;
-      var sig = new Signature(r, s, nhashtype);
+      var nhashtype = Sig.SIGHASH_ALL;
+      var sig = new Sig(r, s, nhashtype);
       var buf = sig.toTxFormat();
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
     });
@@ -189,7 +189,7 @@ describe('Signature', function() {
     it('should convert this signature in to hex DER', function() {
       var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      var sig = new Signature({r: r, s: s});
+      var sig = new Sig({r: r, s: s});
       var hex = sig.toString();
       hex.should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });

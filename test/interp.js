@@ -8,7 +8,7 @@ var BN = require('../lib/bn');
 var Keypair = require('../lib/keypair');
 var Privkey = require('../lib/privkey');
 var Pubkey = require('../lib/pubkey');
-var Signature = require('../lib/signature');
+var Sig = require('../lib/sig');
 var BufferReader = require('../lib/bufferreader');
 var script_valid = require('./vectors/bitcoind/script_valid');
 var script_invalid = require('./vectors/bitcoind/script_invalid');
@@ -93,7 +93,7 @@ describe('Interp', function() {
       spendtx.addTxin(idbuf, 0, Script(), 0xffffffff);
       spendtx.addTxout(BN(0), Script());
 
-      var sig = spendtx.sign(keypair, Signature.SIGHASH_ALL, 0, scriptPubkey);
+      var sig = spendtx.sign(keypair, Sig.SIGHASH_ALL, 0, scriptPubkey);
       var scriptSig = Script().writeBuffer(sig.toTxFormat());
       spendtx.txins[0].setScript(scriptSig);
 

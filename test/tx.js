@@ -6,7 +6,7 @@ var should = require('chai').should();
 var BufferReader = require('../lib/bufferreader');
 var BufferWriter = require('../lib/bufferwriter');
 var Script = require('../lib/script');
-var Signature = require('../lib/signature');
+var Sig = require('../lib/sig');
 var Keypair = require('../lib/keypair');
 var vectors_sighash = require('./vectors/bitcoind/sighash');
 var vectors_tx_valid = require('./vectors/bitcoind/tx_valid');
@@ -165,7 +165,7 @@ describe('Tx', function() {
       var tx = Tx(tx2buf);
       tx.txouts.length = 1;
       tx.txoutsvi = Varint(1);
-      tx.sighash(Signature.SIGHASH_SINGLE, 1, Script('')).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
+      tx.sighash(Sig.SIGHASH_SINGLE, 1, Script('')).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
     });
 
   });
@@ -174,10 +174,10 @@ describe('Tx', function() {
 
     it('should return a signature', function() {
       var keypair = Keypair().fromRandom();
-      var sig1 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script(''));
+      var sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script(''));
       should.exist(sig1);
-      var sig2 = tx.sign(keypair, Signature.SIGHASH_SINGLE, 0, Script(''));
-      var sig3 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script('OP_RETURN'));
+      var sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script(''));
+      var sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script('OP_RETURN'));
       sig1.toString(should.not.equal(sig2.toString()));
       sig1.toString(should.not.equal(sig3.toString()));
     });
@@ -188,7 +188,7 @@ describe('Tx', function() {
 
     it('should return a signature', function() {
       var keypair = Keypair().fromRandom();
-      var sig1 = tx.sign(keypair, Signature.SIGHASH_ALL, 0, Script(''));
+      var sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script(''));
       tx.verify(sig1, keypair.pubkey, 0, Script('')).should.equal(true);
     });
 
