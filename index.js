@@ -1,3 +1,11 @@
+/**
+  * An example of how to build a bundle with fullnode. This bundle includes the
+  * entire library. It is not typically recommended that you use fullnode this
+  * way, since you probably do not use every component, and therefore do not
+  * need to include every component into your project. You should simply
+  * directly require the elements of the library you need, and browserify your
+  * project. For instance, require('fullnode/lib/address').
+  */
 var fullnode = module.exports;
 
 fullnode.version = require('./package').version;
