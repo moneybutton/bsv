@@ -59,6 +59,16 @@ npm install -g istanbul
 npm test
 ```
 
+You can see the coverage report at coverage/lcov-report/index.html.
+
+Or, to build tests for the browser:
+
+```
+browser/build
+```
+
+Then open test/index.html in your browser.
+
 ## Browser bundle ##
 
 ```
