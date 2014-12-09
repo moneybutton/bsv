@@ -75,6 +75,15 @@ describe('BN', function() {
 
   });
 
+  describe('#neq', function() {
+
+    it('should know A!=B', function() {
+      BN(5).neq(5).should.equal(false);
+      BN(5).neq(4).should.equal(true);
+    });
+
+  });
+
   describe('#gt', function() {
 
     it('should say 1 is greater than 0', function() {
