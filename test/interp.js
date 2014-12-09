@@ -9,7 +9,7 @@ var Keypair = require('../lib/keypair');
 var Privkey = require('../lib/privkey');
 var Pubkey = require('../lib/pubkey');
 var Sig = require('../lib/sig');
-var BufferReader = require('../lib/bufr');
+var BufR = require('../lib/bufr');
 var script_valid = require('./vectors/bitcoind/script_valid');
 var script_invalid = require('./vectors/bitcoind/script_invalid');
 var tx_valid = require('./vectors/bitcoind/tx_valid');
@@ -227,7 +227,7 @@ describe('Interp', function() {
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
         tx.txins.forEach(function(txin, j) {
           var scriptSig = txin.script;
-          var txidhex = BufferReader(txin.txidbuf).readReverse().toString('hex');
+          var txidhex = BufR(txin.txidbuf).readReverse().toString('hex');
           var txoutnum = txin.txoutnum;
           var scriptPubkey = map[txidhex + ":" + txoutnum];
           should.exist(scriptPubkey);
@@ -271,7 +271,7 @@ describe('Interp', function() {
         if (tx.txins.length > 0) {
           tx.txins.some(function(txin, j) {
             var scriptSig = txin.script;
-            var txidhex = BufferReader(txin.txidbuf).readReverse().toString('hex');
+            var txidhex = BufR(txin.txidbuf).readReverse().toString('hex');
             var txoutnum = txin.txoutnum;
             var scriptPubkey = map[txidhex + ":" + txoutnum];
             should.exist(scriptPubkey);
