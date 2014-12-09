@@ -1,7 +1,7 @@
 var BN = require('../lib/bn');
 var should = require('chai').should();
-var BufferReader = require('../lib/bufferreader');
-var BufferWriter = require('../lib/bufferwriter');
+var BufR = require('../lib/bufr');
+var BufW = require('../lib/bufw');
 var Varint = require('../lib/varint');
 
 describe('Varint', function() {
@@ -40,7 +40,7 @@ describe('Varint', function() {
   describe('#fromJSON', function() {
     
     it('should set a buffer', function() {
-      var buf = BufferWriter().writeVarintNum(5).concat();
+      var buf = BufW().writeVarintNum(5).concat();
       var varint = Varint().fromJSON(buf.toString('hex'));
       varint.toNumber().should.equal(5);
     });
@@ -50,7 +50,7 @@ describe('Varint', function() {
   describe('#toJSON', function() {
     
     it('should return a buffer', function() {
-      var buf = BufferWriter().writeVarintNum(5).concat();
+      var buf = BufW().writeVarintNum(5).concat();
       var varint = Varint().fromJSON(buf.toString('hex'));
       varint.toJSON().should.equal('05');
     });
@@ -60,19 +60,19 @@ describe('Varint', function() {
   describe('#fromBuffer', function() {
     
     it('should set a buffer', function() {
-      var buf = BufferWriter().writeVarintNum(5).concat();
+      var buf = BufW().writeVarintNum(5).concat();
       var varint = Varint().fromBuffer(buf);
       varint.toNumber().should.equal(5);
     });
 
   });
 
-  describe('#fromBufferReader', function() {
+  describe('#fromBufR', function() {
     
     it('should set a buffer reader', function() {
-      var buf = BufferWriter().writeVarintNum(5).concat();
-      var br = BufferReader(buf);
-      var varint = Varint().fromBufferReader(br);
+      var buf = BufW().writeVarintNum(5).concat();
+      var br = BufR(buf);
+      var varint = Varint().fromBufR(br);
       varint.toNumber().should.equal(5);
     });
 
@@ -99,7 +99,7 @@ describe('Varint', function() {
   describe('#toBuffer', function() {
     
     it('should return a buffer', function() {
-      buf = BufferWriter().writeVarintNum(5).concat();
+      buf = BufW().writeVarintNum(5).concat();
       var varint = Varint(buf);
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });

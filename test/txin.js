@@ -2,7 +2,7 @@ var should = require('chai').should();
 var Script = require('../lib/script');
 var Txin = require('../lib/txin');
 var Varint = require('../lib/varint');
-var BufferReader = require('../lib/bufferreader');
+var BufR = require('../lib/bufr');
 
 describe('Txin', function() {
   
@@ -105,13 +105,13 @@ describe('Txin', function() {
 
   });
 
-  describe('#fromBufferReader', function() {
+  describe('#fromBufR', function() {
     
     it('should convert this known buffer', function() {
       var hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
       var buf = new Buffer(hex, 'hex');
-      var br = BufferReader(buf);
-      var txin = Txin().fromBufferReader(br);
+      var br = BufR(buf);
+      var txin = Txin().fromBufR(br);
       txin.scriptvi.toNumber().should.equal(1);
       txin.script.toString().should.equal('OP_CHECKMULTISIG');
     });
@@ -126,10 +126,10 @@ describe('Txin', function() {
 
   });
 
-  describe('#toBufferWriter', function() {
+  describe('#toBufW', function() {
     
     it('should convert this known buffer', function() {
-      txin.toBufferWriter().concat().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000');
+      txin.toBufW().concat().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000');
     });
 
   });

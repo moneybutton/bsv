@@ -1,6 +1,6 @@
 var Block = require('../lib/block');
-var BufferReader = require('../lib/bufferreader');
-var BufferWriter = require('../lib/bufferwriter');
+var BufR = require('../lib/bufr');
+var BufW = require('../lib/bufw');
 
 //This example will parse the blocks in a block file.
 //To use, pipe in a blk*****.dat file. e.g.:
@@ -17,7 +17,7 @@ process.stdin.on('readable', function() {
   var body = process.stdin.read(head.slice(4).readUInt32LE(0));
   if (!body)
     return;
-  var blockbuf = BufferWriter().write(head).write(body).concat();
+  var blockbuf = BufW().write(head).write(body).concat();
   var block = Block().fromBuffer(blockbuf);
   console.log(block.toJSON());
   head = null;

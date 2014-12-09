@@ -1,7 +1,7 @@
 var Blockheader = require('../lib/blockheader');
 var Block = require('../lib/block');
-var BufferWriter = require('../lib/bufferwriter');
-var BufferReader = require('../lib/bufferreader');
+var BufR = require('../lib/bufr');
+var BufW = require('../lib/bufw');
 var Varint = require('../lib/varint');
 var should = require('chai').should();
 var Tx = require('../lib/tx');
@@ -102,10 +102,10 @@ describe('Block', function() {
 
   });
 
-  describe('#fromBufferReader', function() {
+  describe('#fromBufR', function() {
     
     it('should make a block from this known buffer', function() {
-      var block = Block().fromBufferReader(BufferReader(blockbuf));
+      var block = Block().fromBufR(BufR(blockbuf));
       block.toBuffer().toString('hex').should.equal(blockhex);
     });
 
@@ -120,11 +120,11 @@ describe('Block', function() {
 
   });
 
-  describe('#toBufferWriter', function() {
+  describe('#toBufW', function() {
     
     it('should recover a block from this known buffer', function() {
       var block = Block().fromBuffer(blockbuf);
-      block.toBufferWriter().concat().toString('hex').should.equal(blockhex);
+      block.toBufW().concat().toString('hex').should.equal(blockhex);
     });
 
   });
