@@ -41,7 +41,7 @@ Notable features:
 * Stealth keys, addresses, message
 * Bitcoin-style message signing and verification
 * Exposed big number and point classes
-* Deterministic signatures
+* Deterministic k (deterministic signatures; RFC 6979)
 * Script interpreter, validated against bitcoind tests
 
 ## Documentation ##
