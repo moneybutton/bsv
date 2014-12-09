@@ -22,15 +22,20 @@ bipxx.js in lib/ (since that is their standard name). Any non-standard features
 folder and are accessible at fullnode.expmt. Once they are standardized and
 given a BIP, they are renamed and placed in lib/.
 
-5. It is always possible to create a new object without using "new".
+5. Expose everything, including dependencies. This makes it possible to develop
+apps that require fine-grained control over the basics, such as big numbers and
+points. However, it also means that you can hurt yourself if you misuse these
+primitives.
 
-6. Compatible with browserify (i.e., using require('fullnode/lib/message')
+6. It is always possible to create a new object without using "new".
+
+7. Compatible with browserify (i.e., using require('fullnode/lib/message')
 should work both in node, and be automatically work in the browser with used in
 conjunction with browserify).
 
-7. Minimize the use of dependencies so that all code can be easily audited.
+8. Minimize the use of dependencies so that all code can be easily audited.
 
-8. All instance methods modify the state of the object and return the object,
+9. All instance methods modify the state of the object and return the object,
 unless there is a good reason to do something different.  To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
