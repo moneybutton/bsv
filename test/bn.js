@@ -66,6 +66,15 @@ describe('BN', function() {
 
   });
 
+  describe('#eq', function() {
+
+    it('should know A=B', function() {
+      BN(5).eq(5).should.equal(true);
+      BN(5).eq(4).should.equal(false);
+    });
+
+  });
+
   describe('#gt', function() {
 
     it('should say 1 is greater than 0', function() {
@@ -84,6 +93,35 @@ describe('BN', function() {
       var bn1 = BN('24023452345398529485723980457');
       var bn0 = BN(5);
       bn1.gt(bn0).should.equal(true);
+    });
+
+  });
+
+  describe('#geq', function() {
+
+    it('should know that A >= B', function() {
+      BN(6).geq(5).should.equal(true);
+      BN(5).geq(5).should.equal(true);
+      BN(4).geq(5).should.equal(false);
+    });
+
+  });
+
+  describe('#lt', function() {
+    
+    it('should know A < B', function() {
+      BN(5).lt(6).should.equal(true);
+      BN(5).lt(4).should.equal(false);
+    });
+
+  });
+
+  describe('#leq', function() {
+    
+    it('should know A <= B', function() {
+      BN(5).leq(6).should.equal(true);
+      BN(5).leq(5).should.equal(true);
+      BN(5).leq(4).should.equal(false);
     });
 
   });
