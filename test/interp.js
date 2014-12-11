@@ -40,6 +40,29 @@ describe('Interp', function() {
     interp.flags.should.equal(0);
   });
 
+  describe('#toJSON', function() {
+    
+    it('should convert an interp to json', function() {
+      var interp = Interp().set({script: Script()});
+      var json = interp.toJSON();
+      should.exist(json.script);
+      console.log(json);
+      should.not.exist(json.tx);
+    });
+
+  });
+
+  describe('#fromJSON', function() {
+    
+    it('should convert a json to an interp', function() {
+      var interp = Interp().set({script: Script()});
+      var json = interp.toJSON();
+      var interp2 = Interp().fromJSON(json);
+      should.exist(interp2.script);
+    });
+
+  });
+
   describe('@castToBool', function() {
 
     it('should cast these bufs to bool correctly', function() {
