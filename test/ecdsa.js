@@ -150,17 +150,17 @@ describe("ECDSA", function() {
 
   });
 
-  describe('#sigError', function() {
+  describe('#verifystr', function() {
 
     it('should return an error if the hash is invalid', function() {
       var ecdsa = new ECDSA();
-      ecdsa.sigError().should.equal('hashbuf must be a 32 byte buffer');
+      ecdsa.verifystr().should.equal('hashbuf must be a 32 byte buffer');
     });
 
     it('should return an error if the pubkey is invalid', function() {
       var ecdsa = new ECDSA();
       ecdsa.hashbuf = Hash.sha256(new Buffer('test'));
-      ecdsa.sigError().indexOf("Invalid pubkey").should.equal(0);
+      ecdsa.verifystr().indexOf("Invalid pubkey").should.equal(0);
     });
 
     it('should return an error if r, s are invalid', function() {
@@ -173,14 +173,14 @@ describe("ECDSA", function() {
       ecdsa.sig = new Sig();
       ecdsa.sig.r = BN(0);
       ecdsa.sig.s = BN(0);
-      ecdsa.sigError().should.equal("r and s not in range");
+      ecdsa.verifystr().should.equal("r and s not in range");
     });
 
     it('should return an error if the signature is incorrect', function() {
       ecdsa.sig = new Sig();
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827');
       ecdsa.sig.r = ecdsa.sig.r.add(BN(1));
-      ecdsa.sigError().should.equal("Invalid signature");
+      ecdsa.verifystr().should.equal("Invalid signature");
     });
 
   });
@@ -309,14 +309,14 @@ describe("ECDSA", function() {
       });
     });
     
-    vectors.invalid.sigError.forEach(function(obj, i) {
-      it('should validate invalid.sigError vector ' + i + ': ' + obj.description, function() {
+    vectors.invalid.verifystr.forEach(function(obj, i) {
+      it('should validate invalid.verifystr vector ' + i + ': ' + obj.description, function() {
         var ecdsa = ECDSA().set({
           keypair: Keypair().set({pubkey: Pubkey().set({point: point.fromX(true, 1)})}),
           sig: Sig(BN(obj.signature.r), BN(obj.signature.s)),
           hashbuf: Hash.sha256(new Buffer(obj.message))
         });
-        ecdsa.sigError().should.equal(obj.exception);
+        ecdsa.verifystr().should.equal(obj.exception);
       });
     });
 
