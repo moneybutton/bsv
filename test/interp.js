@@ -149,29 +149,6 @@ describe('Interp', function() {
 
   describe('vectors', function() {
 
-    function getFlags(flagstr) {
-      var flags = 0;
-      if (flagstr.indexOf('NONE') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_NONE;
-      if (flagstr.indexOf('P2SH') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_P2SH;
-      if (flagstr.indexOf('STRICTENC') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_STRICTENC;
-      if (flagstr.indexOf('DERSIG') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_DERSIG;
-      if (flagstr.indexOf('LOW_S') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_LOW_S;
-      if (flagstr.indexOf('NULLDUMMY') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_NULLDUMMY;
-      if (flagstr.indexOf('SIGPUSHONLY') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_SIGPUSHONLY;
-      if (flagstr.indexOf('MINIMALDATA') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_MINIMALDATA;
-      if (flagstr.indexOf('DISCOURAGE_UPGRADABLE_NOPS') !== -1)
-        flags = flags | Interp.SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS;
-      return flags;
-    };
-
     var c = 0;
     script_valid.forEach(function(vector, i) {
       if (vector.length === 1)
@@ -180,7 +157,7 @@ describe('Interp', function() {
       it('should pass script_valid vector ' + c, function() {
         var scriptSig = Script().fromBitcoindString(vector[0]);
         var scriptPubkey = Script().fromBitcoindString(vector[1]);
-        var flags = getFlags(vector[2]);
+        var flags = Interp.getFlags(vector[2]);
         var descstr = vector[3];
 
         var hashbuf = new Buffer(32);
@@ -208,7 +185,7 @@ describe('Interp', function() {
       it('should pass script_invalid vector ' + c, function() {
         var scriptSig = Script().fromBitcoindString(vector[0]);
         var scriptPubkey = Script().fromBitcoindString(vector[1]);
-        var flags = getFlags(vector[2]);
+        var flags = Interp.getFlags(vector[2]);
         var descstr = vector[3];
 
         var hashbuf = new Buffer(32);
@@ -237,7 +214,7 @@ describe('Interp', function() {
       it('should pass tx_valid vector ' + c, function() {
         var inputs = vector[0];
         var txhex = vector[1];
-        var flags = getFlags(vector[2]);
+        var flags = Interp.getFlags(vector[2]);
 
         var map = {};
         inputs.forEach(function(input) {
@@ -280,7 +257,7 @@ describe('Interp', function() {
       it('should pass tx_invalid vector ' + c, function() {
         var inputs = vector[0];
         var txhex = vector[1];
-        var flags = getFlags(vector[2]);
+        var flags = Interp.getFlags(vector[2]);
 
         var map = {};
         inputs.forEach(function(input) {
