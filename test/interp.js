@@ -23,7 +23,7 @@ describe('Interp', function() {
     interp.pc.should.equal(0);
     interp.pbegincodehash.should.equal(0);
     interp.nOpCount.should.equal(0);
-    interp.vfExec.length.should.equal(0);
+    interp.ifstack.length.should.equal(0);
     interp.errstr.should.equal("");
     interp.flags.should.equal(0);
     var interp = Interp();
@@ -33,7 +33,7 @@ describe('Interp', function() {
     interp.pc.should.equal(0);
     interp.pbegincodehash.should.equal(0);
     interp.nOpCount.should.equal(0);
-    interp.vfExec.length.should.equal(0);
+    interp.ifstack.length.should.equal(0);
     interp.errstr.should.equal("");
     interp.flags.should.equal(0);
   });
