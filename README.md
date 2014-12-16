@@ -39,8 +39,14 @@ conjunction with browserify).
 unless there is a good reason to do something different.  To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
--------------------------
-Notable features:
+## Alpha Caveat ##
+
+fullnode is still alpha, and has an unstable API. Once the code has been
+audited, the API will be settled, and version 1.0 will be released. It is
+recommended not to use fullnode for production software until that time.
+
+## Notable Features ##
+
 * 90%+ test coverage
 * Browserifiable
 * Stealth keys, addresses, message
