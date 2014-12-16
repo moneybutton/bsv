@@ -6,14 +6,14 @@ var BufR = require('../lib/bufr');
 
 describe('Txin', function() {
   
-  var txidbuf = new Buffer(32);
-  txidbuf.fill(0);
+  var txhashbuf = new Buffer(32);
+  txhashbuf.fill(0);
   var txoutnum = 0;
   var script = Script().fromString("OP_CHECKMULTISIG");
   var scriptvi = Varint(script.toBuffer().length);
   var seqnum = 0;
   var txin = Txin().set({
-    txidbuf: txidbuf,
+    txhashbuf: txhashbuf,
     txoutnum: txoutnum,
     scriptvi: scriptvi,
     script: script,
@@ -25,31 +25,31 @@ describe('Txin', function() {
     should.exist(txin);
     txin = Txin();
     should.exist(txin);
-    var txidbuf = new Buffer(32);
-    txidbuf.fill(0);
-    Txin(txidbuf, 0).txidbuf.length.should.equal(32);
+    var txhashbuf = new Buffer(32);
+    txhashbuf.fill(0);
+    Txin(txhashbuf, 0).txhashbuf.length.should.equal(32);
     (function() {
-      var txidbuf2 = new Buffer(33);
-      txidbuf2.fill(0);
-      Txin(txidbuf2, 0);
-    }).should.throw('txidbuf must be 32 bytes');
+      var txhashbuf2 = new Buffer(33);
+      txhashbuf2.fill(0);
+      Txin(txhashbuf2, 0);
+    }).should.throw('txhashbuf must be 32 bytes');
   });
 
   it('should calculate scriptvi correctly when creating a new txin', function() {
-    Txin(txin.txidbuf, txin.txoutnum, txin.script, txin.seqnum).scriptvi.toNumber().should.equal(1);
+    Txin(txin.txhashbuf, txin.txoutnum, txin.script, txin.seqnum).scriptvi.toNumber().should.equal(1);
   });
 
   describe('#set', function() {
     
     it('should set these vars', function() {
       var txin = Txin().set({
-        txidbuf: txidbuf,
+        txhashbuf: txhashbuf,
         txoutnum: txoutnum,
         scriptvi: scriptvi,
         script: script,
         seqnum: seqnum
       });
-      should.exist(txin.txidbuf);
+      should.exist(txin.txhashbuf);
       should.exist(txin.txoutnum);
       should.exist(txin.scriptvi);
       should.exist(txin.script);
@@ -71,7 +71,7 @@ describe('Txin', function() {
     
     it('should set these vars', function() {
       var txin2 = Txin().fromJSON(txin.toJSON());
-      should.exist(txin2.txidbuf);
+      should.exist(txin2.txhashbuf);
       should.exist(txin2.txoutnum);
       should.exist(txin2.scriptvi);
       should.exist(txin2.script);
@@ -84,7 +84,7 @@ describe('Txin', function() {
     
     it('should set these vars', function() {
       var json = txin.toJSON()
-      should.exist(json.txidbuf);
+      should.exist(json.txhashbuf);
       should.exist(json.txoutnum);
       should.exist(json.scriptvi);
       should.exist(json.script);
