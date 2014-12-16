@@ -56,6 +56,14 @@ npm install -g groc
 groc
 ```
 
+## Browser bundle ##
+
+```
+npm install -g browserify
+npm install -g uglifyify
+browser/build
+
+```
 ## Testing and Coverage ##
 
 ```
@@ -73,11 +81,3 @@ browser/build
 ```
 
 Then open test/index.html in your browser.
-
-## Browser bundle ##
-
-```
-npm install -g browserify
-npm install -g uglifyify
-browser/build
-```
