@@ -32,7 +32,7 @@ describe('Txbuilder', function() {
       if (vector.length === 1)
         return;
       c++;
-      it('should pass tx_valid vector ' + c, function() {
+      it('should verify tx_valid vector ' + c, function() {
         var inputs = vector[0];
         var txhex = vector[1];
         var flags = Interp.getFlags(vector[2]);
@@ -60,7 +60,7 @@ describe('Txbuilder', function() {
       if (vector.length === 1)
         return;
       c++;
-      it('should pass tx_invalid vector ' + c, function() {
+      it('should unverify tx_invalid vector ' + c, function() {
         var inputs = vector[0];
         var txhex = vector[1];
         var flags = Interp.getFlags(vector[2]);

@@ -151,7 +151,7 @@ describe('Interp', function() {
       if (vector.length === 1)
         return;
       c++;
-      it('should pass script_valid vector ' + c, function() {
+      it('should verify script_valid vector ' + c, function() {
         var scriptSig = Script().fromBitcoindString(vector[0]);
         var scriptPubkey = Script().fromBitcoindString(vector[1]);
         var flags = Interp.getFlags(vector[2]);
@@ -179,7 +179,7 @@ describe('Interp', function() {
       if (vector.length === 1)
         return;
       c++;
-      it('should pass script_invalid vector ' + c, function() {
+      it('should unverify script_invalid vector ' + c, function() {
         var scriptSig = Script().fromBitcoindString(vector[0]);
         var scriptPubkey = Script().fromBitcoindString(vector[1]);
         var flags = Interp.getFlags(vector[2]);
