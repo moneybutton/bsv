@@ -72,7 +72,7 @@
     }
   ],
   "invalid": {
-    "sigError": [
+    "verifystr": [
       {
         "description": "The wrong signature",
         "exception": "Invalid signature",

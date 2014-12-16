@@ -12,8 +12,6 @@ var Sig = require('../lib/sig');
 var BufR = require('../lib/bufr');
 var script_valid = require('./vectors/bitcoind/script_valid');
 var script_invalid = require('./vectors/bitcoind/script_invalid');
-var tx_valid = require('./vectors/bitcoind/tx_valid');
-var tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
 describe('Interp', function() {
 
@@ -46,7 +44,6 @@ describe('Interp', function() {
       var interp = Interp().set({script: Script()});
       var json = interp.toJSON();
       should.exist(json.script);
-      console.log(json);
       should.not.exist(json.tx);
     });
 
@@ -202,84 +199,6 @@ describe('Interp', function() {
         var interp = Interp();
         var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags);
         verified.should.equal(false);
-      });
-    });
-
-    // TODO: move this test to txbuilder once txbuilder exists
-    var c = 0;
-    tx_valid.forEach(function(vector, i) {
-      if (vector.length === 1)
-        return;
-      c++;
-      it('should pass tx_valid vector ' + c, function() {
-        var inputs = vector[0];
-        var txhex = vector[1];
-        var flags = Interp.getFlags(vector[2]);
-
-        var map = {};
-        inputs.forEach(function(input) {
-          var txoutnum = input[1];
-          if (txoutnum === -1)
-            txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2]);
-        });
-
-        var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        tx.txins.forEach(function(txin, j) {
-          var scriptSig = txin.script;
-          var txidhex = BufR(txin.txidbuf).readReverse().toString('hex');
-          var txoutnum = txin.txoutnum;
-          var scriptPubkey = map[txidhex + ":" + txoutnum];
-          should.exist(scriptPubkey);
-          var interp = Interp();
-          var verified = interp.verify(scriptSig, scriptPubkey, tx, j, flags);
-          verified.should.equal(true);
-        });
-      });
-    });
-
-    // TODO: move this test to txbuilder once txbuilder exists
-    var c = 0;
-    tx_invalid.forEach(function(vector, i) {
-      if (vector.length === 1)
-        return;
-      c++;
-
-      // tests intentionally not performed by the script interpreter:
-      if (c === 7  // tests if valuebn is negative
-       || c === 8  // tests if valuebn is greater than MAX_MONEY
-       || c === 10 // tests if two inputs are equal
-       || c === 11 // coinbase
-       || c === 12 // coinbase
-       || c === 13 // null input
-       ) return;
-
-      it('should pass tx_invalid vector ' + c, function() {
-        var inputs = vector[0];
-        var txhex = vector[1];
-        var flags = Interp.getFlags(vector[2]);
-
-        var map = {};
-        inputs.forEach(function(input) {
-          var txoutnum = input[1];
-          if (txoutnum === -1)
-            txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Script().fromBitcoindString(input[2]);
-        });
-
-        var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        if (tx.txins.length > 0) {
-          tx.txins.some(function(txin, j) {
-            var scriptSig = txin.script;
-            var txidhex = BufR(txin.txidbuf).readReverse().toString('hex');
-            var txoutnum = txin.txoutnum;
-            var scriptPubkey = map[txidhex + ":" + txoutnum];
-            should.exist(scriptPubkey);
-            var interp = Interp();
-            var verified = interp.verify(scriptSig, scriptPubkey, tx, j, flags);
-            return verified == false;
-          }).should.equal(true);
-        }
       });
     });
 
