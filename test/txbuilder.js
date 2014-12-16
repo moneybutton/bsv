@@ -48,7 +48,7 @@ describe('Txbuilder', function() {
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
         var txb = Txbuilder().set({
           tx: tx,
-          txoutsmap: map
+          prevtxoutsmap: map
         });
 
         txb.verifytx(flags).should.equal(true);
@@ -76,7 +76,7 @@ describe('Txbuilder', function() {
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
         var txb = Txbuilder().set({
           tx: tx,
-          txoutsmap: map
+          prevtxoutsmap: map
         });
 
         txb.verifytx(flags).should.equal(false);
