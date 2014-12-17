@@ -7,6 +7,8 @@ var BN = require('../lib/bn');
 var Interp = require('../lib/interp');
 var BufR = require('../lib/bufr');
 var Script = require('../lib/script');
+var Pubkey = require('../lib/pubkey');
+var Privkey = require('../lib/privkey');
 var tx_valid = require('./vectors/bitcoind/tx_valid');
 var tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
@@ -23,6 +25,27 @@ describe('Txbuilder', function() {
       tx: Tx()
     });
     should.exist(txb.tx);
+  });
+
+  describe('#addToAddress', function() {
+    
+    it('should add a scripthash address', function() {
+      var hashbuf = new Buffer(20);
+      hashbuf.fill(0);
+      var address = Address().fromScript(Script().fromScripthash(hashbuf));
+      var txb = Txbuilder();
+      txb.addToAddress(BN(0), address);
+      txb.tx.txouts.length.should.equal(1);
+    });
+
+    it('should add a pubkeyhash address', function() {
+      var pubkey = Pubkey().fromPrivkey(Privkey().fromRandom());
+      var address = Address().fromPubkey(pubkey);
+      var txb = Txbuilder();
+      txb.addToAddress(BN(0), address);
+      txb.tx.txouts.length.should.equal(1);
+    });
+
   });
 
   describe('vectors', function() {
