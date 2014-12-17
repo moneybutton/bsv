@@ -1,6 +1,6 @@
 {
   "name": "bitcore-ecies",
-  "main": "index.js",
+  "main": "dist/bitcore-ecies.js",
   "version": "0.0.1",
   "homepage": "https://github.com/bitpay/bitcore-ecies",
   "authors": [
