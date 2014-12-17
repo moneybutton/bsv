@@ -223,6 +223,26 @@ describe('Script', function() {
 
   });
 
+  describe('#fromPubkeyhash', function() {
+
+    it('should create pubkeyhash output script', function() {
+      var hashbuf = new Buffer(20);
+      hashbuf.fill(0);
+      Script().fromPubkeyhash(hashbuf).toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG');
+    });
+
+  });
+
+  describe('#fromScripthash', function() {
+
+    it('should create p2sh output script', function() {
+      var hashbuf = new Buffer(20);
+      hashbuf.fill(0);
+      Script().fromScripthash(hashbuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL');
+    });
+
+  });
+
   describe('#removeCodeseparators', function() {
 
     it('should remove any OP_CODESEPARATORs', function() {
