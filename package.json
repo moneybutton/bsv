@@ -65,10 +65,10 @@
   },
   "dependencies": {
     "aes": "=0.1.0",
-    "bn.js": "=0.15.2",
+    "bn.js": "=0.16.0",
     "bs58": "=1.2.1",
-    "elliptic": "=0.15.13",
-    "hash.js": "=0.3.1",
+    "elliptic": "=0.16.0",
+    "hash.js": "=0.3.2",
     "pbkdf2-compat": "=2.0.1"
   },
   "devDependencies": {
