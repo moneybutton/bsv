@@ -67,7 +67,8 @@ groc
 ```
 npm install -g browserify
 npm install -g uglifyify
-npm run build
+browser/build
+
 ```
 ## Testing and Coverage ##
 
@@ -82,7 +83,7 @@ You can see the coverage report at coverage/lcov-report/index.html.
 Or, to build tests for the browser:
 
 ```
-npm run build
+browser/build
 ```
 
 Then open test/index.html in your browser.
