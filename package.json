@@ -72,7 +72,7 @@
     "pbkdf2-compat": "=2.0.1"
   },
   "devDependencies": {
-    "chai": "~1.10.0",
+    "chai": "~1.9.0",
     "mocha": "~2.1.0",
     "browserify": "~8.0.3",
     "uglifyify": "~2.6.0",
