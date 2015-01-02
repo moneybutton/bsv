@@ -5,7 +5,8 @@
   "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive"
+    "test": "istanbul cover _mocha -- --recursive",
+    "build": "browserify index.js -o browser/fullnode.js && browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs browserify -o browser/tests.js"
   },
   "contributors": [
     {
@@ -73,7 +74,7 @@
   "devDependencies": {
     "chai": "~1.10.0",
     "mocha": "~2.1.0",
-    "browserify": "~5.9.1",
+    "browserify": "~8.0.3",
     "uglifyify": "~2.6.0",
     "groc": "~0.7.0"
   },
