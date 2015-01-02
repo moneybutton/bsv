@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "chai": "~1.9.1",
-    "mocha": "~1.21.0",
+    "mocha": "~2.1.0",
     "browserify": "~5.9.1",
     "uglifyify": "~2.6.0",
     "groc": "~0.7.0"
