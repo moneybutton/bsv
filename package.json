@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha -- --recursive",
-    "build": "browserify index.js -o browser/fullnode.js && browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs browserify -o browser/tests.js"
+    "build": "mkdir -p browser && browserify index.js -o browser/fullnode.js && browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs browserify -o browser/tests.js"
   },
   "contributors": [
     {
