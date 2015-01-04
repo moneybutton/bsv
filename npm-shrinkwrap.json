@@ -8,9 +8,9 @@
       "resolved": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz"
     },
     "bn.js": {
-      "version": "0.16.0",
-      "from": "bn.js@=0.16.0",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-0.16.0.tgz"
+      "version": "0.16.1",
+      "from": "bn.js@=0.16.1",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-0.16.1.tgz"
     },
     "bs58": {
       "version": "1.2.1",
@@ -19,17 +19,17 @@
     },
     "elliptic": {
       "version": "0.16.0",
-      "from": "elliptic@=0.16.0",
+      "from": "https://registry.npmjs.org/elliptic/-/elliptic-0.16.0.tgz",
       "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-0.16.0.tgz",
       "dependencies": {
         "brorand": {
           "version": "1.0.5",
-          "from": "brorand@^1.0.1",
+          "from": "https://registry.npmjs.org/brorand/-/brorand-1.0.5.tgz",
           "resolved": "https://registry.npmjs.org/brorand/-/brorand-1.0.5.tgz"
         },
         "inherits": {
           "version": "2.0.1",
-          "from": "inherits@^2.0.1",
+          "from": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz",
           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
         }
       }

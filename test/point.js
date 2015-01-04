@@ -150,6 +150,27 @@ describe('Point', function() {
       b.getY().toString().should.equal('32670510020758816978083085130507043184471273380659243275938904335757337482424');
     });
 
+    it('should accurate multiply this problematic value related to a bug in bn.js', function() {
+      // see these discussions:
+      // https://github.com/bitpay/bitcore/pull/894
+      // https://github.com/indutny/elliptic/issues/17
+      // https://github.com/indutny/elliptic/pull/18
+      // https://github.com/indutny/elliptic/pull/19
+      // https://github.com/indutny/bn.js/commit/3557d780b07ed0ed301e128f326f83c2226fb679
+      var nhex = '6d1229a6b24c2e775c062870ad26bc261051e0198c67203167273c7c62538846';
+      var n = BN(nhex, 16);
+      var g1 = Point.getG(); // precomputed g
+      var g2 = Point().fromX(false, BN('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16)); //non-precomputed g
+      var p1 = g1.mul(n);
+      var p2 = g2.mul(n);
+      var pxhex = 'd6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01';
+      var pyhex = 'e05fb262e64b108991a29979809fcef9d3e70cafceb3248c922c17d83d66bc9d';
+      p1.getX().toBuffer().toString('hex').should.equal(pxhex);
+      p1.getY().toBuffer().toString('hex').should.equal(pyhex);
+      p2.getX().toBuffer().toString('hex').should.equal(pxhex);
+      p2.getY().toBuffer().toString('hex').should.equal(pyhex);
+    });
+
   });
 
   describe('@fromX', function() {
