@@ -3,8 +3,8 @@ var BN = require('../lib/bn');
 var Txout = require('../lib/txout');
 var Script = require('../lib/script');
 var Varint = require('../lib/varint');
-var BufR = require('../lib/bufr');
-var BufW = require('../lib/bufw');
+var BR = require('../lib/br');
+var BW = require('../lib/bw');
 
 describe('Txout', function() {
   
@@ -93,10 +93,10 @@ describe('Txout', function() {
 
   });
 
-  describe('#fromBufR', function() {
+  describe('#fromBR', function() {
     
     it('should make this txin from this known buffer', function() {
-      var txout = Txout().fromBufR(BufR(new Buffer('050000000000000001ae', 'hex')));
+      var txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
@@ -105,17 +105,17 @@ describe('Txout', function() {
   describe('#toBuffer', function() {
     
     it('should output this known buffer', function() {
-      var txout = Txout().fromBufR(BufR(new Buffer('050000000000000001ae', 'hex')));
+      var txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });
 
-  describe('#toBufW', function() {
+  describe('#toBW', function() {
     
     it('should output this known buffer', function() {
-      var txout = Txout().fromBufR(BufR(new Buffer('050000000000000001ae', 'hex')));
-      txout.toBufW().concat().toString('hex').should.equal('050000000000000001ae');
+      var txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
+      txout.toBW().concat().toString('hex').should.equal('050000000000000001ae');
     });
 
   });

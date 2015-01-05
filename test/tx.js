@@ -3,8 +3,8 @@ var Tx = require('../lib/tx');
 var Txin = require('../lib/txin');
 var Txout = require('../lib/txout');
 var should = require('chai').should();
-var BufR = require('../lib/bufr');
-var BufW = require('../lib/bufw');
+var BR = require('../lib/br');
+var BW = require('../lib/bw');
 var Script = require('../lib/script');
 var Sig = require('../lib/sig');
 var Keypair = require('../lib/keypair');
@@ -131,10 +131,10 @@ describe('Tx', function() {
 
   });
 
-  describe('#fromBufR', function() {
+  describe('#fromBR', function() {
     
     it('should recover from this known tx', function() {
-      Tx().fromBufR(BufR(txbuf)).toBuffer().toString('hex').should.equal(txhex);
+      Tx().fromBR(BR(txbuf)).toBuffer().toString('hex').should.equal(txhex);
     });
 
   });
@@ -147,10 +147,10 @@ describe('Tx', function() {
 
   });
 
-  describe('#toBufW', function() {
+  describe('#toBW', function() {
     
     it('should produce this known tx', function() {
-      Tx().fromBuffer(txbuf).toBufW().concat().toString('hex').should.equal(txhex);
+      Tx().fromBuffer(txbuf).toBW().concat().toString('hex').should.equal(txhex);
     });
 
   });

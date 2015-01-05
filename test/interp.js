@@ -9,7 +9,7 @@ var Keypair = require('../lib/keypair');
 var Privkey = require('../lib/privkey');
 var Pubkey = require('../lib/pubkey');
 var Sig = require('../lib/sig');
-var BufR = require('../lib/bufr');
+var BR = require('../lib/br');
 var script_valid = require('./vectors/bitcoind/script_valid');
 var script_invalid = require('./vectors/bitcoind/script_invalid');
 
