@@ -37,6 +37,22 @@ describe('BIP39', function() {
     BIP39.check(mnemonic).should.equal(false);
   });
 
+  describe('@mnemonic', function() {
+    
+    it('should throw an error if bits is too low', function() {
+      (function() {
+        BIP39.mnemonic(127);
+      }).should.throw('bits must be multiple of 32');
+    });
+
+    it('should throw an error if bits is not a multiple of 32', function() {
+      (function() {
+        BIP39.mnemonic(256 - 1);
+      }).should.throw('bits must be multiple of 32');
+    });
+
+  });
+
   describe('@entropy2mnemonic', function() {
 
     it('should throw an error if you do not use enough entropy', function() {
