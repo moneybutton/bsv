@@ -12,8 +12,61 @@ describe('BIP39', function() {
     BIP39.wordlist_en.length.should.equal(2048);
   });
 
-  it('should generate a mnemonic phrase', function() {
-    var phrase = BIP39.mnemonic(BIP39.wordlist_en, 128);
+  it('should generate a mnemonic phrase that passes the check', function() {
+    var mnemonic;
+
+    // should be able to make a mnemonic with or without the default wordlist
+    mnemonic = BIP39.mnemonic(128);
+    BIP39.check(mnemonic).should.equal(true);
+    mnemonic = BIP39.mnemonic(128, BIP39.wordlist_en);
+    BIP39.check(mnemonic, BIP39.wordlist_en).should.equal(true);
+
+    var entropy = new Buffer(32);
+    entropy.fill(0);
+    mnemonic = BIP39.entropy2mnemonic(entropy);
+    BIP39.check(mnemonic, BIP39.wordlist_en).should.equal(true);
+
+    // mnemonics with extra whitespace do not pass the check
+    BIP39.check(mnemonic + ' ', BIP39.wordlist_en).should.equal(false);
+
+    // mnemonics with a word replaced do not pass the check
+    words = mnemonic.split(' ');
+    words[words.length - 1].should.not.equal('zoo');
+    words[words.length - 1] = 'zoo';
+    mnemonic = words.join(' ');
+    BIP39.check(mnemonic).should.equal(false);
+  });
+
+  describe('@entropy2mnemonic', function() {
+
+    it('should throw an error if you do not use enough entropy', function() {
+      var buf = new Buffer(128 / 8 - 1);
+      buf.fill(0);
+      (function() {
+        BIP39.entropy2mnemonic(buf);
+      }).should.throw('Entropy is less than 128 bits. It must be 128 bits or more.');
+    });
+
+    it('should work with and without the wordlist', function() {
+      var buf = new Buffer(128 / 8);
+      buf.fill(0);
+      var mnemonic1 = BIP39.entropy2mnemonic(buf);
+      var mnemonic2 = BIP39.entropy2mnemonic(buf, BIP39.wordlist_en);
+      mnemonic1.should.equal(mnemonic2);
+    });
+
+  });
+
+  describe('@check', function() {
+
+    it('should work with or without optional wordlist', function() {
+      var buf = new Buffer(128 / 8);
+      buf.fill(0);
+      var mnemonic = BIP39.entropy2mnemonic(buf);
+      BIP39.check(mnemonic).should.equal(true);
+      BIP39.check(mnemonic, BIP39.wordlist_en).should.equal(true);
+    });
+
   });
 
   describe('vectors', function() {
@@ -23,9 +76,10 @@ describe('BIP39', function() {
         var code = vector[0];
         var mnemonic = vector[1];
         var seed = vector[2];
-        var mnemonic1 = BIP39.entropy2mnemonic(BIP39.wordlist_en, new Buffer(code, 'hex'));
+        var mnemonic1 = BIP39.entropy2mnemonic(new Buffer(code, 'hex'));
         var seed1 = BIP39.mnemonic2seed(mnemonic, 'TREZOR');
-        BIP39.check(BIP39.wordlist_en, mnemonic).should.be.true;
+        BIP39.check(mnemonic).should.be.true;
+        BIP39.check(mnemonic, BIP39.wordlist_en).should.be.true;
         mnemonic1.should.equal(mnemonic);
         seed1.toString('hex').should.equal(seed)
       });
