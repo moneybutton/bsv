@@ -85,6 +85,16 @@ describe('BIP39', function() {
 
   });
 
+  describe('@mnemonic2seed', function() {
+
+    it('should throw an error in invalid mnemonic', function() {
+      (function() {
+        BIP39.mnemonic2seed("invalid mnemonic");
+      }).should.throw('Mnemonic does not pass the check - was the mnemonic typed incorrectly? Are there extra spaces?');
+    });
+
+  });
+
   describe('vectors', function() {
 
     vectors.english.forEach(function(vector, v) {
