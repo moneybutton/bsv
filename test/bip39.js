@@ -1,5 +1,6 @@
 var should = require('chai').should();
 var BIP39 = require('../lib/bip39');
+var BIP32 = require('../lib/bip32');
 var vectors = require('./vectors/bip39');
 
 describe('BIP39', function() {
@@ -98,7 +99,7 @@ describe('BIP39', function() {
   describe('vectors', function() {
 
     vectors.english.forEach(function(vector, v) {
-      it('should pass test vector ' + v, function() {
+      it('should pass english test vector ' + v, function() {
         var code = vector[0];
         var mnemonic = vector[1];
         var seed = vector[2];
@@ -108,6 +109,17 @@ describe('BIP39', function() {
         BIP39.check(mnemonic, BIP39.wordlist_en).should.be.true;
         mnemonic1.should.equal(mnemonic);
         seed1.toString('hex').should.equal(seed)
+      });
+    });
+
+    vectors.english2.forEach(function(vector, v) {
+      it('should pass english2 test vector ' + v, function() {
+        var entropy = new Buffer(vector.entropy, 'hex');
+        BIP39.entropy2mnemonic(entropy, BIP39.wordlist_en).should.equal(vector.mnemonic);
+        BIP39.check(vector.mnemonic, BIP39.wordlist_en).should.equal(true);
+        var seed = BIP39.mnemonic2seed(vector.mnemonic, vector.passphrase, BIP39.wordlist_en);
+        seed.toString('hex').should.equal(vector.seed);
+        BIP32().fromSeed(seed).xprivkeyString().should.equal(vector.bip32_xprv);
       });
     });
 
