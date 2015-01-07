@@ -29,6 +29,19 @@ describe('BN', function() {
     bn.toString().should.equal((Math.pow(2, 26)).toString());
   });
 
+  it('should correctly square the number', function() {
+    // these test vectors are related to this bn.js commit:
+    // https://github.com/indutny/bn.js/commit/3557d780b07ed0ed301e128f326f83c2226fb679
+    var p = BN._prime('k256').p;
+    var red = BN.red('k256');
+   
+    var n = new BN('9cd8cb48c3281596139f147c1364a3ede88d3f310fdb0eb98c924e599ca1b3c9', 16);
+    var expected = n.sqr().mod(p);
+    var actual = n.toRed(red).redSqr().fromRed();
+   
+    assert.equal(actual.toString(16), expected.toString(16));
+  });
+
   describe('#copy', function() {
     
     it('should copy 5', function() {
