@@ -99,20 +99,6 @@ describe('BIP39', function() {
   describe('vectors', function() {
 
     vectors.english.forEach(function(vector, v) {
-      it('should pass english test vector ' + v, function() {
-        var code = vector[0];
-        var mnemonic = vector[1];
-        var seed = vector[2];
-        var mnemonic1 = BIP39.entropy2mnemonic(new Buffer(code, 'hex'));
-        var seed1 = BIP39.mnemonic2seed(mnemonic, 'TREZOR');
-        BIP39.check(mnemonic).should.be.true;
-        BIP39.check(mnemonic, BIP39.wordlist_en).should.be.true;
-        mnemonic1.should.equal(mnemonic);
-        seed1.toString('hex').should.equal(seed)
-      });
-    });
-
-    vectors.english2.forEach(function(vector, v) {
       it('should pass english2 test vector ' + v, function() {
         var entropy = new Buffer(vector.entropy, 'hex');
         BIP39.entropy2mnemonic(entropy, BIP39.wordlist_en).should.equal(vector.mnemonic);
