@@ -99,7 +99,7 @@ describe('BIP39', function() {
   describe('vectors', function() {
 
     vectors.english.forEach(function(vector, v) {
-      it('should pass english2 test vector ' + v, function() {
+      it('should pass english test vector ' + v, function() {
         var entropy = new Buffer(vector.entropy, 'hex');
         BIP39.entropy2mnemonic(entropy, BIP39.wordlist_en).should.equal(vector.mnemonic);
         BIP39.check(vector.mnemonic, BIP39.wordlist_en).should.equal(true);
