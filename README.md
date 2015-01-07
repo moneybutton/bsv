@@ -71,16 +71,26 @@ npm run build
 ```
 ## Testing and Coverage ##
 
+To run tests for both node and the browser (requires both Firefox and Chrome):
 ```
 npm install -g mocha
 npm install -g istanbul
 npm test
 ```
 
+Tests for node only:
+```
+npm run test-node
+```
+
 You can see the coverage report at coverage/lcov-report/index.html.
 
-Or, to build tests for the browser:
+Tests for the browser only:
+```
+npm run test-browser
+```
 
+Or, run tests in your browser of choice without using karma, first build:
 ```
 npm run build
 ```

@@ -5,7 +5,9 @@
   "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive",
+    "test-node": "istanbul cover _mocha -- --recursive",
+    "test-browser": "npm run build && ./node_modules/karma/bin/karma start .karma.conf.js --log-level debug --single-run",
+    "test": "npm run test-node && npm run test-browser",
     "build": "mkdir -p browser && browserify index.js -o browser/fullnode.js && browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs browserify -o browser/tests.js"
   },
   "contributors": [
@@ -72,11 +74,15 @@
     "pbkdf2-compat": "=2.0.1"
   },
   "devDependencies": {
-    "chai": "~1.9.0",
-    "mocha": "~2.1.0",
     "browserify": "~8.0.3",
-    "uglifyify": "~2.6.0",
-    "groc": "~0.8.0"
+    "chai": "~1.9.0",
+    "groc": "~0.8.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "mocha": "~2.1.0",
+    "uglifyify": "~2.6.0"
   },
   "license": "MIT"
 }
