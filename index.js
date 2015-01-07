@@ -12,6 +12,8 @@ fullnode.version = require('./package').version;
 
 //main bitcoin library - bitcoin protocols and standards
 fullnode.Address = require('./lib/address');
+fullnode.AES = require('./lib/aes');
+fullnode.AESCBC = require('./lib/aescbc');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
 fullnode.BIP32 = require('./lib/bip32');
@@ -22,6 +24,7 @@ fullnode.BN = require('./lib/bn');
 fullnode.BR = require('./lib/br');
 fullnode.BSM = require('./lib/bsm');
 fullnode.BW = require('./lib/bw');
+fullnode.CBC = require('./lib/cbc');
 fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
 fullnode.Hash = require('./lib/hash');
@@ -42,9 +45,6 @@ fullnode.Varint = require('./lib/varint');
 
 //experimental, nonstandard, or unstable features
 fullnode.expmt = {};
-fullnode.expmt.AES = require('./lib/expmt/aes');
-fullnode.expmt.AESCBC = require('./lib/expmt/aescbc');
-fullnode.expmt.CBC = require('./lib/expmt/cbc');
 fullnode.expmt.ECIES = require('./lib/expmt/ecies');
 
 //experimental stealth address support

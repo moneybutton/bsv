@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var AESCBC = require('../../lib/expmt/aescbc');
+var AESCBC = require('../lib/aescbc');
 
 describe('AESCBC', function() {
 
