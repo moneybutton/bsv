@@ -109,6 +109,17 @@ describe('BIP39', function() {
       });
     });
 
+    vectors.japanese.forEach(function(vector, v) {
+      it('should pass japanese test vector ' + v, function() {
+        var entropy = new Buffer(vector.entropy, 'hex');
+        BIP39.entropy2mnemonic(entropy, BIP39.wordlist_jp).should.equal(vector.mnemonic);
+        BIP39.check(vector.mnemonic, BIP39.wordlist_jp).should.equal(true);
+        var seed = BIP39.mnemonic2seed(vector.mnemonic, vector.passphrase, BIP39.wordlist_jp);
+        seed.toString('hex').should.equal(vector.seed);
+        BIP32().fromSeed(seed).xprivkeyString().should.equal(vector.bip32_xprv);
+      });
+    });
+
   });
 
 });
