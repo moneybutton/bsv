@@ -1,5 +1,6 @@
 var should = require('chai').should();
 var AESCBC = require('../lib/aescbc');
+var vectors = require('./vectors/aescbc');
 
 describe('AESCBC', function() {
 
@@ -66,6 +67,21 @@ describe('AESCBC', function() {
       var encbuf = AESCBC.encryptCipherkey(messagebuf, cipherkeybuf, ivbuf);
       var messagebuf2 = AESCBC.decryptCipherkey(encbuf, cipherkeybuf);
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'));
+    });
+
+  });
+
+  describe('vectors', function() {
+
+    vectors.forEach(function(vector, i) {
+      it('should pass sjcl test vector ' + i, function() {
+        var keybuf = new Buffer(vector.key, 'hex');
+        var ivbuf = new Buffer(vector.iv, 'hex');
+        var ptbuf = new Buffer(vector.pt, 'hex');
+        var ctbuf = new Buffer(vector.ct, 'hex');
+        AESCBC.encryptCipherkey(ptbuf, keybuf, ivbuf).slice(128 / 8).toString('hex').should.equal(vector.ct);
+        AESCBC.decryptCipherkey(Buffer.concat([ivbuf, ctbuf]), keybuf).toString('hex').should.equal(vector.pt);
+      });
     });
 
   });
