@@ -4,16 +4,6 @@ var CBC = require('../lib/cbc');
 
 describe('CBC', function() {
 
-  it('should return a new CBC', function() {
-    var cbc = new CBC();
-    should.exist(cbc);
-  })
-
-  it('should return a new CBC when called without "new"', function() {
-    var cbc = new CBC();
-    should.exist(cbc);
-  });
-
   describe('@buf2blockbufs', function() {
 
     it('should convert this buffer into one block', function() {
