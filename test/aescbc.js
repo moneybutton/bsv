@@ -7,38 +7,13 @@ describe('AESCBC', function() {
   describe('@encrypt', function() {
 
     it('should return encrypt one block', function() {
-      var password = "password";
-      var messagebuf = new Buffer(128 / 8 - 1);
-      messagebuf.fill(0);
-      var encbuf = AESCBC.encrypt(messagebuf, password);
-      encbuf.length.should.equal(128 / 8 + 128 / 8);
-    });
-
-  });
-
-  describe('@decrypt', function() {
-
-    it('should decrypt that which was encrypted', function() {
-      var password = "password";
-      var messagebuf = new Buffer(128 / 8 - 1);
-      messagebuf.fill(0);
-      var encbuf = AESCBC.encrypt(messagebuf, password);
-      var messagebuf2 = AESCBC.decrypt(encbuf, password);
-      messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'));
-    });
-
-  });
-
-  describe('@encryptCipherkey', function() {
-
-    it('should return encrypt one block', function() {
       var cipherkeybuf = new Buffer(256 / 8);
       cipherkeybuf.fill(0x10);
       var ivbuf = new Buffer(128 / 8);
       ivbuf.fill(0);
       var messagebuf = new Buffer(128 / 8 - 1);
       messagebuf.fill(0);
-      var encbuf = AESCBC.encryptCipherkey(messagebuf, cipherkeybuf, ivbuf);
+      var encbuf = AESCBC.encrypt(messagebuf, cipherkeybuf, ivbuf);
       encbuf.length.should.equal(128 / 8 + 128 / 8);
     });
 
@@ -49,13 +24,13 @@ describe('AESCBC', function() {
       ivbuf.fill(0);
       var messagebuf = new Buffer(128 / 8);
       messagebuf.fill(0);
-      var encbuf = AESCBC.encryptCipherkey(messagebuf, cipherkeybuf, ivbuf);
+      var encbuf = AESCBC.encrypt(messagebuf, cipherkeybuf, ivbuf);
       encbuf.length.should.equal(128 / 8 + 128 / 8 + 128 / 8);
     });
 
   });
 
-  describe('@decryptCipherkey', function() {
+  describe('@decrypt', function() {
     
     it('should decrypt that which was encrypted', function() {
       var cipherkeybuf = new Buffer(256 / 8);
@@ -64,8 +39,8 @@ describe('AESCBC', function() {
       ivbuf.fill(0);
       var messagebuf = new Buffer(128 / 8);
       messagebuf.fill(0);
-      var encbuf = AESCBC.encryptCipherkey(messagebuf, cipherkeybuf, ivbuf);
-      var messagebuf2 = AESCBC.decryptCipherkey(encbuf, cipherkeybuf);
+      var encbuf = AESCBC.encrypt(messagebuf, cipherkeybuf, ivbuf);
+      var messagebuf2 = AESCBC.decrypt(encbuf, cipherkeybuf);
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'));
     });
 
@@ -79,8 +54,8 @@ describe('AESCBC', function() {
         var ivbuf = new Buffer(vector.iv, 'hex');
         var ptbuf = new Buffer(vector.pt, 'hex');
         var ctbuf = new Buffer(vector.ct, 'hex');
-        AESCBC.encryptCipherkey(ptbuf, keybuf, ivbuf).slice(128 / 8).toString('hex').should.equal(vector.ct);
-        AESCBC.decryptCipherkey(Buffer.concat([ivbuf, ctbuf]), keybuf).toString('hex').should.equal(vector.pt);
+        AESCBC.encrypt(ptbuf, keybuf, ivbuf).slice(128 / 8).toString('hex').should.equal(vector.ct);
+        AESCBC.decrypt(Buffer.concat([ivbuf, ctbuf]), keybuf).toString('hex').should.equal(vector.pt);
       });
     });
 
