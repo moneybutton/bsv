@@ -1,6 +1,6 @@
 var should = require('chai').should();
 var Hash = require('../lib/hash');
-var vectors = require('./vectors/hmac');
+var vectors = require('./vectors/hash');
 
 describe('Hash', function() {
   var buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
@@ -143,7 +143,7 @@ describe('Hash', function() {
 
   describe('vectors', function() {
 
-    vectors.forEach(function(vector, i) {
+    vectors.hmac.forEach(function(vector, i) {
       it('should pass standard hmac test vector ' + i, function() {
         var keybuf = new Buffer(vector.key, 'hex');
         var databuf = new Buffer(vector.data, 'hex');
