@@ -1,7 +1,7 @@
-var ACH = require('../lib/aescbchmac');
+var ACH = require('../lib/ach');
 var should = require('chai').should();
 
-describe('AESCBCHMAC', function() {
+describe('ACH (ACHCBCHMAC)', function() {
   
   describe('@encrypt', function() {
     
