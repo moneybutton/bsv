@@ -30,8 +30,16 @@ describe('BN', function() {
   });
 
   it('should correctly square the number related to a bug in bn.js', function() {
-    // these test vectors are related to this bn.js commit:
-    // https://github.com/indutny/bn.js/commit/3557d780b07ed0ed301e128f326f83c2226fb679
+    /**
+     * These test vectors are related to this bn.js commit:
+     * https://github.com/indutny/bn.js/commit/3557d780b07ed0ed301e128f326f83c2226fb679
+     *
+     * More information:
+     * https://github.com/bitpay/bitcore/pull/894
+     * https://github.com/indutny/elliptic/issues/17
+     * https://github.com/indutny/elliptic/pull/18
+     * https://github.com/indutny/elliptic/pull/19
+     */
     var p = BN._prime('k256').p;
     var red = BN.red('k256');
    
