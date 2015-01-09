@@ -6,7 +6,19 @@
 
 A module for [bitcore][bitcore] that implements the [Elliptic Curve Integrated Encryption Scheme (ECIES)][ECIES]. Uses ECIES symmetric key negotiation from public keys to encrypt arbitrarily long data streams.
 
+See [the main bitcore repo](https://github.com/bitpay/bitcore) or the [bitcore guide on ECIES](http://bitcore.io/guide/ecies.html) for more information.
+
 Credit to [@ryanxcharles][ryan] for the original implementation.
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/bitpay/bitcore) on the main bitcore repo for information about how to contribute.
+
+## License
+
+Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
+
+Copyright 2013-2015 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
 
 [bitcore]: http://github.com/bitpay/bitcore-ecies
 [ECIES]: http://en.wikipedia.org/wiki/Integrated_Encryption_Scheme
