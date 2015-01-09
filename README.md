@@ -12,6 +12,26 @@ Credit to [@ryanxcharles][ryan] for the original implementation.
 
 ## Getting started
 
+ECIES will allow to securely encrypt and decrypt messages using ECDSA key pairs (bitcoin cryptography).
+
+```javascript
+var alice = ECIES()
+  .privateKey(aliceKey)
+  .publicKey(bobKey.publicKey);
+
+var message = 'some secret message';
+var encrypted = alice.encrypt(message);
+
+// encrypted will contain an encrypted buffer only Bob can decrypt
+
+var bob = ECIES()
+  .privateKey(bobKey)
+  .publicKey(aliceKey.publicKey);
+var decrypted = bob
+  .decrypt(encrypted)
+  .toString();
+// decrypted will be 'some secret message'
+```
 
 ## Contributing
 
