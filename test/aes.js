@@ -87,9 +87,9 @@ describe('AES', function() {
     
     vectors.forEach(function(vector, i) {
       it('should pass sjcl test vector ' + i, function() {
-        var keybuf = AES.words2buf(vector.key);
-        var ptbuf = AES.words2buf(vector.pt);
-        var ctbuf = AES.words2buf(vector.ct);
+        var keybuf = new Buffer(vector.key, 'hex');
+        var ptbuf = new Buffer(vector.pt, 'hex');
+        var ctbuf = new Buffer(vector.ct, 'hex');
 
         AES.encrypt(ptbuf, keybuf).toString('hex').should.equal(ctbuf.toString('hex'));
         AES.decrypt(ctbuf, keybuf).toString('hex').should.equal(ptbuf.toString('hex'));
