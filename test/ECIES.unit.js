@@ -66,9 +66,8 @@ describe('ECIES', function() {
   it('roundtrips', function() {
     var secret = 'some secret message!!!';
     var encrypted = alice.encrypt(secret);
-    var encBuf = new Buffer(encrypted, 'hex');
     var decrypted = bob
-      .decrypt(encBuf)
+      .decrypt(encrypted)
       .toString();
     decrypted.should.equal(secret);
   });
