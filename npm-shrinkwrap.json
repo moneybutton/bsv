@@ -8,9 +8,9 @@
       "resolved": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz"
     },
     "bn.js": {
-      "version": "0.16.1",
-      "from": "bn.js@=0.16.1",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-0.16.1.tgz"
+      "version": "1.0.0",
+      "from": "bn.js@=1.0.0",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-1.0.0.tgz"
     },
     "bs58": {
       "version": "1.2.1",
@@ -18,19 +18,14 @@
       "resolved": "https://registry.npmjs.org/bs58/-/bs58-1.2.1.tgz"
     },
     "elliptic": {
-      "version": "0.16.0",
-      "from": "elliptic@=0.16.0",
-      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-0.16.0.tgz",
+      "version": "1.0.0",
+      "from": "elliptic@=1.0.0",
+      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-1.0.0.tgz",
       "dependencies": {
         "brorand": {
           "version": "1.0.5",
           "from": "brorand@^1.0.1",
           "resolved": "https://registry.npmjs.org/brorand/-/brorand-1.0.5.tgz"
-        },
-        "hash.js": {
-          "version": "0.3.2",
-          "from": "hash.js@^0.3.2",
-          "resolved": "https://registry.npmjs.org/hash.js/-/hash.js-0.3.2.tgz"
         },
         "inherits": {
           "version": "2.0.1",
@@ -41,7 +36,7 @@
     },
     "hash.js": {
       "version": "1.0.2",
-      "from": "hash.js@^1.0.2",
+      "from": "hash.js@=1.0.2",
       "resolved": "https://registry.npmjs.org/hash.js/-/hash.js-1.0.2.tgz",
       "dependencies": {
         "inherits": {
