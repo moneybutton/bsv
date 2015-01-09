@@ -143,6 +143,30 @@ describe('Hash', function() {
 
   describe('vectors', function() {
 
+    vectors.sha1.forEach(function(vector, i) {
+      it('should pass sjcl sha1 test vector ' + i, function() {
+        var data = new Buffer(vector[0]);
+        var hashbuf = new Buffer(vector[1], 'hex');
+        Hash.sha1(data).toString('hex').should.equal(vector[1]);
+      });
+    });
+    
+    vectors.sha256.forEach(function(vector, i) {
+      it('should pass sjcl sha256 test vector ' + i, function() {
+        var data = new Buffer(vector[0]);
+        var hashbuf = new Buffer(vector[1], 'hex');
+        Hash.sha256(data).toString('hex').should.equal(vector[1]);
+      });
+    });
+    
+    vectors.sha512.forEach(function(vector, i) {
+      it('should pass sjcl sha512 test vector ' + i, function() {
+        var data = new Buffer(vector[0]);
+        var hashbuf = new Buffer(vector[1], 'hex');
+        Hash.sha512(data).toString('hex').should.equal(vector[1]);
+      });
+    });
+    
     vectors.hmac.forEach(function(vector, i) {
       it('should pass standard hmac test vector ' + i, function() {
         var keybuf = new Buffer(vector.key, 'hex');
