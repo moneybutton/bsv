@@ -1,5 +1,6 @@
 var should = require('chai').should();
 var Hash = require('../lib/hash');
+var vectors = require('./vectors/hmac');
 
 describe('Hash', function() {
   var buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
@@ -138,6 +139,22 @@ describe('Hash', function() {
       Hash.sha512hmac(data, key).toString('hex').should.equal(hex);
     });
 
+  });
+
+  describe('vectors', function() {
+
+    vectors.forEach(function(vector, i) {
+      it('should pass sjcl test vector ' + i, function() {
+        /**
+         * These test vectors are taken from sjcl, however they are originally from here:
+         * http://tools.ietf.org/html/draft-nystrom-smime-hmac-sha-02
+         */
+        var keybuf = new Buffer(vector.key, 'hex');
+        var databuf = new Buffer(vector.data, 'hex');
+        Hash.sha256hmac(databuf, keybuf).toString('hex').substr(0, vector.mac.length).should.equal(vector.mac);
+      });
+    });
+    
   });
 
 });
