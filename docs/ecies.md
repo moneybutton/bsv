@@ -40,7 +40,7 @@ var encrypted = cypher.encrypt(data);
 
 // Decrypt data
 var cypher2 = ECIES.privateKey(bobPrivateKey).publicKey(alicePrivateKey.publicKey);
-var decrypted = cypher.decrypt(encrypted);
+var decrypted = cypher2.decrypt(encrypted);
 
 assert(data.toString(), decrypted.toString());
 ```
