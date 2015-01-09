@@ -145,13 +145,10 @@ describe('Hash', function() {
 
     vectors.forEach(function(vector, i) {
       it('should pass sjcl test vector ' + i, function() {
-        /**
-         * These test vectors are taken from sjcl, however they are originally from here:
-         * http://tools.ietf.org/html/draft-nystrom-smime-hmac-sha-02
-         */
         var keybuf = new Buffer(vector.key, 'hex');
         var databuf = new Buffer(vector.data, 'hex');
-        Hash.sha256hmac(databuf, keybuf).toString('hex').substr(0, vector.mac.length).should.equal(vector.mac);
+        Hash.sha256hmac(databuf, keybuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac);
+        Hash.sha512hmac(databuf, keybuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac);
       });
     });
     
