@@ -10,6 +10,9 @@ See [the main bitcore repo](https://github.com/bitpay/bitcore) or the [bitcore g
 
 Credit to [@ryanxcharles][ryan] for the original implementation.
 
+## Getting started
+
+
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/bitpay/bitcore) on the main bitcore repo for information about how to contribute.
