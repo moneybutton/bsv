@@ -144,7 +144,7 @@ describe('Hash', function() {
   describe('vectors', function() {
 
     vectors.forEach(function(vector, i) {
-      it('should pass sjcl test vector ' + i, function() {
+      it('should pass standard hmac test vector ' + i, function() {
         var keybuf = new Buffer(vector.key, 'hex');
         var databuf = new Buffer(vector.data, 'hex');
         Hash.sha256hmac(databuf, keybuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac);
