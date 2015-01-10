@@ -71,6 +71,7 @@
       }
     }
   ],
+
   "invalid": {
     "verifystr": [
       {
@@ -155,6 +156,7 @@
       }
     ]
   },
+
   "deterministicK": [
     {
       "message": "test data",
