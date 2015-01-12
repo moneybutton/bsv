@@ -25,6 +25,7 @@ fullnode.BR = require('./lib/br');
 fullnode.BSM = require('./lib/bsm');
 fullnode.BW = require('./lib/bw');
 fullnode.CBC = require('./lib/cbc');
+fullnode.cmp = require('./lib/cmp');
 fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
 fullnode.Hash = require('./lib/hash');
