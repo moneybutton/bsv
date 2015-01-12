@@ -37,6 +37,19 @@ describe('cmp', function() {
       var buf1 = new Buffer([1, 0]);
       var buf2 = new Buffer([1, 1]);
       cmp.eq(buf1, buf2).should.equal(false);
+
+      (function() {
+        var buf1 = "";
+        var buf2 = new Buffer([0]);
+        cmp.eq(buf1, buf2);
+      }).should.throw('buf1 and buf2 must be buffers');
+
+      (function() {
+        var buf1 = new Buffer([0]);
+        var buf2 = "";
+        cmp.eq(buf1, buf2);
+      }).should.throw('buf1 and buf2 must be buffers');
+
     });
 
   });
@@ -75,6 +88,19 @@ describe('cmp', function() {
       var buf1 = new Buffer([1, 0]);
       var buf2 = new Buffer([1, 1]);
       cmp.fasteq(buf1, buf2).should.equal(false);
+
+      (function() {
+        var buf1 = "";
+        var buf2 = new Buffer([0]);
+        cmp.eq(buf1, buf2);
+      }).should.throw('buf1 and buf2 must be buffers');
+
+      (function() {
+        var buf1 = new Buffer([0]);
+        var buf2 = "";
+        cmp.eq(buf1, buf2);
+      }).should.throw('buf1 and buf2 must be buffers');
+
     });
 
   });
