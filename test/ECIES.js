@@ -27,6 +27,14 @@ describe('ECIES', function() {
     (ecies instanceof ECIES).should.equal(true);
   });
 
+  it('privateKey fails with no argument', function() {
+    var ecies = ECIES();
+    var fail = function() {
+      ecies.privateKey();
+    };
+    fail.should.throw('no private key provided');
+  });
+
   it('chainable function', function() {
     var ecies = ECIES()
       .privateKey(aliceKey)
@@ -71,5 +79,10 @@ describe('ECIES', function() {
       .toString();
     decrypted.should.equal(secret);
   });
+
+  it('errors', function() {
+    should.exist(bitcore.errors.ECIES);
+  });
+
 
 });
