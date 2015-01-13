@@ -10,8 +10,7 @@
     "lint": "gulp lint",
     "test": "gulp test",
     "coverage": "gulp coverage",
-    "build": "gulp",
-    "postinstall": "node ./lib/errors/build.js"
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -36,12 +35,12 @@
     "chai": "~1.10.0",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.10",
-    "gulp-bitcore": "^0.1.0",
+    "gulp-bitcore": "^0.3.0",
     "istanbul": "^0.3.5",
     "mocha": "^2.0.1"
   },
   "dependencies": {
     "aes": "^0.1.0",
-    "bitcore": "=0.8.6"
+    "bitcore": "^0.8.6"
   }
 }
