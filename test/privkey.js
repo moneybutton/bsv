@@ -77,6 +77,39 @@ describe('Privkey', function() {
 
   });
 
+  describe('#toBuffer', function() {
+    
+    it('should return a buffer', function() {
+      var privkey = Privkey().fromBN(BN(5));
+      privkey.toBuffer().toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+    });
+    
+  });
+
+  describe('#fromBuffer', function() {
+    
+    it('should return a buffer', function() {
+      var privkey = Privkey().fromBuffer(new Buffer('0000000000000000000000000000000000000000000000000000000000000005', 'hex'));
+      privkey.toBuffer().toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+    });
+    
+    it('should throw an error of buffer is wrong length', function() {
+      (function() {
+        var privkey = Privkey().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000005', 'hex'));
+      }).should.throw('Privkey buffer must be 32 bytes');
+    });
+    
+  });
+
+  describe('#toBN', function() {
+    
+    it('should return a bn', function() {
+      var privkey = Privkey().fromBN(BN(5));
+      privkey.toBN().eq(BN(5)).should.equal(true);
+    });
+    
+  });
+
   describe('#fromBN', function() {
 
     it('should create a privkey from a bignum', function() {
