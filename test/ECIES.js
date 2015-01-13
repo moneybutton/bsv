@@ -51,12 +51,10 @@ describe('ECIES', function() {
     .privateKey(bobKey)
     .publicKey(aliceKey.publicKey);
   var message = 'attack at dawn';
+
   it('correctly encrypts a message', function() {
-
     var encrypted = alice.encrypt(message);
-
-    (encrypted instanceof Buffer).should.equal(true);
-
+    Buffer.isBuffer(encrypted).should.equal(true);
   });
 
   it('correctly decrypts a message', function() {
