@@ -52,6 +52,6 @@
   },
   "dependencies": {
     "aes": "^0.1.0",
-    "bitcore": "^0.8.7"
+    "bitcore": "git://github.com/bitpay/bitcore"
   }
 }
