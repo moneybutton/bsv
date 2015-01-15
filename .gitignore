@@ -26,3 +26,8 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+
+tests.js
+bitcore-ecies.js
+bitcore-ecies.min.js
