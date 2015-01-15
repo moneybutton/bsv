@@ -9,6 +9,7 @@ var BR = require('../lib/br');
 var Script = require('../lib/script');
 var Pubkey = require('../lib/pubkey');
 var Privkey = require('../lib/privkey');
+var Keypair = require('../lib/keypair');
 var tx_valid = require('./vectors/bitcoind/tx_valid');
 var tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
@@ -27,23 +28,69 @@ describe('Txbuilder', function() {
     should.exist(txb.tx);
   });
 
-  describe('#addToAddress', function() {
+  it('should make a new tx following this API', function() {
+    var txb = new Txbuilder();
+
+    // make change address
+    var privkey = Privkey().fromBN(BN(1));
+    var keypair = Keypair().fromPrivkey(privkey);
+    var changeaddr = Address().fromPubkey(keypair.pubkey);
+
+    // make addresses to send from and to
+    var privkey1 = Privkey().fromBN(BN(2));
+    var keypair1 = Keypair().fromPrivkey(privkey1);
+    var addr1 = Address().fromPubkey(keypair1.pubkey);
+    var privkey2 = Privkey().fromBN(BN(3));
+    var keypair2 = Keypair().fromPrivkey(privkey2);
+    var addr2 = Address().fromPubkey(keypair2.pubkey);
+
+    // txouts that we are spending
+    var scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG');
+    var scriptout2 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG');
+    var txout1 = Txout(BN(1e8), scriptout1);
+    var txout2 = Txout(BN(1e8 + 0.001e8), scriptout2); // contains extra that we will use for the fee
+
+    var utxoutmap = {
+      // pubkeyhash ("normal" output)
+      '0000000000000000000000000000000000000000000000000000000000000000:0': {txout: txout1, keypair: keypair1},
+      '0100000000000000000000000000000000000000000000000000000000000000:0': {txout: txout2, keypair: keypair2}
+
+      // p2sh multisig
+      //'0000000000000000000000000000000000000000000000000000000000000000:1': {txout: Txout(), keypair: keypair, redeemScript: Script()}
+    };
+
+    txb.set({
+      utxoutmap: utxoutmap,
+      changeaddr: changeaddr,
+      feebn: BN(0.001e8)
+    });
+
+    txb.addTo(BN(1e8), addr1);
+    txb.addTo(BN(1e8), addr2);
+
+    txb.build();
+    txb.sign();
+
+    txb.verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
+  });
+
+  describe('#addTo', function() {
     
     it('should add a scripthash address', function() {
       var hashbuf = new Buffer(20);
       hashbuf.fill(0);
       var address = Address().fromScript(Script().fromScripthash(hashbuf));
       var txb = Txbuilder();
-      txb.addToAddress(BN(0), address);
-      txb.tx.txouts.length.should.equal(1);
+      txb.addTo(BN(0), address);
+      txb.toTxouts.length.should.equal(1);
     });
 
     it('should add a pubkeyhash address', function() {
       var pubkey = Pubkey().fromPrivkey(Privkey().fromRandom());
       var address = Address().fromPubkey(pubkey);
       var txb = Txbuilder();
-      txb.addToAddress(BN(0), address);
-      txb.tx.txouts.length.should.equal(1);
+      txb.addTo(BN(0), address);
+      txb.toTxouts.length.should.equal(1);
     });
 
   });
@@ -65,13 +112,13 @@ describe('Txbuilder', function() {
           var txoutnum = input[1];
           if (txoutnum === -1)
             txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Txout().setScript(Script().fromBitcoindString(input[2]));
+          map[input[0] + ":" + txoutnum] = {txout: Txout().setScript(Script().fromBitcoindString(input[2]))};
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
         var txb = Txbuilder().set({
           tx: tx,
-          prevtxoutsmap: map
+          utxoutmap: map
         });
 
         txb.verifytx(flags).should.equal(true);
@@ -93,13 +140,13 @@ describe('Txbuilder', function() {
           var txoutnum = input[1];
           if (txoutnum === -1)
             txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = Txout().setScript(Script().fromBitcoindString(input[2]));
+          map[input[0] + ":" + txoutnum] = {txout: Txout().setScript(Script().fromBitcoindString(input[2]))};
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
         var txb = Txbuilder().set({
           tx: tx,
-          prevtxoutsmap: map
+          utxoutmap: map
         });
 
         txb.verifytx(flags).should.equal(false);
