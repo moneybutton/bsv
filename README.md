@@ -43,6 +43,6 @@ Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/mas
 
 Copyright 2013-2015 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
 
-[bitcore]: http://github.com/bitpay/bitcore-ecies
+[bitcore]: http://github.com/bitpay/bitcore
 [ECIES]: http://en.wikipedia.org/wiki/Integrated_Encryption_Scheme
 [ryan]: http://github.com/ryanxcharles
