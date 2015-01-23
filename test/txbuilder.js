@@ -69,7 +69,8 @@ describe('Txbuilder', function() {
     txb.addTo(BN(1e8), addr2);
 
     txb.build();
-    txb.sign();
+    txb.sign(0, keypair1);
+    txb.sign(1, keypair2);
 
     txb.verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
   });
