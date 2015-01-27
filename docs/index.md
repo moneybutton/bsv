@@ -1,3 +1,4 @@
+---
 title: ECIES
 description: Uses ECIES symmetric key negotiation from public keys to encrypt arbitrarily long data streams.
 ---
@@ -14,18 +15,18 @@ For more information refer to the [bitcore-ecies](https://github.com/bitpay/bitc
 ECIES is implemented as a separate module and you must add it to your dependencies:
 
 For node projects:
-```
+```bash
 npm install bitcore-ecies --save
 ```
 
 For client-side projects:
-```
+```bash
 bower install bitcore-ecies --save
 ```
 
 ## Example
 
-```
+```javascript
 var bitcore = require('bitcore');
 var ECIES = require('bitcore-ecies');
 
