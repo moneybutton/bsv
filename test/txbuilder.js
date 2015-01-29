@@ -36,13 +36,18 @@ describe('Txbuilder', function() {
     var keypair = Keypair().fromPrivkey(privkey);
     var changeaddr = Address().fromPubkey(keypair.pubkey);
 
-    // make addresses to send from and to
+    // make addresses to send from
     var privkey1 = Privkey().fromBN(BN(2));
     var keypair1 = Keypair().fromPrivkey(privkey1);
     var addr1 = Address().fromPubkey(keypair1.pubkey);
+
     var privkey2 = Privkey().fromBN(BN(3));
     var keypair2 = Keypair().fromPrivkey(privkey2);
     var addr2 = Address().fromPubkey(keypair2.pubkey);
+
+    // make addresses to send to
+    var saddr1 = addr1;
+    var saddr2 = Address().fromScript(Script().fromString('OP_RETURN')); // fake, unredeemable p2sh address
 
     // txouts that we are spending
     var scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG');
@@ -65,8 +70,8 @@ describe('Txbuilder', function() {
       feebn: BN(0.001e8)
     });
 
-    txb.addTo(BN(1e8), addr1);
-    txb.addTo(BN(1e8), addr2);
+    txb.addTo(BN(1e8), saddr1); // pubkeyhash address
+    txb.addTo(BN(1e8), saddr2); // p2sh address
 
     txb.build();
     txb.sign(0, keypair1);
