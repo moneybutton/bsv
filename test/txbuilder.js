@@ -64,14 +64,11 @@ describe('Txbuilder', function() {
       //'0000000000000000000000000000000000000000000000000000000000000000:1': {txout: Txout(), redeemScript: Script()}
     };
 
-    txb.set({
-      utxoutmap: utxoutmap,
-      changeaddr: changeaddr,
-      feebn: BN(0.001e8)
-    });
-
-    txb.addTo(BN(1e8), saddr1); // pubkeyhash address
-    txb.addTo(BN(1e8), saddr2); // p2sh address
+    txb.setUTxoutMap(utxoutmap);
+    txb.setFee(BN(0.001e8));
+    txb.setChangeAddress(changeaddr);
+    txb.to(BN(1e8), saddr1); // pubkeyhash address
+    txb.to(BN(1e8), saddr2); // p2sh address
 
     txb.build();
     txb.sign(0, keypair1);
@@ -80,14 +77,14 @@ describe('Txbuilder', function() {
     txb.verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
   });
 
-  describe('#addTo', function() {
+  describe('#to', function() {
     
     it('should add a scripthash address', function() {
       var hashbuf = new Buffer(20);
       hashbuf.fill(0);
       var address = Address().fromScript(Script().fromScripthash(hashbuf));
       var txb = Txbuilder();
-      txb.addTo(BN(0), address);
+      txb.to(BN(0), address);
       txb.toTxouts.length.should.equal(1);
     });
 
@@ -95,7 +92,7 @@ describe('Txbuilder', function() {
       var pubkey = Pubkey().fromPrivkey(Privkey().fromRandom());
       var address = Address().fromPubkey(pubkey);
       var txb = Txbuilder();
-      txb.addTo(BN(0), address);
+      txb.to(BN(0), address);
       txb.toTxouts.length.should.equal(1);
     });
 
