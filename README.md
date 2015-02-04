@@ -31,7 +31,8 @@ To verify a message:
 
 ```javascript
 var address = 'n1ZCYg9YXtB5XCZazLxSmPDa8iwJRZHhGx';
-var verified = Message('hello, world').verify(address, signature);        
+var signature = 'H/DIn8uA1scAuKLlCx+/9LnAcJtwQQ0PmcPrJUq90aboLv3fH5fFvY+vmbfOSFEtGarznYli6ShPr9RXwY9UrIY=';
+var verified = Message('hello, world').verify(address, signature);
 ```
 
 ## Contributing
