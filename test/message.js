@@ -26,7 +26,7 @@ describe('Message', function() {
   it('will error with incorrect message type', function() {
     expect(function(){
       return new Message(new Date());
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be a string');
   });
 
   it('will instantiate without "new"', function() {
@@ -49,7 +49,7 @@ describe('Message', function() {
     expect(function(){
       var message3 = new Message(text);
       return message3.sign('not a private key');
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be an instance of PrivateKey');
   });
 
   it('can verify a message with signature', function() {
