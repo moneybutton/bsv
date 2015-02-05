@@ -1,6 +1,6 @@
-=======
-Bitcoin Message Verification and Signing for Bitcore
-=======
+
+# Bitcoin Message Verification and Signing for Bitcore
+
 
 [![NPM Package](https://img.shields.io/npm/v/bitcore-message.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-message)
 [![Build Status](https://img.shields.io/travis/bitpay/bitcore-message.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-message)
