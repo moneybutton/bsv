@@ -1,0 +1,11 @@
+*.sw[a-z]
+coverage
+node_modules
+
+npm-debug.log
+bitcore-message.js
+bitcore-message.min.js
+tests.js
+
+report
+.DS_Store
