@@ -12,7 +12,11 @@
   },
   "keywords": [
     "bitcoin",
-    "bitcore"
+    "bitcore",
+    "btc",
+    "satoshi",
+    "message",
+    "signing"
   ],
   "repository": {
     "type": "git",
