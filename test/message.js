@@ -69,14 +69,14 @@ describe('Message', function() {
     expect(function() {
       var message6 = new Message(text);
       return message6._verify('not a public key', signature);
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be an instance of PublicKey');
   });
 
   it('verify will error with incorrect signature argument', function() {
     expect(function() {
       var message7 = new Message(text);
       return message7._verify(publicKey, 'not a signature');
-    }).to.throw(TypeError);
+    }).to.throw('Second argument should be an instance of Signature');
   });
 
   it('verify will correctly identify a bad signature', function() {
