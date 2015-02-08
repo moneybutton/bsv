@@ -104,4 +104,47 @@ describe('Message', function() {
     verified.should.equal(true);
   });
 
+  describe('#json', function() {
+
+    it('roundtrip to-from-to', function() {
+      var json = new Message(text).toJSON();
+      var message = Message.fromJSON(json);
+      message.toString().should.equal(message);
+    });
+
+    it('checks that the string parameter is valid JSON', function() {
+      expect(function() {
+        return Message.fromJSON('¹');
+      }).to.throw();
+    });
+
+  });
+
+  describe('#toString', function() {
+
+    it('message string', function() {
+      var message = new Message(text);
+      message.toString().should.equal(text);
+    });
+
+    it('roundtrip to-from-to', function() {
+      var str = new Message(text).toString();
+      var message = Message.fromString(str);
+      message.toString().should.equal(message);
+    });
+
+  });
+
+  describe('#inspect', function() {
+
+    it('should output formatted output correctly', function() {
+      var message = new Message(text);
+      var output = '<Message: '+text+'>';
+      message.inspect().should.equal(output);
+    });
+
+  });
+
+
+
 });
