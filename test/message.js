@@ -109,7 +109,7 @@ describe('Message', function() {
     it('roundtrip to-from-to', function() {
       var json = new Message(text).toJSON();
       var message = Message.fromJSON(json);
-      message.toString().should.equal(message);
+      message.toString().should.equal(text);
     });
 
     it('checks that the string parameter is valid JSON', function() {
@@ -130,7 +130,7 @@ describe('Message', function() {
     it('roundtrip to-from-to', function() {
       var str = new Message(text).toString();
       var message = Message.fromString(str);
-      message.toString().should.equal(message);
+      message.toString().should.equal(text);
     });
 
   });
