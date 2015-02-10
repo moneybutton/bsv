@@ -5,6 +5,7 @@ var expect = chai.expect;
 var should = chai.should();
 
 var bitcore = require('bitcore');
+var Address = bitcore.Address;
 var Signature = bitcore.crypto.Signature;
 var Message = require('../');
 
@@ -24,9 +25,9 @@ describe('Message', function() {
   var publicKey = privateKey.toPublicKey();
 
   it('will error with incorrect message type', function() {
-    expect(function(){
+    expect(function() {
       return new Message(new Date());
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be a string');
   });
 
   it('will instantiate without "new"', function() {
@@ -46,10 +47,10 @@ describe('Message', function() {
   });
 
   it('sign will error with incorrect private key argument', function() {
-    expect(function(){
+    expect(function() {
       var message3 = new Message(text);
       return message3.sign('not a private key');
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be an instance of PrivateKey');
   });
 
   it('can verify a message with signature', function() {
@@ -65,17 +66,17 @@ describe('Message', function() {
   });
 
   it('verify will error with incorrect public key argument', function() {
-    expect(function(){
+    expect(function() {
       var message6 = new Message(text);
       return message6._verify('not a public key', signature);
-    }).to.throw(TypeError);
+    }).to.throw('First argument should be an instance of PublicKey');
   });
 
   it('verify will error with incorrect signature argument', function() {
-    expect(function(){
+    expect(function() {
       var message7 = new Message(text);
       return message7._verify(publicKey, 'not a signature');
-    }).to.throw(TypeError);
+    }).to.throw('Second argument should be an instance of Signature');
   });
 
   it('verify will correctly identify a bad signature', function() {
@@ -146,5 +147,10 @@ describe('Message', function() {
   });
 
 
+  it('accepts Address for verification', function() {
+    var verified = Message(text)
+      .verify(new Address(address), signatureString);
+    verified.should.equal(true);
+  });
 
 });
