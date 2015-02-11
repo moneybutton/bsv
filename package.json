@@ -1,6 +1,6 @@
 {
   "name": "bitcore-ecies",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "ECIES implemented for Bitcore.",
   "main": "index.js",
   "directories": {
