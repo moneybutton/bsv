@@ -1,4 +1,4 @@
-
+<img src="http://bitcore.io/css/images/module-message.png" alt="bitcore message" height="35">
 # Bitcoin Message Verification and Signing for Bitcore
 
 
