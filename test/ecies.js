@@ -53,12 +53,13 @@ describe('ECIES', function() {
     .publicKey(aliceKey.publicKey);
 
   var message = 'attack at dawn';
-  var encrypted = '0339e504d6492b082da96e11e8f039796b06cd4855c101e2492a6f10f3e056a9e7499368e41313fa48f71759d13469c28b0bd6ff03a08b2ae5e6679e848f92db4b26a8ccf9c0b43f16eae6216c36380f70724743fe9053c98d94281aa74c94df40';
+  var encrypted = '0339e504d6492b082da96e11e8f039796b06cd4855c101e2492a6f10f3e056a9e712c732611c6917ab5c57a1926973bc44a1586e94a783f81d05ce72518d9b0a80e2e13c7ff7d1306583f9cc7a48def5b37fbf2d5f294f128472a6e9c78dede5f5';
   var encBuf = new Buffer(encrypted, 'hex');
 
   it('correctly encrypts a message', function() {
-    var encrypted = alice.encrypt(message);
-    Buffer.isBuffer(encrypted).should.equal(true);
+    var ciphertext = alice.encrypt(message);
+    Buffer.isBuffer(ciphertext).should.equal(true);
+    ciphertext.toString('hex').should.equal(encrypted)
   });
 
   it('correctly decrypts a message', function() {
