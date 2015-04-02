@@ -85,6 +85,41 @@ describe('ECIES', function() {
     decrypted.should.equal(secret);
   });
 
+  it('roundtrips (no public key)', function() {
+    alice.opts.noKey = true;
+    bob.opts.noKey = true;
+    var secret = 'some secret message!!!';
+    var encrypted = alice.encrypt(secret);
+    var decrypted = bob
+      .decrypt(encrypted)
+      .toString();
+    decrypted.should.equal(secret);
+  });
+
+  it('roundtrips (short tag)', function() {
+    alice.opts.shortTag = true;
+    bob.opts.shortTag = true;
+    var secret = 'some secret message!!!';
+    var encrypted = alice.encrypt(secret);
+    var decrypted = bob
+      .decrypt(encrypted)
+      .toString();
+    decrypted.should.equal(secret);
+  });
+
+  it('roundtrips (no public key & short tag)', function() {
+    alice.opts.noKey = true;
+    alice.opts.shortTag = true;
+    bob.opts.noKey = true;
+    bob.opts.shortTag = true;
+    var secret = 'some secret message!!!';
+    var encrypted = alice.encrypt(secret);
+    var decrypted = bob
+      .decrypt(encrypted)
+      .toString();
+    decrypted.should.equal(secret);
+  });
+
   it('errors', function() {
     should.exist(bitcore.errors.ECIES);
   });
@@ -96,6 +131,5 @@ describe('ECIES', function() {
       return bob.decrypt(encrypted);
     }).should.throw('Invalid checksum');
   });
-
 
 });
