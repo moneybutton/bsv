@@ -124,4 +124,12 @@ describe('ECIES', function() {
     should.exist(bitcore.errors.ECIES);
   });
 
+  it('correctly fails if trying to decrypt a bad message', function() {
+    var encrypted = bitcore.util.buffer.copy(encBuf);
+    encrypted[encrypted.length - 1] = 2;
+    (function() { 
+      return bob.decrypt(encrypted);
+    }).should.throw('Invalid checksum');
+  });
+
 });
