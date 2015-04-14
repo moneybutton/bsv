@@ -77,17 +77,17 @@ describe('Address', function() {
 
   });
 
-  describe('#fromScript', function() {
+  describe('#fromRedeemScript', function() {
 
     it('should make this address from a script', function() {
       var script = Script().fromString("OP_CHECKMULTISIG");
-      var address = Address().fromScript(script);
+      var address = Address().fromRedeemScript(script);
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm');
     });
 
     it('should make this address from other script', function() {
       var script = Script().fromString("OP_CHECKSIG OP_HASH160");
-      var address = Address().fromScript(script);
+      var address = Address().fromRedeemScript(script);
       address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7');
     });
 
@@ -164,6 +164,11 @@ describe('Address', function() {
       addr.type().should.equal('unknown');
     });
 
+    it('should give scripthash for this address', function() {
+      var addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy');
+      addr.type().should.equal('scripthash');
+    });
+
   });
 
   describe('#toBuffer', function() {
@@ -172,6 +177,22 @@ describe('Address', function() {
       var address = new Address();
       address.fromString(str);
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'));
+    });
+
+  });
+
+  describe('#toScript', function() {
+
+    it('should convert this address into known scripts', function() {
+      var addrbuf = new Buffer(21);
+      addrbuf.fill(0);
+      var addr = Address().fromBuffer(addrbuf);
+      var script = addr.toScript();
+      script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG');
+
+      addr.version = constants['mainnet']['scripthash'];
+      var script = addr.toScript();
+      script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL');
     });
 
   });

@@ -47,7 +47,7 @@ describe('Txbuilder', function() {
 
     // make addresses to send to
     var saddr1 = addr1;
-    var saddr2 = Address().fromScript(Script().fromString('OP_RETURN')); // fake, unredeemable p2sh address
+    var saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')); // fake, unredeemable p2sh address
 
     // txouts that we are spending
     var scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG');
@@ -82,7 +82,7 @@ describe('Txbuilder', function() {
     it('should add a scripthash address', function() {
       var hashbuf = new Buffer(20);
       hashbuf.fill(0);
-      var address = Address().fromScript(Script().fromScripthash(hashbuf));
+      var address = Address().fromRedeemScript(Script().fromScripthash(hashbuf));
       var txb = Txbuilder();
       txb.to(BN(0), address);
       txb.toTxouts.length.should.equal(1);
