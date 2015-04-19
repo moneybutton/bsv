@@ -93,6 +93,15 @@ describe('Block', function() {
     
   });
 
+  describe('#fromHex', function() {
+    
+    it('should make a block from this known hex', function() {
+      var block = Block().fromHex(blockhex);
+      block.toBuffer().toString('hex').should.equal(blockhex);
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should make a block from this known buffer', function() {
@@ -106,6 +115,15 @@ describe('Block', function() {
     
     it('should make a block from this known buffer', function() {
       var block = Block().fromBR(BR(blockbuf));
+      block.toBuffer().toString('hex').should.equal(blockhex);
+    });
+
+  });
+
+  describe('#toHex', function() {
+    
+    it('should recover a block from this known hex', function() {
+      var block = Block().fromHex(blockhex);
       block.toBuffer().toString('hex').should.equal(blockhex);
     });
 

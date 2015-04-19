@@ -84,6 +84,15 @@ describe('Txout', function() {
 
   });
 
+  describe('#fromHex', function() {
+    
+    it('should make this txin from this known hex', function() {
+      var txout = Txout().fromHex('050000000000000001ae');
+      txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should make this txin from this known buffer', function() {

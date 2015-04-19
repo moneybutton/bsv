@@ -15,6 +15,18 @@ describe('Script', function() {
     Script('').toString().should.equal('');
   });
 
+  describe('#fromHex', function() {
+    
+    it('should parse this hex string containing an OP code', function() {
+      var buf = new Buffer(1);
+      buf[0] = Opcode('OP_0').toNumber();
+      var script = Script().fromHex(buf.toString('hex'));
+      script.chunks.length.should.equal(1);
+      script.chunks[0].opcodenum.should.equal(buf[0]);
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should parse this buffer containing an OP code', function() {
@@ -78,6 +90,19 @@ describe('Script', function() {
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.chunks[1].buf.toString('hex').should.equal('010203');
       script.chunks[2].opcodenum.should.equal(buf[buf.length - 1]);
+    });
+
+  });
+
+  describe('#toBuffer', function() {
+    
+    it('should output this hex string containing an OP code', function() {
+      var buf = new Buffer(1);
+      buf[0] = Opcode('OP_0').toNumber();
+      var script = Script().fromHex(buf.toString('hex'));
+      script.chunks.length.should.equal(1);
+      script.chunks[0].opcodenum.should.equal(buf[0]);
+      script.toHex().should.equal(buf.toString('hex'));
     });
 
   });

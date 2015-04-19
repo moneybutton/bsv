@@ -119,6 +119,18 @@ describe('Tx', function() {
 
   });
 
+  describe('#fromHex', function() {
+    
+    it('should recover from this known tx', function() {
+      Tx().fromHex(txhex).toHex().should.equal(txhex);
+    });
+
+    it('should recover from this known tx from the blockchain', function() {
+      Tx().fromHex(tx2hex).toHex().should.equal(tx2hex);
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should recover from this known tx', function() {
@@ -135,6 +147,14 @@ describe('Tx', function() {
     
     it('should recover from this known tx', function() {
       Tx().fromBR(BR(txbuf)).toBuffer().toString('hex').should.equal(txhex);
+    });
+
+  });
+
+  describe('#toHex', function() {
+    
+    it('should produce this known tx', function() {
+      Tx().fromHex(txhex).toHex().should.equal(txhex);
     });
 
   });

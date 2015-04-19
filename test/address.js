@@ -30,6 +30,15 @@ describe('Address', function() {
 
   });
 
+  describe('#fromHex', function() {
+    
+    it('should make an address from a hex string', function() {
+      Address().fromHex(buf.toString('hex')).toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'));
+      Address().fromHex(buf.toString('hex')).toString().should.equal(str);
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should make an address from a buffer', function() {
@@ -167,6 +176,16 @@ describe('Address', function() {
     it('should give scripthash for this address', function() {
       var addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy');
       addr.type().should.equal('scripthash');
+    });
+
+  });
+
+  describe('#toHex', function() {
+
+    it('should output this known hash', function() {
+      var address = new Address();
+      address.fromString(str);
+      address.toHex().slice(2).should.equal(pubkeyhash.toString('hex'));
     });
 
   });

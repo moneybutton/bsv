@@ -77,6 +77,15 @@ describe('Privkey', function() {
 
   });
 
+  describe('#toHex', function() {
+    
+    it('should return a hex string', function() {
+      var privkey = Privkey().fromBN(BN(5));
+      privkey.toHex().should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+    });
+    
+  });
+
   describe('#toBuffer', function() {
     
     it('should return a buffer', function() {
@@ -86,6 +95,15 @@ describe('Privkey', function() {
     
   });
 
+  describe('#fromHex', function() {
+    
+    it('should return a hex string', function() {
+      var privkey = Privkey().fromHex('0000000000000000000000000000000000000000000000000000000000000005');
+      privkey.toHex().should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+    });
+
+  });
+    
   describe('#fromBuffer', function() {
     
     it('should return a buffer', function() {

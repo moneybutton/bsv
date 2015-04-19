@@ -248,6 +248,15 @@ describe('BN', function() {
 
   });
 
+  describe('#fromHex', function() {
+
+    it('should create bn from known hex', function() {
+      var bn = BN().fromHex('0100', {size: 2, endian: 'little'});
+      bn.toString().should.equal('1');
+    });
+  
+  });
+
   describe('#fromBuffer', function() {
 
     it('should work as a prototype method', function() {
@@ -255,6 +264,15 @@ describe('BN', function() {
       bn.toString().should.equal('1');
     });
   
+  });
+
+  describe('#toHex', function() {
+    
+    it('should create a hex string of 4 byte buffer', function() {
+      var bn = BN(1);
+      bn.toHex({size: 4}).should.equal('00000001');
+    });
+
   });
 
   describe('#toBuffer', function() {

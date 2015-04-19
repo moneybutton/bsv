@@ -26,6 +26,77 @@ describe('Sig', function() {
 
   });
 
+  describe('#fromHex', function() {
+
+    it('should parse this known signature and rebuild it', function() {
+      var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
+      var sig = Sig().fromHex(hex);
+      sig.toHex().should.equal(hex);
+    });
+
+    it('should create a signature from a compressed signature', function() {
+      var blank = new Buffer(32);
+      blank.fill(0);
+      var compressed = Buffer.concat([
+        new Buffer([0 + 27 + 4]),
+        blank,
+        blank
+        ]);
+      var sig = new Sig();
+      sig.fromHex(compressed.toString('hex'));
+      sig.r.cmp(0).should.equal(0);
+      sig.s.cmp(0).should.equal(0);
+    });
+
+    it('should parse this DER format signature', function() {
+      var buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex');
+      var sig = new Sig();
+      sig.fromHex(buf.toString('hex'));
+      sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277');
+      sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2');
+    });
+
+    it('should parse this known signature and rebuild it', function() {
+      var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
+      var sig = Sig().fromHex(hex);
+      sig.toTxFormat().toString('hex').should.equal(hex);
+    });
+
+  });
+
+  describe('#fromBuffer', function() {
+    
+    it('should create a signature from a compressed signature', function() {
+      var blank = new Buffer(32);
+      blank.fill(0);
+      var compressed = Buffer.concat([
+        new Buffer([0 + 27 + 4]),
+        blank,
+        blank
+        ]);
+      var sig = new Sig();
+      sig.fromBuffer(compressed);
+      sig.r.cmp(0).should.equal(0);
+      sig.s.cmp(0).should.equal(0);
+    });
+
+    it('should parse this DER format signature', function() {
+      var buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex');
+      var sig = new Sig();
+      sig.fromBuffer(buf);
+      sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277');
+      sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2');
+    });
+
+    it('should parse this known signature and rebuild it', function() {
+      var hex = "3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501";
+      var buf = new Buffer(hex, 'hex');
+      var sig = Sig().fromBuffer(buf);
+      sig.toTxFormat().toString('hex').should.equal(hex);
+    });
+
+  });
+
   describe('#fromCompact', function() {
     
     it('should create a signature from a compressed signature', function() {
@@ -159,13 +230,96 @@ describe('Sig', function() {
 
   });
 
+  describe('#toHex', function() {
+
+    it('should convert these known r and s values into a known signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var sig = new Sig({r: r, s: s});
+      sig.toHex().should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+    it('should convert these known r, s, nhashtype values into a known signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var nhashtype = Sig.SIGHASH_ALL;
+      var sig = new Sig(r, s, nhashtype);
+      sig.toHex().should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
+    });
+
+    it('should convert these known r and s values and guessed i values into signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var sig = new Sig({r: r, s: s, i: 0});
+      sig.toHex().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 1});
+      sig.toHex().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 2});
+      sig.toHex().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 3});
+      sig.toHex().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+  });
+
+  describe('#toBuffer', function() {
+
+    it('should convert these known r and s values into a known signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var sig = new Sig({r: r, s: s});
+      var der = sig.toBuffer();
+      der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+    it('should convert these known r, s, nhashtype values into a known signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var nhashtype = Sig.SIGHASH_ALL;
+      var sig = new Sig(r, s, nhashtype);
+      var buf = sig.toBuffer();
+      buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
+    });
+
+    it('should convert these known r and s values and guessed i values into signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var sig = new Sig({r: r, s: s, i: 0});
+      sig.toBuffer().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 1});
+      sig.toBuffer().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 2});
+      sig.toBuffer().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 3});
+      sig.toBuffer().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+  });
+
+  describe('#toCompact', function() {
+
+    it('should convert these known r and s values and guessed i values into signature', function() {
+      var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
+      var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
+      var sig = new Sig({r: r, s: s, i: 0});
+      sig.toCompact().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 1});
+      sig.toCompact().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 2});
+      sig.toCompact().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+      var sig = new Sig({r: r, s: s, i: 3});
+      sig.toCompact().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
+    });
+
+  });
+
   describe('#toDER', function() {
 
     it('should convert these known r and s values into a known signature', function() {
       var r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       var s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
       var sig = new Sig({r: r, s: s});
-      var der = sig.toDER(r, s);
+      var der = sig.toDER();
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });
 

@@ -61,6 +61,17 @@ describe('Pubkey', function() {
 
   });
 
+  describe('#fromHex', function() {
+    
+    it('should parse this uncompressed public key', function() {
+      var pk = new Pubkey();
+      pk.fromHex('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
+      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
+      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should parse this uncompressed public key', function() {
@@ -130,6 +141,17 @@ describe('Pubkey', function() {
       pk.fromX(true, x);
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
       pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
+    });
+
+  });
+
+  describe('#toHex', function() {
+
+    it('should return this compressed DER format', function() {
+      var x = Bn().fromHex('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
+      var pk = new Pubkey();
+      pk.fromX(true, x);
+      pk.toHex().should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
     });
 
   });

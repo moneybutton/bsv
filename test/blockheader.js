@@ -89,6 +89,14 @@ describe('Blockheader', function() {
 
   });
 
+  describe('#fromHex', function() {
+
+    it('should parse this known hex string', function() {
+      Blockheader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex);
+    });
+
+  });
+
   describe('#fromBuffer', function() {
 
     it('should parse this known buffer', function() {
@@ -101,6 +109,14 @@ describe('Blockheader', function() {
 
     it('should parse this known buffer', function() {
       Blockheader().fromBR(BR(bhbuf)).toBuffer().toString('hex').should.equal(bhhex);
+    });
+
+  });
+
+  describe('#toHex', function() {
+
+    it('should output this known hex string', function() {
+      Blockheader().fromBuffer(bhbuf).toHex().should.equal(bhhex);
     });
 
   });

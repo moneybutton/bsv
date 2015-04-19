@@ -93,6 +93,17 @@ describe('Txin', function() {
 
   });
 
+  describe('#fromHex', function() {
+    
+    it('should convert this known buffer', function() {
+      var hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
+      var txin = Txin().fromHex(hex);
+      txin.scriptvi.toNumber().should.equal(1);
+      txin.script.toString().should.equal('OP_CHECKMULTISIG');
+    });
+
+  });
+
   describe('#fromBuffer', function() {
     
     it('should convert this known buffer', function() {
@@ -114,6 +125,14 @@ describe('Txin', function() {
       var txin = Txin().fromBR(br);
       txin.scriptvi.toNumber().should.equal(1);
       txin.script.toString().should.equal('OP_CHECKMULTISIG');
+    });
+
+  });
+
+  describe('#toHex', function() {
+    
+    it('should convert this known hex', function() {
+      txin.toHex().should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000');
     });
 
   });
