@@ -1,6 +1,7 @@
 var should = require('chai').should();
 var constants = require('../lib/constants');
 var BIP32 = require('../lib/bip32');
+var Base58Check = require('../lib/base58check');
 
 describe('BIP32', function() {
 
@@ -317,6 +318,62 @@ describe('BIP32', function() {
       bip32.toString().should.equal(vector2_m_private);
       bip32.toPublic().toString().should.equal(vector2_m_public);
     });
+  });
+
+  describe('#fromHex', function() {
+    
+    it('should make a bip32 from a hex string', function() {
+      var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi';
+      var buf = Base58Check.decode(str);
+      var hex = buf.toString('hex');
+      var bip32 = BIP32().fromHex(hex);
+      should.exist(bip32);
+      bip32.toString().should.equal(str);
+      bip32 = bip32.toPublic();
+      var xpub = bip32.toString();
+      bip32 = BIP32().fromHex(bip32.toHex());
+      bip32.toString().should.equal(xpub);
+    });
+
+  });
+
+  describe('#fromBuffer', function() {
+    
+    it('should make a bip32 from a buffer', function() {
+      var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi';
+      var buf = Base58Check.decode(str);
+      var bip32 = BIP32().fromBuffer(buf);
+      should.exist(bip32);
+      bip32.toString().should.equal(str);
+      bip32 = bip32.toPublic();
+      var xpub = bip32.toString();
+      bip32 = BIP32().fromBuffer(bip32.toBuffer());
+      bip32.toString().should.equal(xpub);
+    });
+
+  });
+
+  describe('#toHex', function() {
+    
+    it('should return a bip32 hex string', function() {
+      var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi';
+      var buf = Base58Check.decode(str);
+      var hex = Base58Check.decode(str).toString('hex');
+      var bip32 = BIP32().fromString(str);
+      bip32.toHex().should.equal(hex);
+    });
+
+  });
+
+  describe('#toBuffer', function() {
+    
+    it('should return a bip32 buffer', function() {
+      var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi';
+      var buf = Base58Check.decode(str);
+      var bip32 = BIP32().fromString(str);
+      bip32.toBuffer().toString('hex').should.equal(buf.toString('hex'));
+    });
+
   });
 
   describe('#fromString', function() {
