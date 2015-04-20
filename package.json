@@ -8,7 +8,7 @@
     "test-node": "istanbul cover _mocha -- --recursive --reporter=dot",
     "test-browser": "npm run build && ./node_modules/karma/bin/karma start .karma.conf.js --log-level debug --single-run",
     "test": "npm run test-node && npm run test-browser",
-    "build": "mkdir -p browser && browserify index.js -o browser/fullnode.js && browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs browserify -o browser/tests.js"
+    "build": "mkdir -p browser && ./node_modules/.bin/browserify index.js -o browser/fullnode.js && ./node_modules/.bin/browserify -g uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs ./node_modules/.bin/browserify -o browser/tests.js"
   },
   "contributors": [
     {
