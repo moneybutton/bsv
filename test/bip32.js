@@ -284,21 +284,24 @@ describe('BIP32', function() {
   });
 
   describe('#set', function() {
-    var bip32 = BIP32(vector1_m_private);
-    var bip322 = BIP32().set({
-      version: bip32.version,
-      depth: bip32.depth,
-      parentfingerprint: bip32.parentfingerprint,
-      childindex: bip32.childindex,
-      chaincode: bip32.chaincode,
-      key: bip32.key,
-      hasprivkey: bip32.hasprivkey,
-      pubkeyhash: bip32.pubKeyhash,
-      xpubkey: bip32.xpubkey,
-      xprivkey: bip32.xprivkey
+
+    it('should set this bip32', function() {
+      var bip32 = BIP32(vector1_m_private);
+      var bip322 = BIP32().set({
+        version: bip32.version,
+        depth: bip32.depth,
+        parentfingerprint: bip32.parentfingerprint,
+        childindex: bip32.childindex,
+        chaincode: bip32.chaincode,
+        privkey: bip32.privkey,
+        pubkey: bip32.pubkey,
+        hasprivkey: bip32.hasprivkey,
+        pubkeyhash: bip32.pubKeyhash
+      });
+      bip322.toString().should.equal(bip32.toString());
+      bip322.set({}).toString().should.equal(bip32.toString());
     });
-    bip322.toString().should.equal(bip32.toString());
-    bip322.set({}).toString().should.equal(bip32.toString());
+
   });
 
   describe('#seed', function() {
