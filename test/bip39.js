@@ -112,7 +112,7 @@ describe('BIP39', function() {
         bip39.check().should.equal(true);
         var seed = bip39.toSeed(vector.passphrase);
         seed.toString('hex').should.equal(vector.seed);
-        BIP32().fromSeed(seed).xprivkeyString().should.equal(vector.bip32_xprv);
+        BIP32().fromSeed(seed).toString().should.equal(vector.bip32_xprv);
       });
     });
 
@@ -124,7 +124,7 @@ describe('BIP39', function() {
         bip39.check().should.equal(true);
         var seed = bip39.toSeed(vector.passphrase);
         seed.toString('hex').should.equal(vector.seed);
-        BIP32().fromSeed(seed).xprivkeyString().should.equal(vector.bip32_xprv);
+        BIP32().fromSeed(seed).toString().should.equal(vector.bip32_xprv);
       });
     });
 
