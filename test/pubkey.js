@@ -1,7 +1,7 @@
 var should = require('chai').should();
 var Pubkey = require('../lib/pubkey');
 var Point = require('../lib/point');
-var Bn = require('../lib/bn');
+var BN = require('../lib/bn');
 var Privkey = require('../lib/privkey');
 
 describe('Pubkey', function() {
@@ -136,7 +136,7 @@ describe('Pubkey', function() {
   describe('#fromX', function() {
     
     it('should create this known public key', function() {
-      var x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
+      var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       var pk = new Pubkey();
       pk.fromX(true, x);
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
@@ -148,7 +148,7 @@ describe('Pubkey', function() {
   describe('#toHex', function() {
 
     it('should return this compressed DER format', function() {
-      var x = Bn().fromHex('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
+      var x = BN().fromHex('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
       var pk = new Pubkey();
       pk.fromX(true, x);
       pk.toHex().should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
@@ -159,7 +159,7 @@ describe('Pubkey', function() {
   describe('#toBuffer', function() {
 
     it('should return this compressed DER format', function() {
-      var x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
+      var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       var pk = new Pubkey();
       pk.fromX(true, x);
       pk.toBuffer().toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
@@ -170,14 +170,14 @@ describe('Pubkey', function() {
   describe('#toDER', function() {
 
     it('should return this compressed DER format', function() {
-      var x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
+      var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       var pk = new Pubkey();
       pk.fromX(true, x);
       pk.toDER(true).toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a');
     });
 
     it('should return this uncompressed DER format', function() {
-      var x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
+      var x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'));
       var pk = new Pubkey();
       pk.fromX(true, x);
       pk.toDER(false).toString('hex').should.equal('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341');
