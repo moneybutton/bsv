@@ -1,5 +1,7 @@
 var should = require('chai').should();
 var Txbuilder = require('../lib/txbuilder');
+var Txverifier = require('../lib/txverifier');
+var Txoutmap = require('../lib/txoutmap');
 var Tx = require('../lib/tx');
 var Txout = require('../lib/txout');
 var Address = require('../lib/address');
@@ -10,8 +12,6 @@ var Script = require('../lib/script');
 var Pubkey = require('../lib/pubkey');
 var Privkey = require('../lib/privkey');
 var Keypair = require('../lib/keypair');
-var tx_valid = require('./vectors/bitcoind/tx_valid');
-var tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
 describe('Txbuilder', function() {
   
@@ -74,7 +74,10 @@ describe('Txbuilder', function() {
     txb.sign(0, keypair1);
     txb.sign(1, keypair2);
 
-    txb.verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
+    var txoutmap = Txoutmap();
+    txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000000', 'hex'), 0, txout1);
+    txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000001', 'hex'), 0, txout2);
+    Txverifier(txb.tx, txoutmap).verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
   });
 
   describe('#to', function() {
@@ -94,66 +97,6 @@ describe('Txbuilder', function() {
       var txb = Txbuilder();
       txb.to(BN(0), address);
       txb.toTxouts.length.should.equal(1);
-    });
-
-  });
-
-  describe('vectors', function() {
-
-    var c = 0;
-    tx_valid.forEach(function(vector, i) {
-      if (vector.length === 1)
-        return;
-      c++;
-      it('should verify tx_valid vector ' + c, function() {
-        var inputs = vector[0];
-        var txhex = vector[1];
-        var flags = Interp.getFlags(vector[2]);
-
-        var map = {};
-        inputs.forEach(function(input) {
-          var txoutnum = input[1];
-          if (txoutnum === -1)
-            txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = {txout: Txout().setScript(Script().fromBitcoindString(input[2]))};
-        });
-
-        var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        var txb = Txbuilder().set({
-          tx: tx,
-          utxoutmap: map
-        });
-
-        txb.verifytx(flags).should.equal(true);
-      });
-    });
-
-    var c = 0;
-    tx_invalid.forEach(function(vector, i) {
-      if (vector.length === 1)
-        return;
-      c++;
-      it('should unverify tx_invalid vector ' + c, function() {
-        var inputs = vector[0];
-        var txhex = vector[1];
-        var flags = Interp.getFlags(vector[2]);
-
-        var map = {};
-        inputs.forEach(function(input) {
-          var txoutnum = input[1];
-          if (txoutnum === -1)
-            txoutnum = 0xffffffff; //bitcoind casts -1 to an unsigned int
-          map[input[0] + ":" + txoutnum] = {txout: Txout().setScript(Script().fromBitcoindString(input[2]))};
-        });
-
-        var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        var txb = Txbuilder().set({
-          tx: tx,
-          utxoutmap: map
-        });
-
-        txb.verifytx(flags).should.equal(false);
-      });
     });
 
   });
