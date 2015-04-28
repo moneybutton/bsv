@@ -77,7 +77,7 @@ describe('Txbuilder', function() {
     var txoutmap = Txoutmap();
     txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000000', 'hex'), 0, txout1);
     txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000001', 'hex'), 0, txout2);
-    Txverifier(txb.tx, txoutmap).verifytx(Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
+    Txverifier.verify(txb.tx, txoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
   });
 
   describe('#to', function() {

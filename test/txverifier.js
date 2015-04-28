@@ -50,8 +50,7 @@ describe('Txverifier', function() {
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        var txverifier = Txverifier(tx, txoutmap);
-        txverifier.verifytx(flags).should.equal(true);
+        Txverifier.verify(tx, txoutmap, flags).should.equal(true);
       });
     });
 
@@ -76,9 +75,8 @@ describe('Txverifier', function() {
         });
 
         var tx = Tx().fromBuffer(new Buffer(txhex, 'hex'));
-        var txverifier = Txverifier(tx, txoutmap);
 
-        txverifier.verifytx(flags).should.equal(false);
+        Txverifier.verify(tx, txoutmap, flags).should.equal(false);
       });
     });
 
