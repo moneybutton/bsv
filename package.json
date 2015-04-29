@@ -23,7 +23,7 @@
     "url": "https://github.com/bitpay/bitcore-message.git"
   },
   "dependencies": {
-    "bitcore": "^0.11.4"
+    "bitcore": "^0.12.0"
   },
   "devDependencies": {
     "bitcore-build": "bitpay/bitcore-build",
