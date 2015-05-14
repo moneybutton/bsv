@@ -37,7 +37,7 @@ describe('BIP39', function() {
     bip39.check().should.equal(false);
 
     // mnemonics with a word replaced do not pass the check
-    words = mnemonic.split(' ');
+    var words = mnemonic.split(' ');
     words[words.length - 1].should.not.equal('zoo');
     words[words.length - 1] = 'zoo';
     mnemonic = words.join(' ');

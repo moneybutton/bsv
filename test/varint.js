@@ -99,7 +99,7 @@ describe('Varint', function() {
   describe('#toBuffer', function() {
     
     it('should return a buffer', function() {
-      buf = BW().writeVarintNum(5).concat();
+      var buf = BW().writeVarintNum(5).concat();
       var varint = Varint(buf);
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
