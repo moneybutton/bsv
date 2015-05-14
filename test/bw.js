@@ -1,23 +1,23 @@
 "use strict";
-var BW = require('../lib/bw');
-var BR = require('../lib/br');
-var BN = require('../lib/bn');
-var should = require('chai').should();
+let BW = require('../lib/bw');
+let BR = require('../lib/br');
+let BN = require('../lib/bn');
+let should = require('chai').should();
 
 describe('BW', function() {
 
   it('should create a new buffer writer', function() {
-    var bw = new BW();
+    let bw = new BW();
     should.exist(bw);
   });
 
   describe('#set', function() {
     
     it('set bufs', function() {
-      var buf1 = new Buffer([0]);
-      var buf2 = new Buffer([1]);
-      var bufs = [buf1, buf2];
-      var bw = new BW().set({bufs: [buf1, buf2]});
+      let buf1 = new Buffer([0]);
+      let buf2 = new Buffer([1]);
+      let bufs = [buf1, buf2];
+      let bw = new BW().set({bufs: [buf1, buf2]});
       bw.concat().toString('hex').should.equal('0001');
     });
 
@@ -26,9 +26,9 @@ describe('BW', function() {
   describe('#toBuffer', function() {
     
     it('should concat these two bufs', function() {
-      var buf1 = new Buffer([0]);
-      var buf2 = new Buffer([1]);
-      var bw = new BW({bufs: [buf1, buf2]});
+      let buf1 = new Buffer([0]);
+      let buf2 = new Buffer([1]);
+      let bw = new BW({bufs: [buf1, buf2]});
       bw.toBuffer().toString('hex').should.equal('0001');
     });
 
@@ -37,9 +37,9 @@ describe('BW', function() {
   describe('#concat', function() {
     
     it('should concat these two bufs', function() {
-      var buf1 = new Buffer([0]);
-      var buf2 = new Buffer([1]);
-      var bw = new BW({bufs: [buf1, buf2]});
+      let buf1 = new Buffer([0]);
+      let buf2 = new Buffer([1]);
+      let bw = new BW({bufs: [buf1, buf2]});
       bw.concat().toString('hex').should.equal('0001');
     });
 
@@ -48,8 +48,8 @@ describe('BW', function() {
   describe('#write', function() {
 
     it('should write a buffer', function() {
-      var buf = new Buffer([0]);
-      var bw = new BW();
+      let buf = new Buffer([0]);
+      let bw = new BW();
       bw.write(buf);
       bw.concat().toString('hex').should.equal('00');
     });
@@ -59,8 +59,8 @@ describe('BW', function() {
   describe('#writeReverse', function() {
 
     it('should write a buffer in reverse', function() {
-      var buf = new Buffer([0, 1]);
-      var bw = new BW();
+      let buf = new Buffer([0, 1]);
+      let bw = new BW();
       bw.writeReverse(buf);
       bw.concat().toString('hex').should.equal('0100');
     });
@@ -70,7 +70,7 @@ describe('BW', function() {
   describe('#writeUInt8', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt8(1).concat().toString('hex').should.equal('01');
     });
 
@@ -79,7 +79,7 @@ describe('BW', function() {
   describe('#writeInt8', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeInt8(1).concat().toString('hex').should.equal('01');
       BW().writeInt8(-1).concat().toString('hex').should.equal('ff');
     });
@@ -89,7 +89,7 @@ describe('BW', function() {
   describe('#writeUInt16BE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt16BE(1).concat().toString('hex').should.equal('0001');
     });
 
@@ -98,7 +98,7 @@ describe('BW', function() {
   describe('#writeInt16BE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeInt16BE(1).concat().toString('hex').should.equal('0001');
       BW().writeInt16BE(-1).concat().toString('hex').should.equal('ffff');
     });
@@ -108,7 +108,7 @@ describe('BW', function() {
   describe('#writeUInt16LE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt16LE(1).concat().toString('hex').should.equal('0100');
     });
 
@@ -117,7 +117,7 @@ describe('BW', function() {
   describe('#writeInt16LE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeInt16LE(1).concat().toString('hex').should.equal('0100');
       BW().writeInt16LE(-1).concat().toString('hex').should.equal('ffff');
     });
@@ -127,7 +127,7 @@ describe('BW', function() {
   describe('#writeUInt32BE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt32BE(1).concat().toString('hex').should.equal('00000001');
     });
 
@@ -136,7 +136,7 @@ describe('BW', function() {
   describe('#writeInt32BE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeInt32BE(1).concat().toString('hex').should.equal('00000001');
       BW().writeInt32BE(-1).concat().toString('hex').should.equal('ffffffff');
     });
@@ -146,7 +146,7 @@ describe('BW', function() {
   describe('#writeUInt32LE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt32LE(1).concat().toString('hex').should.equal('01000000');
     });
 
@@ -155,7 +155,7 @@ describe('BW', function() {
   describe('#writeInt32LE', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeInt32LE(1).concat().toString('hex').should.equal('01000000');
       BW().writeInt32LE(-1).concat().toString('hex').should.equal('ffffffff');
     });
@@ -165,7 +165,7 @@ describe('BW', function() {
   describe('#writeUInt64BEBN', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt64BEBN(BN(1)).concat().toString('hex').should.equal('0000000000000001');
     });
 
@@ -174,7 +174,7 @@ describe('BW', function() {
   describe('#writeUInt64LEBN', function() {
     
     it('should write 1', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeUInt64LEBN(BN(1)).concat().toString('hex').should.equal('0100000000000000');
     });
 
@@ -183,35 +183,35 @@ describe('BW', function() {
   describe('#writeVarint', function() {
     
     it('should write a 1 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintNum(1);
       bw.concat().length.should.equal(1);
     });
 
     it('should write a 3 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintNum(1000);
       bw.concat().length.should.equal(3);
     });
 
     it('should write a 5 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintNum(Math.pow(2, 16 + 1));
       bw.concat().length.should.equal(5);
     });
 
     it('should write a 9 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintNum(Math.pow(2, 32 + 1));
       bw.concat().length.should.equal(9);
     });
 
     it('should read back the same value it wrote for a 9 byte varint', function() {
-      var bw = new BW();
-      var n = Math.pow(2, 53);
+      let bw = new BW();
+      let n = Math.pow(2, 53);
       n.should.equal(n + 1); //javascript number precision limit
       bw.writeVarintNum(n);
-      var br = new BR({buf: bw.concat()});
+      let br = new BR({buf: bw.concat()});
       br.readVarintBN().toNumber().should.equal(n);
     });
 
@@ -220,25 +220,25 @@ describe('BW', function() {
   describe('#writeVarintBN', function() {
     
     it('should write a 1 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintBN(BN(1));
       bw.concat().length.should.equal(1);
     });
 
     it('should write a 3 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintBN(BN(1000));
       bw.concat().length.should.equal(3);
     });
 
     it('should write a 5 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintBN(BN(Math.pow(2, 16 + 1)));
       bw.concat().length.should.equal(5);
     });
 
     it('should write a 9 byte varint', function() {
-      var bw = new BW();
+      let bw = new BW();
       bw.writeVarintBN(BN(Math.pow(2, 32 + 1)));
       bw.concat().length.should.equal(9);
     });

@@ -1,17 +1,17 @@
 "use strict";
-var should = require('chai').should();
-var constants = require('../lib/constants');
-var Pubkey = require('../lib/pubkey');
-var Address = require('../lib/address');
-var Script = require('../lib/script');
+let should = require('chai').should();
+let constants = require('../lib/constants');
+let Pubkey = require('../lib/pubkey');
+let Address = require('../lib/address');
+let Script = require('../lib/script');
 
 describe('Address', function() {
-  var pubkeyhash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex');
-  var buf = Buffer.concat([new Buffer([0]), pubkeyhash]);
-  var str = '16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r';
+  let pubkeyhash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex');
+  let buf = Buffer.concat([new Buffer([0]), pubkeyhash]);
+  let str = '16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r';
 
   it('should create a new address object', function() {
-    var address = new Address();
+    let address = new Address();
     should.exist(address);
     address = Address(buf);
     should.exist(address);
@@ -53,7 +53,7 @@ describe('Address', function() {
     
     it('should make an address from a hashbuf', function() {
       Address().fromHashbuf(pubkeyhash).toString().should.equal(str);
-      var a = Address().fromHashbuf(pubkeyhash, 'testnet', 'scripthash');
+      let a = Address().fromHashbuf(pubkeyhash, 'testnet', 'scripthash');
       a.network().should.equal('testnet');
       a.type().should.equal('scripthash');
     });
@@ -69,17 +69,17 @@ describe('Address', function() {
   describe('#fromPubkey', function() {
 
     it('should make this address from a compressed pubkey', function() {
-      var pubkey = new Pubkey();
+      let pubkey = new Pubkey();
       pubkey.fromDER(new Buffer('0285e9737a74c30a873f74df05124f2aa6f53042c2fc0a130d6cbd7d16b944b004', 'hex'));
-      var address = new Address();
+      let address = new Address();
       address.fromPubkey(pubkey);
       address.toString().should.equal('19gH5uhqY6DKrtkU66PsZPUZdzTd11Y7ke');
     });
 
     it('should make this address from an uncompressed pubkey', function() {
-      var pubkey = new Pubkey();
+      let pubkey = new Pubkey();
       pubkey.fromDER(new Buffer('0285e9737a74c30a873f74df05124f2aa6f53042c2fc0a130d6cbd7d16b944b004', 'hex'));
-      var address = new Address();
+      let address = new Address();
       pubkey.compressed = false;
       address.fromPubkey(pubkey, 'mainnet');
       address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX');
@@ -90,14 +90,14 @@ describe('Address', function() {
   describe('#fromRedeemScript', function() {
 
     it('should make this address from a script', function() {
-      var script = Script().fromString("OP_CHECKMULTISIG");
-      var address = Address().fromRedeemScript(script);
+      let script = Script().fromString("OP_CHECKMULTISIG");
+      let address = Address().fromRedeemScript(script);
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm');
     });
 
     it('should make this address from other script', function() {
-      var script = Script().fromString("OP_CHECKSIG OP_HASH160");
-      var address = Address().fromRedeemScript(script);
+      let script = Script().fromString("OP_CHECKSIG OP_HASH160");
+      let address = Address().fromRedeemScript(script);
       address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7');
     });
 
@@ -106,13 +106,13 @@ describe('Address', function() {
   describe('#fromString', function() {
     
     it('should derive from this known address string mainnet', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'));
     });
 
     it('should derive from this known address string testnet', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.version = constants['testnet']['pubkeyhash'];
       address.fromString(address.toString());
@@ -120,7 +120,7 @@ describe('Address', function() {
     });
 
     it('should derive from this known address string mainnet scripthash', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.version = constants['mainnet']['scripthash'];
       address.fromString(address.toString());
@@ -128,7 +128,7 @@ describe('Address', function() {
     });
 
     it('should derive from this known address string testnet scripthash', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.version = constants['testnet']['scripthash'];
       address.fromString(address.toString());
@@ -140,13 +140,13 @@ describe('Address', function() {
   describe('#isValid', function() {
     
     it('should describe this valid address as valid', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
       address.isValid().should.equal(true);
     });
 
     it('should describe this address with unknown version as invalid', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
       address.version = 1;
       address.isValid().should.equal(false);
@@ -157,7 +157,7 @@ describe('Address', function() {
   describe('#network', function() {
     
     it('should give mainnet for this mainnet address', function() {
-      var addr = Address().fromString(str);
+      let addr = Address().fromString(str);
       addr.network().should.equal('mainnet');
       addr.version = 1;
       addr.network().should.equal('unknown');
@@ -168,14 +168,14 @@ describe('Address', function() {
   describe('#type', function() {
     
     it('should give pubkeyhash for this address', function() {
-      var addr = Address().fromString(str);
+      let addr = Address().fromString(str);
       addr.type().should.equal('pubkeyhash');
       addr.version = 1;
       addr.type().should.equal('unknown');
     });
 
     it('should give scripthash for this address', function() {
-      var addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy');
+      let addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy');
       addr.type().should.equal('scripthash');
     });
 
@@ -184,7 +184,7 @@ describe('Address', function() {
   describe('#toHex', function() {
 
     it('should output this known hash', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.toHex().slice(2).should.equal(pubkeyhash.toString('hex'));
     });
@@ -194,7 +194,7 @@ describe('Address', function() {
   describe('#toBuffer', function() {
 
     it('should output this known hash', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'));
     });
@@ -204,14 +204,14 @@ describe('Address', function() {
   describe('#toScript', function() {
 
     it('should convert this address into known scripts', function() {
-      var addrbuf = new Buffer(21);
+      let addrbuf = new Buffer(21);
       addrbuf.fill(0);
-      var addr = Address().fromBuffer(addrbuf);
-      var script = addr.toScript();
+      let addr = Address().fromBuffer(addrbuf);
+      let script = addr.toScript();
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG');
 
       addr.version = constants['mainnet']['scripthash'];
-      var script = addr.toScript();
+      script = addr.toScript();
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL');
     });
 
@@ -220,7 +220,7 @@ describe('Address', function() {
   describe('#toString', function() {
     
     it('should output the same thing that was input', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.toString().should.equal(str);
     });
@@ -230,13 +230,13 @@ describe('Address', function() {
   describe('#validate', function() {
     
     it('should not throw an error on this valid address', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       should.exist(address.validate());
     });
 
     it('should throw an error on this invalid version', function() {
-      var address = new Address();
+      let address = new Address();
       address.fromString(str);
       address.version = 1;
       (function() {

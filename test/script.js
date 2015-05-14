@@ -1,17 +1,17 @@
 "use strict";
-var Script = require('../lib/script');
-var should = require('chai').should();
-var Opcode = require('../lib/opcode');
-var BR = require('../lib/br');
-var BW = require('../lib/bw');
-var script_valid = require('./vectors/bitcoind/script_valid');
-var script_invalid = require('./vectors/bitcoind/script_invalid');
-var BN = require('../lib/bn');
+let Script = require('../lib/script');
+let should = require('chai').should();
+let Opcode = require('../lib/opcode');
+let BR = require('../lib/br');
+let BW = require('../lib/bw');
+let script_valid = require('./vectors/bitcoind/script_valid');
+let script_invalid = require('./vectors/bitcoind/script_invalid');
+let BN = require('../lib/bn');
 
 describe('Script', function() {
   
   it('should make a new script', function() {
-    var script = new Script();
+    let script = new Script();
     Script().toString().should.equal('');
     Script('').toString().should.equal('');
   });
@@ -19,9 +19,9 @@ describe('Script', function() {
   describe('#fromHex', function() {
     
     it('should parse this hex string containing an OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_0').toNumber();
-      var script = Script().fromHex(buf.toString('hex'));
+      let script = Script().fromHex(buf.toString('hex'));
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
     });
@@ -31,62 +31,62 @@ describe('Script', function() {
   describe('#fromBuffer', function() {
     
     it('should parse this buffer containing an OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_0').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
     });
 
     it('should parse this buffer containing another OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_CHECKMULTISIG').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
     });
 
     it('should parse this buffer containing three bytes of data', function() {
-      var buf = new Buffer([3, 1, 2, 3]);
-      var script = Script().fromBuffer(buf);
+      let buf = new Buffer([3, 1, 2, 3]);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
     });
 
     it('should parse this buffer containing OP_PUSHDATA1 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA1').toNumber();
       buf.writeUInt8(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
     });
 
     it('should parse this buffer containing OP_PUSHDATA2 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA2').toNumber();
       buf.writeUInt16LE(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
     });
 
     it('should parse this buffer containing OP_PUSHDATA4 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA4').toNumber();
       buf.writeUInt16LE(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
     });
 
     it('should parse this buffer an OP code, data, and another OP code', function() {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
+      let buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
       buf[0] = Opcode('OP_0').toNumber();
       buf[1] = Opcode('OP_PUSHDATA4').toNumber();
       buf.writeUInt16LE(3, 2);
       buf[buf.length - 1] = Opcode('OP_0').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(3);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.chunks[1].buf.toString('hex').should.equal('010203');
@@ -98,9 +98,9 @@ describe('Script', function() {
   describe('#toBuffer', function() {
     
     it('should output this hex string containing an OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_0').toNumber();
-      var script = Script().fromHex(buf.toString('hex'));
+      let script = Script().fromHex(buf.toString('hex'));
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.toHex().should.equal(buf.toString('hex'));
@@ -111,68 +111,68 @@ describe('Script', function() {
   describe('#toBuffer', function() {
     
     it('should output this buffer containing an OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_0').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer containing another OP code', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf[0] = Opcode('OP_CHECKMULTISIG').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer containing three bytes of data', function() {
-      var buf = new Buffer([3, 1, 2, 3]);
-      var script = Script().fromBuffer(buf);
+      let buf = new Buffer([3, 1, 2, 3]);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer containing OP_PUSHDATA1 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA1').toNumber();
       buf.writeUInt8(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer containing OP_PUSHDATA2 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA2').toNumber();
       buf.writeUInt16LE(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer containing OP_PUSHDATA4 and three bytes of data', function() {
-      var buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3]);
+      let buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3]);
       buf[0] = Opcode('OP_PUSHDATA4').toNumber();
       buf.writeUInt16LE(3, 1);
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(1);
       script.chunks[0].buf.toString('hex').should.equal('010203');
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
     it('should output this buffer an OP code, data, and another OP code', function() {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
+      let buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
       buf[0] = Opcode('OP_0').toNumber();
       buf[1] = Opcode('OP_PUSHDATA4').toNumber();
       buf.writeUInt16LE(3, 2);
       buf[buf.length - 1] = Opcode('OP_0').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(3);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.chunks[1].buf.toString('hex').should.equal('010203');
@@ -198,12 +198,12 @@ describe('Script', function() {
   describe('#toString', function() {
 
     it('should output this buffer an OP code, data, and another OP code', function() {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
+      let buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0]);
       buf[0] = Opcode('OP_0').toNumber();
       buf[1] = Opcode('OP_PUSHDATA4').toNumber();
       buf.writeUInt16LE(3, 2);
       buf[buf.length - 1] = Opcode('OP_0').toNumber();
-      var script = Script().fromBuffer(buf);
+      let script = Script().fromBuffer(buf);
       script.chunks.length.should.equal(3);
       script.chunks[0].opcodenum.should.equal(buf[0]);
       script.chunks[1].buf.toString('hex').should.equal('010203');
@@ -219,7 +219,7 @@ describe('Script', function() {
       Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL');
       Script().fromBitcoindString("'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL").toBitcoindString().should.equal('0x4b417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL');
 
-      var str = "0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601";
+      let str = "0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601";
       Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
     });
 
@@ -252,7 +252,7 @@ describe('Script', function() {
   describe('#fromPubkeyhash', function() {
 
     it('should create pubkeyhash output script', function() {
-      var hashbuf = new Buffer(20);
+      let hashbuf = new Buffer(20);
       hashbuf.fill(0);
       Script().fromPubkeyhash(hashbuf).toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG');
     });
@@ -262,7 +262,7 @@ describe('Script', function() {
   describe('#fromScripthash', function() {
 
     it('should create p2sh output script', function() {
-      var hashbuf = new Buffer(20);
+      let hashbuf = new Buffer(20);
       hashbuf.fill(0);
       Script().fromScripthash(hashbuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL');
     });
@@ -297,13 +297,13 @@ describe('Script', function() {
     });
 
     it('should know this is an OP_RETURN script', function() {
-      var buf = new Buffer(40);
+      let buf = new Buffer(40);
       buf.fill(0);
       Script('OP_RETURN 40 0x' + buf.toString('hex')).isOpReturn().should.equal(true);
     });
 
     it('should know this is not an OP_RETURN script', function() {
-      var buf = new Buffer(40);
+      let buf = new Buffer(40);
       buf.fill(0);
       Script('OP_CHECKMULTISIG 40 0x' + buf.toString('hex')).isOpReturn().should.equal(false);
     });
@@ -394,7 +394,7 @@ describe('Script', function() {
   describe('#writeBuffer', function() {
     
     it('should write these push data', function() {
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf.fill(0);
       Script().writeBuffer(buf).toString().should.equal('1 0x00');
       buf = new Buffer(255);
@@ -415,7 +415,7 @@ describe('Script', function() {
     it('should write both pushdata and non-pushdata chunks', function() {
       Script().write('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG');
       Script().write(Opcode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG');
-      var buf = new Buffer(1);
+      let buf = new Buffer(1);
       buf.fill(0);
       Script().write(buf).toString().should.equal('1 0x00');
     });
@@ -425,20 +425,21 @@ describe('Script', function() {
   describe('#checkMinimalPush', function() {
 
     it('should check these minimal pushes', function() {
+      let buf;
       Script().writeBN(BN(1)).checkMinimalPush(0).should.equal(true);
       Script().writeBN(BN(0)).checkMinimalPush(0).should.equal(true);
       Script().writeBN(BN(-1)).checkMinimalPush(0).should.equal(true);
       Script().writeBuffer(new Buffer([0])).checkMinimalPush(0).should.equal(true);
 
-      var buf = new Buffer(75);
+      buf = new Buffer(75);
       buf.fill(1);
       Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
 
-      var buf = new Buffer(76);
+      buf = new Buffer(76);
       buf.fill(1);
       Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
 
-      var buf = new Buffer(256);
+      buf = new Buffer(256);
       buf.fill(1);
       Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true);
     });
@@ -461,9 +462,9 @@ describe('Script', function() {
         }).should.not.throw();
 
         //should be able to return the same output over and over
-        var str = Script().fromBitcoindString(a[0]).toBitcoindString();
+        let str = Script().fromBitcoindString(a[0]).toBitcoindString();
         Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
-        var str = Script().fromBitcoindString(a[1]).toBitcoindString();
+        str = Script().fromBitcoindString(a[1]).toBitcoindString();
         Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
       });
     });
@@ -482,9 +483,9 @@ describe('Script', function() {
         }).should.not.throw();
 
         //should be able to return the same output over and over
-        var str = Script().fromBitcoindString(a[0]).toBitcoindString();
+        let str = Script().fromBitcoindString(a[0]).toBitcoindString();
         Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
-        var str = Script().fromBitcoindString(a[1]).toBitcoindString();
+        str = Script().fromBitcoindString(a[1]).toBitcoindString();
         Script().fromBitcoindString(str).toBitcoindString().should.equal(str);
       });
     });

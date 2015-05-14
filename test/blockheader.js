@@ -1,20 +1,20 @@
 "use strict";
-var Blockheader = require('../lib/blockheader');
-var BW = require('../lib/bw');
-var BR = require('../lib/br');
-var should = require('chai').should();
+let Blockheader = require('../lib/blockheader');
+let BW = require('../lib/bw');
+let BR = require('../lib/br');
+let should = require('chai').should();
 
 describe('Blockheader', function() {
   
-  var bh = new Blockheader();
-  var version = 1;
-  var prevblockidbuf = new Buffer(32);
+  let bh = new Blockheader();
+  let version = 1;
+  let prevblockidbuf = new Buffer(32);
   prevblockidbuf.fill(5);
-  var merklerootbuf = new Buffer(32);
+  let merklerootbuf = new Buffer(32);
   merklerootbuf.fill(9);
-  var time = 2;
-  var bits = 3;
-  var nonce = 4;
+  let time = 2;
+  let bits = 3;
+  let nonce = 4;
   bh.set({
     version: version,
     prevblockidbuf: prevblockidbuf,
@@ -23,11 +23,11 @@ describe('Blockheader', function() {
     bits: bits,
     nonce: nonce
   });
-  var bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000';
-  var bhbuf = new Buffer(bhhex, 'hex');
+  let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000';
+  let bhbuf = new Buffer(bhhex, 'hex');
 
   it('should make a new blockheader', function() {
-    var blockheader = new Blockheader();
+    let blockheader = new Blockheader();
     should.exist(blockheader);
     blockheader = Blockheader();
     should.exist(blockheader);
@@ -58,7 +58,7 @@ describe('Blockheader', function() {
   describe('#fromJSON', function() {
 
     it('should set all the variables', function() {
-      var bh = Blockheader().fromJSON({
+      let bh = Blockheader().fromJSON({
         version: version,
         prevblockidbuf: prevblockidbuf.toString('hex'),
         merklerootbuf: merklerootbuf.toString('hex'),
@@ -79,7 +79,7 @@ describe('Blockheader', function() {
   describe('#toJSON', function() {
 
     it('should set all the variables', function() {
-      var json = bh.toJSON();
+      let json = bh.toJSON();
       should.exist(json.version);
       should.exist(json.prevblockidbuf);
       should.exist(json.merklerootbuf);

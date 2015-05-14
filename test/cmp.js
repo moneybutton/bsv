@@ -1,53 +1,55 @@
 "use strict";
-var cmp = require('../lib/cmp');
-var should = require('chai').should();
+let cmp = require('../lib/cmp');
+let should = require('chai').should();
 
 describe('cmp', function() {
 
   describe('#eq', function() {
     
     it('should know if these buffers are equal', function() {
-      var buf1 = new Buffer([]);
-      var buf2 = new Buffer([]);
+      let buf1, buf2;
+
+      buf1 = new Buffer([]);
+      buf2 = new Buffer([]);
       cmp.eq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([]);
       cmp.eq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([]);
+      buf2 = new Buffer([1]);
       cmp.eq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([1]);
       cmp.eq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1, 1]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([1, 1]);
+      buf2 = new Buffer([1]);
       cmp.eq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([1, 1]);
       cmp.eq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1, 1]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1, 1]);
+      buf2 = new Buffer([1, 1]);
       cmp.eq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1, 0]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1, 0]);
+      buf2 = new Buffer([1, 1]);
       cmp.eq(buf1, buf2).should.equal(false);
 
       (function() {
-        var buf1 = "";
-        var buf2 = new Buffer([0]);
+        let buf1 = "";
+        let buf2 = new Buffer([0]);
         cmp.eq(buf1, buf2);
       }).should.throw('buf1 and buf2 must be buffers');
 
       (function() {
-        var buf1 = new Buffer([0]);
-        var buf2 = "";
+        let buf1 = new Buffer([0]);
+        let buf2 = "";
         cmp.eq(buf1, buf2);
       }).should.throw('buf1 and buf2 must be buffers');
 
@@ -58,47 +60,49 @@ describe('cmp', function() {
   describe('#fasteq', function() {
     
     it('should know if these buffers are equal', function() {
-      var buf1 = new Buffer([]);
-      var buf2 = new Buffer([]);
+      let buf1, buf2;
+
+      buf1 = new Buffer([]);
+      buf2 = new Buffer([]);
       cmp.fasteq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([]);
       cmp.fasteq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([]);
+      buf2 = new Buffer([1]);
       cmp.fasteq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([1]);
       cmp.fasteq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1, 1]);
-      var buf2 = new Buffer([1]);
+      buf1 = new Buffer([1, 1]);
+      buf2 = new Buffer([1]);
       cmp.fasteq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1]);
+      buf2 = new Buffer([1, 1]);
       cmp.fasteq(buf1, buf2).should.equal(false);
 
-      var buf1 = new Buffer([1, 1]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1, 1]);
+      buf2 = new Buffer([1, 1]);
       cmp.fasteq(buf1, buf2).should.equal(true);
 
-      var buf1 = new Buffer([1, 0]);
-      var buf2 = new Buffer([1, 1]);
+      buf1 = new Buffer([1, 0]);
+      buf2 = new Buffer([1, 1]);
       cmp.fasteq(buf1, buf2).should.equal(false);
 
       (function() {
-        var buf1 = "";
-        var buf2 = new Buffer([0]);
+        let buf1 = "";
+        let buf2 = new Buffer([0]);
         cmp.eq(buf1, buf2);
       }).should.throw('buf1 and buf2 must be buffers');
 
       (function() {
-        var buf1 = new Buffer([0]);
-        var buf2 = "";
+        let buf1 = new Buffer([0]);
+        let buf2 = "";
         cmp.eq(buf1, buf2);
       }).should.throw('buf1 and buf2 must be buffers');
 

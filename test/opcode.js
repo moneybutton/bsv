@@ -1,16 +1,16 @@
 "use strict";
-var should = require('chai').should();
-var Opcode = require('../lib/opcode');
+let should = require('chai').should();
+let Opcode = require('../lib/opcode');
 
 describe('Opcode', function() {
 
   it('should create a new Opcode', function() {
-    var opcode = new Opcode(5);
+    let opcode = new Opcode(5);
   });
   
   it('should have 119 opcodes', function() {
-    var i = 0;
-    for (var key in Opcode) {
+    let i = 0;
+    for (let key in Opcode) {
       if (key.indexOf('OP_') !== -1)
         i++;
     }

@@ -1,15 +1,15 @@
 "use strict";
-var BN = require('../lib/bn');
-var should = require('chai').should();
-var BR = require('../lib/br');
-var BW = require('../lib/bw');
-var Varint = require('../lib/varint');
+let BN = require('../lib/bn');
+let should = require('chai').should();
+let BR = require('../lib/br');
+let BW = require('../lib/bw');
+let Varint = require('../lib/varint');
 
 describe('Varint', function() {
 
   it('should make a new varint', function() {
-    var buf = new Buffer('00', 'hex');
-    var varint = new Varint(buf);
+    let buf = new Buffer('00', 'hex');
+    let varint = new Varint(buf);
     should.exist(varint);
     varint.buf.toString('hex').should.equal('00');
     varint = Varint(buf);
@@ -29,8 +29,8 @@ describe('Varint', function() {
   describe('#set', function() {
     
     it('should set a buffer', function() {
-      var buf = new Buffer('00', 'hex');
-      var varint = Varint().set({buf: buf});
+      let buf = new Buffer('00', 'hex');
+      let varint = Varint().set({buf: buf});
       varint.buf.toString('hex').should.equal('00');
       varint.set({});
       varint.buf.toString('hex').should.equal('00');
@@ -41,8 +41,8 @@ describe('Varint', function() {
   describe('#fromJSON', function() {
     
     it('should set a buffer', function() {
-      var buf = BW().writeVarintNum(5).concat();
-      var varint = Varint().fromJSON(buf.toString('hex'));
+      let buf = BW().writeVarintNum(5).concat();
+      let varint = Varint().fromJSON(buf.toString('hex'));
       varint.toNumber().should.equal(5);
     });
 
@@ -51,8 +51,8 @@ describe('Varint', function() {
   describe('#toJSON', function() {
     
     it('should return a buffer', function() {
-      var buf = BW().writeVarintNum(5).concat();
-      var varint = Varint().fromJSON(buf.toString('hex'));
+      let buf = BW().writeVarintNum(5).concat();
+      let varint = Varint().fromJSON(buf.toString('hex'));
       varint.toJSON().should.equal('05');
     });
 
@@ -61,8 +61,8 @@ describe('Varint', function() {
   describe('#fromBuffer', function() {
     
     it('should set a buffer', function() {
-      var buf = BW().writeVarintNum(5).concat();
-      var varint = Varint().fromBuffer(buf);
+      let buf = BW().writeVarintNum(5).concat();
+      let varint = Varint().fromBuffer(buf);
       varint.toNumber().should.equal(5);
     });
 
@@ -71,9 +71,9 @@ describe('Varint', function() {
   describe('#fromBR', function() {
     
     it('should set a buffer reader', function() {
-      var buf = BW().writeVarintNum(5).concat();
-      var br = BR(buf);
-      var varint = Varint().fromBR(br);
+      let buf = BW().writeVarintNum(5).concat();
+      let br = BR(buf);
+      let varint = Varint().fromBR(br);
       varint.toNumber().should.equal(5);
     });
 
@@ -82,7 +82,7 @@ describe('Varint', function() {
   describe('#fromBN', function() {
     
     it('should set a number', function() {
-      var varint = Varint().fromBN(BN(5));
+      let varint = Varint().fromBN(BN(5));
       varint.toNumber().should.equal(5);
     });
 
@@ -91,7 +91,7 @@ describe('Varint', function() {
   describe('#fromNumber', function() {
     
     it('should set a number', function() {
-      var varint = Varint().fromNumber(5);
+      let varint = Varint().fromNumber(5);
       varint.toNumber().should.equal(5);
     });
 
@@ -100,8 +100,8 @@ describe('Varint', function() {
   describe('#toBuffer', function() {
     
     it('should return a buffer', function() {
-      var buf = BW().writeVarintNum(5).concat();
-      var varint = Varint(buf);
+      let buf = BW().writeVarintNum(5).concat();
+      let varint = Varint(buf);
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -110,7 +110,7 @@ describe('Varint', function() {
   describe('#toBN', function() {
     
     it('should return a buffer', function() {
-      var varint = Varint(5);
+      let varint = Varint(5);
       varint.toBN().toString().should.equal(BN(5).toString());
     });
 
@@ -119,7 +119,7 @@ describe('Varint', function() {
   describe('#toNumber', function() {
     
     it('should return a buffer', function() {
-      var varint = Varint(5);
+      let varint = Varint(5);
       varint.toNumber().should.equal(5);
     });
 

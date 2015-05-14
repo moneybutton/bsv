@@ -1,19 +1,19 @@
 "use strict";
-var should = require('chai').should();
-var Base58Check = require('../lib/base58check');
-var base58 = require('../lib/base58');
+let should = require('chai').should();
+let Base58Check = require('../lib/base58check');
+let base58 = require('../lib/base58');
 
 describe('Base58Check', function() {
-  var buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
-  var enc = "14HV44ipwoaqfg";
+  let buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
+  let enc = "14HV44ipwoaqfg";
 
   it('should make an instance with "new"', function() {
-    var b58 = new Base58Check();
+    let b58 = new Base58Check();
     should.exist(b58);
   });
 
   it('should make an instance without "new"', function() {
-    var b58 = Base58Check();
+    let b58 = Base58Check();
     should.exist(b58);
   });
 
@@ -63,9 +63,9 @@ describe('Base58Check', function() {
     });
 
     it('should throw an error when there is a checksum mismatch', function() {
-      var buf2 = base58.decode(enc);
+      let buf2 = base58.decode(enc);
       buf2[0] = buf2[0] + 1;
-      var enc2 = base58.encode(buf2);
+      let enc2 = base58.encode(buf2);
       (function() {
         Base58Check.decode(enc2);
       }).should.throw('Checksum mismatch');
@@ -76,7 +76,7 @@ describe('Base58Check', function() {
   describe('#fromHex', function() {
     
     it('should set buffer from hex', function() {
-      var b58 = Base58Check().fromHex(buf.toString('hex'));
+      let b58 = Base58Check().fromHex(buf.toString('hex'));
       b58.buf.toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -89,7 +89,7 @@ describe('Base58Check', function() {
     });
 
     it('should set buffer', function() {
-      var b58 = Base58Check().fromBuffer(buf);
+      let b58 = Base58Check().fromBuffer(buf);
       b58.buf.toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -106,7 +106,7 @@ describe('Base58Check', function() {
   describe('#toHex', function() {
 
     it('should return the buffer', function() {
-      var b58 = Base58Check({buf: buf});
+      let b58 = Base58Check({buf: buf});
       b58.toHex().should.equal(buf.toString('hex'));
     });
 
@@ -115,7 +115,7 @@ describe('Base58Check', function() {
   describe('#toBuffer', function() {
 
     it('should return the buffer', function() {
-      var b58 = Base58Check({buf: buf});
+      let b58 = Base58Check({buf: buf});
       b58.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -124,7 +124,7 @@ describe('Base58Check', function() {
   describe('#toString', function() {
 
     it('should return the buffer', function() {
-      var b58 = Base58Check({buf: buf});
+      let b58 = Base58Check({buf: buf});
       b58.toString().should.equal(enc);
     });
 

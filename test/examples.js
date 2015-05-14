@@ -2,12 +2,12 @@
 if (process.browser)
   return; //examples are loaded from files, which doesn't work in the browser
 
-var should = require('chai').should();
-var fs = require('fs');
+let should = require('chai').should();
+let fs = require('fs');
 
 describe('Examples', function() {
 
-  var filenames = fs.readdirSync(__dirname + '/../examples/');
+  let filenames = fs.readdirSync(__dirname + '/../examples/');
 
   filenames.forEach(function(filename) {
 
@@ -17,7 +17,7 @@ describe('Examples', function() {
 
         it('should not throw any errors', function() {
           (function() {
-            var save = console.log;
+            let save = console.log;
             console.log = function() {};
             require('../examples/' + filename);
             console.log = save;

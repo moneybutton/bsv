@@ -1,18 +1,18 @@
 "use strict";
-var Base58 = require('../lib/base58');
-var should = require('chai').should();
+let Base58 = require('../lib/base58');
+let should = require('chai').should();
 
 describe('Base58', function() {
-  var buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
-  var enc = "1W7N4RuG";
+  let buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
+  let enc = "1W7N4RuG";
 
   it('should make an instance with "new"', function() {
-    var b58 = new Base58();
+    let b58 = new Base58();
     should.exist(b58);
   });
 
   it('should make an instance without "new"', function() {
-    var b58 = Base58();
+    let b58 = Base58();
     should.exist(b58);
   });
 
@@ -61,7 +61,7 @@ describe('Base58', function() {
   describe('#fromHex', function() {
     
     it('should set buffer', function() {
-      var b58 = Base58().fromHex(buf.toString('hex'));
+      let b58 = Base58().fromHex(buf.toString('hex'));
       b58.buf.toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -74,7 +74,7 @@ describe('Base58', function() {
     });
 
     it('should set buffer', function() {
-      var b58 = Base58().fromBuffer(buf);
+      let b58 = Base58().fromBuffer(buf);
       b58.buf.toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -91,7 +91,7 @@ describe('Base58', function() {
   describe('#toHex', function() {
 
     it('should return the buffer in hex', function() {
-      var b58 = Base58({buf: buf});
+      let b58 = Base58({buf: buf});
       b58.toHex().should.equal(buf.toString('hex'));
     });
 
@@ -100,7 +100,7 @@ describe('Base58', function() {
   describe('#toBuffer', function() {
 
     it('should return the buffer', function() {
-      var b58 = Base58({buf: buf});
+      let b58 = Base58({buf: buf});
       b58.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -109,7 +109,7 @@ describe('Base58', function() {
   describe('#toString', function() {
 
     it('should return the buffer', function() {
-      var b58 = Base58({buf: buf});
+      let b58 = Base58({buf: buf});
       b58.toString().should.equal(enc);
     });
 

@@ -1,19 +1,19 @@
 "use strict";
-var should = require('chai').should();
-var Script = require('../lib/script');
-var Txin = require('../lib/txin');
-var Varint = require('../lib/varint');
-var BR = require('../lib/br');
+let should = require('chai').should();
+let Script = require('../lib/script');
+let Txin = require('../lib/txin');
+let Varint = require('../lib/varint');
+let BR = require('../lib/br');
 
 describe('Txin', function() {
   
-  var txhashbuf = new Buffer(32);
+  let txhashbuf = new Buffer(32);
   txhashbuf.fill(0);
-  var txoutnum = 0;
-  var script = Script().fromString("OP_CHECKMULTISIG");
-  var scriptvi = Varint(script.toBuffer().length);
-  var seqnum = 0;
-  var txin = Txin().set({
+  let txoutnum = 0;
+  let script = Script().fromString("OP_CHECKMULTISIG");
+  let scriptvi = Varint(script.toBuffer().length);
+  let seqnum = 0;
+  let txin = Txin().set({
     txhashbuf: txhashbuf,
     txoutnum: txoutnum,
     scriptvi: scriptvi,
@@ -22,15 +22,15 @@ describe('Txin', function() {
   });
 
   it('should make a new txin', function() {
-    var txin = new Txin();
+    let txin = new Txin();
     should.exist(txin);
     txin = Txin();
     should.exist(txin);
-    var txhashbuf = new Buffer(32);
+    let txhashbuf = new Buffer(32);
     txhashbuf.fill(0);
     Txin(txhashbuf, 0).txhashbuf.length.should.equal(32);
     (function() {
-      var txhashbuf2 = new Buffer(33);
+      let txhashbuf2 = new Buffer(33);
       txhashbuf2.fill(0);
       Txin(txhashbuf2, 0);
     }).should.throw('txhashbuf must be 32 bytes');
@@ -43,7 +43,7 @@ describe('Txin', function() {
   describe('#set', function() {
     
     it('should set these vars', function() {
-      var txin = Txin().set({
+      let txin = Txin().set({
         txhashbuf: txhashbuf,
         txoutnum: txoutnum,
         scriptvi: scriptvi,
@@ -62,7 +62,7 @@ describe('Txin', function() {
   describe('#setScript', function() {
     
     it('should calculate the varint size correctly', function() {
-      var txin2 = Txin(txin);
+      let txin2 = Txin(txin);
       txin2.setScript(Script('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
@@ -71,7 +71,7 @@ describe('Txin', function() {
   describe('#fromJSON', function() {
     
     it('should set these vars', function() {
-      var txin2 = Txin().fromJSON(txin.toJSON());
+      let txin2 = Txin().fromJSON(txin.toJSON());
       should.exist(txin2.txhashbuf);
       should.exist(txin2.txoutnum);
       should.exist(txin2.scriptvi);
@@ -84,7 +84,7 @@ describe('Txin', function() {
   describe('#toJSON', function() {
     
     it('should set these vars', function() {
-      var json = txin.toJSON()
+      let json = txin.toJSON()
       should.exist(json.txhashbuf);
       should.exist(json.txoutnum);
       should.exist(json.scriptvi);
@@ -97,8 +97,8 @@ describe('Txin', function() {
   describe('#fromHex', function() {
     
     it('should convert this known buffer', function() {
-      var hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
-      var txin = Txin().fromHex(hex);
+      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
+      let txin = Txin().fromHex(hex);
       txin.scriptvi.toNumber().should.equal(1);
       txin.script.toString().should.equal('OP_CHECKMULTISIG');
     });
@@ -108,9 +108,9 @@ describe('Txin', function() {
   describe('#fromBuffer', function() {
     
     it('should convert this known buffer', function() {
-      var hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
-      var buf = new Buffer(hex, 'hex');
-      var txin = Txin().fromBuffer(buf);
+      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
+      let buf = new Buffer(hex, 'hex');
+      let txin = Txin().fromBuffer(buf);
       txin.scriptvi.toNumber().should.equal(1);
       txin.script.toString().should.equal('OP_CHECKMULTISIG');
     });
@@ -120,10 +120,10 @@ describe('Txin', function() {
   describe('#fromBR', function() {
     
     it('should convert this known buffer', function() {
-      var hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
-      var buf = new Buffer(hex, 'hex');
-      var br = BR(buf);
-      var txin = Txin().fromBR(br);
+      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000';
+      let buf = new Buffer(hex, 'hex');
+      let br = BR(buf);
+      let txin = Txin().fromBR(br);
       txin.scriptvi.toNumber().should.equal(1);
       txin.script.toString().should.equal('OP_CHECKMULTISIG');
     });
