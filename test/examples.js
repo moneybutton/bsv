@@ -1,3 +1,4 @@
+"use strict";
 if (process.browser)
   return; //examples are loaded from files, which doesn't work in the browser
 

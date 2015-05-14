@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var Hash = require('../lib/hash');
 var vectors = require('./vectors/hash');

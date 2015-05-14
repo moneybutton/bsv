@@ -1,3 +1,4 @@
+"use strict";
 var Base58 = require('../lib/base58');
 var should = require('chai').should();
 

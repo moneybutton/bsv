@@ -1,3 +1,4 @@
+"use strict";
 var cmp = require('../lib/cmp');
 var should = require('chai').should();
 

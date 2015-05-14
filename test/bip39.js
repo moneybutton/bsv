@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var BIP39 = require('../lib/bip39');
 var BIP32 = require('../lib/bip32');

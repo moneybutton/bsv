@@ -1,3 +1,4 @@
+"use strict";
 var ECDSA = require('../lib/ecdsa');
 var Hash = require('../lib/hash');
 var Keypair = require('../lib/keypair');

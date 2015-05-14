@@ -1,3 +1,4 @@
+"use strict";
 var Varint = require('../lib/varint');
 var Tx = require('../lib/tx');
 var Txin = require('../lib/txin');

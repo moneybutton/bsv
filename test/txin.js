@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var Script = require('../lib/script');
 var Txin = require('../lib/txin');

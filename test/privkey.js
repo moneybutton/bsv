@@ -1,3 +1,4 @@
+"use strict";
 var Privkey = require('../lib/privkey');
 var base58check = require('../lib/base58check');
 var BN = require('../lib/bn');

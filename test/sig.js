@@ -1,3 +1,4 @@
+"use strict";
 var BN = require('../lib/bn');
 var should = require('chai').should();
 var Sig = require('../lib/sig');

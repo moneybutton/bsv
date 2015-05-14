@@ -1,3 +1,4 @@
+"use strict";
 var Address = require('../lib/address');
 var BSM = require('../lib/bsm');
 var Keypair = require('../lib/keypair');

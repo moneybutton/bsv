@@ -1,3 +1,4 @@
+"use strict";
 var AES = require('../lib/aes');
 var should = require('chai').should();
 var CBC = require('../lib/cbc');

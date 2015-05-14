@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var Txverifier = require('../lib/txverifier');
 var Txoutmap = require('../lib/txoutmap');

@@ -1,3 +1,4 @@
+"use strict";
 var Blockheader = require('../lib/blockheader');
 var BW = require('../lib/bw');
 var BR = require('../lib/br');

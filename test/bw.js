@@ -1,3 +1,4 @@
+"use strict";
 var BW = require('../lib/bw');
 var BR = require('../lib/br');
 var BN = require('../lib/bn');

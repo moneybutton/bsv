@@ -1,3 +1,4 @@
+"use strict";
 var Script = require('../lib/script');
 var should = require('chai').should();
 var Opcode = require('../lib/opcode');

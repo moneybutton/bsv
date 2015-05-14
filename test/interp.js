@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var Interp = require('../lib/interp');
 var Tx = require('../lib/tx');

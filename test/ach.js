@@ -1,3 +1,4 @@
+"use strict";
 var ACH = require('../lib/ach');
 var should = require('chai').should();
 

@@ -1,3 +1,4 @@
+"use strict";
 var should = require('chai').should();
 var constants = require('../lib/constants');
 var Pubkey = require('../lib/pubkey');

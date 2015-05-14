@@ -1,3 +1,4 @@
+"use strict";
 var chai = chai || require('chai');
 var should = chai.should();
 var assert = chai.assert;
