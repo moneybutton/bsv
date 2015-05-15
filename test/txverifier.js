@@ -4,14 +4,10 @@ let Txverifier = require('../lib/txverifier');
 let Txoutmap = require('../lib/txoutmap');
 let Tx = require('../lib/tx');
 let Txout = require('../lib/txout');
-//let Address = require('../lib/address');
 let BN = require('../lib/bn');
 let Interp = require('../lib/interp');
 let BR = require('../lib/br');
 let Script = require('../lib/script');
-//let Pubkey = require('../lib/pubkey');
-//let Privkey = require('../lib/privkey');
-//let Keypair = require('../lib/keypair');
 let tx_valid = require('./vectors/bitcoind/tx_valid');
 let tx_invalid = require('./vectors/bitcoind/tx_invalid');
 
