@@ -13,7 +13,6 @@ let testPath = path.join(__dirname, 'browser', 'tests.js');
 // fullnode.js
 browserify({debug: false})
 .add(es6ify.runtime)
-// es6ify all files except those in node_modules
 .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
 .require(require.resolve('./index.js'), {entry: true})
 .bundle()
