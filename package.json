@@ -8,7 +8,7 @@
     "test-node": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
     "test-browser": "npm run build && ./node_modules/karma/bin/karma start .karma.conf.js --log-level debug --single-run",
     "test": "npm run test-node && npm run test-browser",
-    "build": "mkdir -p browser && ./node_modules/.bin/browserify index.js -t es6ify -o browser/fullnode.js && ./node_modules/.bin/browserify -t es6ify -t uglifyify index.js -o browser/fullnode-min.js && find test/ -type f -name \"*.js\" | xargs ./node_modules/.bin/browserify -t es6ify -o browser/tests.js"
+    "build": "mkdir -p browser && node build.js"
   },
   "contributors": [
     {
@@ -79,7 +79,9 @@
     "browserify": "^10.1.3",
     "chai": "~2.2.0",
     "es6ify": "^1.6.0",
+    "glob": "^5.0.6",
     "groc": "~0.8.0",
+    "istanbul-harmony": "^0.3.12",
     "karma": "^0.12.32",
     "karma-chrome-launcher": "^0.1.7",
     "karma-firefox-launcher": "^0.1.4",
