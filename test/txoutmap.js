@@ -28,6 +28,8 @@ describe('Txoutmap', function() {
     it('should set a map', function() {
       let txoutmap = Txoutmap().set({map: map});
       txoutmap.map.get(label).toHex().should.equal(txout.toHex());
+      txoutmap.set({});
+      txoutmap.map.get(label).toHex().should.equal(txout.toHex());
     });
 
   });
