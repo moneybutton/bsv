@@ -34,7 +34,6 @@ glob("./test/**/*.js", {}, function (err, files) {
   let b = browserify({debug: true})
   .add(es6ify.runtime)
   .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-  .transform(uglifyify);
   for (let file of files) {
     b.add(file);
   }
