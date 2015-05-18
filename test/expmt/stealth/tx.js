@@ -23,7 +23,7 @@ describe('STx', function() {
     
     it('should return false for this known tx and random stealthkey', function() {
       var sk = SKey().fromRandom();
-      var stx = STx().set({sk: sk, tx: tx});
+      var stx = STx().fromObject({sk: sk, tx: tx});
       stx.isForMe().should.equal(false);
     });
 
@@ -33,7 +33,7 @@ describe('STx', function() {
     
     it('should return true for this known tx and random stealthkey', function() {
       var sk = SKey().fromRandom();
-      var stx = STx().set({sk: sk, tx: tx});
+      var stx = STx().fromObject({sk: sk, tx: tx});
       stx.notMine().should.equal("STx not mine");
     });
 
@@ -42,7 +42,7 @@ describe('STx', function() {
   describe('#notStealth', function() {
 
     it('should know this is a stealth tx', function() {
-      var stx = STx().set({tx: tx});
+      var stx = STx().fromObject({tx: tx});
       stx.notStealth().should.equal(false);
     });
 
@@ -50,7 +50,7 @@ describe('STx', function() {
       var tx2 = Tx(tx);
       tx2.txouts.pop();
       tx2.txoutsvi = Varint(1);
-      var stx = STx().set({tx: tx2});
+      var stx = STx().fromObject({tx: tx2});
       stx.notStealth().should.equal("Not enough txouts");
     });
 

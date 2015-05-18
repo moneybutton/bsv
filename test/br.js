@@ -23,7 +23,7 @@ describe('BR', function() {
   describe('#set', function() {
 
     it('should set pos', function() {
-      should.exist(BR().set({pos: 1}).pos);
+      should.exist(BR().fromObject({pos: 1}).pos);
     });
 
   });

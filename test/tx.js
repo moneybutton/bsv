@@ -17,7 +17,7 @@ describe('Tx', function() {
 
   let txin = Txin().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'));
   let txout = Txout().fromBuffer(new Buffer('050000000000000001ae', 'hex'));
-  let tx = Tx().set({
+  let tx = Tx().fromObject({
     version: 0,
     txinsvi: Varint(1),
     txins: [txin],
@@ -67,7 +67,7 @@ describe('Tx', function() {
   describe('#set', function() {
 
     it('should set all the basic parameters', function() {
-      let tx = Tx().set({
+      let tx = Tx().fromObject({
         version: 0,
         txinsvi: Varint(1),
         txins: [txin],

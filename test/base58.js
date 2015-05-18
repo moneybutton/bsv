@@ -24,7 +24,7 @@ describe('Base58', function() {
   describe('#set', function() {
     
     it('should set a blank buffer', function() {
-      Base58().set({buf: new Buffer([])});
+      Base58().fromObject({buf: new Buffer([])});
     });
 
   });

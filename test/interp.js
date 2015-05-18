@@ -42,7 +42,7 @@ describe('Interp', function() {
   describe('#toJSON', function() {
     
     it('should convert an interp to json', function() {
-      let interp = Interp().set({script: Script()});
+      let interp = Interp().fromObject({script: Script()});
       let json = interp.toJSON();
       should.exist(json.script);
       should.not.exist(json.tx);
@@ -53,7 +53,7 @@ describe('Interp', function() {
   describe('#fromJSON', function() {
     
     it('should convert a json to an interp', function() {
-      let interp = Interp().set({script: Script()});
+      let interp = Interp().fromObject({script: Script()});
       let json = interp.toJSON();
       let interp2 = Interp().fromJSON(json);
       should.exist(interp2.script);

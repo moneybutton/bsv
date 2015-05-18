@@ -15,7 +15,7 @@ describe('SMessage', function() {
   var enchex = 'f557994f16d0d628fa4fdb4ab3d7e0bc5f2754f20381c7831a20c7c9ec88dcf092ea3683261798ccda991ed65a3a54a036d8125dec0381c7831a20c7c9ec88dcf092ea3683261798ccda991ed65a3a54a036d8125dec9f86d081884c7d659a2feaa0c55ad01560ba2904d3bc8395b6c4a6f87648edb33db6a22170e5e26f340c7ba943169210234cd6a753ad13919b0ab7d678b47b5e7d63e452382de2c2590fb57ef048f7b3';
   var encbuf = new Buffer(enchex, 'hex');
   var ivbuf = Hash.sha256(new Buffer('test')).slice(0, 128 / 8);
-  var sk = SKey().set({payloadKeypair: payloadKeypair, scanKeypair: scanKeypair});
+  var sk = SKey().fromObject({payloadKeypair: payloadKeypair, scanKeypair: scanKeypair});
   var sa = SAddress().fromSKey(sk);
   var messagebuf = new Buffer('this is my message');
   
@@ -27,7 +27,7 @@ describe('SMessage', function() {
   });
 
   it('should allow "set" style syntax', function() {
-    var encbuf = SMessage().set({
+    var encbuf = SMessage().fromObject({
       messagebuf: messagebuf,
       toSAddress: sa
     }).encrypt().encbuf;
@@ -38,7 +38,7 @@ describe('SMessage', function() {
   describe('#set', function() {
     
     it('should set the messagebuf', function() {
-      var sm = SMessage().set({messagebuf: messagebuf});
+      var sm = SMessage().fromObject({messagebuf: messagebuf});
       should.exist(sm.messagebuf);
     });
 
@@ -77,7 +77,7 @@ describe('SMessage', function() {
     it('should know that this message is for me even if my payloadPrivkey is not present', function() {
       var sk2 = new SKey();
       sk2.scanKeypair = sk.scanKeypair;
-      sk2.payloadKeypair = Keypair().set({pubkey: sk.payloadKeypair.pubkey});
+      sk2.payloadKeypair = Keypair().fromObject({pubkey: sk.payloadKeypair.pubkey});
       should.not.exist(sk2.payloadKeypair.privkey);
       SMessage.isForMe(encbuf, sk2).should.equal(true);
     });
@@ -87,7 +87,7 @@ describe('SMessage', function() {
   describe('#encrypt', function() {
     
     it('should encrypt this message', function() {
-      var sm = SMessage().set({
+      var sm = SMessage().fromObject({
         messagebuf: messagebuf,
         toSAddress: sa,
         fromKeypair: fromKeypair
@@ -100,11 +100,11 @@ describe('SMessage', function() {
   describe('#decrypt', function() {
     
     it('should decrypt that which was encrypted', function() {
-      var sm = SMessage().set({
+      var sm = SMessage().fromObject({
         messagebuf: messagebuf,
         toSAddress: sa
       }).encrypt();
-      var messagebuf2 = SMessage().set({
+      var messagebuf2 = SMessage().fromObject({
         encbuf: sm.encbuf,
         fromKeypair: sm.fromKeypair,
         toSKey: sk
@@ -117,20 +117,20 @@ describe('SMessage', function() {
   describe('#isForMe', function() {
     
     it('should know that this message is for me', function() {
-      SMessage().set({
+      SMessage().fromObject({
         encbuf: encbuf,
         toSKey: sk,
         fromKeypair: fromKeypair,
-        receiveAddress: Address().set({hashbuf: encbuf.slice(0, 20)})
+        receiveAddress: Address().fromObject({hashbuf: encbuf.slice(0, 20)})
       }).isForMe().should.equal(true);
     });
 
     it('should know that this message is not for me', function() {
-      SMessage().set({
+      SMessage().fromObject({
         encbuf: encbuf,
         toSKey: sk,
         fromKeypair: fromKeypair,
-        receiveAddress: Address().set({hashbuf: encbuf.slice(0, 20)})
+        receiveAddress: Address().fromObject({hashbuf: encbuf.slice(0, 20)})
       }).isForMe().should.equal(true);
     });
 

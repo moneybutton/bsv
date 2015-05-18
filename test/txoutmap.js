@@ -26,9 +26,9 @@ describe('Txoutmap', function() {
   describe('#set', function() {
 
     it('should set a map', function() {
-      let txoutmap = Txoutmap().set({map: map});
+      let txoutmap = Txoutmap().fromObject({map: map});
       txoutmap.map.get(label).toHex().should.equal(txout.toHex());
-      txoutmap.set({});
+      txoutmap.fromObject({});
       txoutmap.map.get(label).toHex().should.equal(txout.toHex());
     });
 
@@ -46,7 +46,7 @@ describe('Txoutmap', function() {
   describe('#get', function() {
 
     it('should get a txout', function() {
-      let txoutmap = Txoutmap().set({map: map});
+      let txoutmap = Txoutmap().fromObject({map: map});
       txoutmap.get(txhashbuf, 0).toHex().should.equal(txout.toHex());
     });
 

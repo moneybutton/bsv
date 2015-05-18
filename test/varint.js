@@ -30,9 +30,9 @@ describe('Varint', function() {
     
     it('should set a buffer', function() {
       let buf = new Buffer('00', 'hex');
-      let varint = Varint().set({buf: buf});
+      let varint = Varint().fromObject({buf: buf});
       varint.buf.toString('hex').should.equal('00');
-      varint.set({});
+      varint.fromObject({});
       varint.buf.toString('hex').should.equal('00');
     });
 

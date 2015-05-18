@@ -25,7 +25,7 @@ describe('Base58Check', function() {
   describe('#set', function() {
     
     it('should set a buf', function() {
-      should.exist(Base58Check().set({buf: buf}).buf);
+      should.exist(Base58Check().fromObject({buf: buf}).buf);
     });
 
   });

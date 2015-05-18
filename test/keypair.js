@@ -25,7 +25,7 @@ describe('Keypair', function() {
   describe("#set", function() {
     
     it('should make a new priv and pub', function() {
-      should.exist(Keypair().set({privkey: Privkey()}).privkey);
+      should.exist(Keypair().fromObject({privkey: Privkey()}).privkey);
     });
 
   });

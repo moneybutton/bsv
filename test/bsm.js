@@ -20,7 +20,7 @@ describe('BSM', function() {
 
     it('should set the messagebuf', function() {
       let messagebuf = new Buffer('message');
-      should.exist(BSM().set({messagebuf: messagebuf}).messagebuf);
+      should.exist(BSM().fromObject({messagebuf: messagebuf}).messagebuf);
     });
 
   });

@@ -13,7 +13,7 @@ describe('Txin', function() {
   let script = Script().fromString("OP_CHECKMULTISIG");
   let scriptvi = Varint(script.toBuffer().length);
   let seqnum = 0;
-  let txin = Txin().set({
+  let txin = Txin().fromObject({
     txhashbuf: txhashbuf,
     txoutnum: txoutnum,
     scriptvi: scriptvi,
@@ -43,7 +43,7 @@ describe('Txin', function() {
   describe('#set', function() {
     
     it('should set these vars', function() {
-      let txin = Txin().set({
+      let txin = Txin().fromObject({
         txhashbuf: txhashbuf,
         txoutnum: txoutnum,
         scriptvi: scriptvi,

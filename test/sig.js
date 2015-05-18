@@ -22,7 +22,7 @@ describe('Sig', function() {
   describe('#set', function() {
     
     it('should set compressed', function() {
-      should.exist(Sig().set({compressed: true}));
+      should.exist(Sig().fromObject({compressed: true}));
     });
 
   });

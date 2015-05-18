@@ -44,7 +44,7 @@ describe('SKey', function() {
   describe('#set', function() {
 
     it('should set payload key', function() {
-      should.exist(SKey().set({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
+      should.exist(SKey().fromObject({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
     });
 
   });

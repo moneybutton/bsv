@@ -288,7 +288,7 @@ describe('BIP32', function() {
 
     it('should set this bip32', function() {
       let bip32 = BIP32(vector1_m_private);
-      let bip322 = BIP32().set({
+      let bip322 = BIP32().fromObject({
         version: bip32.version,
         depth: bip32.depth,
         parentfingerprint: bip32.parentfingerprint,
@@ -300,7 +300,7 @@ describe('BIP32', function() {
         pubkeyhash: bip32.pubKeyhash
       });
       bip322.toString().should.equal(bip32.toString());
-      bip322.set({}).toString().should.equal(bip32.toString());
+      bip322.fromObject({}).toString().should.equal(bip32.toString());
     });
 
   });

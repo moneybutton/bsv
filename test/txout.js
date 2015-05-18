@@ -12,7 +12,7 @@ describe('Txout', function() {
   let valuebn = BN(5);
   let script = Script().fromString("OP_CHECKMULTISIG");
   let scriptvi = Varint(script.toBuffer().length);
-  let txout = new Txout().set({
+  let txout = new Txout().fromObject({
     valuebn: valuebn,
     scriptvi: scriptvi,
     script: script
@@ -33,7 +33,7 @@ describe('Txout', function() {
   describe('#set', function() {
     
     it('should set this object', function() {
-      let txout = new Txout().set({
+      let txout = new Txout().fromObject({
         valuebn: valuebn,
         scriptvi: scriptvi,
         script: script

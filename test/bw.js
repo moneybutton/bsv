@@ -17,7 +17,7 @@ describe('BW', function() {
       let buf1 = new Buffer([0]);
       let buf2 = new Buffer([1]);
       let bufs = [buf1, buf2];
-      let bw = new BW().set({bufs: [buf1, buf2]});
+      let bw = new BW().fromObject({bufs: [buf1, buf2]});
       bw.concat().toString('hex').should.equal('0001');
     });
 

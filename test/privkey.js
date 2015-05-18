@@ -42,7 +42,7 @@ describe('Privkey', function() {
   describe('#set', function() {
     
     it('should set bn', function() {
-      should.exist(Privkey().set({bn: BN.fromBuffer(buf)}).bn);
+      should.exist(Privkey().fromObject({bn: BN.fromBuffer(buf)}).bn);
     });
 
   });

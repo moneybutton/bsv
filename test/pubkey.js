@@ -28,7 +28,7 @@ describe('Pubkey', function() {
   describe('#set', function() {
     
     it('should make a public key from a point', function() {
-      should.exist(Pubkey().set({point: Point.getG()}).point);
+      should.exist(Pubkey().fromObject({point: Point.getG()}).point);
     });
 
   });

@@ -20,7 +20,7 @@ describe('Block', function() {
   let bh = Blockheader().fromBuffer(bhbuf);
   let txsvi = Varint(1);
   let txs = [Tx().fromBuffer(txbuf)];
-  let block = Block().set({
+  let block = Block().fromObject({
     magicnum: magicnum,
     blocksize: blocksize,
     blockheader: bh,
@@ -46,7 +46,7 @@ describe('Block', function() {
   describe('#set', function() {
 
     it('should set these known values', function() {
-      let block = Block().set({
+      let block = Block().fromObject({
         magicnum: magicnum,
         blocksize: blocksize,
         blockheader: bh,
@@ -65,7 +65,7 @@ describe('Block', function() {
   describe('#fromJSON', function() {
 
     it('should set these known values', function() {
-      let block = Block().set({
+      let block = Block().fromObject({
         magicnum: magicnum,
         blocksize: blocksize,
         blockheader: bh.toJSON(),

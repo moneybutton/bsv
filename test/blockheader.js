@@ -15,7 +15,7 @@ describe('Blockheader', function() {
   let time = 2;
   let bits = 3;
   let nonce = 4;
-  bh.set({
+  bh.fromObject({
     version: version,
     prevblockidbuf: prevblockidbuf,
     merklerootbuf: merklerootbuf,
@@ -37,7 +37,7 @@ describe('Blockheader', function() {
   describe('#set', function() {
 
     it('should set all the variables', function() {
-      bh.set({
+      bh.fromObject({
         version: version,
         prevblockidbuf: prevblockidbuf,
         merklerootbuf: merklerootbuf,
