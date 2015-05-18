@@ -7,6 +7,28 @@ describe('Hash', function() {
   let buf = new Buffer([0, 1, 2, 3, 253, 254, 255]);
   let str = "test string";
 
+  it('should have the blocksize for some hash functions', function() {
+    Hash.sha1.blocksize.should.equal(512);
+    Hash.sha256.blocksize.should.equal(512);
+    Hash.sha512.blocksize.should.equal(1024);
+  });
+
+  describe('@hmac', function() {
+
+    it('should throw errors in these cases', function() {
+      (function() {
+        Hash.hmac('non-supported-hash-function', new Buffer([]), new Buffer([]));
+      }).should.throw('invalid choice of hash function');
+      (function() {
+        Hash.hmac('sha512', new Buffer([]), "");
+      }).should.throw('data and key must be buffers');
+      (function() {
+        Hash.hmac('sha512', "", new Buffer([]));
+      }).should.throw('data and key must be buffers');
+    });
+
+  });
+
   describe('@sha1', function() {
 
     it('should calculate the hash of this buffer correctly', function() {
@@ -127,6 +149,15 @@ describe('Hash', function() {
   });
 
   describe("@sha512hmac", function() {
+
+    it('should calculate this value where key size is the same as block size', function() {
+      let key = new Buffer(Hash.sha512.blocksize / 8);
+      key.fill(0);
+      let data = new Buffer([]);
+      // test vector calculated with node's createHmac
+      let hex = 'b936cee86c9f87aa5d3c6f2e84cb5a4239a5fe50480a6ec66b70ab5b1f4ac6730c6c515421b327ec1d69402e53dfb49ad7381eb067b338fd7b0cb22247225d47';
+      Hash.sha512hmac(data, key).toString('hex').should.equal(hex);
+    });
 
     it('should calculate this known empty test vector correctly', function() {
       let hex = 'b936cee86c9f87aa5d3c6f2e84cb5a4239a5fe50480a6ec66b70ab5b1f4ac6730c6c515421b327ec1d69402e53dfb49ad7381eb067b338fd7b0cb22247225d47';
