@@ -6,6 +6,7 @@
   * directly require the elements of the library you need, and browserify your
   * project. For instance, require('fullnode/lib/address').
   */
+"use strict";
 let fullnode = module.exports;
 global.fullnode = fullnode;
 

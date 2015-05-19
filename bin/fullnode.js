@@ -1,3 +1,4 @@
+"use strict";
 let repl = require('repl');
 let fullnode = require('../');
 // Make all fullnode classes globally available.
