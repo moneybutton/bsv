@@ -1,14 +1,15 @@
-var should = require('chai').should();
-var SKey = require('../../../lib/expmt/stealth/key');
-var Keypair = require('../../../lib/keypair');
-var Privkey = require('../../../lib/privkey');
-var Pubkey = require('../../../lib/pubkey');
-var BN = require('../../../lib/bn');
-var Hash = require('../../../lib/hash');
+"use strict";
+let should = require('chai').should();
+let StealthKey = require('../lib/stealthkey');
+let Keypair = require('../lib/keypair');
+let Privkey = require('../lib/privkey');
+let Pubkey = require('../lib/pubkey');
+let BN = require('../lib/bn');
+let Hash = require('../lib/hash');
 
-describe('SKey', function() {
+describe('StealthKey', function() {
   
-  var stealthkey = SKey();
+  let stealthkey = StealthKey();
   stealthkey.payloadKeypair = Keypair();
   stealthkey.payloadKeypair.privkey = Privkey();
   stealthkey.payloadKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 1')));
@@ -18,25 +19,25 @@ describe('SKey', function() {
   stealthkey.scanKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 2')));
   stealthkey.scanKeypair.privkey2pubkey();
 
-  var senderKeypair = Keypair();
+  let senderKeypair = Keypair();
   senderKeypair.privkey = Privkey();
   senderKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 3')));
   senderKeypair.privkey2pubkey();
 
   it('should create a new stealthkey', function() {
-    var stealthkey = new SKey();
+    let stealthkey = new StealthKey();
     should.exist(stealthkey);
   });
 
   it('should create a new stealthkey without using "new"', function() {
-    var stealthkey = SKey();
+    let stealthkey = StealthKey();
     should.exist(stealthkey);
   });
 
   it('should create a new stealthkey with both keypairs in the constructor', function() {
-    var keypair1 = Keypair();
-    var keypair2 = Keypair();
-    var stealthkey = SKey(keypair1, keypair2);
+    let keypair1 = Keypair();
+    let keypair2 = Keypair();
+    let stealthkey = StealthKey(keypair1, keypair2);
     should.exist(stealthkey.payloadKeypair);
     should.exist(stealthkey.scanKeypair);
   });
@@ -44,7 +45,7 @@ describe('SKey', function() {
   describe('#set', function() {
 
     it('should set payload key', function() {
-      should.exist(SKey().fromObject({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
+      should.exist(StealthKey().fromObject({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);
     });
 
   });
@@ -52,7 +53,7 @@ describe('SKey', function() {
   describe('#fromJSON', function() {
     
     it('should make a stealthkey from this JSON', function() {
-      var sk = SKey().fromJSON({
+      let sk = StealthKey().fromJSON({
         payloadKeypair: stealthkey.payloadKeypair.toJSON(),
         scanKeypair: stealthkey.scanKeypair.toJSON()
       });
@@ -65,8 +66,8 @@ describe('SKey', function() {
   describe('#toJSON', function() {
     
     it('should convert this stealthkey to json', function() {
-      var json = stealthkey.toJSON()
-      var json2 = SKey().fromJSON(json).toJSON();
+      let json = stealthkey.toJSON()
+      let json2 = StealthKey().fromJSON(json).toJSON();
       json.payloadKeypair.privkey.should.equal(json2.payloadKeypair.privkey);
       json.scanKeypair.privkey.should.equal(json2.scanKeypair.privkey);
     });
@@ -76,7 +77,7 @@ describe('SKey', function() {
   describe('#fromRandom', function() {
 
     it('should create a new stealthkey from random', function() {
-      var stealthkey = SKey().fromRandom();
+      let stealthkey = StealthKey().fromRandom();
       should.exist(stealthkey.payloadKeypair.privkey.bn.gt(0));
       should.exist(stealthkey.scanKeypair.privkey.bn.gt(0));
     });
@@ -86,7 +87,7 @@ describe('SKey', function() {
   describe('#getSharedKeypair', function() {
 
     it('should return a key', function() {
-      var key = stealthkey.getSharedKeypair(senderKeypair.pubkey);
+      let key = stealthkey.getSharedKeypair(senderKeypair.pubkey);
       (key instanceof Keypair).should.equal(true);
     });
 
@@ -95,7 +96,7 @@ describe('SKey', function() {
   describe('#getReceivePubkey', function() {
     
     it('should return a pubkey', function() {
-      var pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey);
+      let pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey);
       (pubkey instanceof Pubkey).should.equal(true);
     });
 
@@ -104,18 +105,18 @@ describe('SKey', function() {
   describe('#getReceiveKeypair', function() {
 
     it('should return a key', function() {
-      var key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
+      let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
       (key instanceof Keypair).should.equal(true);
     });
 
     it('should return a key with the same pubkey as getReceivePubkey', function() {
-      var key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
-      var pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey);
+      let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
+      let pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey);
       key.pubkey.toString().should.equal(pubkey.toString());
     });
 
     it('should return private key with length 32 or less', function() {
-      var key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
+      let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);
       key.privkey.bn.toBuffer().length.should.be.below(33);
     });
 
@@ -124,12 +125,12 @@ describe('SKey', function() {
   describe('#isForMe', function() {
 
     it('should return true if it (the transaction or message) is for me', function() {
-      var pubkeyhash = new Buffer('3cb64fa6ee9b3e8754e3e2bd033bf61048604a99', 'hex');
+      let pubkeyhash = new Buffer('3cb64fa6ee9b3e8754e3e2bd033bf61048604a99', 'hex');
       stealthkey.isForMe(senderKeypair.pubkey, pubkeyhash).should.equal(true);
     });
 
     it('should return false if it (the transaction or message) is not for me', function() {
-      var pubkeyhash = new Buffer('00b64fa6ee9b3e8754e3e2bd033bf61048604a99', 'hex');
+      let pubkeyhash = new Buffer('00b64fa6ee9b3e8754e3e2bd033bf61048604a99', 'hex');
       stealthkey.isForMe(senderKeypair.pubkey, pubkeyhash).should.equal(false);
     });
 

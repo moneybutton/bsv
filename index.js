@@ -12,10 +12,8 @@ global.fullnode = fullnode;
 
 fullnode.version = require('./package').version;
 
-//main bitcoin library - bitcoin protocols and standards
+//main bitcoin library - bitcoin protocols, standard, and cryptography
 fullnode.Address = require('./lib/address');
-fullnode.AES = require('./lib/aes');
-fullnode.AESCBC = require('./lib/aescbc');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
 fullnode.BIP32 = require('./lib/bip32');
@@ -26,7 +24,6 @@ fullnode.BN = require('./lib/bn');
 fullnode.BR = require('./lib/br');
 fullnode.BSM = require('./lib/bsm');
 fullnode.BW = require('./lib/bw');
-fullnode.CBC = require('./lib/cbc');
 fullnode.cmp = require('./lib/cmp');
 fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
@@ -47,15 +44,14 @@ fullnode.Txout = require('./lib/txout');
 fullnode.Varint = require('./lib/varint');
 
 //experimental, nonstandard, or unstable features
-fullnode.expmt = {};
-fullnode.expmt.ECIES = require('./lib/expmt/ecies');
-
-//experimental stealth address support
-fullnode.expmt.stealth = {};
-fullnode.expmt.stealth.SAddress = require('./lib/expmt/stealth/address');
-fullnode.expmt.stealth.SKey = require('./lib/expmt/stealth/key');
-fullnode.expmt.stealth.SMessage = require('./lib/expmt/stealth/message');
-fullnode.expmt.stealth.STx = require('./lib/expmt/stealth/tx');
+fullnode.AES = require('./lib/aes');
+fullnode.AESCBC = require('./lib/aescbc');
+fullnode.CBC = require('./lib/cbc');
+fullnode.ECIES = require('./lib/ecies');
+fullnode.StealthAddress = require('./lib/stealthaddress');
+fullnode.StealthKey = require('./lib/stealthkey');
+fullnode.StealthMessage = require('./lib/stealthmessage');
+fullnode.StealthTx = require('./lib/stealthtx');
 
 //dependencies, subject to change
 fullnode.deps = {};
