@@ -39,8 +39,6 @@ describe('Block', function() {
     should.exist(block);
     block = Block();
     should.exist(block);
-    block = Block(blockbuf);
-    block.toBuffer().toString('hex').should.equal(blockhex);
   });
 
   describe('#set', function() {
@@ -65,7 +63,7 @@ describe('Block', function() {
   describe('#fromJSON', function() {
 
     it('should set these known values', function() {
-      let block = Block().fromObject({
+      let block = Block().fromJSON({
         magicnum: magicnum,
         blocksize: blocksize,
         blockheader: bh.toJSON(),
@@ -144,6 +142,9 @@ describe('Block', function() {
     it('should recover a block from this known buffer', function() {
       let block = Block().fromBuffer(blockbuf);
       block.toBW().concat().toString('hex').should.equal(blockhex);
+      let bw = BW();
+      block.toBW(bw);
+      bw.concat().toString('hex').should.equal(blockhex);
     });
 
   });

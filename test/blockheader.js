@@ -31,7 +31,6 @@ describe('Blockheader', function() {
     should.exist(blockheader);
     blockheader = Blockheader();
     should.exist(blockheader);
-    Blockheader(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
   });
 
   describe('#set', function() {
@@ -134,6 +133,9 @@ describe('Blockheader', function() {
 
     it('should output this known buffer', function() {
       Blockheader().fromBuffer(bhbuf).toBW().concat().toString('hex').should.equal(bhhex);
+      let bw = BW();
+      Blockheader().fromBuffer(bhbuf).toBW(bw);
+      bw.concat().toString('hex').should.equal(bhhex);
     });
 
   });

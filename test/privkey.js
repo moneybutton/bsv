@@ -16,26 +16,28 @@ describe('Privkey', function() {
   it('should create an empty private key', function() {
     let privkey = new Privkey();
     should.exist(privkey);
+    privkey = Privkey();
+    should.exist(privkey);
   });
 
   it('should create a 0 private key with this convenience method', function() {
     let bn = BN(0);
-    let privkey = new Privkey(bn);
+    let privkey = Privkey(bn);
     privkey.bn.toString().should.equal(bn.toString());
   });
 
   it('should create a mainnet private key', function() {
-    let privkey = new Privkey({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: true});
+    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: true});
     privkey.toString().should.equal(encmainnet);
   });
 
   it('should create an uncompressed testnet private key', function() {
-    let privkey = new Privkey({bn: BN.fromBuffer(buf), networkstr: 'testnet', compressed: false});
+    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'testnet', compressed: false});
     privkey.toString().should.equal(enctu);
   });
 
   it('should create an uncompressed mainnet private key', function() {
-    let privkey = new Privkey({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: false});
+    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: false});
     privkey.toString().should.equal(encmu);
   });
 
@@ -50,7 +52,7 @@ describe('Privkey', function() {
   describe('#fromJSON', function() {
 
     it('should input this address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromJSON(encmu);
       privkey.toWIF().should.equal(encmu);
     });
@@ -60,7 +62,7 @@ describe('Privkey', function() {
   describe('#toString', function() {
 
     it('should output this address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromJSON(encmu);
       privkey.toJSON().should.equal(encmu);
     });
@@ -82,7 +84,7 @@ describe('Privkey', function() {
     
     it('should return a hex string', function() {
       let privkey = Privkey().fromBN(BN(5));
-      privkey.toHex().should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+      privkey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501');
     });
     
   });
@@ -91,7 +93,7 @@ describe('Privkey', function() {
     
     it('should return a buffer', function() {
       let privkey = Privkey().fromBN(BN(5));
-      privkey.toBuffer().toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+      privkey.toBuffer().toString('hex').should.equal('80000000000000000000000000000000000000000000000000000000000000000501');
     });
     
   });
@@ -99,8 +101,8 @@ describe('Privkey', function() {
   describe('#fromHex', function() {
     
     it('should return a hex string', function() {
-      let privkey = Privkey().fromHex('0000000000000000000000000000000000000000000000000000000000000005');
-      privkey.toHex().should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+      let privkey = Privkey().fromHex('80000000000000000000000000000000000000000000000000000000000000000501');
+      privkey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501');
     });
 
   });
@@ -108,14 +110,23 @@ describe('Privkey', function() {
   describe('#fromBuffer', function() {
     
     it('should return a buffer', function() {
-      let privkey = Privkey().fromBuffer(new Buffer('0000000000000000000000000000000000000000000000000000000000000005', 'hex'));
-      privkey.toBuffer().toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000005');
+      let privkey = Privkey().fromBuffer(new Buffer('80000000000000000000000000000000000000000000000000000000000000000501', 'hex'));
+      privkey.toBuffer().toString('hex').should.equal('80000000000000000000000000000000000000000000000000000000000000000501');
     });
     
-    it('should throw an error of buffer is wrong length', function() {
+    it('should throw an error if buffer is wrong length', function() {
       (function() {
-        let privkey = Privkey().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000005', 'hex'));
-      }).should.throw('Privkey buffer must be 32 bytes');
+        let privkey = Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000000050100', 'hex'));
+      }).should.throw('Length of privkey buffer must be 33 (uncompressed pubkey) or 34 (compressed pubkey)');
+      (function() {
+        let privkey = Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000005', 'hex'));
+      }).should.throw('Length of privkey buffer must be 33 (uncompressed pubkey) or 34 (compressed pubkey)');
+    });
+    
+    it('should throw an error if buffer has wrong version byte', function() {
+      (function() {
+        let privkey = Privkey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'));
+      }).should.throw('Invalid version byte');
     });
     
   });
@@ -138,10 +149,34 @@ describe('Privkey', function() {
 
   });
 
+  describe('#validate', function() {
+
+    it('should unvalidate these privkeys', function() {
+      let privkey = Privkey();
+      privkey.bn = Point.getN();
+      (function() {
+        privkey.validate();
+      }).should.throw('Number must be less than N');
+      privkey.bn = Point.getN().sub(1);
+      privkey.networkstr = 'fakenet';
+      (function() {
+        privkey.validate();
+      }).should.throw('Must specify the networkstr ("mainnet" or "testnet")');
+      privkey.networkstr = 'mainnet';
+      privkey.compressed = 'true';
+      (function() {
+        privkey.validate();
+      }).should.throw('Must specify whether the corresponding public key is compressed or not (true or false)');
+      privkey.compressed = true;
+      privkey.validate().should.equal(privkey);
+    });
+
+  });
+
   describe('#fromWIF', function() {
 
     it('should parse this compressed testnet address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromWIF(encmainnet);
       privkey.toWIF().should.equal(encmainnet);
     });
@@ -151,7 +186,7 @@ describe('Privkey', function() {
   describe('#toWIF', function() {
 
     it('should parse this compressed testnet address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromWIF(enctestnet);
       privkey.toWIF().should.equal(enctestnet);
     });
@@ -161,7 +196,7 @@ describe('Privkey', function() {
   describe('#fromString', function() {
 
     it('should parse this uncompressed testnet address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromString(enctu);
       privkey.toWIF().should.equal(enctu);
     });
@@ -171,7 +206,7 @@ describe('Privkey', function() {
   describe('#toString', function() {
 
     it('should parse this uncompressed mainnet address correctly', function() {
-      let privkey = new Privkey();
+      let privkey = Privkey();
       privkey.fromString(encmu);
       privkey.toString().should.equal(encmu);
     });

@@ -53,10 +53,12 @@ describe('Interp', function() {
   describe('#fromJSON', function() {
     
     it('should convert a json to an interp', function() {
-      let interp = Interp().fromObject({script: Script()});
+      let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']});
       let json = interp.toJSON();
       let interp2 = Interp().fromJSON(json);
       should.exist(interp2.script);
+      should.exist(interp2.stack[0]);
+      should.exist(interp2.altstack[0]);
     });
 
   });

@@ -16,11 +16,11 @@ describe("ECDSA", function() {
     let ecdsa = new ECDSA();
   });
 
-  let ecdsa = new ECDSA();
+  let ecdsa = ECDSA();
   ecdsa.hashbuf = Hash.sha256(new Buffer('test data'));
-  ecdsa.keypair = new Keypair();
-  ecdsa.keypair.privkey = new Privkey({bn: BN().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex'))});
-  ecdsa.keypair.pubkey = new Pubkey({
+  ecdsa.keypair = Keypair();
+  ecdsa.keypair.privkey = Privkey().fromBN(BN().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')));
+  ecdsa.keypair.pubkey = Pubkey({
     point: point(BN().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
     BN().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
   });
@@ -324,7 +324,7 @@ describe("ECDSA", function() {
     vectors.deterministicK.forEach(function(obj, i) {
       it('should validate deterministicK vector ' + i, function() {
         let hashbuf = Hash.sha256(new Buffer(obj.message));
-        let privkey = Privkey({bn: BN().fromBuffer(new Buffer(obj.privkey, 'hex'))});
+        let privkey = Privkey().fromObject({bn: BN().fromBuffer(new Buffer(obj.privkey, 'hex'))});
         let ecdsa = ECDSA({
           keypair: Keypair().fromObject({privkey: privkey}),
           hashbuf: hashbuf

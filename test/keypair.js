@@ -127,16 +127,16 @@ describe('Keypair', function() {
     it('should convert this known Privkey to known Pubkey', function() {
       let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
       let pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc';
-      let key = new Keypair();
-      key.privkey = new Privkey({bn: bn(new Buffer(privhex, 'hex'))});
+      let key = Keypair();
+      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
       key.privkey2pubkey();
       key.pubkey.toString().should.equal(pubhex);
     });
 
     it('should convert this known Privkey to known Pubkey and preserve compressed=true', function() {
       let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
-      let key = new Keypair();
-      key.privkey = new Privkey({bn: bn(new Buffer(privhex, 'hex'))});
+      let key = Keypair();
+      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
       key.privkey.compressed = true;
       key.privkey2pubkey();
       key.pubkey.compressed.should.equal(true);
@@ -144,8 +144,8 @@ describe('Keypair', function() {
 
     it('should convert this known Privkey to known Pubkey and preserve compressed=true', function() {
       let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
-      let key = new Keypair();
-      key.privkey = new Privkey({bn: bn(new Buffer(privhex, 'hex'))});
+      let key = Keypair();
+      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
       key.privkey.compressed = false;
       key.privkey2pubkey();
       key.pubkey.compressed.should.equal(false);
