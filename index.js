@@ -1,4 +1,7 @@
 /**
+  * fullnode
+  * ========
+  *
   * An example of how to build a bundle with fullnode. This bundle includes the
   * entire library. It is not typically recommended that you use fullnode this
   * way, since you probably do not use every component, and therefore do not
@@ -12,7 +15,7 @@ global.fullnode = fullnode;
 
 fullnode.version = require('./package').version;
 
-//main bitcoin library - bitcoin protocols, standard, and cryptography
+// main bitcoin library - bitcoin protocols, standards, and cryptography
 fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
@@ -39,11 +42,14 @@ fullnode.Random = require('./lib/random');
 fullnode.Script = require('./lib/script');
 fullnode.Sig = require('./lib/sig');
 fullnode.Tx = require('./lib/tx');
+fullnode.Txbuilder = require('./lib/txbuilder');
 fullnode.Txin = require('./lib/txin');
 fullnode.Txout = require('./lib/txout');
+fullnode.Txverifier = require('./lib/txverifier');
 fullnode.Varint = require('./lib/varint');
 
-//experimental, nonstandard, or unstable features
+// experimental, nonstandard, or unstable features
+fullnode.ACH = require('./lib/ach');
 fullnode.AES = require('./lib/aes');
 fullnode.AESCBC = require('./lib/aescbc');
 fullnode.CBC = require('./lib/cbc');
@@ -53,12 +59,13 @@ fullnode.StealthKey = require('./lib/stealthkey');
 fullnode.StealthMessage = require('./lib/stealthmessage');
 fullnode.StealthTx = require('./lib/stealthtx');
 
-//dependencies, subject to change
-fullnode.deps = {};
-fullnode.deps.aes = require('aes');
-fullnode.deps.bnjs = require('bn.js');
-fullnode.deps.bs58 = require('bs58');
-fullnode.deps.Buffer = Buffer;
-fullnode.deps.elliptic = require('elliptic');
-fullnode.deps.hashjs = require('hash.js');
-fullnode.deps.pbkdf2compat = require('pbkdf2-compat');
+// dependencies, subject to change
+fullnode.dep = {};
+fullnode.dep.aes = require('aes');
+fullnode.dep.bnjs = require('bn.js');
+fullnode.dep.bs58 = require('bs58');
+fullnode.dep.Buffer = Buffer;
+fullnode.dep.elliptic = require('elliptic');
+fullnode.dep.hashjs = require('hash.js');
+fullnode.dep.pbkdf2compat = require('pbkdf2-compat');
+fullnode.dep.unorm = require('unorm');
