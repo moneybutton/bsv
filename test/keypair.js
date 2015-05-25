@@ -11,23 +11,17 @@ describe('Keypair', function() {
   it('should make a blank key', function() {
     let key = new Keypair();
     should.exist(key);
+    key = Keypair();
+    should.exist(key);
   });
 
   it('should make a key with a priv and pub', function() {
     let priv = new Privkey();
     let pub = new Pubkey();
-    let key = new Keypair({privkey: priv, pubkey: pub});
+    let key = new Keypair(priv, pub);
     should.exist(key);
     should.exist(key.privkey);
     should.exist(key.pubkey);
-  });
-
-  describe("#set", function() {
-    
-    it('should make a new priv and pub', function() {
-      should.exist(Keypair().fromObject({privkey: Privkey()}).privkey);
-    });
-
   });
 
   describe('#fromJSON', function() {
@@ -58,10 +52,36 @@ describe('Keypair', function() {
 
   });
 
+  describe('#fromString', function() {
+    
+    it('should convert to and from a string', function() {
+      let keypair = Keypair().fromRandom();
+      let str = keypair.toString();
+      Keypair().fromString(str).toString().should.equal(str);
+    });
+
+  });
+
   describe("#fromPrivkey", function() {
     
     it('should make a new key from a privkey', function() {
       should.exist(Keypair().fromPrivkey(Privkey().fromRandom()).pubkey);
+    });
+
+    it('should convert this known Privkey to known Pubkey', function() {
+      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
+      let pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc';
+      let privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
+      let key = Keypair().fromPrivkey(privkey);
+      key.pubkey.toString().should.equal(pubhex);
+    });
+
+    it('should convert this known Privkey to known Pubkey and preserve compressed=false', function() {
+      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
+      let privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
+      privkey.compressed = false;
+      let key = Keypair().fromPrivkey(privkey);
+      key.pubkey.compressed.should.equal(false);
     });
 
   });
@@ -69,7 +89,7 @@ describe('Keypair', function() {
   describe("#fromRandom", function() {
     
     it('should make a new priv and pub, should be compressed, mainnet', function() {
-      let key = new Keypair();
+      let key = Keypair();
       key.fromRandom();
       should.exist(key.privkey);
       should.exist(key.pubkey);
@@ -78,86 +98,6 @@ describe('Keypair', function() {
       key.pubkey.point.getY().gt(bn(0)).should.equal(true);
       key.privkey.compressed.should.equal(true);
       key.pubkey.compressed.should.equal(true);
-    });
-
-  });
-
-  describe("#fromString", function() {
-    
-    it('should recover a key creating with toString', function() {
-      let key = new Keypair();
-      key.fromRandom();
-      let priv = key.privkey;
-      let pub = key.pubkey;
-      let str = key.toString();
-      key.fromString(str);
-      should.exist(key.privkey);
-      should.exist(key.pubkey);
-      key.privkey.toString().should.equal(priv.toString());
-      key.pubkey.toString().should.equal(pub.toString());
-    });
-
-    it('should work with only Privkey set', function() {
-      let key = new Keypair();
-      key.fromRandom();
-      key.pubkey = undefined;
-      let priv = key.privkey;
-      let str = key.toString();
-      key.fromString(str);
-      should.exist(key.privkey);
-      key.privkey.toString().should.equal(priv.toString());
-    });
-
-    it('should work with only Pubkey set', function() {
-      let key = new Keypair();
-      key.fromRandom();
-      key.privkey = undefined;
-      let pub = key.pubkey;
-      let str = key.toString();
-      key.fromString(str);
-      should.exist(key.pubkey);
-      key.pubkey.toString().should.equal(pub.toString());
-    });
-
-  });
-
-  describe("#privkey2pubkey", function() {
-    
-    it('should convert this known Privkey to known Pubkey', function() {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
-      let pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc';
-      let key = Keypair();
-      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
-      key.privkey2pubkey();
-      key.pubkey.toString().should.equal(pubhex);
-    });
-
-    it('should convert this known Privkey to known Pubkey and preserve compressed=true', function() {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
-      let key = Keypair();
-      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
-      key.privkey.compressed = true;
-      key.privkey2pubkey();
-      key.pubkey.compressed.should.equal(true);
-    });
-
-    it('should convert this known Privkey to known Pubkey and preserve compressed=true', function() {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff';
-      let key = Keypair();
-      key.privkey = Privkey().fromBN(bn(new Buffer(privhex, 'hex')));
-      key.privkey.compressed = false;
-      key.privkey2pubkey();
-      key.pubkey.compressed.should.equal(false);
-    });
-
-  });
-
-  describe("#toString", function() {
-    
-    it('should exist', function() {
-      let key = new Keypair();
-      key.fromRandom();
-      should.exist(key.toString());
     });
 
   });

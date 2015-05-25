@@ -12,19 +12,9 @@ let Base58check = require('../lib/base58check');
 describe('StealthAddress', function() {
   
   let stealthkey = StealthKey();
-  stealthkey.payloadKeypair = Keypair();
-  stealthkey.payloadKeypair.privkey = Privkey();
-  stealthkey.payloadKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 1')));
-  stealthkey.payloadKeypair.privkey2pubkey();
-  stealthkey.scanKeypair = Keypair();
-  stealthkey.scanKeypair.privkey = Privkey();
-  stealthkey.scanKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 2')));
-  stealthkey.scanKeypair.privkey2pubkey();
-
-  let senderKeypair = Keypair();
-  senderKeypair.privkey = Privkey();
-  senderKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 3')));
-  senderKeypair.privkey2pubkey();
+  stealthkey.payloadKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 1')))));
+  stealthkey.scanKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 2')))));
+  let senderKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 3')))));
 
   let addressString = 'vJmtuUb8ysKiM1HtHQF23FGfjGAKu5sM94UyyjknqhJHNdj5CZzwtpGzeyaATQ2HvuzomNVtiwsTJSWzzCBgCTtUZbRFpzKVq9MAUr';
   let dwhex = '2a0002697763d7e9becb0c180083738c32c05b0e2fee26d6278020c06bbb04d5f66b32010362408459041e0473298af3824dbabe4d2b7f846825ed4d1c2e2c670c07cb275d0100';

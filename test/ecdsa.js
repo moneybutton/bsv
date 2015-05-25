@@ -47,10 +47,7 @@ describe("ECDSA", function() {
       let r = BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10);
       let s = BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10);
       let ecdsa = new ECDSA();
-      ecdsa.keypair = new Keypair();
-      ecdsa.keypair.privkey = Privkey();
-      ecdsa.keypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test')));
-      ecdsa.keypair.privkey2pubkey();
+      ecdsa.keypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test')))));
       ecdsa.hashbuf = hashbuf;
       ecdsa.sig = new Sig({r: r, s: s});
 

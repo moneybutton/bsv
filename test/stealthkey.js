@@ -10,19 +10,9 @@ let Hash = require('../lib/hash');
 describe('StealthKey', function() {
   
   let stealthkey = StealthKey();
-  stealthkey.payloadKeypair = Keypair();
-  stealthkey.payloadKeypair.privkey = Privkey();
-  stealthkey.payloadKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 1')));
-  stealthkey.payloadKeypair.privkey2pubkey();
-  stealthkey.scanKeypair = Keypair();
-  stealthkey.scanKeypair.privkey = Privkey();
-  stealthkey.scanKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 2')));
-  stealthkey.scanKeypair.privkey2pubkey();
-
-  let senderKeypair = Keypair();
-  senderKeypair.privkey = Privkey();
-  senderKeypair.privkey.bn = BN().fromBuffer(Hash.sha256(new Buffer('test 3')));
-  senderKeypair.privkey2pubkey();
+  stealthkey.payloadKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 1')))));
+  stealthkey.scanKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 2')))));
+  let senderKeypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test 3')))));
 
   it('should create a new stealthkey', function() {
     let stealthkey = new StealthKey();
