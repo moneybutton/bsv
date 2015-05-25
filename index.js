@@ -2,12 +2,16 @@
   * fullnode
   * ========
   *
-  * An example of how to build a bundle with fullnode. This bundle includes the
-  * entire library. It is not necessary to  use fullnode this way, since you
-  * probably do not use every component, and therefore do not need to include
-  * every component into your project. You should simply directly require the
-  * elements of the library you need, and, if your project is browser-based,
-  * browserify your project. For instance, require('fullnode/lib/address').
+  * index.js is an example of how to build a bundle with fullnode. This bundle
+  * includes the entire library, which uses the default configuration (which is
+  * the same as Mainnet) and can be overridden. It also includes Mainnet and
+  * Testnet configuration which are accessible even if you override the
+  * defaults. It is not necessary to  use fullnode this way, since you probably
+  * do not use every component, and therefore do not need to include every
+  * component into your project. You can simply directly require the elements
+  * of the library you need, and, if your project is browser-based, browserify
+  * your project. For instance:
+  * let Address = require('fullnode/lib/address').
   */
 "use strict";
 let fullnode = module.exports;
@@ -15,8 +19,8 @@ global.fullnode = fullnode;
 
 fullnode.version = require('./package').version;
 
-// main bitcoin library - bitcoin protocols, standards, cryptography, and
-// utilities
+// Main bitcoin library - bitcoin protocols, standards, cryptography, and
+// utilities.
 fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
@@ -48,7 +52,7 @@ fullnode.Txout = require('./lib/txout');
 fullnode.Txverifier = require('./lib/txverifier');
 fullnode.Varint = require('./lib/varint');
 
-// experimental, nonstandard, or unstable features
+// Experimental, nonstandard, or unstable features.
 fullnode.ACH = require('./lib/ach');
 fullnode.AES = require('./lib/aes');
 fullnode.AESCBC = require('./lib/aescbc');
@@ -60,7 +64,7 @@ fullnode.StealthMessage = require('./lib/stealthmessage');
 fullnode.StealthTx = require('./lib/stealthtx');
 fullnode.Txbuilder = require('./lib/txbuilder');
 
-// dependencies, subject to change
+// Dependencies, subject to change.
 fullnode.dep = {};
 fullnode.dep.aes = require('aes');
 fullnode.dep.bnjs = require('bn.js');
@@ -70,3 +74,24 @@ fullnode.dep.elliptic = require('elliptic');
 fullnode.dep.hashjs = require('hash.js');
 fullnode.dep.pbkdf2compat = require('pbkdf2-compat');
 fullnode.dep.unorm = require('unorm');
+
+// Mainnet classes for your convenience (in case default is not what you want).
+let Mainnet = {};
+for (let key of Object.keys(fullnode)) {
+  Mainnet[key] = fullnode[key];
+}
+Mainnet.Address = fullnode.Address.Mainnet;
+Mainnet.BIP32 = fullnode.BIP32.Mainnet;
+Mainnet.Privkey = fullnode.Privkey.Mainnet;
+
+// Testnet classes for your convenience (in case default is not what you want).
+let Testnet = {};
+for (let key of Object.keys(fullnode)) {
+  Testnet[key] = fullnode[key];
+}
+Testnet.Address = fullnode.Address.Testnet;
+Testnet.BIP32 = fullnode.BIP32.Testnet;
+Testnet.Privkey = fullnode.Privkey.Testnet;
+
+fullnode.Mainnet = Mainnet;
+fullnode.Testnet = Testnet;
