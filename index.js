@@ -42,7 +42,6 @@ fullnode.Random = require('./lib/random');
 fullnode.Script = require('./lib/script');
 fullnode.Sig = require('./lib/sig');
 fullnode.Tx = require('./lib/tx');
-fullnode.Txbuilder = require('./lib/txbuilder');
 fullnode.Txin = require('./lib/txin');
 fullnode.Txout = require('./lib/txout');
 fullnode.Txverifier = require('./lib/txverifier');
@@ -58,6 +57,7 @@ fullnode.StealthAddress = require('./lib/stealthaddress');
 fullnode.StealthKey = require('./lib/stealthkey');
 fullnode.StealthMessage = require('./lib/stealthmessage');
 fullnode.StealthTx = require('./lib/stealthtx');
+fullnode.Txbuilder = require('./lib/txbuilder');
 
 // dependencies, subject to change
 fullnode.dep = {};
