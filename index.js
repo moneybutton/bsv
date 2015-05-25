@@ -3,11 +3,11 @@
   * ========
   *
   * An example of how to build a bundle with fullnode. This bundle includes the
-  * entire library. It is not typically recommended that you use fullnode this
-  * way, since you probably do not use every component, and therefore do not
-  * need to include every component into your project. You should simply
-  * directly require the elements of the library you need, and browserify your
-  * project. For instance, require('fullnode/lib/address').
+  * entire library. It is not necessary to  use fullnode this way, since you
+  * probably do not use every component, and therefore do not need to include
+  * every component into your project. You should simply directly require the
+  * elements of the library you need, and, if your project is browser-based,
+  * browserify your project. For instance, require('fullnode/lib/address').
   */
 "use strict";
 let fullnode = module.exports;
@@ -15,7 +15,8 @@ global.fullnode = fullnode;
 
 fullnode.version = require('./package').version;
 
-// main bitcoin library - bitcoin protocols, standards, and cryptography
+// main bitcoin library - bitcoin protocols, standards, cryptography, and
+// utilities
 fullnode.Address = require('./lib/address');
 fullnode.Base58 = require('./lib/base58');
 fullnode.Base58Check = require('./lib/base58check');
