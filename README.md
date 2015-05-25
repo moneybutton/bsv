@@ -1,26 +1,29 @@
 fullnode (alpha)
 ================
 
-fullnode is a javascript implementation of bitcoin intended to satisfy certain
-goals:
+fullnode is an ES6 (javascript) implementation of bitcoin intended to satisfy
+certain goals:
 
 1. Support ease-of-use by being internally consistent. It should not be
 necessary to read the source code of a class or function to know how to use it.
+Once you know how to use part of the library, the other parts should feel
+natural.
 
 2. Have 100% test coverage, or nearly so, so that the library is known to be
 reliable. This should include running standard test vectors from bitcoin core.
 
 3. Library objects have an interface suitable for use with a command-line
-interface and API, in particular having toString, fromString, toJSON, fromJSON,
-methods. Other common methods are toBuffer, fromBuffer relevant for binary
-formats such as transactions and blocks.
+interface or other libraries and tools, in particular having toString,
+fromString, toJSON, fromJSON, toBuffer, fromBuffer, toHex, fromHex methods. It
+should be possible to mix fullnode with bitcoinjs-lib or bitcore or even
+libraries from other languages if developers find that useful.
 
-4. All standard features of the bitcoin protocol are implemented and saved in
-lib/. All BIPs are correctly implemented and, where appropriate, saved as
-bipxx.js in lib/ (since that is their standard name). Any non-standard features
-(such as colored coins or stealth addresses) are placed in the lib/expmt/
-folder and are accessible at fullnode.expmt. Once they are standardized and
-given a BIP, they are renamed and placed in lib/.
+4. All standard features of the bitcoin protocol are implemented (or will be)
+and saved in lib/. All BIPs are correctly implemented and, where appropriate,
+saved as bipxx.js in lib/ (since that is their standard name). In order to
+allow rapid development, fullnode includes non-standard and experimental
+features. Any non-standard features (such as colored coins or stealth
+addresses) are labeled as such in index.js as well as in comments.
 
 5. Expose everything, including dependencies. This makes it possible to develop
 apps that require fine-grained control over the basics, such as big numbers and
@@ -30,7 +33,7 @@ primitives.
 6. It is always possible to create a new object without using "new".
 
 7. Compatible with browserify (i.e., using require('fullnode/lib/message')
-should work both in node, and be automatically work in the browser with used in
+should work both in node.js, and be automatically work in the browser with used in
 conjunction with browserify).
 
 8. Minimize the use of dependencies so that all code can be easily audited.
@@ -39,60 +42,30 @@ conjunction with browserify).
 unless there is a good reason to do something different.  To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
+10. Use the features of ES6 (ECMAScript 6, the latest version of javascript)
+available in the latest stable releases of io.js. fullnode is not intended to
+work with node.js 0.10 or node.js 0.12. Once the merger of io.js and node.js is
+completed, we will migrate to use whatever features are available in that new
+version of node.js (which will probably be what is available in io.js today).
+
 ## Alpha Caveat ##
 
-fullnode is still alpha, and has an unstable API. Once the code has been
-audited, the API will be settled, and version 1.0 will be released. It is
+fullnode is still alpha, and has an unstable API. Once the API has been
+finalized, and the code audited, version 1.0 will be released. It is
 recommended not to use fullnode for production software until that time.
 
-## Notable Features ##
-
-* 90%+ test coverage
-* Browserifiable
-* Stealth keys, addresses, message
-* Bitcoin-style message signing and verification
-* Exposed big number and point classes
-* Deterministic k (deterministic signatures; RFC 6979)
-* Script interpreter, validated against bitcoind tests
-
 ## Documentation ##
+
+While fullnode is under heavy development, the API changes frequently, and the
+documentation is not kept up-to-date. However there is some documentation, and
+it can be built with groc:
 
 ```
 npm install -g groc
 groc
 ```
 
-## Browser bundle ##
+## License ##
 
-```
-npm install -g browserify
-npm install -g uglifyify
-npm run build
-```
-## Testing and Coverage ##
-
-To run tests for both node and the browser (requires both Firefox and Chrome):
-```
-npm install -g mocha
-npm install -g istanbul
-npm test
-```
-
-Tests for node only:
-```
-npm run test-node
-```
-
-You can see the coverage report at coverage/lcov-report/index.html.
-
-Tests for the browser only:
-```
-npm run test-browser
-```
-
-Or, run tests in your browser of choice without using karma, first build:
-```
-npm run build
-```
-
-Then open test/index.html in your browser.
+In order to support maximum interoperability with other software, fullnode is
+MIT-licensed. See LICENSE.
