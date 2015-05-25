@@ -1,22 +1,30 @@
 "use strict";
 let should = require('chai').should();
-let constants = require('../lib/constants');
+let Constants = require('../lib/constants');
 let Pubkey = require('../lib/pubkey');
 let Address = require('../lib/address');
 let Script = require('../lib/script');
 
 describe('Address', function() {
   let pubkeyhash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex');
+  let version = 0;
   let buf = Buffer.concat([new Buffer([0]), pubkeyhash]);
   let str = '16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r';
 
-  it('should create a new address object', function() {
+  it('should satisfy these basic API features', function() {
     let address = new Address();
     should.exist(address);
-    address = Address(buf);
+    address = Address();
     should.exist(address);
-    address = Address(str);
+    address = Address(version, pubkeyhash);
     should.exist(address);
+    Address().constructor.should.equal(Address().constructor);
+    Address.Testnet().constructor.should.equal(Address.Testnet().constructor);
+
+    let deps = {
+      Constants: require('../lib/constants').Testnet.Address
+    };
+    Address.inject(deps).should.equal(Address.inject(deps));
   });
 
   describe('@isValid', function() {
@@ -47,21 +55,15 @@ describe('Address', function() {
       Address().fromBuffer(buf).toString().should.equal(str);
     });
 
-  });
-
-  describe('#fromHashbuf', function() {
-    
-    it('should make an address from a hashbuf', function() {
-      Address().fromHashbuf(pubkeyhash).toString().should.equal(str);
-      let a = Address().fromHashbuf(pubkeyhash, 'testnet', 'scripthash');
-      a.network().should.equal('testnet');
-      a.type().should.equal('scripthash');
-    });
-
-    it('should throw an error for invalid length hashbuf', function() {
+    it('should throw for invalid buffers', function() {
       (function() {
-        Address().fromHashbuf(buf);
-      }).should.throw('hashbuf must be exactly 20 bytes');
+        Address().fromBuffer(Buffer.concat([buf, new Buffer([0])]));
+      }).should.throw('address buffers must be exactly 21 bytes');
+      (function() {
+        let buf2 = new Buffer(buf);
+        buf2[0] = 50;
+        Address().fromBuffer(buf2);
+      }).should.throw('invalid version byte');
     });
 
   });
@@ -112,9 +114,9 @@ describe('Address', function() {
     });
 
     it('should derive from this known address string testnet', function() {
-      let address = new Address();
-      address.fromString(str);
-      address.version = constants['testnet']['pubkeyhash'];
+      let address = new Address.Testnet();
+      address.fromString('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98');
+      address.version = Constants.Testnet.Address['pubkeyhash'];
       address.fromString(address.toString());
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98');
     });
@@ -122,15 +124,15 @@ describe('Address', function() {
     it('should derive from this known address string mainnet scripthash', function() {
       let address = new Address();
       address.fromString(str);
-      address.version = constants['mainnet']['scripthash'];
+      address.version = Constants.Mainnet.Address['scripthash'];
       address.fromString(address.toString());
       address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
     });
 
     it('should derive from this known address string testnet scripthash', function() {
-      let address = new Address();
-      address.fromString(str);
-      address.version = constants['testnet']['scripthash'];
+      let address = new Address.Testnet();
+      address.fromString('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4');
+      address.version = Constants.Testnet.Address['scripthash'];
       address.fromString(address.toString());
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4');
     });
@@ -150,17 +152,6 @@ describe('Address', function() {
       address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo');
       address.version = 1;
       address.isValid().should.equal(false);
-    });
-
-  });
-
-  describe('#network', function() {
-    
-    it('should give mainnet for this mainnet address', function() {
-      let addr = Address().fromString(str);
-      addr.network().should.equal('mainnet');
-      addr.version = 1;
-      addr.network().should.equal('unknown');
     });
 
   });
@@ -210,9 +201,14 @@ describe('Address', function() {
       let script = addr.toScript();
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG');
 
-      addr.version = constants['mainnet']['scripthash'];
+      addr.version = Constants.Mainnet.Address['scripthash'];
       script = addr.toScript();
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL');
+
+      addr.version = 50;
+      (function() {
+        script = addr.toScript();
+      }).should.throw('script must be either pubkeyhash or scripthash');
     });
 
   });
@@ -242,6 +238,15 @@ describe('Address', function() {
       (function() {
         address.validate();
       }).should.throw('invalid version');
+    });
+
+    it('should throw an error on this invalid version', function() {
+      let address = new Address();
+      address.fromString(str);
+      address.hashbuf = Buffer.concat([address.hashbuf, new Buffer([0])]);
+      (function() {
+        address.validate();
+      }).should.throw('hashbuf must be a buffer of 20 bytes');
     });
 
   });

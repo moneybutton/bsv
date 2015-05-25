@@ -13,11 +13,18 @@ describe('Privkey', function() {
   let encmainnet = 'L2Gkw3kKJ6N24QcDuH4XDqt9cTqsKTVNDGz1CRZhk9cq4auDUbJy';
   let encmu = '5JxgQaFM1FMd38cd14e3mbdxsdSa9iM2BV6DHBYsvGzxkTNQ7Un';
   
-  it('should create an empty private key', function() {
+  it('should satisfy these basic API features', function() {
     let privkey = new Privkey();
     should.exist(privkey);
     privkey = Privkey();
     should.exist(privkey);
+
+    Privkey().constructor.should.equal(Privkey().constructor);
+    Privkey.Testnet().constructor.should.equal(Privkey.Testnet().constructor);
+    let deps = {
+      Constants: require('../lib/constants').Testnet.Address
+    };
+    Privkey.inject(deps).constructor.should.equal(Privkey.inject(deps).constructor);
   });
 
   it('should create a 0 private key with this convenience method', function() {
@@ -27,17 +34,17 @@ describe('Privkey', function() {
   });
 
   it('should create a mainnet private key', function() {
-    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: true});
+    let privkey = Privkey(BN.fromBuffer(buf), true);
     privkey.toString().should.equal(encmainnet);
   });
 
   it('should create an uncompressed testnet private key', function() {
-    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'testnet', compressed: false});
+    let privkey = Privkey.Testnet(BN.fromBuffer(buf), false);
     privkey.toString().should.equal(enctu);
   });
 
   it('should create an uncompressed mainnet private key', function() {
-    let privkey = Privkey().fromObject({bn: BN.fromBuffer(buf), networkstr: 'mainnet', compressed: false});
+    let privkey = Privkey(BN.fromBuffer(buf), false);
     privkey.toString().should.equal(encmu);
   });
 
@@ -153,17 +160,13 @@ describe('Privkey', function() {
 
     it('should unvalidate these privkeys', function() {
       let privkey = Privkey();
+      privkey.compressed = true;
       privkey.bn = Point.getN();
       (function() {
         privkey.validate();
       }).should.throw('Number must be less than N');
       privkey.bn = Point.getN().sub(1);
-      privkey.networkstr = 'fakenet';
-      (function() {
-        privkey.validate();
-      }).should.throw('Must specify the networkstr ("mainnet" or "testnet")');
-      privkey.networkstr = 'mainnet';
-      privkey.compressed = 'true';
+      privkey.compressed = undefined;
       (function() {
         privkey.validate();
       }).should.throw('Must specify whether the corresponding public key is compressed or not (true or false)');
@@ -186,7 +189,7 @@ describe('Privkey', function() {
   describe('#toWIF', function() {
 
     it('should parse this compressed testnet address correctly', function() {
-      let privkey = Privkey();
+      let privkey = Privkey.Testnet();
       privkey.fromWIF(enctestnet);
       privkey.toWIF().should.equal(enctestnet);
     });
@@ -196,7 +199,7 @@ describe('Privkey', function() {
   describe('#fromString', function() {
 
     it('should parse this uncompressed testnet address correctly', function() {
-      let privkey = Privkey();
+      let privkey = Privkey.Testnet();
       privkey.fromString(enctu);
       privkey.toWIF().should.equal(enctu);
     });

@@ -1,8 +1,8 @@
 "use strict";
 let should = require('chai').should();
-let constants = require('../lib/constants');
 let BIP32 = require('../lib/bip32');
 let Base58Check = require('../lib/base58check');
+let Privkey = require('../lib/privkey');
 
 describe('BIP32', function() {
 
@@ -36,13 +36,13 @@ describe('BIP32', function() {
 
   it('should make a new a bip32', function() {
     let bip32;
-    bip32 = BIP32();
+    bip32 = new BIP32();
     should.exist(bip32);
     bip32 = BIP32();
     should.exist(bip32);
-    BIP32(vector1_m_private).toString().should.equal(vector1_m_private);
-    BIP32(vector1_m_private).toString().should.equal(vector1_m_private);
-    BIP32(BIP32(vector1_m_private)).toString().should.equal(vector1_m_private);
+    BIP32().fromString(vector1_m_private).toString().should.equal(vector1_m_private);
+    BIP32().fromString(vector1_m_private).toString().should.equal(vector1_m_private);
+    BIP32().fromString(BIP32().fromString(vector1_m_private).toString()).toString().should.equal(vector1_m_private);
   });
 
   it('should initialize test vector 1 from the extended public key', function() {
@@ -270,24 +270,28 @@ describe('BIP32', function() {
   });
 
   describe('testnet', function() {
+
     it('should initialize a new BIP32 correctly from a random BIP32', function() {
-      let b1 = BIP32();
-      b1.fromRandom('testnet');
-      let b2 = BIP32().fromString(b1.toPublic().toString());
+      let b1 = BIP32.Testnet();
+      b1.fromRandom();
+      (b1.privkey instanceof Privkey.Testnet).should.equal(true);
+      let b2 = BIP32.Testnet().fromString(b1.toPublic().toString());
       b2.toPublic().toString().should.equal(b1.toPublic().toString());
     });
 
     it('should generate valid ext pub key for testnet', function() {
-      let b = BIP32();
-      b.fromRandom('testnet');
+      let b = BIP32.Testnet();
+      b.fromRandom();
+      (b.privkey instanceof Privkey.Testnet).should.equal(true);
       b.toPublic().toString().substring(0,4).should.equal('tpub');
     });
+
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set this bip32', function() {
-      let bip32 = BIP32(vector1_m_private);
+      let bip32 = BIP32().fromString(vector1_m_private);
       let bip322 = BIP32().fromObject({
         version: bip32.version,
         depth: bip32.depth,
@@ -296,8 +300,7 @@ describe('BIP32', function() {
         chaincode: bip32.chaincode,
         privkey: bip32.privkey,
         pubkey: bip32.pubkey,
-        hasprivkey: bip32.hasprivkey,
-        pubkeyhash: bip32.pubKeyhash
+        hasprivkey: bip32.hasprivkey
       });
       bip322.toString().should.equal(bip32.toString());
       bip322.fromObject({}).toString().should.equal(bip32.toString());
@@ -305,7 +308,7 @@ describe('BIP32', function() {
 
   });
 
-  describe('#seed', function() {
+  describe('#fromSeed', function() {
 
     it('should initialize a new BIP32 correctly from test vector 1 seed', function() {
       let hex = vector1_master;
@@ -391,14 +394,11 @@ describe('BIP32', function() {
 
   });
 
-  describe('#public', function() {
-  });
-
   describe('#toString', function() {
     let bip32 = BIP32();
-    bip32.fromRandom('mainnet');
-    let tip32 = BIP32();
-    tip32.fromRandom('testnet');
+    bip32.fromRandom();
+    let tip32 = BIP32.Testnet();
+    tip32.fromRandom();
 
     it('should return an xprv string', function() {
       bip32.toString().slice(0, 4).should.equal('xprv');
@@ -410,6 +410,7 @@ describe('BIP32', function() {
 
     it('should return a tprv string', function() {
       tip32.toString().slice(0, 4).should.equal('tprv');
+      (tip32.privkey instanceof Privkey.Testnet).should.equal(true);
     });
 
     it('should return a tpub string', function() {

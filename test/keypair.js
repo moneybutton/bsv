@@ -77,7 +77,6 @@ describe('Keypair', function() {
       key.pubkey.point.getX().gt(bn(0)).should.equal(true);
       key.pubkey.point.getY().gt(bn(0)).should.equal(true);
       key.privkey.compressed.should.equal(true);
-      key.privkey.networkstr.should.equal('mainnet');
       key.pubkey.compressed.should.equal(true);
     });
 
