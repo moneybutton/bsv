@@ -100,6 +100,14 @@ describe('Message', function() {
     verified.should.equal(false);
   });
 
+  it('will verify with an uncompressed pubkey', function() {
+    var privateKey = new bitcore.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss');
+    var message = new Message('This is an example of a signed message.');
+    var signature = message.sign(privateKey);
+    var verified = message.verify(privateKey.toAddress(), signature);
+    verified.should.equal(true);
+  });
+
   it('can chain methods', function() {
     var verified = Message(text).verify(address, signatureString);
     verified.should.equal(true);
