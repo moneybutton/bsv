@@ -32,7 +32,7 @@ primitives.
 
 6. It is always possible to create a new object without using "new".
 
-7. Compatible with browserify (i.e., using require('fullnode/lib/message')
+7. Compatible with browserify (i.e., using require('fullnode/lib/address')
 should work both in node.js, and be automatically work in the browser with used in
 conjunction with browserify).
 
