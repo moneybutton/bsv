@@ -251,13 +251,13 @@ describe('Sig', function() {
     it('should convert these known r and s values and guessed i values into signature', function() {
       let r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       let s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      let sig = new Sig({r: r, s: s, i: 0});
+      let sig = new Sig({r: r, s: s, recovery: 0});
       sig.toHex().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 1});
+      sig = new Sig({r: r, s: s, recovery: 1});
       sig.toHex().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 2});
+      sig = new Sig({r: r, s: s, recovery: 2});
       sig.toHex().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 3});
+      sig = new Sig({r: r, s: s, recovery: 3});
       sig.toHex().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });
 
@@ -282,16 +282,16 @@ describe('Sig', function() {
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201');
     });
 
-    it('should convert these known r and s values and guessed i values into signature', function() {
+    it('should convert these known r and s values and guessed recovery values into signature', function() {
       let r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       let s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      let sig = new Sig({r: r, s: s, i: 0});
+      let sig = new Sig({r: r, s: s, recovery: 0});
       sig.toBuffer().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 1});
+      sig = new Sig({r: r, s: s, recovery: 1});
       sig.toBuffer().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 2});
+      sig = new Sig({r: r, s: s, recovery: 2});
       sig.toBuffer().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 3});
+      sig = new Sig({r: r, s: s, recovery: 3});
       sig.toBuffer().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });
 
@@ -302,13 +302,13 @@ describe('Sig', function() {
     it('should convert these known r and s values and guessed i values into signature', function() {
       let r = BN('63173831029936981022572627018246571655303050627048489594159321588908385378810');
       let s = BN('4331694221846364448463828256391194279133231453999942381442030409253074198130');
-      let sig = new Sig({r: r, s: s, i: 0});
+      let sig = new Sig({r: r, s: s, recovery: 0});
       sig.toCompact().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 1});
+      sig = new Sig({r: r, s: s, recovery: 1});
       sig.toCompact().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 2});
+      sig = new Sig({r: r, s: s, recovery: 2});
       sig.toCompact().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
-      sig = new Sig({r: r, s: s, i: 3});
+      sig = new Sig({r: r, s: s, recovery: 3});
       sig.toCompact().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72');
     });
 

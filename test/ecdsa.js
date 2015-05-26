@@ -33,16 +33,16 @@ describe("ECDSA", function() {
 
   });
 
-  describe('#calci', function() {
+  describe('#calcrecovery', function() {
     
-    it('should calculate i', function() {
+    it('should calculate pubkey recovery number', function() {
       ecdsa.randomK();
       ecdsa.sign();
-      ecdsa.calci();
-      should.exist(ecdsa.sig.i);
+      ecdsa.calcrecovery();
+      should.exist(ecdsa.sig.recovery);
     });
 
-    it('should calulate this known i', function() {
+    it('should calulate this known pubkey recovery number', function() {
       let hashbuf = Hash.sha256(new Buffer('some data'));
       let r = BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10);
       let s = BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10);
@@ -51,8 +51,8 @@ describe("ECDSA", function() {
       ecdsa.hashbuf = hashbuf;
       ecdsa.sig = new Sig({r: r, s: s});
 
-      ecdsa.calci();
-      ecdsa.sig.i.should.equal(1);
+      ecdsa.calcrecovery();
+      ecdsa.sig.recovery.should.equal(1);
     });
 
   });
@@ -124,7 +124,7 @@ describe("ECDSA", function() {
     it('should calculate the correct public key', function() {
       ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10);
       ecdsa.sign();
-      ecdsa.sig.i = 0;
+      ecdsa.sig.recovery = 0;
       let pubkey = ecdsa.sig2pubkey();
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true);
     });
@@ -132,7 +132,7 @@ describe("ECDSA", function() {
     it('should calculate the correct public key for this signature with low s', function() {
       ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10);
       ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43');
-      ecdsa.sig.i = 0;
+      ecdsa.sig.recovery = 0;
       let pubkey = ecdsa.sig2pubkey();
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true);
     });
@@ -141,7 +141,7 @@ describe("ECDSA", function() {
       ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10);
       ecdsa.sign();
       ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe');
-      ecdsa.sig.i = 1;
+      ecdsa.sig.recovery = 1;
       let pubkey = ecdsa.sig2pubkey();
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true);
     });
@@ -293,16 +293,16 @@ describe("ECDSA", function() {
           sig: Sig().fromObject({
             r: BN(obj.signature.r),
             s: BN(obj.signature.s),
-            i: obj.i
+            recovery: obj.i
           })
         });
         let ecdsa2 = ECDSA(ecdsa);
         ecdsa2.k = undefined;
         ecdsa2.sign();
-        ecdsa2.calci();
+        ecdsa2.calcrecovery();
         ecdsa2.k.toString().should.equal(ecdsa.k.toString());
         ecdsa2.sig.toString().should.equal(ecdsa.sig.toString());
-        ecdsa2.sig.i.should.equal(ecdsa.sig.i);
+        ecdsa2.sig.recovery.should.equal(ecdsa.sig.recovery);
         ecdsa.verify().verified.should.equal(true);
       });
     });
