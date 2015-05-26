@@ -35,6 +35,7 @@ fullnode.BW = require('./lib/bw');
 fullnode.cmp = require('./lib/cmp');
 fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
+fullnode.extend = require('./lib/extend');
 fullnode.Hash = require('./lib/hash');
 fullnode.Interp = require('./lib/interp');
 fullnode.KDF = require('./lib/kdf');
@@ -76,22 +77,18 @@ fullnode.dep.pbkdf2compat = require('pbkdf2-compat');
 fullnode.dep.unorm = require('unorm');
 
 // Mainnet classes for your convenience (in case default is not what you want).
-let Mainnet = {};
-for (let key of Object.keys(fullnode)) {
-  Mainnet[key] = fullnode[key];
-}
-Mainnet.Address = fullnode.Address.Mainnet;
-Mainnet.BIP32 = fullnode.BIP32.Mainnet;
-Mainnet.Privkey = fullnode.Privkey.Mainnet;
+let Mainnet = fullnode.extend({}, fullnode, {
+  Address: fullnode.Address.Mainnet,
+  BIP32: fullnode.BIP32.Mainnet,
+  Privkey: fullnode.Privkey.Mainnet
+});
 
 // Testnet classes for your convenience (in case default is not what you want).
-let Testnet = {};
-for (let key of Object.keys(fullnode)) {
-  Testnet[key] = fullnode[key];
-}
-Testnet.Address = fullnode.Address.Testnet;
-Testnet.BIP32 = fullnode.BIP32.Testnet;
-Testnet.Privkey = fullnode.Privkey.Testnet;
+let Testnet = fullnode.extend({}, fullnode, {
+  Address: fullnode.Address.Testnet,
+  BIP32: fullnode.BIP32.Testnet,
+  Privkey: fullnode.Privkey.Testnet
+});
 
 fullnode.Mainnet = Mainnet;
 fullnode.Testnet = Testnet;
