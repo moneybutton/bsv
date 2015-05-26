@@ -25,6 +25,7 @@ describe('Privkey', function() {
       Constants: require('../lib/constants').Testnet.Address
     };
     Privkey.inject(deps).constructor.should.equal(Privkey.inject(deps).constructor);
+    (Privkey.inject(Privkey.Testnet.injected) == Privkey.Testnet).should.equal(true);
   });
 
   it('should create a 0 private key with this convenience method', function() {

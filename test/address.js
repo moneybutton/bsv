@@ -25,6 +25,7 @@ describe('Address', function() {
       Constants: require('../lib/constants').Testnet.Address
     };
     Address.inject(deps).should.equal(Address.inject(deps));
+    (Address.inject(Address.Testnet.injected) == Address.Testnet).should.equal(true);
   });
 
   describe('@isValid', function() {
