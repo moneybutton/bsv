@@ -20,12 +20,6 @@ describe('Address', function() {
     should.exist(address);
     Address().constructor.should.equal(Address().constructor);
     Address.Testnet().constructor.should.equal(Address.Testnet().constructor);
-
-    let deps = {
-      Constants: require('../lib/constants').Testnet.Address
-    };
-    Address.inject(deps).should.equal(Address.inject(deps));
-    (Address.inject(Address.Testnet.injected) == Address.Testnet).should.equal(true);
   });
 
   describe('@isValid', function() {
