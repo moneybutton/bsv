@@ -41,6 +41,7 @@ fullnode.injector = require('./lib/injector');
 fullnode.Interp = require('./lib/interp');
 fullnode.KDF = require('./lib/kdf');
 fullnode.Keypair = require('./lib/keypair');
+fullnode.Msg = require('./lib/msg');
 fullnode.Opcode = require('./lib/opcode');
 fullnode.Point = require('./lib/point');
 fullnode.Privkey = require('./lib/privkey');
