@@ -8,11 +8,16 @@ let Keypair = require('../lib/keypair');
 
 describe('Keypair', function() {
   
-  it('should make a blank key', function() {
+  it('should satisfy this basic API', function() {
     let key = new Keypair();
     should.exist(key);
     key = Keypair();
     should.exist(key);
+
+    Keypair.Mainnet.should.equal(Keypair.Mainnet);
+    Keypair.Testnet.should.equal(Keypair.Testnet);
+    Keypair.Mainnet().fromRandom().privkey.constructor.should.equal(Privkey.Mainnet);
+    Keypair.Testnet().fromRandom().privkey.constructor.should.equal(Privkey.Testnet);
   });
 
   it('should make a key with a priv and pub', function() {
