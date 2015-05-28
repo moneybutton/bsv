@@ -37,6 +37,7 @@ fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
 fullnode.extend = require('./lib/extend');
 fullnode.Hash = require('./lib/hash');
+fullnode.injector = require('./lib/injector');
 fullnode.Interp = require('./lib/interp');
 fullnode.KDF = require('./lib/kdf');
 fullnode.Keypair = require('./lib/keypair');
