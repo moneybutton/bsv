@@ -49,7 +49,7 @@ describe('Txout', function() {
     
     it('should set the script size correctly', function() {
       let txout2 = Txout(txout);
-      txout2.setScript(Script('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
+      txout2.setScript(Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
   });

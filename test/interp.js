@@ -82,34 +82,34 @@ describe('Interp', function() {
 
     it('should verify or unverify these trivial scripts from script_valid.json', function() {
       let verified;
-      verified = Interp().verify(Script('OP_1'), Script('OP_1'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_1'), Script().writeString('OP_1'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('OP_1'), Script('OP_0'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_1'), Script().writeString('OP_0'), Tx(), 0);
       verified.should.equal(false);
-      verified = Interp().verify(Script('OP_0'), Script('OP_1'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_0'), Script().writeString('OP_1'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('OP_CODESEPARATOR'), Script('OP_1'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_CODESEPARATOR'), Script().writeString('OP_1'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script(''), Script('OP_DEPTH OP_0 OP_EQUAL'), Tx(), 0);
+      verified = Interp().verify(Script().writeString(''), Script().writeString('OP_DEPTH OP_0 OP_EQUAL'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('OP_1 OP_2'), Script('OP_2 OP_EQUALVERIFY OP_1 OP_EQUAL'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_1 OP_2'), Script().writeString('OP_2 OP_EQUALVERIFY OP_1 OP_EQUAL'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('9 0x000000000000000010'), Script(''), Tx(), 0);
+      verified = Interp().verify(Script().writeString('9 0x000000000000000010'), Script().writeString(''), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('OP_1'), Script('OP_15 OP_ADD OP_16 OP_EQUAL'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_1'), Script().writeString('OP_15 OP_ADD OP_16 OP_EQUAL'), Tx(), 0);
       verified.should.equal(true);
-      verified = Interp().verify(Script('OP_0'), Script('OP_IF OP_VER OP_ELSE OP_1 OP_ENDIF'), Tx(), 0);
+      verified = Interp().verify(Script().writeString('OP_0'), Script().writeString('OP_IF OP_VER OP_ELSE OP_1 OP_ENDIF'), Tx(), 0);
       verified.should.equal(true);
     });
 
     it('should verify this new pay-to-pubkey script', function() {
       let keypair = Keypair().fromRandom();
-      let scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeOp('OP_CHECKSIG');
+      let scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeString('OP_CHECKSIG');
 
       let hashbuf = new Buffer(32);
       hashbuf.fill(0);
       let credtx = Tx();
-      credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+      credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff);
       credtx.addTxout(BN(0), scriptPubkey);
 
       let idbuf = credtx.hash();
@@ -133,7 +133,7 @@ describe('Interp', function() {
       let hashbuf = new Buffer(32);
       hashbuf.fill(0);
       let credtx = Tx();
-      credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+      credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff);
       credtx.addTxout(BN(0), scriptPubkey);
 
       let idbuf = credtx.hash();
@@ -165,7 +165,7 @@ describe('Interp', function() {
         let hashbuf = new Buffer(32);
         hashbuf.fill(0);
         let credtx = Tx();
-        credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+        credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff);
         credtx.addTxout(BN(0), scriptPubkey);
 
         let idbuf = credtx.hash();
@@ -193,7 +193,7 @@ describe('Interp', function() {
         let hashbuf = new Buffer(32);
         hashbuf.fill(0);
         let credtx = Tx();
-        credtx.addTxin(hashbuf, 0xffffffff, Script('OP_0 OP_0'), 0xffffffff);
+        credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff);
         credtx.addTxout(BN(0), scriptPubkey);
 
         let idbuf = credtx.hash();

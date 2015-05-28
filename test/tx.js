@@ -179,14 +179,14 @@ describe('Tx', function() {
   describe('#sighash', function() {
 
     it('should hash this transaction', function() {
-      tx.sighash(0, 0, Script('')).length.should.equal(32);
+      tx.sighash(0, 0, Script()).length.should.equal(32);
     });
 
     it('should return 1 for the SIGHASH_SINGLE bug', function() {
       let tx = Tx(tx2buf);
       tx.txouts.length = 1;
       tx.txoutsvi = Varint(1);
-      tx.sighash(Sig.SIGHASH_SINGLE, 1, Script('')).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
+      tx.sighash(Sig.SIGHASH_SINGLE, 1, Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001');
     });
 
   });
@@ -195,10 +195,10 @@ describe('Tx', function() {
 
     it('should return a signature', function() {
       let keypair = Keypair().fromRandom();
-      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script(''));
+      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script());
       should.exist(sig1);
-      let sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script(''));
-      let sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script('OP_RETURN'));
+      let sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script());
+      let sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'));
       sig1.toString(should.not.equal(sig2.toString()));
       sig1.toString(should.not.equal(sig3.toString()));
     });
@@ -209,8 +209,8 @@ describe('Tx', function() {
 
     it('should return a signature', function() {
       let keypair = Keypair().fromRandom();
-      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script(''));
-      tx.verify(sig1, keypair.pubkey, 0, Script('')).should.equal(true);
+      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script());
+      tx.verify(sig1, keypair.pubkey, 0, Script()).should.equal(true);
     });
 
   });
@@ -268,7 +268,7 @@ describe('Tx', function() {
       it('should pass sighash test vector ' + i, function() {
         let txbuf = new Buffer(vector[0], 'hex');
         let scriptbuf = new Buffer(vector[1], 'hex');
-        let subscript = Script(scriptbuf);
+        let subscript = Script().fromBuffer(scriptbuf);
         let nin = vector[2];
         let nhashtype = vector[3];
         let sighashbuf = new Buffer(vector[4], 'hex');

@@ -63,7 +63,7 @@ describe('Txin', function() {
     
     it('should calculate the varint size correctly', function() {
       let txin2 = Txin(txin);
-      txin2.setScript(Script('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
+      txin2.setScript(Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
   });
