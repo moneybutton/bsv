@@ -32,8 +32,8 @@ describe('Msg', function() {
 
     it('should create this known message', function() {
       let bw = BW();
-      Msg().fromHex(msghex).toBW(bw).concat().toString('hex').should.equal(msghex);
-      Msg().fromHex(msghex).toBW().concat().toString('hex').should.equal(msghex);
+      Msg().fromHex(msghex).toBW(bw).toBuffer().toString('hex').should.equal(msghex);
+      Msg().fromHex(msghex).toBW().toBuffer().toString('hex').should.equal(msghex);
     });
 
   });

@@ -141,10 +141,10 @@ describe('Block', function() {
     
     it('should recover a block from this known buffer', function() {
       let block = Block().fromBuffer(blockbuf);
-      block.toBW().concat().toString('hex').should.equal(blockhex);
+      block.toBW().toBuffer().toString('hex').should.equal(blockhex);
       let bw = BW();
       block.toBW(bw);
-      bw.concat().toString('hex').should.equal(blockhex);
+      bw.toBuffer().toString('hex').should.equal(blockhex);
     });
 
   });

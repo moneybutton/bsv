@@ -132,10 +132,10 @@ describe('Blockheader', function() {
   describe('#toBW', function() {
 
     it('should output this known buffer', function() {
-      Blockheader().fromBuffer(bhbuf).toBW().concat().toString('hex').should.equal(bhhex);
+      Blockheader().fromBuffer(bhbuf).toBW().toBuffer().toString('hex').should.equal(bhhex);
       let bw = BW();
       Blockheader().fromBuffer(bhbuf).toBW(bw);
-      bw.concat().toString('hex').should.equal(bhhex);
+      bw.toBuffer().toString('hex').should.equal(bhhex);
     });
 
   });

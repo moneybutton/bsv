@@ -149,7 +149,7 @@ describe('Txin', function() {
   describe('#toBW', function() {
     
     it('should convert this known buffer', function() {
-      txin.toBW().concat().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000');
+      txin.toBW().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000');
     });
 
   });

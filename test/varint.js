@@ -41,7 +41,7 @@ describe('Varint', function() {
   describe('#fromJSON', function() {
     
     it('should set a buffer', function() {
-      let buf = BW().writeVarintNum(5).concat();
+      let buf = BW().writeVarintNum(5).toBuffer();
       let varint = Varint().fromJSON(buf.toString('hex'));
       varint.toNumber().should.equal(5);
     });
@@ -51,7 +51,7 @@ describe('Varint', function() {
   describe('#toJSON', function() {
     
     it('should return a buffer', function() {
-      let buf = BW().writeVarintNum(5).concat();
+      let buf = BW().writeVarintNum(5).toBuffer();
       let varint = Varint().fromJSON(buf.toString('hex'));
       varint.toJSON().should.equal('05');
     });
@@ -61,7 +61,7 @@ describe('Varint', function() {
   describe('#fromBuffer', function() {
     
     it('should set a buffer', function() {
-      let buf = BW().writeVarintNum(5).concat();
+      let buf = BW().writeVarintNum(5).toBuffer();
       let varint = Varint().fromBuffer(buf);
       varint.toNumber().should.equal(5);
     });
@@ -71,7 +71,7 @@ describe('Varint', function() {
   describe('#fromBR', function() {
     
     it('should set a buffer reader', function() {
-      let buf = BW().writeVarintNum(5).concat();
+      let buf = BW().writeVarintNum(5).toBuffer();
       let br = BR(buf);
       let varint = Varint().fromBR(br);
       varint.toNumber().should.equal(5);
@@ -100,7 +100,7 @@ describe('Varint', function() {
   describe('#toBuffer', function() {
     
     it('should return a buffer', function() {
-      let buf = BW().writeVarintNum(5).concat();
+      let buf = BW().writeVarintNum(5).toBuffer();
       let varint = Varint(buf);
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });

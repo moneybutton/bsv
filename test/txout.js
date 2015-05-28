@@ -125,7 +125,7 @@ describe('Txout', function() {
     
     it('should output this known buffer', function() {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
-      txout.toBW().concat().toString('hex').should.equal('050000000000000001ae');
+      txout.toBW().toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });

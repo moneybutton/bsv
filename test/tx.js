@@ -171,7 +171,7 @@ describe('Tx', function() {
   describe('#toBW', function() {
     
     it('should produce this known tx', function() {
-      Tx().fromBuffer(txbuf).toBW().concat().toString('hex').should.equal(txhex);
+      Tx().fromBuffer(txbuf).toBW().toBuffer().toString('hex').should.equal(txhex);
     });
 
   });
