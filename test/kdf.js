@@ -5,6 +5,12 @@ let Hash = require('../lib/hash');
 let vectors = require('./vectors/kdf');
 
 describe('KDF', function() {
+  
+  it('should satisfy this basic API', function() {
+    KDF.Testnet.should.equal(KDF.Testnet);
+    KDF.Mainnet.should.equal(KDF.Mainnet);
+    KDF.Mainnet.should.not.equal(KDF.Testnet);
+  });
 
   describe('@PBKDF2', function() {
 
