@@ -18,7 +18,7 @@ describe('Base58', function() {
 
   it('should allow this handy syntax', function() {
     Base58(buf).toString().should.equal(enc);
-    Base58(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
   });
 
   describe('#fromObject', function() {
@@ -91,7 +91,7 @@ describe('Base58', function() {
   describe('#toHex', function() {
 
     it('should return the buffer in hex', function() {
-      let b58 = Base58({buf: buf});
+      let b58 = Base58(buf);
       b58.toHex().should.equal(buf.toString('hex'));
     });
 
@@ -100,7 +100,7 @@ describe('Base58', function() {
   describe('#toBuffer', function() {
 
     it('should return the buffer', function() {
-      let b58 = Base58({buf: buf});
+      let b58 = Base58(buf);
       b58.toBuffer().toString('hex').should.equal(buf.toString('hex'));
     });
 
@@ -109,7 +109,7 @@ describe('Base58', function() {
   describe('#toString', function() {
 
     it('should return the buffer', function() {
-      let b58 = Base58({buf: buf});
+      let b58 = Base58(buf);
       b58.toString().should.equal(enc);
     });
 
