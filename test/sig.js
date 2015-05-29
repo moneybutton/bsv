@@ -19,7 +19,7 @@ describe('Sig', function() {
     sig.s.toString().should.equal(s.toString());
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set compressed', function() {
       should.exist(Sig().fromObject({compressed: true}));

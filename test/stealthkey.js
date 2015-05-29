@@ -32,7 +32,7 @@ describe('StealthKey', function() {
     should.exist(stealthkey.scanKeypair);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set payload key', function() {
       should.exist(StealthKey().fromObject({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair);

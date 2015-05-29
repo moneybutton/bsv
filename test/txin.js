@@ -40,7 +40,7 @@ describe('Txin', function() {
     Txin(txin.txhashbuf, txin.txoutnum, txin.script, txin.seqnum).scriptvi.toNumber().should.equal(1);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set these vars', function() {
       let txin = Txin().fromObject({

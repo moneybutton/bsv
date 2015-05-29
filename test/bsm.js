@@ -16,7 +16,7 @@ describe('BSM', function() {
     should.exist(bsm);
   });
   
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set the messagebuf', function() {
       let messagebuf = new Buffer('message');

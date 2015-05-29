@@ -30,7 +30,7 @@ describe('Txout', function() {
     Txout(valuebn, script).scriptvi.toNumber().should.equal(1);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set this object', function() {
       let txout = new Txout().fromObject({

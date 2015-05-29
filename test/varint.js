@@ -26,7 +26,7 @@ describe('Varint', function() {
     Varint(0).toBuffer().toString('hex').should.not.equal(Varint().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set a buffer', function() {
       let buf = new Buffer('00', 'hex');

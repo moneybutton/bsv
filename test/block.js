@@ -41,7 +41,7 @@ describe('Block', function() {
     should.exist(block);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set these known values', function() {
       let block = Block().fromObject({

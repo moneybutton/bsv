@@ -21,7 +21,7 @@ describe('Base58', function() {
     Base58(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set a blank buffer', function() {
       Base58().fromObject({buf: new Buffer([])});

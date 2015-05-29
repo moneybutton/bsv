@@ -22,7 +22,7 @@ describe('Base58Check', function() {
     Base58Check(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'));
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set a buf', function() {
       should.exist(Base58Check().fromObject({buf: buf}).buf);

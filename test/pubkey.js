@@ -25,7 +25,7 @@ describe('Pubkey', function() {
     pk.point.toString().should.equal(p.toString());
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should make a public key from a point', function() {
       should.exist(Pubkey().fromObject({point: Point.getG()}).point);

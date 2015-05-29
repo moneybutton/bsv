@@ -44,7 +44,7 @@ describe('Privkey', function() {
     privkey.toString().should.equal(encmu);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set bn', function() {
       should.exist(Privkey().fromObject({bn: BN.fromBuffer(buf)}).bn);

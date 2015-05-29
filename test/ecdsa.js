@@ -25,7 +25,7 @@ describe("ECDSA", function() {
     BN().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set hashbuf', function() {
       should.exist(ECDSA().fromObject({hashbuf: ecdsa.hashbuf}).hashbuf);

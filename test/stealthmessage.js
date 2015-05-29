@@ -36,7 +36,7 @@ describe('StealthMessage', function() {
     encbuf.length.should.equal(113);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('should set the messagebuf', function() {
       let sm = StealthMessage().fromObject({messagebuf: messagebuf});

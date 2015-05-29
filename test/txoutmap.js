@@ -23,7 +23,7 @@ describe('Txoutmap', function() {
     should.exist(txoutmap.map);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set a map', function() {
       let txoutmap = Txoutmap().fromObject({map: map});

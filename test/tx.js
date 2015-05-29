@@ -64,7 +64,7 @@ describe('Tx', function() {
 
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set all the basic parameters', function() {
       let tx = Tx().fromObject({

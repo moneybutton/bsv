@@ -20,7 +20,7 @@ describe('BR', function() {
     Buffer.isBuffer(br.buf).should.equal(true);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set pos', function() {
       should.exist(BR().fromObject({pos: 1}).pos);

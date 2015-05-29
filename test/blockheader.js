@@ -33,7 +33,7 @@ describe('Blockheader', function() {
     should.exist(blockheader);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
 
     it('should set all the variables', function() {
       bh.fromObject({

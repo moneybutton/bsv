@@ -11,7 +11,7 @@ describe('BW', function() {
     should.exist(bw);
   });
 
-  describe('#set', function() {
+  describe('#fromObject', function() {
     
     it('set bufs', function() {
       let buf1 = new Buffer([0]);
