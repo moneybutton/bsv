@@ -31,17 +31,17 @@ describe('Point', function() {
     });
   });
 
-  describe('#copy', function() {
+  describe('#copyFrom', function() {
 
     it('should copy G', function() {
       let point = Point.getG();
       let point2;
       (function() {
-        point.copy(point2);
+        point.copyFrom(point2);
       }).should.throw(); //point2 is not a Point yet
       point2 = Point();
-      point.copy(point2);
-      point2.toString().should.equal(point.toString());
+      point.copyFrom(point2);
+      point.toString().should.equal(point2.toString());
     });
 
   });
@@ -85,6 +85,11 @@ describe('Point', function() {
 
   describe('#getX', function() {
     
+    it('should return a BN', function() {
+      let p = Point();
+      (p.getX() instanceof BN).should.equal(true);
+    });
+
     it('should return 0', function() {
       let p = Point();
       p.getX().toString().should.equal('0');
@@ -99,6 +104,11 @@ describe('Point', function() {
 
   describe('#getY', function() {
     
+    it('should return a BN', function() {
+      let p = Point();
+      (p.getY() instanceof BN).should.equal(true);
+    });
+
     it('should return 0', function() {
       let p = Point();
       p.getY().toString().should.equal('0');
@@ -113,6 +123,13 @@ describe('Point', function() {
 
   describe('#add', function() {
 
+    it('should get back a point', function() {
+      let p1 = Point.getG();
+      let p2 = Point.getG();
+      let p3 = p1.add(p2);
+      (p3 instanceof Point).should.equal(true);
+    });
+
     it('should accurately add g to itself', function() {
       let p1 = Point.getG();
       let p2 = Point.getG();
@@ -124,6 +141,12 @@ describe('Point', function() {
   });
 
   describe('#mul', function() {
+
+    it('should get back a point', function() {
+      let g = Point.getG();
+      let b = g.mul(BN(2));
+      (b instanceof Point).should.equal(true);
+    });
 
     it('should accurately multiply g by 2', function() {
       let g = Point.getG();
@@ -187,6 +210,28 @@ describe('Point', function() {
         p2.getX().toBuffer().toString('hex').should.equal(pxhex);
         p2.getY().toBuffer().toString('hex').should.equal(pyhex);
       })();
+    });
+
+  });
+
+  describe('#mulAdd', function() {
+
+    it('should get back a point', function() {
+      let p1 = Point.getG()
+      let bn1 = BN(5);
+      let p2 = Point.getG().add(p1);
+      let bn2 = BN(6);
+      p1.mulAdd(bn1, p2, bn2).getX().toString().should.equal(p1.mul(bn1).add(p2.mul(bn2)).getX().toString());
+      p1.mulAdd(bn1, p2, bn2).getY().toString().should.equal(p1.mul(bn1).add(p2.mul(bn2)).getY().toString());
+    });
+
+  });
+
+  describe('@getN', function() {
+    
+    it('should return n', function() {
+      let bn = Point.getN();
+      (bn instanceof BN).should.equal(true);
     });
 
   });

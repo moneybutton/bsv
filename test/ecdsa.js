@@ -20,7 +20,7 @@ describe("ECDSA", function() {
   ecdsa.hashbuf = Hash.sha256(new Buffer('test data'));
   ecdsa.keypair = Keypair();
   ecdsa.keypair.privkey = Privkey().fromBN(BN().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')));
-  ecdsa.keypair.pubkey = Pubkey({
+  ecdsa.keypair.pubkey = Pubkey().fromObject({
     point: point(BN().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
     BN().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
   });
@@ -113,7 +113,6 @@ describe("ECDSA", function() {
       ecdsa.k.toBuffer().toString('hex').should.equal('ec633bd56a5774a0940cb97e27a9e4e51dc94af737596a0c5cbb3d30332d92a5');
       ecdsa.sign();
       ecdsa.sig.r.toString().should.equal('23362334225185207751494092901091441011938859014081160902781146257181456271561');
-      let Point = require('../lib/point');
       ecdsa.sig.s.toString().should.equal('50433721247292933944369538617440297985091596895097604618403996029256432099938');
     });
 

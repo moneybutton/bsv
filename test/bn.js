@@ -105,6 +105,16 @@ describe('BN', function() {
     });
 
   });
+
+  describe('#neg', function() {
+
+    it('should produce a negative', function() {
+      let bn = BN(1).neg();
+      (bn instanceof BN).should.equal(true);
+      bn.toString().should.equal('-1');
+    });
+
+  });
   
   describe('#add', function() {
 
@@ -124,6 +134,81 @@ describe('BN', function() {
       let bn2 = BN(25);
       let bn3 = bn1.sub(bn2);
       bn3.toString().should.equal('25');
+    });
+
+  });
+
+  describe('#mul', function() {
+
+    it('should mul a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(25);
+      let bn3 = bn1.mul(bn2);
+      bn3.toString().should.equal('1250');
+    });
+
+  });
+
+  describe('#mod', function() {
+
+    it('should mod a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(25);
+      let bn3 = bn1.mod(bn2);
+      bn3.toString().should.equal('0');
+    });
+
+    it('should mod a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(47);
+      let bn3 = bn1.mod(bn2);
+      bn3.toString().should.equal('3');
+    });
+
+  });
+
+  describe('#invm', function() {
+
+    it('should invm a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(25);
+      let bn3 = bn1.invm(bn2);
+      bn3.toString().should.equal('0');
+    });
+
+    it('should invm a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(47);
+      let bn3 = bn1.invm(bn2);
+      bn3.toString().should.equal('16');
+    });
+
+  });
+
+  describe('#div', function() {
+
+    it('should div a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(25);
+      let bn3 = bn1.div(bn2);
+      bn3.toString().should.equal('2');
+    });
+
+    it('should div a small number', function() {
+      let bn1 = BN(50);
+      let bn2 = BN(47);
+      let bn3 = bn1.div(bn2);
+      bn3.toString().should.equal('1');
+    });
+
+  });
+
+  describe('#cmp', function() {
+
+    it('should know A=B', function() {
+      BN(5).cmp(5).should.equal(0);
+      BN(5).cmp(4).should.equal(1);
+      BN(5).cmp(6).should.equal(-1);
     });
 
   });
