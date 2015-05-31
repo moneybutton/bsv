@@ -10,8 +10,10 @@ describe('injector', function() {
       test = deps;
       return function() {};
     }
-    injector(inject, {}, {one: 1});
+    inject = injector(inject, {});
+    inject({one: 1});
     test.one.should.equal(1);
+    (new (inject())() instanceof inject()).should.equal(true);
   });
 
   it('should know these classes are or are not equal', function() {
@@ -21,8 +23,9 @@ describe('injector', function() {
       }
     }
     let deps = {};
-    injector(inject, dependencies, deps).should.equal(injector(inject, dependencies, deps));
-    injector(inject, dependencies, deps).should.not.equal(injector(inject, dependencies, {}));
+    inject = injector(inject, dependencies);
+    inject(deps).should.equal(inject(deps));
+    inject(deps).should.not.equal(inject({}));
   });
 
 });

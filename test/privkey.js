@@ -21,6 +21,10 @@ describe('Privkey', function() {
 
     Privkey().constructor.should.equal(Privkey().constructor);
     Privkey.Testnet().constructor.should.equal(Privkey.Testnet().constructor);
+
+    let deps = {};
+    Privkey.inject(deps).should.equal(Privkey.inject(deps));
+    Privkey.inject(deps).should.not.equal(Privkey.inject({}));
   });
 
   it('should create a 0 private key with this convenience method', function() {
