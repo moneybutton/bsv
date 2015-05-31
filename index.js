@@ -68,28 +68,26 @@ fullnode.StealthTx = require('./lib/stealthtx');
 fullnode.Txbuilder = require('./lib/txbuilder');
 
 // Dependencies, subject to change.
-fullnode.dep = {};
-fullnode.dep.aes = require('aes');
-fullnode.dep.bnjs = require('bn.js');
-fullnode.dep.bs58 = require('bs58');
-fullnode.dep.Buffer = Buffer;
-fullnode.dep.elliptic = require('elliptic');
-fullnode.dep.hashjs = require('hash.js');
-fullnode.dep.pbkdf2compat = require('pbkdf2-compat');
-fullnode.dep.unorm = require('unorm');
+fullnode.deps = {};
+fullnode.deps.aes = require('aes');
+fullnode.deps.bnjs = require('bn.js');
+fullnode.deps.bs58 = require('bs58');
+fullnode.deps.Buffer = Buffer;
+fullnode.deps.elliptic = require('elliptic');
+fullnode.deps.hashjs = require('hash.js');
+fullnode.deps.pbkdf2compat = require('pbkdf2-compat');
+fullnode.deps.unorm = require('unorm');
 
 // Mainnet classes for your convenience (in case default is not what you want).
-let Mainnet = fullnode.extend({}, fullnode, {
-  Address: fullnode.Address.Mainnet,
-  BIP32: fullnode.BIP32.Mainnet,
-  Privkey: fullnode.Privkey.Mainnet
+let Mainnet = {};
+Object.keys(fullnode).forEach(function(key) {
+  Mainnet[key] = fullnode[key].Mainnet ? fullnode[key].Mainnet : fullnode[key];
 });
 
 // Testnet classes for your convenience (in case default is not what you want).
-let Testnet = fullnode.extend({}, fullnode, {
-  Address: fullnode.Address.Testnet,
-  BIP32: fullnode.BIP32.Testnet,
-  Privkey: fullnode.Privkey.Testnet
+let Testnet = {};
+Object.keys(fullnode).forEach(function(key) {
+  Testnet[key] = fullnode[key].Testnet ? fullnode[key].Testnet : fullnode[key];
 });
 
 fullnode.Mainnet = Mainnet;
