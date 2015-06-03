@@ -27,7 +27,7 @@ describe('Point', function() {
 
     //all props should be properties of a point
     props.forEach(function(k) {
-      (typeof p[k] === 'undefined').should.equal(false);
+      (p[k] === undefined).should.equal(false);
     });
   });
 
