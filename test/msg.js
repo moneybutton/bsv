@@ -18,6 +18,49 @@ describe('Msg', function() {
     should.exist(msg);
   });
 
+  describe('#fromBuffers', function() {
+
+    it('should parse this known message', function() {
+      let msgassembler, msg, next;
+
+      // test whole message at once
+      msg = Msg();
+      msgassembler = msg.fromBuffers();
+      next = msgassembler.next(); // one blank .next() is necessary
+      next = msgassembler.next(msgbuf);
+      next.value.length.should.equal(0);
+      next.done.should.equal(true);
+      msg.toHex().should.equal(msghex);
+
+      // test message one byte at a time
+      msg = Msg();
+      msgassembler = msg.fromBuffers();
+      msgassembler.next(); // one blank .next() is necessary
+      msgassembler.next(); // should be able to place in multiple undefined buffers
+      msgassembler.next();
+      for (let i = 0; i < msgbuf.length; i++) {
+        let onebytebuf = msgbuf.slice(i, i + 1);
+        next = msgassembler.next(onebytebuf);
+      }
+      msg.toHex().should.equal(msghex);
+      next.done.should.equal(true);
+      next.value.length.should.equal(0);
+
+      // test message three bytes at a time
+      msg = Msg();
+      msgassembler = msg.fromBuffers();
+      msgassembler.next(); // one blank .next() is necessary
+      for (let i = 0; i < msgbuf.length; i += 3) {
+        let three = msgbuf.slice(i, i + 3);
+        next = msgassembler.next(three);
+      }
+      msg.toHex().should.equal(msghex);
+      next.done.should.equal(true);
+      next.value.length.should.equal(0);
+    });
+
+  });
+
   describe('#fromBR', function() {
 
     it('should parse this known message', function() {
