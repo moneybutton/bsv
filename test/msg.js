@@ -37,7 +37,7 @@ describe('Msg', function() {
       msgassembler = msg.fromBuffers();
       msgassembler.next(); // one blank .next() is necessary
       msgassembler.next(); // should be able to place in multiple undefined buffers
-      msgassembler.next();
+      msgassembler.next(new Buffer([])); // should be able to place zero buf
       for (let i = 0; i < msgbuf.length; i++) {
         let onebytebuf = msgbuf.slice(i, i + 1);
         next = msgassembler.next(onebytebuf);
