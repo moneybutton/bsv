@@ -61,6 +61,24 @@ describe('Msg', function() {
 
   });
 
+  describe('#fromBuffer', function() {
+
+    it('should parse this known message', function() {
+      let msg = Msg().fromBuffer(msgbuf);
+      msg.toHex().should.equal(msghex);
+    });
+
+  });
+
+  describe('#toBuffer', function() {
+
+    it('should parse this known message', function() {
+      let msg = Msg().fromBuffer(msgbuf);
+      msg.toBuffer().toString('hex').should.equal(msghex);
+    });
+
+  });
+
   describe('#fromBR', function() {
 
     it('should parse this known message', function() {
