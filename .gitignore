@@ -2,7 +2,9 @@
 coverage
 node_modules
 browser/fullnode.js
+browser/fullnode-worker.js
 browser/fullnode-min.js
+browser/fullnode-worker-min.js
 browser/tests.js
 npm-debug.log
 doc

@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: 'browser',
 
 
     // frameworks to use
@@ -15,7 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'browser/tests.js'
+      {pattern: 'fullnode.js', watched: true, included: false, served: true},
+      {pattern: 'fullnode-worker.js', watched: true, included: false, served: true},
+      'tests.js'
     ],
 
 

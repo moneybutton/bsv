@@ -115,4 +115,12 @@ describe('Msg', function() {
 
   });
 
+  describe('#isValid', function() {
+
+    it('should know these messages are valid or invalid', function() {
+      Msg().fromHex(msghex).isValid().should.equal(true);
+    });
+
+  });
+
 });
