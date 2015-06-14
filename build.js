@@ -39,6 +39,7 @@ if (!process.env.FULLNODE_JS_WORKER_MIN_FILE) {
 }
 
 return new Promise(function(resolve, reject) {
+  // fullnode.js
   console.log(process.env.FULLNODE_JS_BUNDLE_FILE);
   browserify({debug: false})
   .add(es6ify.runtime)
@@ -52,12 +53,13 @@ return new Promise(function(resolve, reject) {
 })
 .then(function() {
   return new Promise(function(resolve, reject) {
+    // fullnode-worker.js
     console.log(process.env.FULLNODE_JS_WORKER_FILE);
     browserify({debug: false})
     //.add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve('./lib/work/worker.js'), {entry: true})
+    .require(require.resolve('./lib/worker.js'), {entry: true})
     .bundle()
     .on('error', function (err) { console.error(err); })
     .on('end', function() {resolve();})
@@ -66,6 +68,7 @@ return new Promise(function(resolve, reject) {
 })
 .then(function() {
   return new Promise(function(resolve, reject) {
+    // fullnode-min.js
     let backup = process.env.FULLNODE_JS_BUNDLE_FILE;
     process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE;
     console.log(process.env.FULLNODE_JS_BUNDLE_FILE);
@@ -83,6 +86,7 @@ return new Promise(function(resolve, reject) {
 })
 .then(function() {
   return new Promise(function(resolve, reject) {
+    // fullnode-worker-min.js
     let backup = process.env.FULLNODE_JS_WORKER_FILE;
     process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE;
     console.log(process.env.FULLNODE_JS_WORKER_FILE);
@@ -90,7 +94,7 @@ return new Promise(function(resolve, reject) {
     //.add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve('./lib/work/worker.js'), {entry: true})
+    .require(require.resolve('./lib/worker.js'), {entry: true})
     .bundle()
     .on('error', function(err) {reject(err);})
     .on('end', function() {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
@@ -99,6 +103,7 @@ return new Promise(function(resolve, reject) {
 })
 .then(function() {
   return new Promise(function(resolve, reject) {
+    // tests.js
     console.log('tests.js');
     glob("./test/**/*.js", {}, function (err, files) {
       let b = browserify({debug: true})
