@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * For building the default browser bundles and tests.
  */
@@ -45,11 +46,11 @@ return new Promise(function(resolve, reject) {
   .add(es6ify.runtime)
   .transform(envify)
   .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-  .require(require.resolve('./index.js'), {entry: true})
+  .require(require.resolve('../index.js'), {entry: true})
   .bundle()
   .on('error', function(err) {reject(err);})
   .on('end', function() {resolve();})
-  .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
+  .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
 })
 .then(function() {
   return new Promise(function(resolve, reject) {
@@ -59,11 +60,11 @@ return new Promise(function(resolve, reject) {
     //.add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve('./lib/worker.js'), {entry: true})
+    .require(require.resolve('../lib/worker.js'), {entry: true})
     .bundle()
     .on('error', function (err) { console.error(err); })
     .on('end', function() {resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
+    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_WORKER_FILE)));
   });
 })
 .then(function() {
@@ -77,11 +78,11 @@ return new Promise(function(resolve, reject) {
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .transform(uglifyify)
-    .require(require.resolve('./index.js'), {entry: true})
+    .require(require.resolve('../index.js'), {entry: true})
     .bundle()
     .on('error', function(err) {reject(err);})
     .on('end', function() {process.env.FULLNODE_JS_BUNDLE_FILE = backup; resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
+    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
   })
 })
 .then(function() {
@@ -94,11 +95,11 @@ return new Promise(function(resolve, reject) {
     //.add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve('./lib/worker.js'), {entry: true})
+    .require(require.resolve('../lib/worker.js'), {entry: true})
     .bundle()
     .on('error', function(err) {reject(err);})
     .on('end', function() {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
+    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_WORKER_FILE)));
   })
 })
 .then(function() {
@@ -116,7 +117,7 @@ return new Promise(function(resolve, reject) {
       b.bundle()
       .on('error', function(err) {reject(err);})
       .on('end', function() {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', 'tests.js')));
+      .pipe(fs.createWriteStream(path.join(__dirname, '../browser', 'tests.js')));
     });
   });
 });

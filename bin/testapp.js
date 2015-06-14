@@ -1,12 +1,14 @@
+#!/usr/bin/env node
 /**
  * Basic web app to facilitate running the mocha browser tests without karma.
  */
 "use strict";
 let express = require('express');
+let path = require('path');
 let app = express();
 
-app.use(express.static('browser'));
-app.use(express.static('node_modules'));
+app.use(express.static(path.join(__dirname, '../browser')));
+app.use(express.static(path.join(__dirname, '../node_modules')));
 
 let server = app.listen(3000, function () {
 
