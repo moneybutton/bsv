@@ -36,6 +36,53 @@ describe('Connection', function() {
 
   });
 
+  describe('#onMsg', function() {
+
+    it('should know this is a valid message', function() {
+      let con = Connection();
+      let msg = Msg().fromHex(msghex);
+      let called = false;
+      con.promises = [];
+      con.promises[0] = {
+        resolve: function(msg) {
+          msg.toHex().should.equal(msghex);
+          called = true;
+        },
+        reject: function(error) {
+          throw new Error('should not be here: ' + error);
+        }
+      };
+      return con.onMsg(msg)
+      .then(function() {
+        called.should.equal(true);
+      });
+    });
+
+    it('should know this is an invalid message', function() {
+      let con = Connection();
+      let msgbuf2 = new Buffer(msgbuf);
+      msgbuf2[msgbuf2.length - 1]++;
+      let msghex = msgbuf2.toString('hex');
+      let msg = Msg().fromHex(msghex);
+      let called = false;
+      con.promises = [];
+      con.promises[0] = {
+        resolve: function(msg) {
+          throw new Error('should not be here');
+        },
+        reject: function(error) {
+          error.toString().should.equal('Error: invalid message');
+          called = true;
+        }
+      };
+      return con.onMsg(msg)
+      .then(function() {
+        called.should.equal(true);
+      });
+    });
+
+  });
+
   describe('#msgs', function() {
 
     it('should give an iterator that results in the first message', function() {
