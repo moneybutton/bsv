@@ -5,6 +5,7 @@ let BIP32 = require('../lib/bip32');
 let vectors = require('./vectors/bip39');
 
 describe('BIP39', function() {
+  this.timeout(4000);
 
   it('should initialize the class', function() {
     should.exist(BIP39);
