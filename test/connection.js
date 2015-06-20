@@ -34,6 +34,20 @@ describe('Connection', function() {
       called.should.equal(false);
     });
 
+    it('should call onError on a message with wrong magicnum', function() {
+      let con = Connection();
+      let called = false;
+      con.onError = function(error) {
+        called = true;
+        error.message.should.equal('invalid magicnum');
+        return Promise.reject(error);
+      };
+      let msgbuf2 = new Buffer(msgbuf);
+      msgbuf2.writeUInt32BE(0, 0);
+      con.onData(msgbuf2);
+      called.should.equal(true);
+    });
+
   });
 
   describe('#onMsg', function() {

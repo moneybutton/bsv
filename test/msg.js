@@ -92,7 +92,7 @@ describe('Msg', function() {
         let msgassembler = Msg().fromBuffers({strict: true});
         msgassembler.next();
         msgassembler.next(msg.toBuffer());
-      }).should.throw('invalid message num');
+      }).should.throw('invalid magicnum');
     });
 
     it('should throw an error for message over max size in strict mode', function() {
