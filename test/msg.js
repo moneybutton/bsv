@@ -1,4 +1,5 @@
 "use strict";
+let Constants = require('../lib/constants').Default;
 let Msg = require('../lib/msg');
 let BR = require('../lib/br');
 let BW = require('../lib/bw');
@@ -16,6 +17,31 @@ describe('Msg', function() {
     should.exist(msg);
     msg = Msg();
     should.exist(msg);
+    msg.magicnum.should.equal(Constants.Msg.magicnum);
+  });
+
+  describe('#setCmd', function() {
+
+    it('should set the command', function() {
+      let msg = Msg();
+      msg.setCmd('inv');
+      let cmdbuf = new Buffer(12);
+      cmdbuf.fill(0);
+      cmdbuf.write('inv');
+      Buffer.compare(cmdbuf, msg.cmdbuf).should.equal(0);
+    });
+
+  });
+
+  describe('#setData', function() {
+
+    it('should data to a blank buffer', function() {
+      let msg = Msg();
+      msg.setCmd('inv');
+      msg.setData(new Buffer([]));
+      msg.isValid().should.equal(true);
+    });
+
   });
 
   describe('#fromBuffers', function() {
@@ -57,6 +83,26 @@ describe('Msg', function() {
       msg.toHex().should.equal(msghex);
       next.done.should.equal(true);
       next.value.length.should.equal(0);
+    });
+
+    it('should throw an error for invalid magicnum in strict mode', function() {
+      let msg = Msg().fromBuffer(msgbuf);
+      msg.magicnum = 0;
+      (function() {
+        let msgassembler = Msg().fromBuffers({strict: true});
+        msgassembler.next();
+        msgassembler.next(msg.toBuffer());
+      }).should.throw('invalid message num');
+    });
+
+    it('should throw an error for message over max size in strict mode', function() {
+      let msgbuf2 = new Buffer(msgbuf);
+      msgbuf2.writeUInt32BE(Constants.maxsize + 1, 4 + 12);
+      (function() {
+        let msgassembler = Msg().fromBuffers({strict: true});
+        msgassembler.next();
+        msgassembler.next(msgbuf2);
+      }).should.throw('message size greater than maxsize');
     });
 
   });
