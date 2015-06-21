@@ -6,11 +6,11 @@ let BW = require('../lib/bw');
 let should = require('chai').should();
 
 describe('Msg', function() {
-  let msgjsonstr = '{"magicnum":4190024921,"cmdbuf":"696e76000000000000000000","datasize":0,"checksumbuf":"5df6e0e2","databuf":""}';
-  let msgjson = JSON.parse(msgjsonstr);
-  let msghex = "f9beb4d9696e76000000000000000000000000005df6e0e2";
+  let msghex = "f9beb4d976657261636b000000000000000000005df6e0e2";
   let msgbuf = new Buffer(msghex, 'hex');
-  let msg = Msg().fromJSON(JSON.parse(msgjsonstr));
+  let msg = Msg().fromHex(msghex);
+  let msgjson = msg.toJSON();
+  let msgjsonstr = JSON.stringify(msgjson);
 
   it('should satisfy this basic API', function() {
     let msg = new Msg();
