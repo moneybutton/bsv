@@ -362,6 +362,10 @@ describe('BN', function() {
   });
 
   describe('#toBuffer', function() {
+
+    it('should convert zero to empty buffer', function() {
+      BN(0).toBuffer().length.should.equal(0);
+    });
     
     it('should create a 4 byte buffer', function() {
       let bn = BN(1);
@@ -381,6 +385,38 @@ describe('BN', function() {
     it('should create a 4 byte buffer even if you ask for a 1 byte', function() {
       let bn = BN('ffffff00', 16);
       bn.toBuffer({size: 4}).toString('hex').should.equal('ffffff00');
+    });
+
+  });
+
+  describe('#toBits', function() {
+
+    it('should convert these known BNs to bits', function() {
+      BN().fromHex('00').toBits().should.equal(0x00000000);
+      BN().fromHex('01').toBits().should.equal(0x01000001);
+      BN().fromHex('0101').toBits().should.equal(0x02000101);
+      BN().fromHex('010101').toBits().should.equal(0x03010101);
+      BN().fromHex('01010101').toBits().should.equal(0x04010101);
+      BN().fromHex('0101010101').toBits().should.equal(0x05010101);
+      BN().fromHex('010101010101').toBits().should.equal(0x06010101);
+      BN().fromNumber(-1).toBits().should.equal(0x01800001);
+    });
+
+  });
+
+  describe('#fromBits', function() {
+
+    it('should convert these known bits to BNs', function() {
+      BN().fromBits(0x01003456).toHex().should.equal('');
+      BN().fromBits(0x02003456).toHex().should.equal('34');
+      BN().fromBits(0x03003456).toHex().should.equal('3456');
+      BN().fromBits(0x04003456).toHex().should.equal('345600');
+      BN().fromBits(0x05003456).toHex().should.equal('34560000');
+      BN().fromBits(0x05f03456).lt(0).should.equal(true); // sign bit set
+      (function() {
+        BN().fromBits(0x05f03456, {strict: true}); // sign bit set
+      }).should.throw('negative bit set');
+      BN().fromBits(0x04923456).lt(0).should.equal(true);
     });
 
   });
