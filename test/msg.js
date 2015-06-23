@@ -33,6 +33,29 @@ describe('Msg', function() {
 
   });
 
+  describe('#getCmd', function() {
+
+    it('should get the command', function() {
+      let msg = Msg();
+      msg.setCmd('inv');
+      msg.getCmd().should.equal('inv');
+    });
+
+    it('should get the command when the command is 12 chars', function() {
+      let msg = Msg();
+      msg.setCmd("a".repeat(12));
+      msg.getCmd().should.equal("a".repeat(12));
+    });
+
+    it('should get the command when there are extra 0s', function() {
+      let msg = Msg();
+      msg.setCmd("a");
+      msg.cmdbuf.write("a", 2);
+      msg.getCmd().should.equal("a\u0000a");
+    });
+
+  });
+
   describe('#setData', function() {
 
     it('should data to a blank buffer', function() {
@@ -165,6 +188,51 @@ describe('Msg', function() {
 
     it('should know these messages are valid or invalid', function() {
       Msg().fromHex(msghex).isValid().should.equal(true);
+    });
+
+  });
+
+  describe('#fromPing', function() {
+
+    it('should make a ping message', function() {
+      let msg = Msg().fromPing();
+      msg.getCmd().should.equal('ping');
+      msg.databuf.length.should.equal(8);
+    });
+
+    it('should make a ping message with a defined buffer', function() {
+      let databuf = new Buffer([]);
+      let msg = Msg().fromPing({checksum: Msg.checksum(databuf), databuf: databuf});
+      msg.getCmd().should.equal('ping');
+      msg.databuf.length.should.equal(0);
+    });
+
+  });
+
+  describe('#fromPong', function() {
+
+    it('should make a pong message', function() {
+      let msg = Msg().fromPong();
+      msg.getCmd().should.equal('pong');
+      msg.databuf.length.should.equal(8);
+    });
+
+    it('should make a pong message with a defined buffer', function() {
+      let databuf = new Buffer([]);
+      let msg = Msg().fromPong({checksum: Msg.checksum(databuf), databuf: databuf});
+      msg.getCmd().should.equal('pong');
+      msg.databuf.length.should.equal(0);
+    });
+
+  });
+
+  describe('#fromPongFromPing', function() {
+
+    it('should make a pong message from a ping message', function() {
+      let msg = Msg().fromPing();
+      msg.getCmd().should.equal('ping');
+      msg = Msg().fromPongFromPing(msg);
+      msg.getCmd().should.equal('pong');
     });
 
   });

@@ -56,8 +56,8 @@ describe('Connection', function() {
       let con = Connection();
       let msg = Msg().fromHex(msghex);
       let called = false;
-      con.promises = [];
-      con.promises[0] = {
+      con.awaits = [];
+      con.awaits[0] = {
         resolve: function(msg) {
           msg.toHex().should.equal(msghex);
           called = true;
@@ -79,8 +79,8 @@ describe('Connection', function() {
       let msghex = msgbuf2.toString('hex');
       let msg = Msg().fromHex(msghex);
       let called = false;
-      con.promises = [];
-      con.promises[0] = {
+      con.awaits = [];
+      con.awaits[0] = {
         resolve: function(msg) {
           throw new Error('should not be here');
         },
