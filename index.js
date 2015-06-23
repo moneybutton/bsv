@@ -33,6 +33,7 @@ fullnode.BR = require('./lib/br');
 fullnode.BSM = require('./lib/bsm');
 fullnode.BW = require('./lib/bw');
 fullnode.cmp = require('./lib/cmp');
+fullnode.Connection = require('./lib/connection');
 fullnode.Constants = require('./lib/constants');
 fullnode.ECDSA = require('./lib/ecdsa');
 fullnode.extend = require('./lib/extend');
@@ -48,12 +49,15 @@ fullnode.Privkey = require('./lib/privkey');
 fullnode.Pubkey = require('./lib/pubkey');
 fullnode.Random = require('./lib/random');
 fullnode.Script = require('./lib/script');
+fullnode.Server = require('./lib/server');
 fullnode.Sig = require('./lib/sig');
 fullnode.Tx = require('./lib/tx');
 fullnode.Txin = require('./lib/txin');
 fullnode.Txout = require('./lib/txout');
 fullnode.Txverifier = require('./lib/txverifier');
 fullnode.Varint = require('./lib/varint');
+fullnode.Work = require('./lib/work');
+fullnode.Workers = require('./lib/workers');
 
 // Experimental, nonstandard, or unstable features.
 fullnode.ACH = require('./lib/ach');
