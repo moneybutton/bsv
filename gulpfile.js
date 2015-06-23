@@ -1,9 +1,7 @@
-#!/usr/bin/env node
-/**
- * For building the default browser bundles and tests.
- */
 "use strict";
-
+let gulp = require('gulp');
+let karma = require('gulp-karma');
+let mocha = require('gulp-mocha');
 let path = require('path');
 let fs = require('fs');
 let browserify = require('browserify');
@@ -39,74 +37,68 @@ if (!process.env.FULLNODE_JS_WORKER_MIN_FILE) {
   process.env.FULLNODE_JS_WORKER_MIN_FILE = 'fullnode-worker-min.js';
 }
 
-return new Promise(function(resolve, reject) {
-  // fullnode.js
-  console.log(process.env.FULLNODE_JS_BUNDLE_FILE);
-  browserify({debug: false})
-  .add(es6ify.runtime)
-  .transform(envify)
-  .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-  .require(require.resolve('../index.js'), {entry: true})
-  .bundle()
-  .on('error', function(err) {reject(err);})
-  .on('end', function() {resolve();})
-  .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
-})
-.then(function() {
+gulp.task('build-bundle', function() {
   return new Promise(function(resolve, reject) {
-    // fullnode-worker.js
-    console.log(process.env.FULLNODE_JS_WORKER_FILE);
     browserify({debug: false})
-    //.add(es6ify.runtime)
+    .add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve('../lib/worker-browser.js'), {entry: true})
+    .require(require.resolve('./index.js'), {entry: true})
     .bundle()
-    .on('error', function (err) { console.error(err); })
+    .on('error', function(err) {reject(err);})
     .on('end', function() {resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_WORKER_FILE)));
+    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
   });
-})
-.then(function() {
+});
+
+gulp.task('build-worker', ['build-bundle'], function() {
   return new Promise(function(resolve, reject) {
-    // fullnode-min.js
+    browserify({debug: false})
+    .transform(envify)
+    .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+    .require(require.resolve('./lib/worker-browser.js'), {entry: true})
+    .bundle()
+    .on('error', function (err) {reject(err);})
+    .on('end', function() {resolve();})
+    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
+  });
+});
+
+gulp.task('build-bundle-min', ['build-worker'], function() {
+  return new Promise(function(resolve, reject) {
     let backup = process.env.FULLNODE_JS_BUNDLE_FILE;
     process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE;
-    console.log(process.env.FULLNODE_JS_BUNDLE_FILE);
     browserify({debug: false})
     .add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .transform(uglifyify)
-    .require(require.resolve('../index.js'), {entry: true})
+    .require(require.resolve('./index.js'), {entry: true})
     .bundle()
     .on('error', function(err) {reject(err);})
     .on('end', function() {process.env.FULLNODE_JS_BUNDLE_FILE = backup; resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
-  })
-})
-.then(function() {
+    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
+  });
+});
+
+gulp.task('build-worker-min', ['build-bundle-min'], function() {
   return new Promise(function(resolve, reject) {
-    // fullnode-worker-min.js
     let backup = process.env.FULLNODE_JS_WORKER_FILE;
     process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE;
-    console.log(process.env.FULLNODE_JS_WORKER_FILE);
     browserify({debug: false})
-    //.add(es6ify.runtime)
     .transform(envify)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .transform(uglifyify)
-    .require(require.resolve('../lib/worker-browser.js'), {entry: true})
+    .require(require.resolve('./lib/worker-browser.js'), {entry: true})
     .bundle()
     .on('error', function(err) {reject(err);})
     .on('end', function() {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
-    .pipe(fs.createWriteStream(path.join(__dirname, '../browser', process.env.FULLNODE_JS_WORKER_FILE)));
-  })
-})
-.then(function() {
+    .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
+  });
+});
+
+gulp.task('build-tests', ['build-worker-min'], function() {
   return new Promise(function(resolve, reject) {
-    // tests.js
-    console.log('tests.js');
     glob("./test/**/*.js", {}, function (err, files) {
       let b = browserify({debug: true})
       .add(es6ify.runtime)
@@ -118,7 +110,42 @@ return new Promise(function(resolve, reject) {
       b.bundle()
       .on('error', function(err) {reject(err);})
       .on('end', function() {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, '../browser', 'tests.js')));
+      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', 'tests.js')));
     });
   });
 });
+
+gulp.task('test-node', function() {
+  return gulp.src(['test/*.js'])
+  .pipe(mocha({reporter: 'dot'}))
+  .once('error', function(error) {
+    process.exit(1);
+  })
+  .once('end', function() {
+    process.exit();
+  });
+});
+
+gulp.task('build-karma-url', function() {
+  // karma serves static files, including js files, from /base/
+  //console.log('set base url');
+  process.env.FULLNODE_JS_BASE_URL = '/base/';
+});
+
+gulp.task('build-karma', ['build-karma-url', 'build-tests']);
+
+gulp.task('test-karma', ['build-karma'], function() {
+  return gulp.src([])
+  .pipe(karma({
+    configFile: '.karma.conf.js',
+    action: 'run'
+  }))
+  .on('error', function(err) {
+    throw err;
+  });  
+});
+
+gulp.task('test-browser', ['build-karma', 'test-karma']);
+gulp.task('test', ['test-node']);
+gulp.task('build', ['build-bundle', 'build-worker', 'build-bundle-min', 'build-worker-min', 'build-tests']);
+gulp.task('default', ['build']);

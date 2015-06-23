@@ -6,10 +6,11 @@
   "homepage": "https://github.com/ryanxcharles/fullnode",
   "main": "index.js",
   "scripts": {
-    "test-node": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
-    "test-browser": "FULLNODE_JS_BASE_URL=/base/ npm run build && ./node_modules/karma/bin/karma start .karma.conf.js --log-level debug --single-run",
-    "test": "npm run test-node && npm run test-browser",
-    "build": "mkdir -p browser && ./bin/build.js"
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
+    "test-node": "gulp test-node",
+    "test-browser": "gulp test-karma",
+    "test": "gulp test-node && gulp test-browser",
+    "build": "gulp build"
   },
   "contributors": [
     {
@@ -84,6 +85,9 @@
     "express": "^4.12.4",
     "glob": "^5.0.6",
     "groc": "~0.8.0",
+    "gulp": "^3.9.0",
+    "gulp-karma": "0.0.4",
+    "gulp-mocha": "^2.1.2",
     "istanbul-harmony": "^0.3.12",
     "karma": "^0.12.32",
     "karma-chrome-launcher": "^0.1.7",
