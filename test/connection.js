@@ -38,17 +38,15 @@ describe('Connection', function() {
 
     it('should call onError on a message with wrong magicnum', function() {
       let con = Connection();
-      let called = false;
-      con.onError = function(error) {
-        called = true;
-        error.message.should.equal('invalid magicnum');
-        return Promise.reject(error);
+      con.netbufs = {
+        close: function() {}
       };
+      let called = false;
       let msgbuf2 = new Buffer(msgbuf);
       msgbuf2.writeUInt32BE(0, 0);
       return con.onData(msgbuf2)
-      .catch(function() {
-        called.should.equal(true);
+      .catch(function(error) {
+        error.message.should.equal('cannot parse message: invalid magicnum');
       });
     });
 
@@ -78,6 +76,9 @@ describe('Connection', function() {
 
     it('should know this is an invalid message', function() {
       let con = Connection();
+      con.netbufs = {
+        close: function() {}
+      };
       let msgbuf2 = new Buffer(msgbuf);
       msgbuf2[msgbuf2.length - 1]++;
       let msghex = msgbuf2.toString('hex');
@@ -105,6 +106,7 @@ describe('Connection', function() {
 
     it('should give an iterator that results in the first message', function() {
       let con = Connection();
+      con.netbufs = {};
       let msgs = con.msgs();
       let promise = msgs.next();
       return con.onData(msgbuf)

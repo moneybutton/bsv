@@ -4,7 +4,7 @@ let Connection = require('../lib/connection');
 let Msg = require('../lib/msg');
 let Server = require('../lib/server').inject({Constants: Constants.Server});
 let should = require('chai').should();
-let Network = process.browser ? require('peerjs') : undefined;
+let Network = require('../lib/network').inject({Constants: Constants.Network});
 let Random = require('../lib/random');
 
 describe('Server', function() {
@@ -16,17 +16,6 @@ describe('Server', function() {
   });
 
   describe('#listen', function() {
-    let id, listener;
-
-    if (process.browser) {
-      before(function() {
-        id = Random.getRandomBuffer(16).toString('hex');
-        listener = new Network(id, Constants.Server.rendezvous);
-        return new Promise(function(resolve, reject) {
-          listener.on('open', resolve);
-        });
-      });
-    }
 
     it('should be able to listen then close', function() {
       let server = Server();
@@ -56,31 +45,27 @@ describe('Server', function() {
     }
 
     it('should be able to receive ping and respond with pong', function() {
-      let server = Server();
-      let connection, msgs, nextmsg;
+      let server1 = Server({port: 8991});
+      let server2 = Server({port: 8992});
+      let connection, msgs;
       let ping = Msg().fromPing();
-      return server.listen()
+      return server1.listen()
       .then(function() {
-        if (!process.browser) {
-          let address = server.listener.address();
-          connection = Connection({
-            address: address.address,
-            port: address.port
-          });
-        } else {
-          connection = Connection({
-            id: server.listener.id
-          }, listener);
-        }
-        return connection.connect()
+        return server2.listen();
       })
       .then(function() {
+        server1.monitor();
+        server2.monitor();
+        return server1.connect(server2.address());
+      })
+      .then(function(res) {
+        connection = res;
+        connection.monitor();
         msgs = connection.msgs();
-        nextmsg = msgs.next();
         return connection.send(ping);
       })
       .then(function() {
-        return nextmsg.value;
+        return msgs.next().value
       })
       .then(function(msg) {
         msg.getCmd().should.equal('pong');
