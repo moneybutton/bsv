@@ -97,7 +97,7 @@ gulp.task('build-worker-min', ['build-bundle-min'], function() {
   });
 });
 
-gulp.task('build-tests', ['build-worker-min'], function() {
+gulp.task('build-tests', ['build-worker'], function() {
   return new Promise(function(resolve, reject) {
     glob("./test/**/*.js", {}, function (err, files) {
       let b = browserify({debug: true})

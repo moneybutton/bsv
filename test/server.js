@@ -2,7 +2,7 @@
 let Constants = require('../lib/constants').Regtest;
 let Connection = require('../lib/connection');
 let Msg = require('../lib/msg');
-let Server = require('../lib/server').inject(Constants);
+let Server = require('../lib/server').inject({Constants: Constants.Server});
 let should = require('chai').should();
 let Network = process.browser ? require('peerjs') : undefined;
 let Random = require('../lib/random');
