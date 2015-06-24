@@ -4,6 +4,8 @@ let Msg = require('../lib/msg');
 let Connection = require('../lib/connection');
 
 describe('Connection', function() {
+  this.timeout(5000);
+
   let msghex = "f9beb4d976657261636b000000000000000000005df6e0e2";
   let msgbuf = new Buffer(msghex, 'hex');
   let msg = Msg().fromBuffer(msgbuf);
@@ -44,8 +46,10 @@ describe('Connection', function() {
       };
       let msgbuf2 = new Buffer(msgbuf);
       msgbuf2.writeUInt32BE(0, 0);
-      con.onData(msgbuf2);
-      called.should.equal(true);
+      return con.onData(msgbuf2)
+      .catch(function() {
+        called.should.equal(true);
+      });
     });
 
   });

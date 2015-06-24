@@ -17,6 +17,16 @@
 let fullnode = module.exports;
 global.fullnode = fullnode;
 
+// In order to use the fullnode classes inside a web worker, this file is used.
+// However, this file indirectly depends on PeerJS, and PeerJS refers to the
+// "window" variable explicitly, which is actually not set in web workers, and
+// causes Chrome to throw an error. Rather than window, web workers have self.
+// We simply set window to self so that PeerJS does not throw errors which this
+// file is loaded inside a web worker. This will cause problems if any code
+// relies on the non-existence of window inside a web worker, but there is
+// probably not much code like that that would need to work with fullnode.
+global.window = self;
+
 fullnode.version = require('./package').version;
 
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
