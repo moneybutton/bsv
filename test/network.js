@@ -30,7 +30,7 @@ describe('Network', function() {
     it('should connect to another network and send data', function() {
       let network1 = Network({port: 8551});
       let network2 = Network({port: 8552});
-      let netbufs1, netbufs2;
+      let netchannel1, netchannel2;
       let datasent = new Buffer([0]);
       let datarecv;
       return network1.open()
@@ -38,19 +38,19 @@ describe('Network', function() {
         return network2.open();
       })
       .then(function() {
-        netbufs2 = network2.netbufs().next();
+        netchannel2 = network2.netchannels().next();
         return network1.connect(network2.address());
       })
-      .then(function(netbufs) {
-        should.exist(netbufs);
-        netbufs1 = netbufs;
-        return netbufs2.value;
+      .then(function(netchannel) {
+        should.exist(netchannel);
+        netchannel1 = netchannel;
+        return netchannel2.value;
       })
-      .then(function(netbufs) {
-        should.exist(netbufs);
-        netbufs2 = netbufs;
-        datarecv = netbufs2.buffers().next();
-        return netbufs1.send(datasent);
+      .then(function(netchannel) {
+        should.exist(netchannel);
+        netchannel2 = netchannel;
+        datarecv = netchannel2.buffers().next();
+        return netchannel1.send(datasent);
       })
       .then(function() {
         return datarecv.value;
@@ -58,7 +58,7 @@ describe('Network', function() {
       .then(function(data) {
         datarecv = data;
         datarecv.toString('hex').should.equal(datasent.toString('hex'));
-        return netbufs1.close();
+        return netchannel1.close();
       })
       .then(function() {
         return network1.close();
