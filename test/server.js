@@ -4,7 +4,7 @@ let Connection = require('../lib/connection');
 let Msg = require('../lib/msg');
 let Server = require('../lib/server').inject(Constants);
 let should = require('chai').should();
-let Peer = process.browser ? require('peerjs') : undefined;
+let Network = process.browser ? require('peerjs') : undefined;
 let Random = require('../lib/random');
 
 describe('Server', function() {
@@ -21,7 +21,7 @@ describe('Server', function() {
     if (process.browser) {
       before(function() {
         id = Random.getRandomBuffer(16).toString('hex');
-        listener = new Peer(id, Constants.Server.rendezvous);
+        listener = new Network(id, Constants.Server.rendezvous);
         return new Promise(function(resolve, reject) {
           listener.on('open', resolve);
         });
