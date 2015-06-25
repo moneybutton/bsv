@@ -14,7 +14,7 @@ describe('Connection', function() {
     let con = Connection();
   });
 
-  describe('#onData', function() {
+  describe('#onBuffer', function() {
 
     it('should call onMsg on a complete message', function() {
       let con = Connection();
@@ -22,7 +22,7 @@ describe('Connection', function() {
       con.onMsg = function() {
         called = true;
       };
-      con.onData(msgbuf);
+      con.onBuffer(msgbuf);
       called.should.equal(true);
     });
 
@@ -32,7 +32,7 @@ describe('Connection', function() {
       con.onMsg = function() {
         called = true;
       };
-      con.onData(msgbuf.slice(0, 1));
+      con.onBuffer(msgbuf.slice(0, 1));
       called.should.equal(false);
     });
 
@@ -44,7 +44,7 @@ describe('Connection', function() {
       let called = false;
       let msgbuf2 = new Buffer(msgbuf);
       msgbuf2.writeUInt32BE(0, 0);
-      return con.onData(msgbuf2)
+      return con.onBuffer(msgbuf2)
       .catch(function(error) {
         error.message.should.equal('cannot parse message: invalid magicnum');
       });
@@ -109,7 +109,7 @@ describe('Connection', function() {
       con.netchannel = {};
       let msgs = con.awaitMsgs();
       let promise = msgs.next();
-      return con.onData(msgbuf)
+      return con.onBuffer(msgbuf)
       .then(function() {
         return promise.value;
       }).then(function(msg) {

@@ -1,5 +1,6 @@
 "use strict";
-let Network = require('../lib/network');
+let Constants = require('../lib/constants').Regtest;
+let Network = require('../lib/network').inject({Constants: Constants.Network});
 let should = require('chai').should();
 
 describe('Network', function() {

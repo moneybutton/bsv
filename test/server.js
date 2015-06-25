@@ -2,9 +2,12 @@
 let Constants = require('../lib/constants').Regtest;
 let Connection = require('../lib/connection');
 let Msg = require('../lib/msg');
-let Server = require('../lib/server').inject({Constants: Constants.Server});
-let should = require('chai').should();
 let Network = require('../lib/network').inject({Constants: Constants.Network});
+let Server = require('../lib/server').inject({
+  Constants: Constants.Server,
+  Network: Network
+});
+let should = require('chai').should();
 let Random = require('../lib/random');
 
 describe('Server', function() {
