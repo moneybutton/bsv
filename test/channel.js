@@ -17,7 +17,7 @@ describe('Channel', function() {
       let channel = Channel({}, true);
       let buffers = channel.awaitBuffers();
       let next = buffers.next();
-      channel.onData(new Buffer([0]));
+      channel.onBuffer(new Buffer([0]));
       return next.value
       .then(function(buf) {
         buf.length.should.equal(1);
