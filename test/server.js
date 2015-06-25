@@ -26,24 +26,6 @@ describe('Server', function() {
       });
     });
 
-    if (!process.browser) {
-      it('should not be able to listen twice to due port in use', function() {
-        let server1 = Server();
-        let server2 = Server();
-        return server1.listen()
-        .then(function() {
-          return server2.listen();
-        })
-        .then(function() {
-          throw new Error('should not make it here');
-        })
-        .catch(function(error) {
-          error.code.should.equal('EADDRINUSE');
-          return server1.close();
-        });
-      });
-    }
-
     it('should be able to receive ping and respond with pong', function() {
       let server1 = Server({port: 8991});
       let server2 = Server({port: 8992});
@@ -60,7 +42,6 @@ describe('Server', function() {
       })
       .then(function(res) {
         connection = res;
-        connection.monitor();
         msgs = connection.awaitMsgs();
         return connection.send(ping);
       })
