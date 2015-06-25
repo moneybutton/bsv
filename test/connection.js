@@ -38,7 +38,7 @@ describe('Connection', function() {
 
     it('should call onError on a message with wrong magicnum', function() {
       let con = Connection();
-      con.netchannel = {
+      con.channel = {
         close: function() {}
       };
       let called = false;
@@ -76,7 +76,7 @@ describe('Connection', function() {
 
     it('should know this is an invalid message', function() {
       let con = Connection();
-      con.netchannel = {
+      con.channel = {
         close: function() {}
       };
       let msgbuf2 = new Buffer(msgbuf);
@@ -106,7 +106,7 @@ describe('Connection', function() {
 
     it('should give an iterator that results in the first message', function() {
       let con = Connection();
-      con.netchannel = {};
+      con.channel = {};
       let msgs = con.awaitMsgs();
       let promise = msgs.next();
       return con.onBuffer(msgbuf)

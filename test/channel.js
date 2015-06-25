@@ -1,23 +1,23 @@
 "use strict";
-let Netchannel = require('../lib/netchannel');
+let Channel = require('../lib/channel');
 let should = require('chai').should();
 
-describe('Netchannel', function() {
+describe('Channel', function() {
 
   it('should satisfy this basic API', function() {
-    let netchannel = Netchannel({}, {});
-    should.exist(netchannel);
-    should.exist(netchannel.opts);
-    should.exist(netchannel.bufstream);
+    let channel = Channel({}, {});
+    should.exist(channel);
+    should.exist(channel.opts);
+    should.exist(channel.bufstream);
   });
 
   describe('#awaitBuffers', function() {
 
     it('should give a buffer on new data', function() {
-      let netchannel = Netchannel({}, true);
-      let buffers = netchannel.awaitBuffers();
+      let channel = Channel({}, true);
+      let buffers = channel.awaitBuffers();
       let next = buffers.next();
-      netchannel.onData(new Buffer([0]));
+      channel.onData(new Buffer([0]));
       return next.value
       .then(function(buf) {
         buf.length.should.equal(1);
@@ -29,13 +29,13 @@ describe('Netchannel', function() {
         destroy: function() {}, //node
         close: function() {} //browser
       };
-      let netchannel = Netchannel({}, bufstream);
-      let buffers = netchannel.awaitBuffers();
+      let channel = Channel({}, bufstream);
+      let buffers = channel.awaitBuffers();
       let next = buffers.next();
-      netchannel.close();
+      channel.close();
       return next.value
       .catch(function(error) {
-        error.message.should.equal('netchannel closed while buffer awaits outstanding');
+        error.message.should.equal('channel closed while buffer awaits outstanding');
         return buffers.next().value;
       })
       .then(function(buf) {
