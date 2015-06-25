@@ -102,12 +102,12 @@ describe('Connection', function() {
 
   });
 
-  describe('#msgs', function() {
+  describe('#awaitMsgs', function() {
 
     it('should give an iterator that results in the first message', function() {
       let con = Connection();
       con.netchannel = {};
-      let msgs = con.msgs();
+      let msgs = con.awaitMsgs();
       let promise = msgs.next();
       return con.onData(msgbuf)
       .then(function() {

@@ -61,7 +61,7 @@ describe('Server', function() {
       .then(function(res) {
         connection = res;
         connection.monitor();
-        msgs = connection.msgs();
+        msgs = connection.awaitMsgs();
         return connection.send(ping);
       })
       .then(function() {

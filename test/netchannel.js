@@ -11,11 +11,11 @@ describe('Netchannel', function() {
     should.exist(netchannel.bufstream);
   });
 
-  describe('buffers', function() {
+  describe('#awaitBuffers', function() {
 
     it('should give a buffer on new data', function() {
       let netchannel = Netchannel({}, true);
-      let buffers = netchannel.buffers();
+      let buffers = netchannel.awaitBuffers();
       let next = buffers.next();
       netchannel.onData(new Buffer([0]));
       return next.value
@@ -30,7 +30,7 @@ describe('Netchannel', function() {
         close: function() {} //browser
       };
       let netchannel = Netchannel({}, bufstream);
-      let buffers = netchannel.buffers();
+      let buffers = netchannel.awaitBuffers();
       let next = buffers.next();
       netchannel.close();
       return next.value
