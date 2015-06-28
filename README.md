@@ -10,7 +10,7 @@ certain goals:
 
 2. Support ease-of-use by being internally consistent. It should not be
    necessary to read the source code of a class or function to know how to use
-   it.  Once you know how to use part of the library, the other parts should
+   it. Once you know how to use part of the library, the other parts should
    feel natural.
 
 3. Have 100% test coverage, or nearly so, so that the library is known to be
@@ -40,16 +40,16 @@ certain goals:
 8. Minimize the use of dependencies so that all code can be easily audited.
 
 9. All instance methods modify the state of the object and return the object,
-   unless there is a good reason to do something different.  To access the
+   unless there is a good reason to do something different. To access the
    result of an instance method, you must access the object property(s) that it
    modifies.
 
 10. Use the features of ES6 (ECMAScript 6, the latest version of javascript)
     available in the latest stable releases of io.js. fullnode is not intended
-    to work with node.js 0.10 or node.js 0.12, except through a build process.
-    Once the merger of io.js and node.js is completed, we will migrate to use
-    whatever features are available in that new version of node.js (which will
-    probably be what is available in io.js today).
+    to work with node.js 0.10, although it does work with node 0.12 with the
+    --harmony flag. Once the merger of io.js and node.js is completed, we will
+    migrate to use whatever features are available in that new version of
+    node.js (which will probably be what is available in io.js today).
 
 ## Alpha Caveat ##
 
