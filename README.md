@@ -4,9 +4,9 @@ fullnode (alpha)
 fullnode is an ES6 (javascript) implementation of bitcoin intended to satisfy
 certain goals:
 
-1. Bring the bitcoin p2p network and blockchain to web browsers and
-   node.js/io.js in a decentralized, trust-minimized manner, without the
-   required use of a third-party API.
+1. Bring the bitcoin p2p network and blockchain to web browsers and node.js in
+   a decentralized, trust-minimized manner, without the required use of a
+   third-party API.
 
 2. Support ease-of-use by being internally consistent. It should not be
    necessary to read the source code of a class or function to know how to use
@@ -45,11 +45,9 @@ certain goals:
    modifies.
 
 10. Use the features of ES6 (ECMAScript 6, the latest version of javascript)
-    available in the latest stable releases of io.js. fullnode is not intended
-    to work with node.js 0.10, although it does work with node 0.12 with the
-    --harmony flag. Once the merger of io.js and node.js is completed, we will
-    migrate to use whatever features are available in that new version of
-    node.js (which will probably be what is available in io.js today).
+    available in the latest stable releases of node.js. fullnode is not
+    intended to work with node.js 0.10, although it does work with node 0.12
+    with the --harmony flag.
 
 ## Alpha Caveat ##
 
