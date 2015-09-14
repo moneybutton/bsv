@@ -56,8 +56,8 @@ describe('Connection', function () {
       let con = Connection();
       let msg = Msg().fromHex(msghex);
       let called = false;
-      con.awaits = [];
-      con.awaits[0] = {
+      con.waits = [];
+      con.waits[0] = {
         resolve: function (msg) {
           msg.toHex().should.equal(msghex);
           called = true;
@@ -82,8 +82,8 @@ describe('Connection', function () {
       let msghex = msgbuf2.toString('hex');
       let msg = Msg().fromHex(msghex);
       let called = false;
-      con.awaits = [];
-      con.awaits[0] = {
+      con.waits = [];
+      con.waits[0] = {
         resolve: function (msg) {
           throw new Error('should not be here');
         },
@@ -100,11 +100,11 @@ describe('Connection', function () {
 
   });
 
-  describe('#awaitMsgs', function () {
+  describe('#waitMsgs', function () {
     it('should give an iterator that results in the first message', function () {
       let con = Connection();
       con.channel = {};
-      let msgs = con.awaitMsgs();
+      let msgs = con.waitMsgs();
       let promise = msgs.next();
       return con.onBuffer(msgbuf)
         .then(function () {

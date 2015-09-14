@@ -36,7 +36,7 @@ describe('Network', function () {
           return network2.open();
         })
         .then(function () {
-          channel2 = network2.awaitChannels().next();
+          channel2 = network2.waitChannels().next();
           return network1.connect(network2.address());
         })
         .then(function (channel) {
@@ -47,7 +47,7 @@ describe('Network', function () {
         .then(function (channel) {
           should.exist(channel);
           channel2 = channel;
-          datarecv = channel2.awaitBuffers().next();
+          datarecv = channel2.waitBuffers().next();
           return channel1.send(datasent);
         })
         .then(function () {
