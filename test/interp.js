@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let should = require('chai').should();
 let Interp = require('../lib/interp');
 let Tx = require('../lib/tx');
@@ -14,34 +14,30 @@ let BR = require('../lib/br');
 let script_valid = require('./vectors/bitcoind/script_valid');
 let script_invalid = require('./vectors/bitcoind/script_invalid');
 
-describe('Interp', function() {
-
-  it('should make a new interp', function() {
-    let interp = new Interp();
-    (interp instanceof Interp).should.equal(true);
+describe('Interp', function () {
+  it('should make a new interp', function () {
+    let interp = new Interp();(interp instanceof Interp).should.equal(true);
     interp.stack.length.should.equal(0);
     interp.altstack.length.should.equal(0);
     interp.pc.should.equal(0);
     interp.pbegincodehash.should.equal(0);
     interp.nOpCount.should.equal(0);
     interp.ifstack.length.should.equal(0);
-    interp.errstr.should.equal("");
+    interp.errstr.should.equal('');
     interp.flags.should.equal(0);
-    interp = Interp();
-    (interp instanceof Interp).should.equal(true);
+    interp = Interp();(interp instanceof Interp).should.equal(true);
     interp.stack.length.should.equal(0);
     interp.altstack.length.should.equal(0);
     interp.pc.should.equal(0);
     interp.pbegincodehash.should.equal(0);
     interp.nOpCount.should.equal(0);
     interp.ifstack.length.should.equal(0);
-    interp.errstr.should.equal("");
+    interp.errstr.should.equal('');
     interp.flags.should.equal(0);
   });
 
-  describe('#toJSON', function() {
-    
-    it('should convert an interp to json', function() {
+  describe('#toJSON', function () {
+    it('should convert an interp to json', function () {
       let interp = Interp().fromObject({script: Script()});
       let json = interp.toJSON();
       should.exist(json.script);
@@ -50,9 +46,8 @@ describe('Interp', function() {
 
   });
 
-  describe('#fromJSON', function() {
-    
-    it('should convert a json to an interp', function() {
+  describe('#fromJSON', function () {
+    it('should convert a json to an interp', function () {
       let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']});
       let json = interp.toJSON();
       let interp2 = Interp().fromJSON(json);
@@ -63,11 +58,10 @@ describe('Interp', function() {
 
   });
 
-  describe('@castToBool', function() {
-
-    it('should cast these bufs to bool correctly', function() {
+  describe('@castToBool', function () {
+    it('should cast these bufs to bool correctly', function () {
       Interp.castToBool(BN(0).toSM({endian: 'little'})).should.equal(false);
-      Interp.castToBool(new Buffer('0080', 'hex')).should.equal(false); //negative 0
+      Interp.castToBool(new Buffer('0080', 'hex')).should.equal(false); // negative 0
       Interp.castToBool(BN(1).toSM({endian: 'little'})).should.equal(true);
       Interp.castToBool(BN(-1).toSM({endian: 'little'})).should.equal(true);
 
@@ -78,9 +72,8 @@ describe('Interp', function() {
 
   });
 
-  describe('#verify', function() {
-
-    it('should verify or unverify these trivial scripts from script_valid.json', function() {
+  describe('#verify', function () {
+    it('should verify or unverify these trivial scripts from script_valid.json', function () {
       let verified;
       verified = Interp().verify(Script().writeString('OP_1'), Script().writeString('OP_1'), Tx(), 0);
       verified.should.equal(true);
@@ -102,7 +95,7 @@ describe('Interp', function() {
       verified.should.equal(true);
     });
 
-    it('should verify this new pay-to-pubkey script', function() {
+    it('should verify this new pay-to-pubkey script', function () {
       let keypair = Keypair().fromRandom();
       let scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeString('OP_CHECKSIG');
 
@@ -126,9 +119,9 @@ describe('Interp', function() {
       verified.should.equal(true);
     });
 
-    it('should verify this pay-to-pubkey script from script_valid.json', function() {
-      let scriptSig = Script().fromBitcoindString("0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501");
-      let scriptPubkey = Script().fromBitcoindString("0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG");
+    it('should verify this pay-to-pubkey script from script_valid.json', function () {
+      let scriptSig = Script().fromBitcoindString('0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501');
+      let scriptPubkey = Script().fromBitcoindString('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG');
 
       let hashbuf = new Buffer(32);
       hashbuf.fill(0);
@@ -148,15 +141,15 @@ describe('Interp', function() {
 
   });
 
-  describe('vectors', function() {
+  describe('vectors', function () {
     let c;
 
     c = 0;
-    script_valid.forEach(function(vector, i) {
+    script_valid.forEach(function (vector, i) {
       if (vector.length === 1)
         return;
       c++;
-      it('should verify script_valid vector ' + c, function() {
+      it('should verify script_valid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0]);
         let scriptPubkey = Script().fromBitcoindString(vector[1]);
         let flags = Interp.getFlags(vector[2]);
@@ -180,11 +173,11 @@ describe('Interp', function() {
     });
 
     c = 0;
-    script_invalid.forEach(function(vector, i) {
+    script_invalid.forEach(function (vector, i) {
       if (vector.length === 1)
         return;
       c++;
-      it('should unverify script_invalid vector ' + c, function() {
+      it('should unverify script_invalid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0]);
         let scriptPubkey = Script().fromBitcoindString(vector[1]);
         let flags = Interp.getFlags(vector[2]);

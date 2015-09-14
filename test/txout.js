@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let should = require('chai').should();
 let BN = require('../lib/bn');
 let Txout = require('../lib/txout');
@@ -7,10 +7,9 @@ let Varint = require('../lib/varint');
 let BR = require('../lib/br');
 let BW = require('../lib/bw');
 
-describe('Txout', function() {
-  
+describe('Txout', function () {
   let valuebn = BN(5);
-  let script = Script().fromString("OP_CHECKMULTISIG");
+  let script = Script().fromString('OP_CHECKMULTISIG');
   let scriptvi = Varint(script.toBuffer().length);
   let txout = new Txout().fromObject({
     valuebn: valuebn,
@@ -18,7 +17,7 @@ describe('Txout', function() {
     script: script
   });
 
-  it('should make a new txout', function() {
+  it('should make a new txout', function () {
     let txout = new Txout();
     should.exist(txout);
     txout = Txout();
@@ -26,13 +25,12 @@ describe('Txout', function() {
     Txout(valuebn, scriptvi, script).valuebn.toString().should.equal('5');
   });
 
-  it('should calculate scriptvi correctly when making a new txout', function() {
+  it('should calculate scriptvi correctly when making a new txout', function () {
     Txout(valuebn, script).scriptvi.toNumber().should.equal(1);
   });
 
-  describe('#fromObject', function() {
-    
-    it('should set this object', function() {
+  describe('#fromObject', function () {
+    it('should set this object', function () {
       let txout = new Txout().fromObject({
         valuebn: valuebn,
         scriptvi: scriptvi,
@@ -45,18 +43,16 @@ describe('Txout', function() {
 
   });
 
-  describe('#setScript', function() {
-    
-    it('should set the script size correctly', function() {
+  describe('#setScript', function () {
+    it('should set the script size correctly', function () {
       let txout2 = Txout(txout);
       txout2.setScript(Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3);
     });
 
   });
 
-  describe('#fromJSON', function() {
-    
-    it('should set from this json', function() {
+  describe('#fromJSON', function () {
+    it('should set from this json', function () {
       let txout = Txout().fromJSON({
         valuebn: valuebn.toJSON(),
         scriptvi: scriptvi.toJSON(),
@@ -69,9 +65,8 @@ describe('Txout', function() {
 
   });
 
-  describe('#toJSON', function() {
-    
-    it('should return this json', function() {
+  describe('#toJSON', function () {
+    it('should return this json', function () {
       let txout = Txout().fromJSON({
         valuebn: valuebn.toJSON(),
         scriptvi: scriptvi.toJSON(),
@@ -85,45 +80,40 @@ describe('Txout', function() {
 
   });
 
-  describe('#fromHex', function() {
-    
-    it('should make this txin from this known hex', function() {
+  describe('#fromHex', function () {
+    it('should make this txin from this known hex', function () {
       let txout = Txout().fromHex('050000000000000001ae');
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });
 
-  describe('#fromBuffer', function() {
-    
-    it('should make this txin from this known buffer', function() {
+  describe('#fromBuffer', function () {
+    it('should make this txin from this known buffer', function () {
       let txout = Txout().fromBuffer(new Buffer('050000000000000001ae', 'hex'));
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });
 
-  describe('#fromBR', function() {
-    
-    it('should make this txin from this known buffer', function() {
+  describe('#fromBR', function () {
+    it('should make this txin from this known buffer', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });
 
-  describe('#toBuffer', function() {
-    
-    it('should output this known buffer', function() {
+  describe('#toBuffer', function () {
+    it('should output this known buffer', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae');
     });
 
   });
 
-  describe('#toBW', function() {
-    
-    it('should output this known buffer', function() {
+  describe('#toBW', function () {
+    it('should output this known buffer', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')));
       txout.toBW().toBuffer().toString('hex').should.equal('050000000000000001ae');
     });

@@ -1,20 +1,18 @@
-"use strict";
+'use strict';
 let should = require('chai').should();
 let KDF = require('../lib/kdf');
 let Hash = require('../lib/hash');
 let vectors = require('./vectors/kdf');
 
-describe('KDF', function() {
-  
-  it('should satisfy this basic API', function() {
+describe('KDF', function () {
+  it('should satisfy this basic API', function () {
     KDF.Testnet.should.equal(KDF.Testnet);
     KDF.Mainnet.should.equal(KDF.Mainnet);
     KDF.Mainnet.should.not.equal(KDF.Testnet);
   });
 
-  describe('@PBKDF2', function() {
-
-    it('should return values of the right size', function() {
+  describe('@PBKDF2', function () {
+    it('should return values of the right size', function () {
       let passbuf = new Buffer([0]);
       let saltbuf = new Buffer([0]);
       let key1 = KDF.PBKDF2(passbuf, saltbuf);
@@ -29,8 +27,8 @@ describe('KDF', function() {
     });
 
     // Test vectors from: http://tools.ietf.org/html/rfc6070#section-2
-    vectors.PBKDF2.valid.forEach(function(obj, i) {
-      it('should work for PBKDF2 test vector ' + i, function() {
+    vectors.PBKDF2.valid.forEach(function (obj, i) {
+      it('should work for PBKDF2 test vector ' + i, function () {
         let passbuf = new Buffer(obj.p, 'hex');
         let saltbuf = new Buffer(obj.s, 'hex');
         let niterations = obj.c;
@@ -42,10 +40,9 @@ describe('KDF', function() {
     });
 
   });
-  
-  describe('@buf2keypair', function() {
 
-    it('should compute these known values', function() {
+  describe('@buf2keypair', function () {
+    it('should compute these known values', function () {
       let buf = Hash.sha256(new Buffer('test'));
       let keypair = KDF.buf2keypair(buf);
       keypair.privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V');
@@ -54,9 +51,8 @@ describe('KDF', function() {
 
   });
 
-  describe('@sha256hmac2keypair', function() {
-
-    it('should compute these known values', function() {
+  describe('@sha256hmac2keypair', function () {
+    it('should compute these known values', function () {
       let buf = Hash.sha256(new Buffer('test'));
       let keypair = KDF.sha256hmac2keypair(buf);
       keypair.privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V');
@@ -65,9 +61,8 @@ describe('KDF', function() {
 
   });
 
-  describe('@sha256hmac2privkey', function() {
-
-    it('should compute this known privkey', function() {
+  describe('@sha256hmac2privkey', function () {
+    it('should compute this known privkey', function () {
       let buf = Hash.sha256(new Buffer('test'));
       let privkey = KDF.sha256hmac2privkey(buf);
       privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V');

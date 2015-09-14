@@ -1,13 +1,11 @@
-"use strict";
+'use strict';
 let AES = require('../lib/aes');
 let should = require('chai').should();
 let CBC = require('../lib/cbc');
 
-describe('CBC', function() {
-
-  describe('@buf2blockbufs', function() {
-
-    it('should convert this buffer into one block', function() {
+describe('CBC', function () {
+  describe('@buf2blockbufs', function () {
+    it('should convert this buffer into one block', function () {
       let buf = new Buffer(16 - 1);
       buf.fill(0);
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8);
@@ -15,7 +13,7 @@ describe('CBC', function() {
       blockbufs[0].toString('hex').should.equal('00000000000000000000000000000001');
     });
 
-    it('should convert this buffer into two blocks', function() {
+    it('should convert this buffer into two blocks', function () {
       let buf = new Buffer(16);
       buf.fill(0);
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8);
@@ -25,10 +23,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@buf2blockbufs', function() {
 
-    it('should convert this buffer into one block and back into the same buffer', function() {
+  describe('@buf2blockbufs', function () {
+    it('should convert this buffer into one block and back into the same buffer', function () {
       let buf = new Buffer(16 - 1);
       buf.fill(0);
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8);
@@ -36,7 +33,7 @@ describe('CBC', function() {
       buf2.toString('hex').should.equal(buf.toString('hex'));
     });
 
-    it('should convert this buffer into two blocks and back into the same buffer', function() {
+    it('should convert this buffer into two blocks and back into the same buffer', function () {
       let buf = new Buffer(16);
       buf.fill(0);
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8);
@@ -45,10 +42,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@encrypt', function() {
 
-    it('should return this known value', function() {
+  describe('@encrypt', function () {
+    it('should return this known value', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(128 / 8);
@@ -59,17 +55,17 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf);
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf);
     });
 
-    it('should return this shorter known value', function() {
+    it('should return this shorter known value', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(120 / 8);
@@ -80,17 +76,17 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf);
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf);
     });
 
-    it('should return this shorter known value', function() {
+    it('should return this shorter known value', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(136 / 8);
@@ -101,17 +97,17 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf);
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf);
     });
 
-    it('should encrypt something with AES', function() {
+    it('should encrypt something with AES', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(128 / 8);
@@ -128,10 +124,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@decrypt', function() {
 
-    it('should properly decrypt an encrypted message', function() {
+  describe('@decrypt', function () {
+    it('should properly decrypt an encrypted message', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(128 / 8);
@@ -142,10 +137,10 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf);
@@ -154,10 +149,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@encryptblock', function() {
 
-    it('should return this known value', function() {
+  describe('@encryptblock', function () {
+    it('should return this known value', function () {
       let messagebuf = new Buffer(128 / 8);
       messagebuf.fill(0);
       let ivbuf = new Buffer(128 / 8);
@@ -165,14 +159,14 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let enc = CBC.encryptblock(messagebuf, ivbuf, blockcipher, cipherkeybuf);
       enc.toString('hex').should.equal(ivbuf.toString('hex'));
     });
 
-    it('should return this other known value', function() {
+    it('should return this other known value', function () {
       let messagebuf = new Buffer(128 / 8);
       messagebuf.fill(0x10);
       let ivbuf = new Buffer(128 / 8);
@@ -180,7 +174,7 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let enc = CBC.encryptblock(messagebuf, ivbuf, blockcipher, cipherkeybuf);
@@ -188,10 +182,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@decryptblock', function() {
 
-    it('should decrypt an encrypted block', function() {
+  describe('@decryptblock', function () {
+    it('should decrypt an encrypted block', function () {
       let messagebuf = new Buffer(128 / 8);
       messagebuf.fill(0);
       let ivbuf = new Buffer(128 / 8);
@@ -199,10 +192,10 @@ describe('CBC', function() {
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
       let blockcipher = {};
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbuf = CBC.encryptblock(messagebuf, ivbuf, blockcipher, cipherkeybuf);
@@ -211,10 +204,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@encryptblocks', function() {
 
-    it('should return this known value', function() {
+  describe('@encryptblocks', function () {
+    it('should return this known value', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(128 / 8);
@@ -223,8 +215,8 @@ describe('CBC', function() {
       ivbuf.fill(0x10);
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
-      let blockcipher = {}
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      let blockcipher = {};
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbufs = CBC.encryptblocks([messagebuf1, messagebuf2], ivbuf, blockcipher, cipherkeybuf);
@@ -233,10 +225,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@decryptblocks', function() {
 
-    it('should decrypt encrypted blocks', function() {
+  describe('@decryptblocks', function () {
+    it('should decrypt encrypted blocks', function () {
       let messagebuf1 = new Buffer(128 / 8);
       messagebuf1.fill(0);
       let messagebuf2 = new Buffer(128 / 8);
@@ -245,11 +236,11 @@ describe('CBC', function() {
       ivbuf.fill(0x10);
       let cipherkeybuf = new Buffer(128 / 8);
       cipherkeybuf.fill(0);
-      let blockcipher = {}
-      blockcipher.encrypt = function(messagebuf, cipherkeybuf) {
+      let blockcipher = {};
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
-      blockcipher.decrypt = function(messagebuf, cipherkeybuf) {
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
         return messagebuf;
       };
       let encbufs = CBC.encryptblocks([messagebuf1, messagebuf2], ivbuf, blockcipher, cipherkeybuf);
@@ -259,10 +250,9 @@ describe('CBC', function() {
     });
 
   });
-  
-  describe('@pkcs7pad', function() {
-    
-    it('should pad this 32 bit buffer to 128 bits with the number 128/8 - 32/8', function() {
+
+  describe('@pkcs7pad', function () {
+    it('should pad this 32 bit buffer to 128 bits with the number 128/8 - 32/8', function () {
       let buf = new Buffer(32 / 8);
       buf.fill(0);
       let padbuf = CBC.pkcs7pad(buf, 128);
@@ -275,9 +265,8 @@ describe('CBC', function() {
 
   });
 
-  describe('@pkcs7unpad', function() {
-    
-    it('should unpad this padded 32 bit buffer', function() {
+  describe('@pkcs7unpad', function () {
+    it('should unpad this padded 32 bit buffer', function () {
       let buf = new Buffer(32 / 8);
       buf.fill(0);
       let paddedbuf = CBC.pkcs7pad(buf, 128);
@@ -287,16 +276,15 @@ describe('CBC', function() {
 
   });
 
-  describe('@xorbufs', function() {
-    
-    it('should xor 1 and 0', function() {
+  describe('@xorbufs', function () {
+    it('should xor 1 and 0', function () {
       let buf1 = new Buffer([1]);
       let buf2 = new Buffer([0]);
       let buf = CBC.xorbufs(buf1, buf2);
       buf[0].should.equal(1);
     });
 
-    it('should xor 1 and 1', function() {
+    it('should xor 1 and 1', function () {
       let buf1 = new Buffer([1]);
       let buf2 = new Buffer([1]);
       let buf = CBC.xorbufs(buf1, buf2);

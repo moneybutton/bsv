@@ -2,7 +2,7 @@
 /**
  * Basic web app to facilitate running the mocha browser tests without karma.
  */
-"use strict";
+'use strict';
 let express = require('express');
 let path = require('path');
 let app = express();

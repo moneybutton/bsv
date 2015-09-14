@@ -1,13 +1,11 @@
-"use strict";
+'use strict';
 let should = require('chai').should();
 let AESCBC = require('../lib/aescbc');
 let vectors = require('./vectors/aescbc');
 
-describe('AESCBC', function() {
-
-  describe('@encrypt', function() {
-
-    it('should return encrypt one block', function() {
+describe('AESCBC', function () {
+  describe('@encrypt', function () {
+    it('should return encrypt one block', function () {
       let cipherkeybuf = new Buffer(256 / 8);
       cipherkeybuf.fill(0x10);
       let ivbuf = new Buffer(128 / 8);
@@ -18,7 +16,7 @@ describe('AESCBC', function() {
       encbuf.length.should.equal(128 / 8 + 128 / 8);
     });
 
-    it('should return encrypt two blocks', function() {
+    it('should return encrypt two blocks', function () {
       let cipherkeybuf = new Buffer(256 / 8);
       cipherkeybuf.fill(0x10);
       let ivbuf = new Buffer(128 / 8);
@@ -31,9 +29,8 @@ describe('AESCBC', function() {
 
   });
 
-  describe('@decrypt', function() {
-    
-    it('should decrypt that which was encrypted', function() {
+  describe('@decrypt', function () {
+    it('should decrypt that which was encrypted', function () {
       let cipherkeybuf = new Buffer(256 / 8);
       cipherkeybuf.fill(0x10);
       let ivbuf = new Buffer(128 / 8);
@@ -47,10 +44,9 @@ describe('AESCBC', function() {
 
   });
 
-  describe('vectors', function() {
-
-    vectors.forEach(function(vector, i) {
-      it('should pass sjcl test vector ' + i, function() {
+  describe('vectors', function () {
+    vectors.forEach(function (vector, i) {
+      it('should pass sjcl test vector ' + i, function () {
         let keybuf = new Buffer(vector.key, 'hex');
         let ivbuf = new Buffer(vector.iv, 'hex');
         let ptbuf = new Buffer(vector.pt, 'hex');

@@ -13,7 +13,7 @@
   * your project. For instance:
   * let Address = require('fullnode/lib/address').
   */
-"use strict";
+'use strict';
 let fullnode = module.exports;
 global.fullnode = fullnode;
 
@@ -94,13 +94,13 @@ fullnode.deps.unorm = require('unorm');
 
 // Mainnet classes for your convenience (in case default is not what you want).
 let Mainnet = {};
-Object.keys(fullnode).forEach(function(key) {
+Object.keys(fullnode).forEach(function (key) {
   Mainnet[key] = fullnode[key].Mainnet ? fullnode[key].Mainnet : fullnode[key];
 });
 
 // Testnet classes for your convenience (in case default is not what you want).
 let Testnet = {};
-Object.keys(fullnode).forEach(function(key) {
+Object.keys(fullnode).forEach(function (key) {
   Testnet[key] = fullnode[key].Testnet ? fullnode[key].Testnet : fullnode[key];
 });
 

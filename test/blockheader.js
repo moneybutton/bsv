@@ -1,11 +1,10 @@
-"use strict";
+'use strict';
 let Blockheader = require('../lib/blockheader');
 let BW = require('../lib/bw');
 let BR = require('../lib/br');
 let should = require('chai').should();
 
-describe('Blockheader', function() {
-  
+describe('Blockheader', function () {
   let bh = new Blockheader();
   let version = 1;
   let prevblockidbuf = new Buffer(32);
@@ -26,16 +25,15 @@ describe('Blockheader', function() {
   let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000';
   let bhbuf = new Buffer(bhhex, 'hex');
 
-  it('should make a new blockheader', function() {
+  it('should make a new blockheader', function () {
     let blockheader = new Blockheader();
     should.exist(blockheader);
     blockheader = Blockheader();
     should.exist(blockheader);
   });
 
-  describe('#fromObject', function() {
-
-    it('should set all the variables', function() {
+  describe('#fromObject', function () {
+    it('should set all the variables', function () {
       bh.fromObject({
         version: version,
         prevblockidbuf: prevblockidbuf,
@@ -54,9 +52,8 @@ describe('Blockheader', function() {
 
   });
 
-  describe('#fromJSON', function() {
-
-    it('should set all the variables', function() {
+  describe('#fromJSON', function () {
+    it('should set all the variables', function () {
       let bh = Blockheader().fromJSON({
         version: version,
         prevblockidbuf: prevblockidbuf.toString('hex'),
@@ -75,9 +72,8 @@ describe('Blockheader', function() {
 
   });
 
-  describe('#toJSON', function() {
-
-    it('should set all the variables', function() {
+  describe('#toJSON', function () {
+    it('should set all the variables', function () {
       let json = bh.toJSON();
       should.exist(json.version);
       should.exist(json.prevblockidbuf);
@@ -89,49 +85,43 @@ describe('Blockheader', function() {
 
   });
 
-  describe('#fromHex', function() {
-
-    it('should parse this known hex string', function() {
+  describe('#fromHex', function () {
+    it('should parse this known hex string', function () {
       Blockheader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex);
     });
 
   });
 
-  describe('#fromBuffer', function() {
-
-    it('should parse this known buffer', function() {
+  describe('#fromBuffer', function () {
+    it('should parse this known buffer', function () {
       Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
     });
 
   });
 
-  describe('#fromBR', function() {
-
-    it('should parse this known buffer', function() {
+  describe('#fromBR', function () {
+    it('should parse this known buffer', function () {
       Blockheader().fromBR(BR(bhbuf)).toBuffer().toString('hex').should.equal(bhhex);
     });
 
   });
 
-  describe('#toHex', function() {
-
-    it('should output this known hex string', function() {
+  describe('#toHex', function () {
+    it('should output this known hex string', function () {
       Blockheader().fromBuffer(bhbuf).toHex().should.equal(bhhex);
     });
 
   });
 
-  describe('#toBuffer', function() {
-
-    it('should output this known buffer', function() {
+  describe('#toBuffer', function () {
+    it('should output this known buffer', function () {
       Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
     });
 
   });
 
-  describe('#toBW', function() {
-
-    it('should output this known buffer', function() {
+  describe('#toBW', function () {
+    it('should output this known buffer', function () {
       Blockheader().fromBuffer(bhbuf).toBW().toBuffer().toString('hex').should.equal(bhhex);
       let bw = BW();
       Blockheader().fromBuffer(bhbuf).toBW(bw);

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let should = require('chai').should();
 let Txbuilder = require('../lib/txbuilder');
 let Txverifier = require('../lib/txverifier');
@@ -14,14 +14,11 @@ let Pubkey = require('../lib/pubkey');
 let Privkey = require('../lib/privkey');
 let Keypair = require('../lib/keypair');
 
-describe('Txbuilder', function() {
-  
-  it('should make a new txbuilder', function() {
-    let txb = new Txbuilder();
-    (txb instanceof Txbuilder).should.equal(true);
+describe('Txbuilder', function () {
+  it('should make a new txbuilder', function () {
+    let txb = new Txbuilder();(txb instanceof Txbuilder).should.equal(true);
     should.exist(txb.tx);
-    txb = Txbuilder();
-    (txb instanceof Txbuilder).should.equal(true);
+    txb = Txbuilder();(txb instanceof Txbuilder).should.equal(true);
     should.exist(txb.tx);
     txb = Txbuilder({
       tx: Tx()
@@ -29,7 +26,7 @@ describe('Txbuilder', function() {
     should.exist(txb.tx);
   });
 
-  it('should make a new tx following this API', function() {
+  it('should make a new tx following this API', function () {
     let txb = new Txbuilder();
 
     // make change address
@@ -61,8 +58,8 @@ describe('Txbuilder', function() {
       '0000000000000000000000000000000000000000000000000000000000000000:0': {txout: txout1, pubkey: keypair1.pubkey},
       '0100000000000000000000000000000000000000000000000000000000000000:0': {txout: txout2, pubkey: keypair2.pubkey}
 
-      // p2sh multisig
-      //'0000000000000000000000000000000000000000000000000000000000000000:1': {txout: Txout(), redeemScript: Script()}
+    // p2sh multisig
+    // '0000000000000000000000000000000000000000000000000000000000000000:1': {txout: Txout(), redeemScript: Script()}
     };
 
     txb.setUTxoutMap(utxoutmap);
@@ -81,9 +78,8 @@ describe('Txbuilder', function() {
     Txverifier.verify(txb.tx, txoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true);
   });
 
-  describe('#to', function() {
-    
-    it('should add a scripthash address', function() {
+  describe('#to', function () {
+    it('should add a scripthash address', function () {
       let hashbuf = new Buffer(20);
       hashbuf.fill(0);
       let address = Address().fromRedeemScript(Script().fromScripthash(hashbuf));
@@ -92,7 +88,7 @@ describe('Txbuilder', function() {
       txb.toTxouts.length.should.equal(1);
     });
 
-    it('should add a pubkeyhash address', function() {
+    it('should add a pubkeyhash address', function () {
       let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom());
       let address = Address().fromPubkey(pubkey);
       let txb = Txbuilder();

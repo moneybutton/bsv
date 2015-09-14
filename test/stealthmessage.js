@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 let Keypair = require('../lib/keypair');
 let StealthMessage = require('../lib/stealthmessage');
 let StealthKey = require('../lib/stealthkey');
@@ -8,8 +8,7 @@ let Hash = require('../lib/hash');
 let should = require('chai').should();
 let Address = require('../lib/address');
 
-describe('StealthMessage', function() {
-
+describe('StealthMessage', function () {
   let payloadKeypair = KDF.buf2keypair(new Buffer('key1'));
   let scanKeypair = KDF.buf2keypair(new Buffer('key2'));
   let fromKeypair = KDF.buf2keypair(new Buffer('key3'));
@@ -19,15 +18,15 @@ describe('StealthMessage', function() {
   let sk = StealthKey().fromObject({payloadKeypair: payloadKeypair, scanKeypair: scanKeypair});
   let sa = StealthAddress().fromStealthKey(sk);
   let messagebuf = new Buffer('this is my message');
-  
-  it('should make a new stealthmessage', function() {
+
+  it('should make a new stealthmessage', function () {
     let sm = new StealthMessage();
     should.exist(sm);
-    sm = StealthMessage()
+    sm = StealthMessage();
     should.exist(sm);
   });
 
-  it('should allow "set" style syntax', function() {
+  it('should allow "set" style syntax', function () {
     let encbuf = StealthMessage().fromObject({
       messagebuf: messagebuf,
       toStealthAddress: sa
@@ -36,23 +35,21 @@ describe('StealthMessage', function() {
     encbuf.length.should.equal(113);
   });
 
-  describe('#fromObject', function() {
-    
-    it('should set the messagebuf', function() {
+  describe('#fromObject', function () {
+    it('should set the messagebuf', function () {
       let sm = StealthMessage().fromObject({messagebuf: messagebuf});
       should.exist(sm.messagebuf);
     });
 
   });
 
-  describe('@encrypt', function() {
-
-    it('should encrypt a message', function() {
+  describe('@encrypt', function () {
+    it('should encrypt a message', function () {
       let encbuf = StealthMessage.encrypt(messagebuf, sa);
       encbuf.length.should.equal(166);
     });
 
-    it('should encrypt a message with this fromKeypair and ivbuf the same each time', function() {
+    it('should encrypt a message with this fromKeypair and ivbuf the same each time', function () {
       let encbuf = StealthMessage.encrypt(messagebuf, sa, fromKeypair, ivbuf);
       encbuf.length.should.equal(166);
       encbuf.toString('hex').should.equal(enchex);
@@ -60,22 +57,20 @@ describe('StealthMessage', function() {
 
   });
 
-  describe('@decrypt', function() {
-
-    it('should decrypt this known message correctly', function() {
+  describe('@decrypt', function () {
+    it('should decrypt this known message correctly', function () {
       let messagebuf2 = StealthMessage.decrypt(encbuf, sk);
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'));
     });
 
   });
 
-  describe('@isForMe', function() {
-
-    it('should know that this message is for me', function() {
+  describe('@isForMe', function () {
+    it('should know that this message is for me', function () {
       StealthMessage.isForMe(encbuf, sk).should.equal(true);
     });
 
-    it('should know that this message is for me even if my payloadPrivkey is not present', function() {
+    it('should know that this message is for me even if my payloadPrivkey is not present', function () {
       let sk2 = new StealthKey();
       sk2.scanKeypair = sk.scanKeypair;
       sk2.payloadKeypair = Keypair().fromObject({pubkey: sk.payloadKeypair.pubkey});
@@ -85,9 +80,8 @@ describe('StealthMessage', function() {
 
   });
 
-  describe('#encrypt', function() {
-    
-    it('should encrypt this message', function() {
+  describe('#encrypt', function () {
+    it('should encrypt this message', function () {
       let sm = StealthMessage().fromObject({
         messagebuf: messagebuf,
         toStealthAddress: sa,
@@ -98,9 +92,8 @@ describe('StealthMessage', function() {
 
   });
 
-  describe('#decrypt', function() {
-    
-    it('should decrypt that which was encrypted', function() {
+  describe('#decrypt', function () {
+    it('should decrypt that which was encrypted', function () {
       let sm = StealthMessage().fromObject({
         messagebuf: messagebuf,
         toStealthAddress: sa
@@ -115,9 +108,8 @@ describe('StealthMessage', function() {
 
   });
 
-  describe('#isForMe', function() {
-    
-    it('should know that this message is for me', function() {
+  describe('#isForMe', function () {
+    it('should know that this message is for me', function () {
       StealthMessage().fromObject({
         encbuf: encbuf,
         toStealthKey: sk,
@@ -126,7 +118,7 @@ describe('StealthMessage', function() {
       }).isForMe().should.equal(true);
     });
 
-    it('should know that this message is not for me', function() {
+    it('should know that this message is not for me', function () {
       StealthMessage().fromObject({
         encbuf: encbuf,
         toStealthKey: sk,
