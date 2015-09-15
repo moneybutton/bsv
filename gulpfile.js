@@ -1,14 +1,14 @@
-'use strict';
-let gulp = require('gulp');
-let karma = require('gulp-karma');
-let mocha = require('gulp-mocha');
-let path = require('path');
-let fs = require('fs');
-let browserify = require('browserify');
-let es6ify = require('es6ify');
-let envify = require('envify');
-let uglifyify = require('uglifyify');
-let glob = require('glob');
+'use strict'
+let gulp = require('gulp')
+let karma = require('gulp-karma')
+let mocha = require('gulp-mocha')
+let path = require('path')
+let fs = require('fs')
+let browserify = require('browserify')
+let es6ify = require('es6ify')
+let envify = require('envify')
+let uglifyify = require('uglifyify')
+let glob = require('glob')
 
 // By default, we assume browser-loaded javascript is served from the root
 // directory, "/", of the http server. karma, however, assumes files are in the
@@ -18,23 +18,23 @@ let glob = require('glob');
 // also override the name of the bundle and worker files or the minified
 // versions by setting the respective environment variables below.
 if (!process.env.FULLNODE_JS_BASE_URL) {
-  process.env.FULLNODE_JS_BASE_URL = '/';
+  process.env.FULLNODE_JS_BASE_URL = '/'
 }
 
 if (!process.env.FULLNODE_JS_BUNDLE_FILE) {
-  process.env.FULLNODE_JS_BUNDLE_FILE = 'fullnode.js';
+  process.env.FULLNODE_JS_BUNDLE_FILE = 'fullnode.js'
 }
 
 if (!process.env.FULLNODE_JS_WORKER_FILE) {
-  process.env.FULLNODE_JS_WORKER_FILE = 'fullnode-worker.js';
+  process.env.FULLNODE_JS_WORKER_FILE = 'fullnode-worker.js'
 }
 
 if (!process.env.FULLNODE_JS_BUNDLE_MIN_FILE) {
-  process.env.FULLNODE_JS_BUNDLE_MIN_FILE = 'fullnode-min.js';
+  process.env.FULLNODE_JS_BUNDLE_MIN_FILE = 'fullnode-min.js'
 }
 
 if (!process.env.FULLNODE_JS_WORKER_MIN_FILE) {
-  process.env.FULLNODE_JS_WORKER_MIN_FILE = 'fullnode-worker-min.js';
+  process.env.FULLNODE_JS_WORKER_MIN_FILE = 'fullnode-worker-min.js'
 }
 
 gulp.task('build-bundle', function () {
@@ -47,9 +47,9 @@ gulp.task('build-bundle', function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
-  });
-});
+      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)))
+  })
+})
 
 gulp.task('build-worker', ['build-bundle'], function () {
   return new Promise(function (resolve, reject) {
@@ -60,14 +60,14 @@ gulp.task('build-worker', ['build-bundle'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
-  });
-});
+      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)))
+  })
+})
 
 gulp.task('build-bundle-min', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
-    let backup = process.env.FULLNODE_JS_BUNDLE_FILE;
-    process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE;
+    let backup = process.env.FULLNODE_JS_BUNDLE_FILE
+    process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE
     browserify({debug: false})
       .add(es6ify.runtime)
       .transform(envify)
@@ -77,14 +77,14 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {process.env.FULLNODE_JS_BUNDLE_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)));
-  });
-});
+      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)))
+  })
+})
 
 gulp.task('build-worker-min', ['build-bundle-min'], function () {
   return new Promise(function (resolve, reject) {
-    let backup = process.env.FULLNODE_JS_WORKER_FILE;
-    process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE;
+    let backup = process.env.FULLNODE_JS_WORKER_FILE
+    process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE
     browserify({debug: false})
       .transform(envify)
       .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
@@ -93,9 +93,9 @@ gulp.task('build-worker-min', ['build-bundle-min'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)));
-  });
-});
+      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)))
+  })
+})
 
 gulp.task('build-tests', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
@@ -103,53 +103,53 @@ gulp.task('build-tests', ['build-worker'], function () {
       let b = browserify({debug: true})
         .add(es6ify.runtime)
         .transform(envify)
-        .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
+        .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
       for (let file of files) {
-        b.add(file);
+      b.add(file)
       }
       b.bundle()
         .on('error', function (err) {reject(err);})
         .on('end', function () {resolve();})
-        .pipe(fs.createWriteStream(path.join(__dirname, 'browser', 'tests.js')));
-    });
-  });
-});
+        .pipe(fs.createWriteStream(path.join(__dirname, 'browser', 'tests.js')))
+    })
+  })
+})
 
 gulp.task('test-node', function () {
   return gulp.src(['test/*.js'])
     .pipe(mocha({reporter: 'dot'}))
     .once('error', function (error) {
-      process.exit(1);
+      process.exit(1)
     })
     .once('end', function () {
-      process.exit();
-    });
-});
+      process.exit()
+    })
+})
 
 gulp.task('build-karma-url', function () {
   // karma serves static files, including js files, from /base/
-  process.env.FULLNODE_JS_BASE_URL = '/base/';
-});
+  process.env.FULLNODE_JS_BASE_URL = '/base/'
+})
 
-gulp.task('build-karma', ['build-karma-url', 'build-tests']);
+gulp.task('build-karma', ['build-karma-url', 'build-tests'])
 
 gulp.task('test-karma', ['build-karma'], function () {
-  let server = require(path.join(__dirname, 'bin', 'testapp')).server; // runs the PeerJS server
+  let server = require(path.join(__dirname, 'bin', 'testapp')).server // runs the PeerJS server
   return gulp.src([])
     .pipe(karma({
       configFile: '.karma.conf.js',
       action: 'run'
     }))
     .on('error', function (err) {
-      throw err;
+      throw err
     })
     .on('end', function () {
-      server.close();
-      process.exit();
-    });
-});
+      server.close()
+      process.exit()
+    })
+})
 
-gulp.task('test-browser', ['build-karma', 'test-karma']);
-gulp.task('test', ['test-node']);
-gulp.task('build', ['build-bundle', 'build-worker', 'build-bundle-min', 'build-worker-min', 'build-tests']);
-gulp.task('default', ['build']);
+gulp.task('test-browser', ['build-karma', 'test-karma'])
+gulp.task('test', ['test-node'])
+gulp.task('build', ['build-bundle', 'build-worker', 'build-bundle-min', 'build-worker-min', 'build-tests'])
+gulp.task('default', ['build'])

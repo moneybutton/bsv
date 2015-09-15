@@ -1,19 +1,19 @@
-'use strict';
-let Blockheader = require('../lib/blockheader');
-let BW = require('../lib/bw');
-let BR = require('../lib/br');
-let should = require('chai').should();
+'use strict'
+let Blockheader = require('../lib/blockheader')
+let BW = require('../lib/bw')
+let BR = require('../lib/br')
+let should = require('chai').should()
 
 describe('Blockheader', function () {
-  let bh = new Blockheader();
-  let version = 1;
-  let prevblockidbuf = new Buffer(32);
-  prevblockidbuf.fill(5);
-  let merklerootbuf = new Buffer(32);
-  merklerootbuf.fill(9);
-  let time = 2;
-  let bits = 3;
-  let nonce = 4;
+  let bh = new Blockheader()
+  let version = 1
+  let prevblockidbuf = new Buffer(32)
+  prevblockidbuf.fill(5)
+  let merklerootbuf = new Buffer(32)
+  merklerootbuf.fill(9)
+  let time = 2
+  let bits = 3
+  let nonce = 4
   bh.fromObject({
     version: version,
     prevblockidbuf: prevblockidbuf,
@@ -21,16 +21,16 @@ describe('Blockheader', function () {
     time: time,
     bits: bits,
     nonce: nonce
-  });
-  let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000';
-  let bhbuf = new Buffer(bhhex, 'hex');
+  })
+  let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
+  let bhbuf = new Buffer(bhhex, 'hex')
 
   it('should make a new blockheader', function () {
-    let blockheader = new Blockheader();
-    should.exist(blockheader);
-    blockheader = Blockheader();
-    should.exist(blockheader);
-  });
+    let blockheader = new Blockheader()
+    should.exist(blockheader)
+    blockheader = Blockheader()
+    should.exist(blockheader)
+  })
 
   describe('#fromObject', function () {
     it('should set all the variables', function () {
@@ -41,16 +41,16 @@ describe('Blockheader', function () {
         time: time,
         bits: bits,
         nonce: nonce
-      });
-      should.exist(bh.version);
-      should.exist(bh.prevblockidbuf);
-      should.exist(bh.merklerootbuf);
-      should.exist(bh.time);
-      should.exist(bh.bits);
-      should.exist(bh.nonce);
-    });
+      })
+      should.exist(bh.version)
+      should.exist(bh.prevblockidbuf)
+      should.exist(bh.merklerootbuf)
+      should.exist(bh.time)
+      should.exist(bh.bits)
+      should.exist(bh.nonce)
+    })
 
-  });
+  })
 
   describe('#fromJSON', function () {
     it('should set all the variables', function () {
@@ -61,73 +61,73 @@ describe('Blockheader', function () {
         time: time,
         bits: bits,
         nonce: nonce
-      });
-      should.exist(bh.version);
-      should.exist(bh.prevblockidbuf);
-      should.exist(bh.merklerootbuf);
-      should.exist(bh.time);
-      should.exist(bh.bits);
-      should.exist(bh.nonce);
-    });
+      })
+      should.exist(bh.version)
+      should.exist(bh.prevblockidbuf)
+      should.exist(bh.merklerootbuf)
+      should.exist(bh.time)
+      should.exist(bh.bits)
+      should.exist(bh.nonce)
+    })
 
-  });
+  })
 
   describe('#toJSON', function () {
     it('should set all the variables', function () {
-      let json = bh.toJSON();
-      should.exist(json.version);
-      should.exist(json.prevblockidbuf);
-      should.exist(json.merklerootbuf);
-      should.exist(json.time);
-      should.exist(json.bits);
-      should.exist(json.nonce);
-    });
+      let json = bh.toJSON()
+      should.exist(json.version)
+      should.exist(json.prevblockidbuf)
+      should.exist(json.merklerootbuf)
+      should.exist(json.time)
+      should.exist(json.bits)
+      should.exist(json.nonce)
+    })
 
-  });
+  })
 
   describe('#fromHex', function () {
     it('should parse this known hex string', function () {
-      Blockheader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex);
-    });
+      Blockheader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex)
+    })
 
-  });
+  })
 
   describe('#fromBuffer', function () {
     it('should parse this known buffer', function () {
-      Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
-    });
+      Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
+    })
 
-  });
+  })
 
   describe('#fromBR', function () {
     it('should parse this known buffer', function () {
-      Blockheader().fromBR(BR(bhbuf)).toBuffer().toString('hex').should.equal(bhhex);
-    });
+      Blockheader().fromBR(BR(bhbuf)).toBuffer().toString('hex').should.equal(bhhex)
+    })
 
-  });
+  })
 
   describe('#toHex', function () {
     it('should output this known hex string', function () {
-      Blockheader().fromBuffer(bhbuf).toHex().should.equal(bhhex);
-    });
+      Blockheader().fromBuffer(bhbuf).toHex().should.equal(bhhex)
+    })
 
-  });
+  })
 
   describe('#toBuffer', function () {
     it('should output this known buffer', function () {
-      Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex);
-    });
+      Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
+    })
 
-  });
+  })
 
   describe('#toBW', function () {
     it('should output this known buffer', function () {
-      Blockheader().fromBuffer(bhbuf).toBW().toBuffer().toString('hex').should.equal(bhhex);
-      let bw = BW();
-      Blockheader().fromBuffer(bhbuf).toBW(bw);
-      bw.toBuffer().toString('hex').should.equal(bhhex);
-    });
+      Blockheader().fromBuffer(bhbuf).toBW().toBuffer().toString('hex').should.equal(bhhex)
+      let bw = BW()
+      Blockheader().fromBuffer(bhbuf).toBW(bw)
+      bw.toBuffer().toString('hex').should.equal(bhhex)
+    })
 
-  });
+  })
 
-});
+})
