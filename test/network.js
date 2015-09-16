@@ -26,6 +26,7 @@ describe('Network', function () {
 
   describe('#connect', function () {
     it('should connect to another network and send data', function () {
+      this.timeout(5000)
       let network1 = Network({port: 8551})
       let network2 = Network({port: 8552})
       let channel1, channel2
