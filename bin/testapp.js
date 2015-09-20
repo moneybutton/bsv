@@ -8,7 +8,7 @@ let path = require('path')
 let app = express()
 var ExpressPeerServer = require('peer').ExpressPeerServer
 
-app.use(express.static(path.join(__dirname, '../browser')))
+app.use(express.static(path.join(__dirname, '../build')))
 app.use(express.static(path.join(__dirname, '../node_modules')))
 
 let server = app.listen(3000, function () {

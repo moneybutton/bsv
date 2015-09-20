@@ -47,7 +47,7 @@ gulp.task('build-bundle', function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_FILE)))
   })
 })
 
@@ -60,7 +60,7 @@ gulp.task('build-worker', ['build-bundle'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_FILE)))
   })
 })
 
@@ -77,7 +77,7 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {process.env.FULLNODE_JS_BUNDLE_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_BUNDLE_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_FILE)))
   })
 })
 
@@ -93,7 +93,7 @@ gulp.task('build-worker-min', ['build-bundle-min'], function () {
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'browser', process.env.FULLNODE_JS_WORKER_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_FILE)))
   })
 })
 
@@ -110,7 +110,7 @@ gulp.task('build-tests', ['build-worker'], function () {
       b.bundle()
         .on('error', function (err) {reject(err);})
         .on('end', function () {resolve();})
-        .pipe(fs.createWriteStream(path.join(__dirname, 'browser', 'tests.js')))
+        .pipe(fs.createWriteStream(path.join(__dirname, 'build', 'tests.js')))
     })
   })
 })
