@@ -74,6 +74,7 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
     let backup = process.env.FULLNODE_JS_BUNDLE_FILE
     process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE
     browserify({debug: false})
+      .add(require.resolve('babelify/polyfill'))
       .transform(envify)
       .transform(babelify.configure({ignore: /node_modules/}))
       .transform(uglifyify)
