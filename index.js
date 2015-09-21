@@ -25,7 +25,9 @@ global.fullnode = fullnode
 // file is loaded inside a web worker. This will cause problems if any code
 // relies on the non-existence of window inside a web worker, but there is
 // probably not much code like that that would need to work with fullnode.
-global.window = self
+if (!global.window && typeof self !== 'undefined') {
+  global.window = self
+}
 
 fullnode.version = require('./package').version
 
