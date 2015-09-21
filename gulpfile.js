@@ -5,7 +5,7 @@ let mocha = require('gulp-mocha')
 let path = require('path')
 let fs = require('fs')
 let browserify = require('browserify')
-let es6ify = require('es6ify')
+let babelify = require('babelify')
 let envify = require('envify')
 let uglifyify = require('uglifyify')
 let glob = require('glob')
@@ -40,10 +40,15 @@ if (!process.env.FULLNODE_JS_WORKER_MIN_FILE) {
 gulp.task('build-bundle', function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
-      .add(es6ify.runtime)
+      // The babel polyfill is include once in the main bundle, and no where
+      // else. You must include the main bundle in any HTML that uses fullnode,
+      // since the pollyfill must be required exactly once. If you build things
+      // yourself with babel, you will need to be sure to include the polyfill
+      // exactly once yourself.
+      .add(require.resolve('babelify/polyfill'))
       .transform(envify)
-      .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-      .require(require.resolve('./index.js'), {entry: true})
+      .transform(babelify.configure({ignore: /node_modules/}))
+      .add(require.resolve('./index.js'), {entry: true})
       .bundle()
       .on('error', function (err) {reject(err);})
       .on('end', function () {resolve();})
@@ -55,7 +60,7 @@ gulp.task('build-worker', ['build-bundle'], function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
       .transform(envify)
-      .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+      .transform(babelify.configure({ignore: /node_modules/}))
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
       .on('error', function (err) {reject(err);})
@@ -69,9 +74,8 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
     let backup = process.env.FULLNODE_JS_BUNDLE_FILE
     process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE
     browserify({debug: false})
-      .add(es6ify.runtime)
       .transform(envify)
-      .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+      .transform(babelify.configure({ignore: /node_modules/}))
       .transform(uglifyify)
       .require(require.resolve('./index.js'), {entry: true})
       .bundle()
@@ -87,7 +91,7 @@ gulp.task('build-worker-min', ['build-bundle-min'], function () {
     process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE
     browserify({debug: false})
       .transform(envify)
-      .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+      .transform(babelify.configure({ignore: /node_modules/}))
       .transform(uglifyify)
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
@@ -101,11 +105,10 @@ gulp.task('build-tests', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
     glob('./test/**/*.js', {}, function (err, files) {
       let b = browserify({debug: true})
-        .add(es6ify.runtime)
         .transform(envify)
-        .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
+        .transform(babelify.configure({ignore: /node_modules/}))
       for (let file of files) {
-      b.add(file)
+        b.add(file)
       }
       b.bundle()
         .on('error', function (err) {reject(err);})
