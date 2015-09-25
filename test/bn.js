@@ -158,6 +158,23 @@ describe('BN', function () {
 
   })
 
+  describe('#umod', function () {
+    it('should umod a small number', function () {
+      let bn1 = BN(-50)
+      let bn2 = BN(25)
+      let bn3 = bn1.umod(bn2)
+      bn3.toString().should.equal('25')
+    })
+
+    it('should umod a small number', function () {
+      let bn1 = BN(-50)
+      let bn2 = BN(47)
+      let bn3 = bn1.umod(bn2)
+      bn3.toString().should.equal('44')
+    })
+
+  })
+
   describe('#invm', function () {
     it('should invm a small number', function () {
       let bn1 = BN(50)
