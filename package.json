@@ -12,6 +12,9 @@
     "test": "gulp test-node && gulp test-browser",
     "build": "gulp build"
   },
+  "browserify": {
+    "transform": ["babelify"]
+  },
   "contributors": [
     {
       "name": "Daniel Cousens",
