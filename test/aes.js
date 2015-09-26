@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Hash = require('../lib/hash')
@@ -15,6 +16,8 @@ describe('AES', function () {
   let e192 = new Buffer('b670954c0e2da1aaa5f9063de04eb961', 'hex')
   let e256 = new Buffer('dd2ce24581183a4a7c0b1068f8bc79f0', 'hex')
 
+  should.exist(AES)
+
   describe('@encrypt', function () {
     it('should encrypt with a 128 bit key', function () {
       let encbuf = AES.encrypt(m128, k128)
@@ -30,7 +33,6 @@ describe('AES', function () {
       let encbuf = AES.encrypt(m128, k256)
       encbuf.toString('hex').should.equal(e256.toString('hex'))
     })
-
   })
 
   describe('@decrypt', function () {
@@ -51,7 +53,6 @@ describe('AES', function () {
       let m = AES.decrypt(encbuf, k256)
       m.toString('hex').should.equal(m128.toString('hex'))
     })
-
   })
 
   describe('@buf2words', function () {
@@ -63,10 +64,9 @@ describe('AES', function () {
 
     it('should throw an error on this 5 length buffer', function () {
       let buf = new Buffer([0, 0, 0, 0, 0]);(function () {
-        let words = AES.buf2words(buf)
+        AES.buf2words(buf)
       }).should.throw()
     })
-
   })
 
   describe('@words2buf', function () {
@@ -75,7 +75,6 @@ describe('AES', function () {
       let buf = AES.words2buf(a)
       buf.length.should.equal(8)
     })
-
   })
 
   describe('vectors', function () {
@@ -89,7 +88,5 @@ describe('AES', function () {
         AES.decrypt(ctbuf, keybuf).toString('hex').should.equal(ptbuf.toString('hex'))
       })
     })
-
   })
-
 })

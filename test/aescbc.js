@@ -1,9 +1,12 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let AESCBC = require('../lib/aescbc')
 let vectors = require('./vectors/aescbc')
 
 describe('AESCBC', function () {
+  should.exist(AESCBC)
+
   describe('@encrypt', function () {
     it('should return encrypt one block', function () {
       let cipherkeybuf = new Buffer(256 / 8)
@@ -26,7 +29,6 @@ describe('AESCBC', function () {
       let encbuf = AESCBC.encrypt(messagebuf, cipherkeybuf, ivbuf)
       encbuf.length.should.equal(128 / 8 + 128 / 8 + 128 / 8)
     })
-
   })
 
   describe('@decrypt', function () {
@@ -41,7 +43,6 @@ describe('AESCBC', function () {
       let messagebuf2 = AESCBC.decrypt(encbuf, cipherkeybuf)
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
     })
-
   })
 
   describe('vectors', function () {
@@ -55,7 +56,5 @@ describe('AESCBC', function () {
         AESCBC.decrypt(Buffer.concat([ivbuf, ctbuf]), keybuf).toString('hex').should.equal(vector.pt)
       })
     })
-
   })
-
 })

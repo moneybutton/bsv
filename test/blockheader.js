@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Blockheader = require('../lib/blockheader')
 let BW = require('../lib/bw')
@@ -49,7 +50,6 @@ describe('Blockheader', function () {
       should.exist(bh.bits)
       should.exist(bh.nonce)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -69,7 +69,6 @@ describe('Blockheader', function () {
       should.exist(bh.bits)
       should.exist(bh.nonce)
     })
-
   })
 
   describe('#toJSON', function () {
@@ -82,42 +81,36 @@ describe('Blockheader', function () {
       should.exist(json.bits)
       should.exist(json.nonce)
     })
-
   })
 
   describe('#fromHex', function () {
     it('should parse this known hex string', function () {
       Blockheader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex)
     })
-
   })
 
   describe('#fromBuffer', function () {
     it('should parse this known buffer', function () {
       Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
     })
-
   })
 
   describe('#fromBR', function () {
     it('should parse this known buffer', function () {
       Blockheader().fromBR(BR(bhbuf)).toBuffer().toString('hex').should.equal(bhhex)
     })
-
   })
 
   describe('#toHex', function () {
     it('should output this known hex string', function () {
       Blockheader().fromBuffer(bhbuf).toHex().should.equal(bhhex)
     })
-
   })
 
   describe('#toBuffer', function () {
     it('should output this known buffer', function () {
       Blockheader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
     })
-
   })
 
   describe('#toBW', function () {
@@ -127,7 +120,5 @@ describe('Blockheader', function () {
       Blockheader().fromBuffer(bhbuf).toBW(bw)
       bw.toBuffer().toString('hex').should.equal(bhhex)
     })
-
   })
-
 })

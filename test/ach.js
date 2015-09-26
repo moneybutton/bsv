@@ -1,6 +1,6 @@
+/* global describe,it */
 'use strict'
 let ACH = require('../lib/ach')
-let should = require('chai').should()
 
 describe('ACH (AES+CBC+HMAC)', function () {
   describe('@encrypt', function () {
@@ -22,7 +22,6 @@ describe('ACH (AES+CBC+HMAC)', function () {
       let enchex = '5ca7fb171ef5001fdc26aca9ca806279200a8dd9bc3580b95d80335ed358627e07070707070707070707070707070707a1e5dd6b76089f0c055d718c9f597d22d727422cb1a28dd1a30aacb0cb008c1d'
       encbuf.toString('hex').should.equal(enchex)
     })
-
   })
 
   describe('@decrypt', function () {
@@ -59,7 +58,5 @@ describe('ACH (AES+CBC+HMAC)', function () {
       let data = ACH.decrypt(encbuf, cipherkey)
       data.toString('hex').should.equal(pthex)
     })
-
   })
-
 })

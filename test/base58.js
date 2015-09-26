@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Base58 = require('../lib/base58')
 let should = require('chai').should()
@@ -25,7 +26,6 @@ describe('Base58', function () {
     it('should set a blank buffer', function () {
       Base58().fromObject({buf: new Buffer([])})
     })
-
   })
 
   describe('@encode', function () {
@@ -38,7 +38,6 @@ describe('Base58', function () {
         Base58.encode('string')
       }).should.throw('Input should be a buffer')
     })
-
   })
 
   describe('@decode', function () {
@@ -52,7 +51,6 @@ describe('Base58', function () {
         Base58.decode(5)
       }).should.throw('Input should be a string')
     })
-
   })
 
   describe('#fromHex', function () {
@@ -60,7 +58,6 @@ describe('Base58', function () {
       let b58 = Base58().fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -72,14 +69,12 @@ describe('Base58', function () {
       let b58 = Base58().fromBuffer(buf)
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#fromString', function () {
     it('should convert this known string to a buffer', function () {
       Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#toHex', function () {
@@ -87,7 +82,6 @@ describe('Base58', function () {
       let b58 = Base58(buf)
       b58.toHex().should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -95,7 +89,6 @@ describe('Base58', function () {
       let b58 = Base58(buf)
       b58.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#toString', function () {
@@ -103,7 +96,5 @@ describe('Base58', function () {
       let b58 = Base58(buf)
       b58.toString().should.equal(enc)
     })
-
   })
-
 })

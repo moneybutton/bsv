@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Constants = require('../lib/constants')
@@ -30,7 +31,6 @@ describe('Address', function () {
     it('should invalidate this valid address string', function () {
       Address.isValid(str.substr(1)).should.equal(false)
     })
-
   })
 
   describe('#fromHex', function () {
@@ -38,7 +38,6 @@ describe('Address', function () {
       Address().fromHex(buf.toString('hex')).toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'))
       Address().fromHex(buf.toString('hex')).toString().should.equal(str)
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -56,7 +55,6 @@ describe('Address', function () {
         Address().fromBuffer(buf2)
       }).should.throw('invalid version byte')
     })
-
   })
 
   describe('#fromPubkey', function () {
@@ -76,7 +74,6 @@ describe('Address', function () {
       address.fromPubkey(pubkey, 'mainnet')
       address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX')
     })
-
   })
 
   describe('#fromRedeemScript', function () {
@@ -91,7 +88,6 @@ describe('Address', function () {
       let address = Address().fromRedeemScript(script)
       address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7')
     })
-
   })
 
   describe('#fromString', function () {
@@ -124,7 +120,6 @@ describe('Address', function () {
       address.fromString(address.toString())
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
     })
-
   })
 
   describe('#isValid', function () {
@@ -140,7 +135,6 @@ describe('Address', function () {
       address.version = 1
       address.isValid().should.equal(false)
     })
-
   })
 
   describe('#type', function () {
@@ -155,7 +149,6 @@ describe('Address', function () {
       let addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
       addr.type().should.equal('scripthash')
     })
-
   })
 
   describe('#toHex', function () {
@@ -164,7 +157,6 @@ describe('Address', function () {
       address.fromString(str)
       address.toHex().slice(2).should.equal(pubkeyhash.toString('hex'))
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -173,7 +165,6 @@ describe('Address', function () {
       address.fromString(str)
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'))
     })
-
   })
 
   describe('#toScript', function () {
@@ -192,7 +183,6 @@ describe('Address', function () {
         script = addr.toScript()
       }).should.throw('script must be either pubkeyhash or scripthash')
     })
-
   })
 
   describe('#toString', function () {
@@ -201,7 +191,6 @@ describe('Address', function () {
       address.fromString(str)
       address.toString().should.equal(str)
     })
-
   })
 
   describe('#validate', function () {
@@ -226,7 +215,5 @@ describe('Address', function () {
         address.validate()
       }).should.throw('hashbuf must be a buffer of 20 bytes')
     })
-
   })
-
 })

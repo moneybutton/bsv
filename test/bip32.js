@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let BIP32 = require('../lib/bip32')
@@ -281,7 +282,6 @@ describe('BIP32', function () {
       b.fromRandom();(b.privkey instanceof Privkey.Testnet).should.equal(true)
       b.toPublic().toString().substring(0, 4).should.equal('tpub')
     })
-
   })
 
   describe('#fromObject', function () {
@@ -300,7 +300,6 @@ describe('BIP32', function () {
       bip322.toString().should.equal(bip32.toString())
       bip322.fromObject({}).toString().should.equal(bip32.toString())
     })
-
   })
 
   describe('#fromSeed', function () {
@@ -334,7 +333,6 @@ describe('BIP32', function () {
       bip32 = BIP32().fromHex(bip32.toHex())
       bip32.toString().should.equal(xpub)
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -349,18 +347,15 @@ describe('BIP32', function () {
       bip32 = BIP32().fromBuffer(bip32.toBuffer())
       bip32.toString().should.equal(xpub)
     })
-
   })
 
   describe('#toHex', function () {
     it('should return a bip32 hex string', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
-      let buf = Base58Check.decode(str)
       let hex = Base58Check.decode(str).toString('hex')
       let bip32 = BIP32().fromString(str)
       bip32.toHex().should.equal(hex)
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -370,7 +365,6 @@ describe('BIP32', function () {
       let bip32 = BIP32().fromString(str)
       bip32.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#fromString', function () {
@@ -380,7 +374,6 @@ describe('BIP32', function () {
       should.exist(bip32)
       bip32.toString().should.equal(str)
     })
-
   })
 
   describe('#toString', function () {
@@ -404,7 +397,5 @@ describe('BIP32', function () {
     it('should return a tpub string', function () {
       tip32.toPublic().toString().slice(0, 4).should.equal('tpub')
     })
-
   })
-
 })

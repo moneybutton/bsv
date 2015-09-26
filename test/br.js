@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let BR = require('../lib/br')
 let BW = require('../lib/bw')
@@ -23,7 +24,6 @@ describe('BR', function () {
     it('should set pos', function () {
       should.exist(BR().fromObject({pos: 1}).pos)
     })
-
   })
 
   describe('#eof', function () {
@@ -31,7 +31,6 @@ describe('BR', function () {
       let br = new BR({buf: new Buffer([])})
       br.eof().should.equal(true)
     })
-
   })
 
   describe('#read', function () {
@@ -55,7 +54,6 @@ describe('BR', function () {
       let buf = new Buffer('0101', 'hex')
       BR(buf).read(0).length.should.equal(0)
     })
-
   })
 
   describe('#readReverse', function () {
@@ -69,7 +67,6 @@ describe('BR', function () {
       let buf = new Buffer('0101', 'hex')
       BR(buf).readReverse(0).length.should.equal(0)
     })
-
   })
 
   describe('#readUInt8', function () {
@@ -79,7 +76,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt8().should.equal(1)
     })
-
   })
 
   describe('#readInt8', function () {
@@ -90,7 +86,6 @@ describe('BR', function () {
       br.readInt8().should.equal(1)
       BR(new Buffer('ff', 'hex')).readInt8().should.equal(-1)
     })
-
   })
 
   describe('#readUInt16BE', function () {
@@ -100,7 +95,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt16BE().should.equal(1)
     })
-
   })
 
   describe('#readInt16BE', function () {
@@ -111,7 +105,6 @@ describe('BR', function () {
       br.readInt16BE().should.equal(1)
       BR(new Buffer('ffff', 'hex')).readInt16BE().should.equal(-1)
     })
-
   })
 
   describe('#readUInt16LE', function () {
@@ -121,7 +114,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt16LE().should.equal(1)
     })
-
   })
 
   describe('#readInt16LE', function () {
@@ -132,7 +124,6 @@ describe('BR', function () {
       br.readInt16LE().should.equal(1)
       BR(new Buffer('ffff', 'hex')).readInt16LE().should.equal(-1)
     })
-
   })
 
   describe('#readUInt32BE', function () {
@@ -142,7 +133,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt32BE().should.equal(1)
     })
-
   })
 
   describe('#readInt32BE', function () {
@@ -153,7 +143,6 @@ describe('BR', function () {
       br.readInt32BE().should.equal(1)
       BR(new Buffer('ffffffff', 'hex')).readInt32BE().should.equal(-1)
     })
-
   })
 
   describe('#readUInt32LE', function () {
@@ -163,7 +152,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt32LE().should.equal(1)
     })
-
   })
 
   describe('#readInt32LE', function () {
@@ -174,7 +162,6 @@ describe('BR', function () {
       br.readInt32LE().should.equal(1)
       BR(new Buffer('ffffffff', 'hex')).readInt32LE().should.equal(-1)
     })
-
   })
 
   describe('#readUInt64BEBN', function () {
@@ -192,7 +179,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt64BEBN().toNumber().should.equal(Math.pow(2, 64))
     })
-
   })
 
   describe('#readUInt64LEBN', function () {
@@ -225,7 +211,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readUInt64LEBN().toNumber().should.equal(Math.pow(2, 64))
     })
-
   })
 
   describe('#readVarintBuf', function () {
@@ -253,7 +238,6 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readVarintBuf().length.should.equal(9)
     })
-
   })
 
   describe('#readVarintNum', function () {
@@ -289,7 +273,6 @@ describe('BR', function () {
         br.readVarintNum()
       }).should.not.throw('number too large to retain precision - use readVarintBN')
     })
-
   })
 
   describe('#readVarintBN', function () {
@@ -317,7 +300,5 @@ describe('BR', function () {
       let br = new BR({buf: buf})
       br.readVarintBN().toNumber().should.equal(Math.pow(2, 64))
     })
-
   })
-
 })

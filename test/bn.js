@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let chai = require('chai')
 let should = chai.should()
@@ -100,7 +101,6 @@ describe('BN', function () {
       bn.copy(bn2)
       bn2.toString().should.equal('5')
     })
-
   })
 
   describe('#neg', function () {
@@ -108,7 +108,6 @@ describe('BN', function () {
       let bn = BN(1).neg();(bn instanceof BN).should.equal(true)
       bn.toString().should.equal('-1')
     })
-
   })
 
   describe('#add', function () {
@@ -118,7 +117,6 @@ describe('BN', function () {
       let bn3 = bn1.add(bn2)
       bn3.toString().should.equal('125')
     })
-
   })
 
   describe('#sub', function () {
@@ -128,7 +126,6 @@ describe('BN', function () {
       let bn3 = bn1.sub(bn2)
       bn3.toString().should.equal('25')
     })
-
   })
 
   describe('#mul', function () {
@@ -138,7 +135,6 @@ describe('BN', function () {
       let bn3 = bn1.mul(bn2)
       bn3.toString().should.equal('1250')
     })
-
   })
 
   describe('#mod', function () {
@@ -155,7 +151,6 @@ describe('BN', function () {
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('3')
     })
-
   })
 
   describe('#umod', function () {
@@ -172,7 +167,6 @@ describe('BN', function () {
       let bn3 = bn1.umod(bn2)
       bn3.toString().should.equal('44')
     })
-
   })
 
   describe('#invm', function () {
@@ -189,7 +183,6 @@ describe('BN', function () {
       let bn3 = bn1.invm(bn2)
       bn3.toString().should.equal('16')
     })
-
   })
 
   describe('#div', function () {
@@ -206,7 +199,6 @@ describe('BN', function () {
       let bn3 = bn1.div(bn2)
       bn3.toString().should.equal('1')
     })
-
   })
 
   describe('#cmp', function () {
@@ -215,7 +207,6 @@ describe('BN', function () {
       BN(5).cmp(4).should.equal(1)
       BN(5).cmp(6).should.equal(-1)
     })
-
   })
 
   describe('#eq', function () {
@@ -223,7 +214,6 @@ describe('BN', function () {
       BN(5).eq(5).should.equal(true)
       BN(5).eq(4).should.equal(false)
     })
-
   })
 
   describe('#neq', function () {
@@ -231,7 +221,6 @@ describe('BN', function () {
       BN(5).neq(5).should.equal(false)
       BN(5).neq(4).should.equal(true)
     })
-
   })
 
   describe('#gt', function () {
@@ -252,7 +241,6 @@ describe('BN', function () {
       let bn0 = BN(5)
       bn1.gt(bn0).should.equal(true)
     })
-
   })
 
   describe('#geq', function () {
@@ -261,7 +249,6 @@ describe('BN', function () {
       BN(5).geq(5).should.equal(true)
       BN(4).geq(5).should.equal(false)
     })
-
   })
 
   describe('#lt', function () {
@@ -269,7 +256,6 @@ describe('BN', function () {
       BN(5).lt(6).should.equal(true)
       BN(5).lt(4).should.equal(false)
     })
-
   })
 
   describe('#leq', function () {
@@ -278,14 +264,12 @@ describe('BN', function () {
       BN(5).leq(5).should.equal(true)
       BN(5).leq(4).should.equal(false)
     })
-
   })
 
   describe('#fromJSON', function () {
     it('should make BN from a string', function () {
       BN().fromJSON('5').toString().should.equal('5')
     })
-
   })
 
   describe('#toJSON', function () {
@@ -293,21 +277,18 @@ describe('BN', function () {
       BN(5).toJSON().should.equal('5')
       BN().fromJSON('5').toJSON().should.equal('5')
     })
-
   })
 
   describe('#fromString', function () {
     it('should make BN from a string', function () {
       BN().fromString('5').toString().should.equal('5')
     })
-
   })
 
   describe('#toString', function () {
     it('should make a string', function () {
       BN(5).toString().should.equal('5')
     })
-
   })
 
   describe('@fromBuffer', function () {
@@ -325,7 +306,6 @@ describe('BN', function () {
       let bn = BN.fromBuffer(new Buffer('0100', 'hex'), {size: 2, endian: 'little'})
       bn.toString().should.equal('1')
     })
-
   })
 
   describe('#fromHex', function () {
@@ -333,7 +313,6 @@ describe('BN', function () {
       let bn = BN().fromHex('0100', {size: 2, endian: 'little'})
       bn.toString().should.equal('1')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -341,7 +320,6 @@ describe('BN', function () {
       let bn = BN().fromBuffer(new Buffer('0100', 'hex'), {size: 2, endian: 'little'})
       bn.toString().should.equal('1')
     })
-
   })
 
   describe('#toHex', function () {
@@ -349,7 +327,6 @@ describe('BN', function () {
       let bn = BN(1)
       bn.toHex({size: 4}).should.equal('00000001')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -376,7 +353,6 @@ describe('BN', function () {
       let bn = BN('ffffff00', 16)
       bn.toBuffer({size: 4}).toString('hex').should.equal('ffffff00')
     })
-
   })
 
   describe('#toBits', function () {
@@ -390,7 +366,6 @@ describe('BN', function () {
       BN().fromHex('010101010101').toBits().should.equal(0x06010101)
       BN().fromNumber(-1).toBits().should.equal(0x01800001)
     })
-
   })
 
   describe('#fromBits', function () {
@@ -406,7 +381,6 @@ describe('BN', function () {
       }).should.throw('negative bit set')
       BN().fromBits(0x04923456).lt(0).should.equal(true)
     })
-
   })
 
   describe('#toSM', function () {
@@ -431,7 +405,6 @@ describe('BN', function () {
       buf = BN(-128).toSM({endian: 'little'})
       buf.toString('hex').should.equal('8080')
     })
-
   })
 
   describe('#fromSM', function () {
@@ -454,7 +427,6 @@ describe('BN', function () {
       buf = new Buffer('0080', 'hex') // negative zero
       BN().fromSM(buf, {endian: 'little'}).cmp(0).should.equal(0)
     })
-
   })
 
   describe('#toScriptNumBuffer', function () {
@@ -462,7 +434,6 @@ describe('BN', function () {
       let bn = BN(-23434234)
       bn.toScriptNumBuffer().toString('hex').should.equal(bn.toSM({endian: 'little'}).toString('hex'))
     })
-
   })
 
   describe('#fromScriptNumBuffer', function () {
@@ -497,21 +468,17 @@ describe('BN', function () {
       // invalid, but flag not set
       BN().fromScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0')
     })
-
   })
 
   describe('#fromNumber', function () {
     it('should convert from a number', function () {
       BN().fromNumber(5).toNumber().should.equal(5)
     })
-
   })
 
   describe('#toNumber', function () {
     it('it should convert to a number', function () {
       BN(5).toNumber().should.equal(5)
     })
-
   })
-
 })
