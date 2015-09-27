@@ -1,6 +1,7 @@
+/* global describe,it */
 'use strict'
 let AES = require('../lib/aes')
-let should = require('chai').should()
+require('chai').should()
 let CBC = require('../lib/cbc')
 
 describe('CBC', function () {
@@ -21,7 +22,6 @@ describe('CBC', function () {
       blockbufs[0].toString('hex').should.equal('00000000000000000000000000000000')
       blockbufs[1].toString('hex').should.equal('10101010101010101010101010101010')
     })
-
   })
 
   describe('@buf2blockbufs', function () {
@@ -29,7 +29,7 @@ describe('CBC', function () {
       let buf = new Buffer(16 - 1)
       buf.fill(0)
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8)
-      let buf2 = CBC.blockbufs2buf(blockbufs, 16 * 8)
+      let buf2 = CBC.blockbufs2buf(blockbufs)
       buf2.toString('hex').should.equal(buf.toString('hex'))
     })
 
@@ -37,10 +37,9 @@ describe('CBC', function () {
       let buf = new Buffer(16)
       buf.fill(0)
       let blockbufs = CBC.buf2blockbufs(buf, 16 * 8)
-      let buf2 = CBC.blockbufs2buf(blockbufs, 16 * 8)
+      let buf2 = CBC.blockbufs2buf(blockbufs)
       buf2.toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('@encrypt', function () {
@@ -63,6 +62,7 @@ describe('CBC', function () {
       }
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf)
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf)
+      Buffer.compare(messagebuf, buf2).should.equal(0)
     })
 
     it('should return this shorter known value', function () {
@@ -84,6 +84,7 @@ describe('CBC', function () {
       }
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf)
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf)
+      Buffer.compare(messagebuf, buf2).should.equal(0)
     })
 
     it('should return this shorter known value', function () {
@@ -105,6 +106,7 @@ describe('CBC', function () {
       }
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf)
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf)
+      Buffer.compare(messagebuf, buf2).should.equal(0)
     })
 
     it('should encrypt something with AES', function () {
@@ -120,9 +122,8 @@ describe('CBC', function () {
       let blockcipher = AES
       let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf)
       let buf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf)
-      buf2.toString('hex').should.equal(messagebuf.toString('hex'))
+      Buffer.compare(messagebuf, buf2).should.equal(0)
     })
-
   })
 
   describe('@decrypt', function () {
@@ -148,6 +149,27 @@ describe('CBC', function () {
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
     })
 
+    it('should properly decrypt an encrypted message', function () {
+      let messagebuf1 = new Buffer(128 / 8)
+      messagebuf1.fill(0)
+      let messagebuf2 = new Buffer(120 / 8)
+      messagebuf2.fill(0x10)
+      let messagebuf = Buffer.concat([messagebuf1, messagebuf2])
+      let ivbuf = new Buffer(128 / 8)
+      ivbuf.fill(0x10)
+      let cipherkeybuf = new Buffer(128 / 8)
+      cipherkeybuf.fill(0)
+      let blockcipher = {}
+      blockcipher.encrypt = function (messagebuf, cipherkeybuf) {
+        return messagebuf
+      }
+      blockcipher.decrypt = function (messagebuf, cipherkeybuf) {
+        return messagebuf
+      }
+      let encbuf = CBC.encrypt(messagebuf, ivbuf, blockcipher, cipherkeybuf)
+      messagebuf2 = CBC.decrypt(encbuf, ivbuf, blockcipher, cipherkeybuf)
+      messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
+    })
   })
 
   describe('@encryptblock', function () {
@@ -180,7 +202,6 @@ describe('CBC', function () {
       let enc = CBC.encryptblock(messagebuf, ivbuf, blockcipher, cipherkeybuf)
       enc.toString('hex').should.equal('00000000000000000000000000000000')
     })
-
   })
 
   describe('@decryptblock', function () {
@@ -202,7 +223,6 @@ describe('CBC', function () {
       let buf = CBC.decryptblock(encbuf, ivbuf, blockcipher, cipherkeybuf)
       buf.toString('hex').should.equal(messagebuf.toString('hex'))
     })
-
   })
 
   describe('@encryptblocks', function () {
@@ -223,7 +243,6 @@ describe('CBC', function () {
       encbufs[0].toString('hex').should.equal('10101010101010101010101010101010')
       encbufs[1].toString('hex').should.equal('00000000000000000000000000000000')
     })
-
   })
 
   describe('@decryptblocks', function () {
@@ -248,7 +267,6 @@ describe('CBC', function () {
       bufs[0].toString('hex').should.equal(messagebuf1.toString('hex'))
       bufs[1].toString('hex').should.equal(messagebuf2.toString('hex'))
     })
-
   })
 
   describe('@pkcs7pad', function () {
@@ -262,7 +280,6 @@ describe('CBC', function () {
       // ...
       padbuf[32 / 8 + 128 / 8 - 32 / 8 - 1].should.equal(128 / 8 - 32 / 8)
     })
-
   })
 
   describe('@pkcs7unpad', function () {
@@ -273,7 +290,6 @@ describe('CBC', function () {
       let unpaddedbuf = CBC.pkcs7unpad(paddedbuf, 128)
       unpaddedbuf.toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('@xorbufs', function () {
@@ -290,7 +306,5 @@ describe('CBC', function () {
       let buf = CBC.xorbufs(buf1, buf2)
       buf[0].should.equal(0)
     })
-
   })
-
 })
