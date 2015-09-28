@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let StealthKey = require('../lib/stealthkey')
@@ -35,7 +36,6 @@ describe('StealthKey', function () {
     it('should set payload key', function () {
       should.exist(StealthKey().fromObject({payloadKeypair: stealthkey.payloadKeypair}).payloadKeypair)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -47,7 +47,6 @@ describe('StealthKey', function () {
       sk.payloadKeypair.toString().should.equal(stealthkey.payloadKeypair.toString())
       sk.scanKeypair.toString().should.equal(stealthkey.scanKeypair.toString())
     })
-
   })
 
   describe('#toJSON', function () {
@@ -57,7 +56,6 @@ describe('StealthKey', function () {
       json.payloadKeypair.privkey.should.equal(json2.payloadKeypair.privkey)
       json.scanKeypair.privkey.should.equal(json2.scanKeypair.privkey)
     })
-
   })
 
   describe('#fromRandom', function () {
@@ -66,26 +64,26 @@ describe('StealthKey', function () {
       should.exist(stealthkey.payloadKeypair.privkey.bn.gt(0))
       should.exist(stealthkey.scanKeypair.privkey.bn.gt(0))
     })
-
   })
 
   describe('#getSharedKeypair', function () {
     it('should return a key', function () {
-      let key = stealthkey.getSharedKeypair(senderKeypair.pubkey);(key instanceof Keypair).should.equal(true)
+      let key = stealthkey.getSharedKeypair(senderKeypair.pubkey)
+      ;(key instanceof Keypair).should.equal(true)
     })
-
   })
 
   describe('#getReceivePubkey', function () {
     it('should return a pubkey', function () {
-      let pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey);(pubkey instanceof Pubkey).should.equal(true)
+      let pubkey = stealthkey.getReceivePubkey(senderKeypair.pubkey)
+      ;(pubkey instanceof Pubkey).should.equal(true)
     })
-
   })
 
   describe('#getReceiveKeypair', function () {
     it('should return a key', function () {
-      let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey);(key instanceof Keypair).should.equal(true)
+      let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey)
+      ;(key instanceof Keypair).should.equal(true)
     })
 
     it('should return a key with the same pubkey as getReceivePubkey', function () {
@@ -98,7 +96,6 @@ describe('StealthKey', function () {
       let key = stealthkey.getReceiveKeypair(senderKeypair.pubkey)
       key.privkey.bn.toBuffer().length.should.be.below(33)
     })
-
   })
 
   describe('#isForMe', function () {
@@ -111,7 +108,5 @@ describe('StealthKey', function () {
       let pubkeyhash = new Buffer('00b64fa6ee9b3e8754e3e2bd033bf61048604a99', 'hex')
       stealthkey.isForMe(senderKeypair.pubkey, pubkeyhash).should.equal(false)
     })
-
   })
-
 })

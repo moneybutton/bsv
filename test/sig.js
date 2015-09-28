@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let BN = require('../lib/bn')
 let should = require('chai').should()
@@ -22,7 +23,6 @@ describe('Sig', function () {
     it('should set compressed', function () {
       should.exist(Sig().fromObject({compressed: true}))
     })
-
   })
 
   describe('#fromHex', function () {
@@ -59,7 +59,6 @@ describe('Sig', function () {
       let sig = Sig().fromHex(hex)
       sig.toTxFormat().toString('hex').should.equal(hex)
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -91,7 +90,6 @@ describe('Sig', function () {
       let sig = Sig().fromBuffer(buf)
       sig.toTxFormat().toString('hex').should.equal(hex)
     })
-
   })
 
   describe('#fromCompact', function () {
@@ -108,7 +106,6 @@ describe('Sig', function () {
       sig.r.cmp(0).should.equal(0)
       sig.s.cmp(0).should.equal(0)
     })
-
   })
 
   describe('#fromDER', function () {
@@ -120,7 +117,6 @@ describe('Sig', function () {
       sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277')
       sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2')
     })
-
   })
 
   describe('#fromTxFormat', function () {
@@ -138,7 +134,6 @@ describe('Sig', function () {
       let sig = Sig().fromTxFormat(buf)
       sig.toTxFormat().toString('hex').should.equal(hex)
     })
-
   })
 
   describe('#fromString', function () {
@@ -150,7 +145,6 @@ describe('Sig', function () {
       sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277')
       sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2')
     })
-
   })
 
   describe('#parseDER', function () {
@@ -201,7 +195,6 @@ describe('Sig', function () {
       parsed.sbuf.toString('hex').should.equal('61bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a51')
       parsed.s.toString().should.equal('44212963026209759051804639008236126356702363229859210154760104982946304432721')
     })
-
   })
 
   describe('@isTxDER', function () {
@@ -218,7 +211,6 @@ describe('Sig', function () {
       sigbuf[0] = 0x31
       Sig.isTxDER(sigbuf).should.equal(false)
     })
-
   })
 
   describe('#toHex', function () {
@@ -249,7 +241,6 @@ describe('Sig', function () {
       sig = new Sig({r: r, s: s, recovery: 3})
       sig.toHex().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -282,7 +273,6 @@ describe('Sig', function () {
       sig = new Sig({r: r, s: s, recovery: 3})
       sig.toBuffer().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
-
   })
 
   describe('#toCompact', function () {
@@ -298,7 +288,6 @@ describe('Sig', function () {
       sig = new Sig({r: r, s: s, recovery: 3})
       sig.toCompact().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
-
   })
 
   describe('#toDER', function () {
@@ -309,7 +298,6 @@ describe('Sig', function () {
       let der = sig.toDER()
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
-
   })
 
   describe('#toTxFormat', function () {
@@ -321,7 +309,6 @@ describe('Sig', function () {
       let buf = sig.toTxFormat()
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201')
     })
-
   })
 
   describe('#toString', function () {
@@ -332,7 +319,5 @@ describe('Sig', function () {
       let hex = sig.toString()
       hex.should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
-
   })
-
 })

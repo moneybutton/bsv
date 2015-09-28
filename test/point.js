@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Point = require('../lib/point')
@@ -8,13 +9,13 @@ describe('Point', function () {
     let p = Point()
     should.exist(p)
     p = new Point()
-    should.exist(p);(p instanceof Point).should.equal(true)
+    should.exist(p)
+    ;(p instanceof Point).should.equal(true)
   })
 
   it('should have the standard properties for a point', function () {
     let p = Point()
     let props = ['curve', 'type', 'precomputed', 'x', 'y', 'inf']
-    let a = []
 
     // all enumerable, own properties should be in prop
     for (let k in p) {
@@ -32,14 +33,14 @@ describe('Point', function () {
   describe('#copyFrom', function () {
     it('should copy G', function () {
       let point = Point.getG()
-      let point2;(function () {
+      let point2
+      ;(function () {
         point.copyFrom(point2)
       }).should.throw() // point2 is not a Point yet
       point2 = Point()
       point.copyFrom(point2)
       point.toString().should.equal(point2.toString())
     })
-
   })
 
   describe('#toJSON', function () {
@@ -49,14 +50,12 @@ describe('Point', function () {
       json.isOdd.should.equal(G.x.isOdd())
       json.x.should.equal(G.x.toString())
     })
-
   })
 
   describe('#fromJSON', function () {
     it('should recover G', function () {
       Point().fromJSON(Point.getG().toJSON()).eq(Point.getG()).should.equal(true)
     })
-
   })
 
   describe('#toString', function () {
@@ -64,7 +63,6 @@ describe('Point', function () {
       let G = Point.getG()
       G.toString().should.equal(JSON.stringify(G.toJSON()))
     })
-
   })
 
   describe('#fromString', function () {
@@ -72,12 +70,12 @@ describe('Point', function () {
       let G = Point.getG()
       Point().fromString(G.toString()).eq(G).should.equal(true)
     })
-
   })
 
   describe('#getX', function () {
     it('should return a BN', function () {
-      let p = Point();(p.getX() instanceof BN).should.equal(true)
+      let p = Point()
+      ;(p.getX() instanceof BN).should.equal(true)
     })
 
     it('should return 0', function () {
@@ -89,12 +87,12 @@ describe('Point', function () {
       let p = Point()
       p.getX().toBuffer({size: 32}).length.should.equal(32)
     })
-
   })
 
   describe('#getY', function () {
     it('should return a BN', function () {
-      let p = Point();(p.getY() instanceof BN).should.equal(true)
+      let p = Point()
+      ;(p.getY() instanceof BN).should.equal(true)
     })
 
     it('should return 0', function () {
@@ -106,14 +104,14 @@ describe('Point', function () {
       let p = Point()
       p.getY().toBuffer({size: 32}).length.should.equal(32)
     })
-
   })
 
   describe('#add', function () {
     it('should get back a point', function () {
       let p1 = Point.getG()
       let p2 = Point.getG()
-      let p3 = p1.add(p2);(p3 instanceof Point).should.equal(true)
+      let p3 = p1.add(p2)
+      ;(p3 instanceof Point).should.equal(true)
     })
 
     it('should accurately add g to itself', function () {
@@ -123,13 +121,13 @@ describe('Point', function () {
       p3.getX().toString().should.equal('89565891926547004231252920425935692360644145829622209833684329913297188986597')
       p3.getY().toString().should.equal('12158399299693830322967808612713398636155367887041628176798871954788371653930')
     })
-
   })
 
   describe('#mul', function () {
     it('should get back a point', function () {
       let g = Point.getG()
-      let b = g.mul(BN(2));(b instanceof Point).should.equal(true)
+      let b = g.mul(BN(2))
+      ;(b instanceof Point).should.equal(true)
     })
 
     it('should accurately multiply g by 2', function () {
@@ -169,7 +167,7 @@ describe('Point', function () {
         let nhex = '6d1229a6b24c2e775c062870ad26bc261051e0198c67203167273c7c62538846'
         let n = BN(nhex, 16)
         let g1 = Point.getG() // precomputed g
-        let g2 = Point().fromX(false, BN('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16)); // non-precomputed g
+        let g2 = Point().fromX(false, BN('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16)) // non-precomputed g
         let p1 = g1.mul(n)
         let p2 = g2.mul(n)
         let pxhex = 'd6106302d2698d6a41e9c9a114269e7be7c6a0081317de444bb2980bf9265a01'
@@ -178,11 +176,12 @@ describe('Point', function () {
         p1.getY().toBuffer().toString('hex').should.equal(pyhex)
         p2.getX().toBuffer().toString('hex').should.equal(pxhex)
         p2.getY().toBuffer().toString('hex').should.equal(pyhex)
-      })();(function () {
+      })()
+      ;(function () {
         let nhex = 'f2cc9d2b008927db94b89e04e2f6e70c180e547b3e5e564b06b8215d1c264b53'
         let n = BN(nhex, 16)
         let g1 = Point.getG() // precomputed g
-        let g2 = Point().fromX(false, BN('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16)); // non-precomputed g
+        let g2 = Point().fromX(false, BN('79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16)) // non-precomputed g
         let p1 = g1.mul(n)
         let p2 = g2.mul(n)
         let pxhex = 'e275faa35bd1e88f5df6e8f9f6edb93bdf1d65f4915efc79fd7a726ec0c21700'
@@ -193,7 +192,6 @@ describe('Point', function () {
         p2.getY().toBuffer().toString('hex').should.equal(pyhex)
       })()
     })
-
   })
 
   describe('#mulAdd', function () {
@@ -205,14 +203,13 @@ describe('Point', function () {
       p1.mulAdd(bn1, p2, bn2).getX().toString().should.equal(p1.mul(bn1).add(p2.mul(bn2)).getX().toString())
       p1.mulAdd(bn1, p2, bn2).getY().toString().should.equal(p1.mul(bn1).add(p2.mul(bn2)).getY().toString())
     })
-
   })
 
   describe('@getN', function () {
     it('should return n', function () {
-      let bn = Point.getN();(bn instanceof BN).should.equal(true)
+      let bn = Point.getN()
+      ;(bn instanceof BN).should.equal(true)
     })
-
   })
 
   describe('@fromX', function () {
@@ -221,7 +218,6 @@ describe('Point', function () {
       let p = Point.fromX(false, g.getX())
       g.eq(p).should.equal(true)
     })
-
   })
 
   describe('#fromX', function () {
@@ -230,7 +226,6 @@ describe('Point', function () {
       let p = Point().fromX(false, g.getX())
       g.eq(p).should.equal(true)
     })
-
   })
 
   describe('#validate', function () {
@@ -244,11 +239,10 @@ describe('Point', function () {
     it('should invalidate this invalid point', function () {
       let x = BN().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex'))
       let y = BN().fromBuffer(new Buffer('0000000000000000000000000000000000000000000000000000000000000000', 'hex'))
-      let p = Point(x, y);(function () {
+      let p = Point(x, y)
+      ;(function () {
         p.validate()
       }).should.throw('Invalid y value of public key')
     })
-
   })
-
 })

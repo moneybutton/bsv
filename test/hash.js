@@ -1,5 +1,6 @@
+/* global describe,it */
 'use strict'
-let should = require('chai').should()
+require('chai').should()
 let Hash = require('../lib/hash')
 let vectors = require('./vectors/hash')
 
@@ -17,13 +18,14 @@ describe('Hash', function () {
     it('should throw errors in these cases', function () {
       (function () {
         Hash.hmac('non-supported-hash-function', new Buffer([]), new Buffer([]))
-      }).should.throw('invalid choice of hash function');(function () {
+      }).should.throw('invalid choice of hash function')
+      ;(function () {
         Hash.hmac('sha512', new Buffer([]), '')
-      }).should.throw('data and key must be buffers');(function () {
+      }).should.throw('data and key must be buffers')
+      ;(function () {
         Hash.hmac('sha512', '', new Buffer([]))
       }).should.throw('data and key must be buffers')
     })
-
   })
 
   describe('@sha1', function () {
@@ -39,7 +41,6 @@ describe('Hash', function () {
         Hash.sha1(str)
       }).should.throw('sha1 hash must be of a buffer')
     })
-
   })
 
   describe('@sha1hmac', function () {
@@ -49,7 +50,6 @@ describe('Hash', function () {
       let hex = 'b617318655057264e28bc0b6fb378c8ef146be00'
       Hash.sha1hmac(new Buffer('Hi There'), new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')).toString('hex').should.equal(hex)
     })
-
   })
 
   describe('@sha256', function () {
@@ -63,7 +63,6 @@ describe('Hash', function () {
         Hash.sha256(str)
       }).should.throw('sha256 hash must be of a buffer')
     })
-
   })
 
   describe('@sha256hmac', function () {
@@ -78,7 +77,6 @@ describe('Hash', function () {
       let data = new Buffer('The quick brown fox jumps over the lazy dog')
       Hash.sha256hmac(data, key).toString('hex').should.equal('f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8')
     })
-
   })
 
   describe('@sha256sha256', function () {
@@ -92,7 +90,6 @@ describe('Hash', function () {
         Hash.sha256sha256(str)
       }).should.throw('sha256sha256 hash must be of a buffer')
     })
-
   })
 
   describe('@sha256ripemd160', function () {
@@ -106,7 +103,6 @@ describe('Hash', function () {
         Hash.sha256ripemd160(str)
       }).should.throw('sha256ripemd160 hash must be of a buffer')
     })
-
   })
 
   describe('@ripemd160', function () {
@@ -120,7 +116,6 @@ describe('Hash', function () {
         Hash.ripemd160(str)
       }).should.throw('ripemd160 hash must be of a buffer')
     })
-
   })
 
   describe('@sha512', function () {
@@ -134,7 +129,6 @@ describe('Hash', function () {
         Hash.sha512(str)
       }).should.throw('sha512 hash must be of a buffer')
     })
-
   })
 
   describe('@sha512hmac', function () {
@@ -158,14 +152,12 @@ describe('Hash', function () {
       let key = new Buffer('test2')
       Hash.sha512hmac(data, key).toString('hex').should.equal(hex)
     })
-
   })
 
   describe('vectors', function () {
     vectors.sha1.forEach(function (vector, i) {
       it('should pass sjcl sha1 test vector ' + i, function () {
         let data = new Buffer(vector[0])
-        let hashbuf = new Buffer(vector[1], 'hex')
         Hash.sha1(data).toString('hex').should.equal(vector[1])
       })
     })
@@ -173,7 +165,6 @@ describe('Hash', function () {
     vectors.sha256.forEach(function (vector, i) {
       it('should pass sjcl sha256 test vector ' + i, function () {
         let data = new Buffer(vector[0])
-        let hashbuf = new Buffer(vector[1], 'hex')
         Hash.sha256(data).toString('hex').should.equal(vector[1])
       })
     })
@@ -181,7 +172,6 @@ describe('Hash', function () {
     vectors.sha512.forEach(function (vector, i) {
       it('should pass sjcl sha512 test vector ' + i, function () {
         let data = new Buffer(vector[0])
-        let hashbuf = new Buffer(vector[1], 'hex')
         Hash.sha512(data).toString('hex').should.equal(vector[1])
       })
     })
@@ -194,7 +184,5 @@ describe('Hash', function () {
         Hash.sha512hmac(databuf, keybuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
       })
     })
-
   })
-
 })

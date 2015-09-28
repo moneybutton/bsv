@@ -28,7 +28,8 @@ describe('ACH (AES+CBC+HMAC)', function () {
     it('should throw an error of data is incorrect length', function () {
       let encbuf = new Buffer('7519aff134f4fd273b41e50e6b9fac4d39b42afe6c2335551a4c06c4bdf9198d667b0dd26e935fdd5454e99ab27d8c17404199c79cb0c9d3884d2bd5bbd2b6', 'hex')
       let cipherkey = new Buffer(256 / 8)
-      cipherkey.fill(0x12);(function () {
+      cipherkey.fill(0x12)
+      ;(function () {
         ACH.decrypt(encbuf, cipherkey)
       }).should.throw('The encrypted data must be at least 256+128+128 bits, which is the length of the HMAC plus the iv plus the smallest encrypted data size')
     })
@@ -36,7 +37,8 @@ describe('ACH (AES+CBC+HMAC)', function () {
     it('should throw an error of data for incorrect hmac', function () {
       let encbuf = new Buffer('0019aff134f4fd273b41e50e6b9fac4d39b42afe6c2335551a4c06c4bdf9198d667b0dd26e935fdd5454e99ab27d8c17404199c79cb0c9d3884d2bd5bbd2b619', 'hex')
       let cipherkey = new Buffer(256 / 8)
-      cipherkey.fill(0x12);(function () {
+      cipherkey.fill(0x12)
+      ;(function () {
         ACH.decrypt(encbuf, cipherkey)
       }).should.throw('Message authentication failed - HMACs are not equivalent')
     })

@@ -50,8 +50,8 @@ gulp.task('build-bundle', function () {
       .transform(babelify.configure({ignore: /node_modules/}))
       .add(require.resolve('./index.js'), {entry: true})
       .bundle()
-      .on('error', function (err) {reject(err);})
-      .on('end', function () {resolve();})
+      .on('error', reject)
+      .on('end', resolve)
       .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_FILE)))
   })
 })
@@ -63,16 +63,14 @@ gulp.task('build-worker', ['build-bundle'], function () {
       .transform(babelify.configure({ignore: /node_modules/}))
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
-      .on('error', function (err) {reject(err);})
-      .on('end', function () {resolve();})
+      .on('error', reject)
+      .on('end', resolve)
       .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_FILE)))
   })
 })
 
 gulp.task('build-bundle-min', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
-    let backup = process.env.FULLNODE_JS_BUNDLE_FILE
-    process.env.FULLNODE_JS_BUNDLE_FILE = process.env.FULLNODE_JS_BUNDLE_MIN_FILE
     browserify({debug: false})
       .add(require.resolve('babelify/polyfill'))
       .transform(envify)
@@ -80,31 +78,33 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
       .transform(uglifyify)
       .require(require.resolve('./index.js'), {entry: true})
       .bundle()
-      .on('error', function (err) {reject(err);})
-      .on('end', function () {process.env.FULLNODE_JS_BUNDLE_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_FILE)))
+      .on('error', reject)
+      .on('end', resolve)
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_MIN_FILE)))
   })
 })
 
 gulp.task('build-worker-min', ['build-bundle-min'], function () {
   return new Promise(function (resolve, reject) {
-    let backup = process.env.FULLNODE_JS_WORKER_FILE
-    process.env.FULLNODE_JS_WORKER_FILE = process.env.FULLNODE_JS_WORKER_MIN_FILE
     browserify({debug: false})
       .transform(envify)
       .transform(babelify.configure({ignore: /node_modules/}))
       .transform(uglifyify)
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
-      .on('error', function (err) {reject(err);})
-      .on('end', function () {process.env.FULLNODE_JS_WORKER_FILE = backup; resolve();})
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_FILE)))
+      .on('error', reject)
+      .on('end', resolve)
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_MIN_FILE)))
   })
 })
 
 gulp.task('build-tests', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
     glob('./test/**/*.js', {}, function (err, files) {
+      if (err) {
+        reject(err)
+        return
+      }
       let b = browserify({debug: true})
         .transform(envify)
         .transform(babelify.configure({ignore: /node_modules/}))
@@ -112,8 +112,8 @@ gulp.task('build-tests', ['build-worker'], function () {
         b.add(file)
       }
       b.bundle()
-        .on('error', function (err) {reject(err);})
-        .on('end', function () {resolve();})
+        .on('error', reject)
+        .on('end', resolve)
         .pipe(fs.createWriteStream(path.join(__dirname, 'build', 'tests.js')))
     })
   })
@@ -122,7 +122,7 @@ gulp.task('build-tests', ['build-worker'], function () {
 gulp.task('test-node', function () {
   return gulp.src(['test/*.js'])
     .pipe(mocha({reporter: 'dot'}))
-    .once('error', function (error) {
+    .once('error', function (error) { // eslint-disable-line
       process.exit(1)
     })
     .once('end', function () {

@@ -11,7 +11,8 @@ describe('BN', function () {
     should.exist(bn)
     bn.toString().should.equal('50')
     bn = BN(50)
-    bn.toString().should.equal('50');(bn instanceof BN).should.equal(true)
+    bn.toString().should.equal('50')
+    ;(bn instanceof BN).should.equal(true)
     bn = BN('ff00', 16)
     bn.toString(16).should.equal('ff00')
     bn = new BN('ff00', 16)
@@ -94,7 +95,8 @@ describe('BN', function () {
   describe('#copy', function () {
     it('should copy 5', function () {
       let bn = BN('5')
-      let bn2;(function () {
+      let bn2
+      ;(function () {
         bn.copy(bn2)
       }).should.throw() // bn2 is not a BN yet
       bn2 = BN()
@@ -105,7 +107,8 @@ describe('BN', function () {
 
   describe('#neg', function () {
     it('should produce a negative', function () {
-      let bn = BN(1).neg();(bn instanceof BN).should.equal(true)
+      let bn = BN(1).neg()
+      ;(bn instanceof BN).should.equal(true)
       bn.toString().should.equal('-1')
     })
   })
@@ -453,9 +456,11 @@ describe('BN', function () {
       // invalid
       (function () {
         BN().fromScriptNumBuffer(new Buffer('80000000', 'hex'), true)
-      }).should.throw('non-minimally encoded script number');(function () {
+      }).should.throw('non-minimally encoded script number')
+      ;(function () {
         BN().fromScriptNumBuffer(new Buffer('800000', 'hex'), true)
-      }).should.throw('non-minimally encoded script number');(function () {
+      }).should.throw('non-minimally encoded script number')
+      ;(function () {
         BN().fromScriptNumBuffer(new Buffer('00', 'hex'), true)
       }).should.throw('non-minimally encoded script number')
 

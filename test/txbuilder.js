@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Txbuilder = require('../lib/txbuilder')
@@ -8,7 +9,6 @@ let Txout = require('../lib/txout')
 let Address = require('../lib/address')
 let BN = require('../lib/bn')
 let Interp = require('../lib/interp')
-let BR = require('../lib/br')
 let Script = require('../lib/script')
 let Pubkey = require('../lib/pubkey')
 let Privkey = require('../lib/privkey')
@@ -16,9 +16,11 @@ let Keypair = require('../lib/keypair')
 
 describe('Txbuilder', function () {
   it('should make a new txbuilder', function () {
-    let txb = new Txbuilder();(txb instanceof Txbuilder).should.equal(true)
+    let txb = new Txbuilder()
+    ;(txb instanceof Txbuilder).should.equal(true)
     should.exist(txb.tx)
-    txb = Txbuilder();(txb instanceof Txbuilder).should.equal(true)
+    txb = Txbuilder()
+    ;(txb instanceof Txbuilder).should.equal(true)
     should.exist(txb.tx)
     txb = Txbuilder({
       tx: Tx()
@@ -45,7 +47,7 @@ describe('Txbuilder', function () {
 
     // make addresses to send to
     let saddr1 = addr1
-    let saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')); // fake, unredeemable p2sh address
+    let saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
 
     // txouts that we are spending
     let scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
@@ -95,7 +97,5 @@ describe('Txbuilder', function () {
       txb.to(BN(0), address)
       txb.toTxouts.length.should.equal(1)
     })
-
   })
-
 })

@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Msg = require('../lib/msg')
@@ -8,10 +9,9 @@ describe('Connection', function () {
 
   let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
   let msgbuf = new Buffer(msghex, 'hex')
-  let msg = Msg().fromBuffer(msgbuf)
 
   it('should satisfy this basic API', function () {
-    let con = Connection()
+    should.exist(Connection())
   })
 
   describe('#onBuffer', function () {
@@ -40,7 +40,6 @@ describe('Connection', function () {
       con.channel = {
         close: function () {}
       }
-      let called = false
       let msgbuf2 = new Buffer(msgbuf)
       msgbuf2.writeUInt32BE(0, 0)
       return con.onBuffer(msgbuf2)
@@ -48,7 +47,6 @@ describe('Connection', function () {
           error.message.should.equal('cannot parse message: invalid magicnum')
         })
     })
-
   })
 
   describe('#onMsg', function () {
@@ -78,7 +76,7 @@ describe('Connection', function () {
         close: function () {}
       }
       let msgbuf2 = new Buffer(msgbuf)
-      msgbuf2[msgbuf2.length-1]++
+      msgbuf2[msgbuf2.length - 1] ++
       let msghex = msgbuf2.toString('hex')
       let msg = Msg().fromHex(msghex)
       let called = false
@@ -97,7 +95,6 @@ describe('Connection', function () {
           called.should.equal(true)
         })
     })
-
   })
 
   describe('#waitMsgs', function () {
@@ -110,11 +107,9 @@ describe('Connection', function () {
         .then(function () {
           return promise.value
         }).then(function (msg) {
-        (msg instanceof Msg).should.equal(true)
-        msg.toHex().should.equal(msghex)
-      })
+          (msg instanceof Msg).should.equal(true)
+          msg.toHex().should.equal(msghex)
+        })
     })
-
   })
-
 })

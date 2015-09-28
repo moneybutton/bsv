@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let ECDSA = require('../lib/ecdsa')
 let Hash = require('../lib/hash')
@@ -13,6 +14,7 @@ let vectors = require('./vectors/ecdsa')
 describe('ECDSA', function () {
   it('should create a blank ecdsa', function () {
     let ecdsa = new ECDSA()
+    should.exist(ecdsa)
   })
 
   let ecdsa = ECDSA()
@@ -28,7 +30,6 @@ describe('ECDSA', function () {
     it('should set hashbuf', function () {
       should.exist(ECDSA().fromObject({hashbuf: ecdsa.hashbuf}).hashbuf)
     })
-
   })
 
   describe('#calcrecovery', function () {
@@ -51,7 +52,6 @@ describe('ECDSA', function () {
       ecdsa.calcrecovery()
       ecdsa.sig.recovery.should.equal(1)
     })
-
   })
 
   describe('#fromString', function () {
@@ -62,7 +62,6 @@ describe('ECDSA', function () {
       should.exist(ecdsa.hashbuf)
       should.exist(ecdsa.keypair)
     })
-
   })
 
   describe('#randomK', function () {
@@ -70,7 +69,8 @@ describe('ECDSA', function () {
       ecdsa.randomK()
       let k1 = ecdsa.k
       ecdsa.randomK()
-      let k2 = ecdsa.k;(k1.cmp(k2) === 0).should.equal(false)
+      let k2 = ecdsa.k
+      ;(k1.cmp(k2) === 0).should.equal(false)
     })
 
     it('should generate a random k that is (almost always) greater than this relatively small number', function () {
@@ -79,7 +79,6 @@ describe('ECDSA', function () {
       let k2 = BN(Math.pow(2, 32)).mul(BN(Math.pow(2, 32))).mul(BN(Math.pow(2, 32)))
       k2.gt(k1).should.equal(false)
     })
-
   })
 
   describe('#deterministicK', function () {
@@ -108,7 +107,6 @@ describe('ECDSA', function () {
       ecdsa.sig.r.toString().should.equal('23362334225185207751494092901091441011938859014081160902781146257181456271561')
       ecdsa.sig.s.toString().should.equal('50433721247292933944369538617440297985091596895097604618403996029256432099938')
     })
-
   })
 
   describe('#sig2pubkey', function () {
@@ -136,7 +134,6 @@ describe('ECDSA', function () {
       let pubkey = ecdsa.sig2pubkey()
       pubkey.point.eq(ecdsa.keypair.pubkey.point).should.equal(true)
     })
-
   })
 
   describe('#verifystr', function () {
@@ -170,7 +167,6 @@ describe('ECDSA', function () {
       ecdsa.sig.r = ecdsa.sig.r.add(BN(1))
       ecdsa.verifystr().should.equal('Invalid signature')
     })
-
   })
 
   describe('#sign', function () {
@@ -185,7 +181,8 @@ describe('ECDSA', function () {
         hashbuf: ecdsa.hashbuf.slice(0, 31),
         keypair: ecdsa.keypair
       })
-      ecdsa2.randomK();(function () {
+      ecdsa2.randomK()
+      ;(function () {
         ecdsa2.sign()
       }).should.throw('hashbuf must be a 32 byte buffer')
     })
@@ -202,7 +199,6 @@ describe('ECDSA', function () {
       ecdsa2.sign()
       called.should.equal(1)
     })
-
   })
 
   describe('#signRandomK', function () {
@@ -213,14 +209,13 @@ describe('ECDSA', function () {
       ecdsa2.signRandomK()
       ecdsa.sig.toString().should.not.equal(ecdsa2.sig.toString())
     })
-
   })
 
   describe('#toString', function () {
     it('should convert this to a string', function () {
-      let str = ecdsa.toString();(typeof str === 'string').should.equal(true)
+      let str = ecdsa.toString()
+      ;(typeof str === 'string').should.equal(true)
     })
-
   })
 
   describe('#verify', function () {
@@ -234,14 +229,13 @@ describe('ECDSA', function () {
       ecdsa.signRandomK()
       ecdsa.verify().verified.should.equal(true)
     })
-
   })
 
   describe('@sign', function () {
     it('should produce a signature', function () {
-      let sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair);(sig instanceof Sig).should.equal(true)
+      let sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair)
+      ;(sig instanceof Sig).should.equal(true)
     })
-
   })
 
   describe('@verify', function () {
@@ -260,7 +254,6 @@ describe('ECDSA', function () {
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'big').should.equal(false)
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'little').should.equal(true)
     })
-
   })
 
   describe('vectors', function () {
@@ -311,7 +304,5 @@ describe('ECDSA', function () {
         ecdsa.deterministicK(15).k.toString('hex').should.equal(obj.k_bad15)
       })
     })
-
   })
-
 })

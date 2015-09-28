@@ -1,22 +1,19 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Interp = require('../lib/interp')
 let Tx = require('../lib/tx')
-let Txin = require('../lib/txin')
-let Txout = require('../lib/txout')
 let Script = require('../lib/script')
 let BN = require('../lib/bn')
 let Keypair = require('../lib/keypair')
-let Privkey = require('../lib/privkey')
-let Pubkey = require('../lib/pubkey')
 let Sig = require('../lib/sig')
-let BR = require('../lib/br')
 let script_valid = require('./vectors/bitcoind/script_valid')
 let script_invalid = require('./vectors/bitcoind/script_invalid')
 
 describe('Interp', function () {
   it('should make a new interp', function () {
-    let interp = new Interp();(interp instanceof Interp).should.equal(true)
+    let interp = new Interp()
+    ;(interp instanceof Interp).should.equal(true)
     interp.stack.length.should.equal(0)
     interp.altstack.length.should.equal(0)
     interp.pc.should.equal(0)
@@ -25,7 +22,8 @@ describe('Interp', function () {
     interp.ifstack.length.should.equal(0)
     interp.errstr.should.equal('')
     interp.flags.should.equal(0)
-    interp = Interp();(interp instanceof Interp).should.equal(true)
+    interp = Interp()
+    ;(interp instanceof Interp).should.equal(true)
     interp.stack.length.should.equal(0)
     interp.altstack.length.should.equal(0)
     interp.pc.should.equal(0)
@@ -43,7 +41,6 @@ describe('Interp', function () {
       should.exist(json.script)
       should.not.exist(json.tx)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -55,7 +52,6 @@ describe('Interp', function () {
       should.exist(interp2.stack[0])
       should.exist(interp2.altstack[0])
     })
-
   })
 
   describe('@castToBool', function () {
@@ -69,7 +65,6 @@ describe('Interp', function () {
       let bool = BN().fromSM(buf, {endian: 'little'}).cmp(0) !== 0
       Interp.castToBool(buf).should.equal(bool)
     })
-
   })
 
   describe('#verify', function () {
@@ -138,7 +133,6 @@ describe('Interp', function () {
       let verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, 0)
       verified.should.equal(true)
     })
-
   })
 
   describe('vectors', function () {
@@ -146,14 +140,14 @@ describe('Interp', function () {
 
     c = 0
     script_valid.forEach(function (vector, i) {
-      if (vector.length === 1)
+      if (vector.length === 1) {
         return
+      }
       c++
       it('should verify script_valid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
         let scriptPubkey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
-        let descstr = vector[3]
 
         let hashbuf = new Buffer(32)
         hashbuf.fill(0)
@@ -174,14 +168,14 @@ describe('Interp', function () {
 
     c = 0
     script_invalid.forEach(function (vector, i) {
-      if (vector.length === 1)
+      if (vector.length === 1) {
         return
+      }
       c++
       it('should unverify script_invalid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
         let scriptPubkey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
-        let descstr = vector[3]
 
         let hashbuf = new Buffer(32)
         hashbuf.fill(0)
@@ -199,7 +193,5 @@ describe('Interp', function () {
         verified.should.equal(false)
       })
     })
-
   })
-
 })

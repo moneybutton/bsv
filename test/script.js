@@ -1,9 +1,8 @@
+/* global describe,it */
 'use strict'
 let Script = require('../lib/script')
 let should = require('chai').should()
 let Opcode = require('../lib/opcode')
-let BR = require('../lib/br')
-let BW = require('../lib/bw')
 let script_valid = require('./vectors/bitcoind/script_valid')
 let script_invalid = require('./vectors/bitcoind/script_invalid')
 let BN = require('../lib/bn')
@@ -11,6 +10,7 @@ let BN = require('../lib/bn')
 describe('Script', function () {
   it('should make a new script', function () {
     let script = new Script()
+    should.exist(script)
     Script().toString().should.equal('')
     Script().writeString('').toString().should.equal('')
   })
@@ -23,7 +23,6 @@ describe('Script', function () {
       script.chunks.length.should.equal(1)
       script.chunks[0].opcodenum.should.equal(buf[0])
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -89,7 +88,6 @@ describe('Script', function () {
       script.chunks[1].buf.toString('hex').should.equal('010203')
       script.chunks[2].opcodenum.should.equal(buf[buf.length - 1])
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -101,7 +99,6 @@ describe('Script', function () {
       script.chunks[0].opcodenum.should.equal(buf[0])
       script.toHex().should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -174,7 +171,6 @@ describe('Script', function () {
       script.chunks[2].opcodenum.should.equal(buf[buf.length - 1])
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#fromString', function () {
@@ -186,7 +182,6 @@ describe('Script', function () {
       Script().fromString('').toString().should.equal('')
       Script().fromString().toString().should.equal('')
     })
-
   })
 
   describe('#toString', function () {
@@ -203,7 +198,6 @@ describe('Script', function () {
       script.chunks[2].opcodenum.should.equal(buf[buf.length - 1])
       script.toString().toString('hex').should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
     })
-
   })
 
   describe('#fromBitcoindString', function () {
@@ -214,28 +208,24 @@ describe('Script', function () {
       let str = '0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601'
       Script().fromBitcoindString(str).toBitcoindString().should.equal(str)
     })
-
   })
 
   describe('#fromBitcoindString', function () {
     it('should convert to this known string', function () {
       Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL')
     })
-
   })
 
   describe('#fromJSON', function () {
     it('should parse this known script', function () {
       Script().fromJSON('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
     })
-
   })
 
   describe('#toJSON', function () {
     it('should output this known script', function () {
       Script().fromString('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toJSON().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
     })
-
   })
 
   describe('#fromPubkeyhash', function () {
@@ -244,7 +234,6 @@ describe('Script', function () {
       hashbuf.fill(0)
       Script().fromPubkeyhash(hashbuf).toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
     })
-
   })
 
   describe('#fromScripthash', function () {
@@ -253,14 +242,12 @@ describe('Script', function () {
       hashbuf.fill(0)
       Script().fromScripthash(hashbuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
     })
-
   })
 
   describe('#removeCodeseparators', function () {
     it('should remove any OP_CODESEPARATORs', function () {
       Script().writeString('OP_CODESEPARATOR OP_0 OP_CODESEPARATOR').removeCodeseparators().toString().should.equal('OP_0')
     })
-
   })
 
   describe('#isPushOnly', function () {
@@ -272,7 +259,6 @@ describe('Script', function () {
       // like bitcoind, we regard OP_RESERVED as being "push only"
       Script().writeString('OP_RESERVED').isPushOnly().should.equal(true)
     })
-
   })
 
   describe('#isOpReturn', function () {
@@ -291,7 +277,6 @@ describe('Script', function () {
       buf.fill(0)
       Script().writeString('OP_CHECKMULTISIG 40 0x' + buf.toString('hex')).isOpReturn().should.equal(false)
     })
-
   })
 
   describe('#isPubkeyhashIn', function () {
@@ -302,7 +287,6 @@ describe('Script', function () {
     it('should classify this known non-pubkeyhashin', function () {
       Script().writeString('73 0x3046022100bb3c194a30e460d81d34be0a230179c043a656f67e3c5c8bf47eceae7c4042ee0221008bf54ca11b2985285be0fd7a212873d243e6e73f5fad57e8eb14c4f39728b8c601 65 0x04e365859b3c78a8b7c202412b949ebca58e147dba297be29eee53cd3e1d300a6419bc780cc9aec0dc94ed194e91c8f6433f1b781ee00eac0ead2aae1e8e0712c6 OP_CHECKSIG').isPubkeyhashIn().should.equal(false)
     })
-
   })
 
   describe('#isPubkeyhashOut', function () {
@@ -313,7 +297,6 @@ describe('Script', function () {
     it('should classify this known non-pubkeyhashout as not pubkeyhashout', function () {
       Script().writeString('OP_DUP OP_HASH160 20 0000000000000000000000000000000000000000').isPubkeyhashOut().should.equal(false)
     })
-
   })
 
   describe('#isScripthashIn', function () {
@@ -324,7 +307,6 @@ describe('Script', function () {
     it('should classify this known non-scripthashin', function () {
       Script().writeString('20 0000000000000000000000000000000000000000 OP_CHECKSIG').isScripthashIn().should.equal(false)
     })
-
   })
 
   describe('#isScripthashOut', function () {
@@ -336,7 +318,6 @@ describe('Script', function () {
       Script().writeString('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL OP_EQUAL').isScripthashOut().should.equal(false)
       Script().writeString('OP_HASH160 21 0x000000000000000000000000000000000000000000 OP_EQUAL').isScripthashOut().should.equal(false)
     })
-
   })
 
   describe('#findAndDelete', function () {
@@ -346,7 +327,6 @@ describe('Script', function () {
         .toString()
         .should.equal('OP_RETURN')
     })
-
   })
 
   describe('#writeScript', function () {
@@ -356,14 +336,12 @@ describe('Script', function () {
       let script = script1.writeScript(script2)
       script.toString().should.equal('OP_CHECKMULTISIG OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#writeOpcode', function () {
     it('should write this op', function () {
       Script().writeOpcode(Opcode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#writeBN', function () {
@@ -374,7 +352,6 @@ describe('Script', function () {
       Script().writeBN(BN(-1)).toBuffer().toString('hex').should.equal('4f')
       Script().writeBN(BN(-2)).toBuffer().toString('hex').should.equal('0182')
     })
-
   })
 
   describe('#writeBuffer', function () {
@@ -392,14 +369,12 @@ describe('Script', function () {
       buf.fill(0)
       Script().writeBuffer(buf).toString().should.equal('OP_PUSHDATA4 ' + Math.pow(2, 16) + ' 0x' + buf.toString('hex'))
     })
-
   })
 
   describe('#writeString', function () {
     it('should write both pushdata and non-pushdata chunks', function () {
       Script().writeString('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#checkMinimalPush', function () {
@@ -422,18 +397,19 @@ describe('Script', function () {
       buf.fill(1)
       Script().writeBuffer(buf).checkMinimalPush(0).should.equal(true)
     })
-
   })
 
   describe('vectors', function () {
     script_valid.forEach(function (a, i) {
-      if (a.length === 1)
+      if (a.length === 1) {
         return
+      }
       it('should not fail when reading script_valid vector ' + i, function () {
         (function () {
           Script().fromBitcoindString(a[0]).toString()
           Script().fromBitcoindString(a[0]).toBitcoindString()
-        }).should.not.throw();(function () {
+        }).should.not.throw()
+        ;(function () {
           Script().fromBitcoindString(a[1]).toString()
           Script().fromBitcoindString(a[1]).toBitcoindString()
         }).should.not.throw()
@@ -447,13 +423,15 @@ describe('Script', function () {
     })
 
     script_invalid.forEach(function (a, i) {
-      if (a.length === 1)
+      if (a.length === 1) {
         return
+      }
       it('should not fail when reading script_invalid vector ' + i, function () {
         (function () {
           Script().fromBitcoindString(a[0]).toString()
           Script().fromBitcoindString(a[0]).toBitcoindString()
-        }).should.not.throw();(function () {
+        }).should.not.throw()
+        ;(function () {
           Script().fromBitcoindString(a[1]).toString()
           Script().fromBitcoindString(a[1]).toBitcoindString()
         }).should.not.throw()
@@ -465,7 +443,5 @@ describe('Script', function () {
         Script().fromBitcoindString(str).toBitcoindString().should.equal(str)
       })
     })
-
   })
-
 })

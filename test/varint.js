@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let BN = require('../lib/bn')
 let should = require('chai').should()
@@ -33,7 +34,6 @@ describe('Varint', function () {
       varint.fromObject({})
       varint.buf.toString('hex').should.equal('00')
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -42,7 +42,6 @@ describe('Varint', function () {
       let varint = Varint().fromJSON(buf.toString('hex'))
       varint.toNumber().should.equal(5)
     })
-
   })
 
   describe('#toJSON', function () {
@@ -51,7 +50,6 @@ describe('Varint', function () {
       let varint = Varint().fromJSON(buf.toString('hex'))
       varint.toJSON().should.equal('05')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -60,7 +58,6 @@ describe('Varint', function () {
       let varint = Varint().fromBuffer(buf)
       varint.toNumber().should.equal(5)
     })
-
   })
 
   describe('#fromBR', function () {
@@ -70,7 +67,6 @@ describe('Varint', function () {
       let varint = Varint().fromBR(br)
       varint.toNumber().should.equal(5)
     })
-
   })
 
   describe('#fromBN', function () {
@@ -78,7 +74,6 @@ describe('Varint', function () {
       let varint = Varint().fromBN(BN(5))
       varint.toNumber().should.equal(5)
     })
-
   })
 
   describe('#fromNumber', function () {
@@ -86,7 +81,6 @@ describe('Varint', function () {
       let varint = Varint().fromNumber(5)
       varint.toNumber().should.equal(5)
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -95,7 +89,6 @@ describe('Varint', function () {
       let varint = Varint(buf)
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
-
   })
 
   describe('#toBN', function () {
@@ -103,7 +96,6 @@ describe('Varint', function () {
       let varint = Varint(5)
       varint.toBN().toString().should.equal(BN(5).toString())
     })
-
   })
 
   describe('#toNumber', function () {
@@ -111,7 +103,5 @@ describe('Varint', function () {
       let varint = Varint(5)
       varint.toNumber().should.equal(5)
     })
-
   })
-
 })

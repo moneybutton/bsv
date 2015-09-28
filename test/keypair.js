@@ -1,7 +1,7 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let bn = require('../lib/bn')
-let point = require('../lib/point')
 let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
 let Keypair = require('../lib/keypair')
@@ -39,7 +39,6 @@ describe('Keypair', function () {
       keypair.privkey.toString().should.equal(privkey.toString())
       keypair.pubkey.toString().should.equal(pubkey.toString())
     })
-
   })
 
   describe('#toJSON', function () {
@@ -51,7 +50,6 @@ describe('Keypair', function () {
       keypair.toJSON().privkey.toString().should.equal(json.privkey.toString())
       keypair.toJSON().pubkey.toString().should.equal(json.pubkey.toString())
     })
-
   })
 
   describe('#fromString', function () {
@@ -60,7 +58,6 @@ describe('Keypair', function () {
       let str = keypair.toString()
       Keypair().fromString(str).toString().should.equal(str)
     })
-
   })
 
   describe('#fromPrivkey', function () {
@@ -83,7 +80,6 @@ describe('Keypair', function () {
       let key = Keypair().fromPrivkey(privkey)
       key.pubkey.compressed.should.equal(false)
     })
-
   })
 
   describe('#fromRandom', function () {
@@ -98,7 +94,5 @@ describe('Keypair', function () {
       key.privkey.compressed.should.equal(true)
       key.pubkey.compressed.should.equal(true)
     })
-
   })
-
 })

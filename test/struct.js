@@ -1,8 +1,8 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Struct = require('../lib/struct')
 let BR = require('../lib/br')
-let BW = require('../lib/bw')
 
 describe('Struct', function () {
   it('should make a new struct', function () {
@@ -17,7 +17,6 @@ describe('Struct', function () {
       Struct().fromObject({test: 'test'}).test.should.equal('test')
       Object.keys(Struct().fromObject({})).length.should.equal(0)
     })
-
   })
 
   describe('#fromBR', function () {
@@ -33,7 +32,6 @@ describe('Struct', function () {
         Struct().fromBR(br)
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#toBW', function () {
@@ -42,7 +40,6 @@ describe('Struct', function () {
         Struct().toBW()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#fromBuffers', function () {
@@ -51,7 +48,6 @@ describe('Struct', function () {
         Struct().fromBuffers().next()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -67,7 +63,6 @@ describe('Struct', function () {
         Struct().fromBuffer(buf)
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -76,7 +71,6 @@ describe('Struct', function () {
         Struct().toBuffer()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#fromHex', function () {
@@ -91,7 +85,6 @@ describe('Struct', function () {
         Struct().fromHex('00')
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#toHex', function () {
@@ -100,7 +93,6 @@ describe('Struct', function () {
         Struct().toHex()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#fromString', function () {
@@ -115,7 +107,6 @@ describe('Struct', function () {
         Struct().fromString('00')
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#toString', function () {
@@ -124,7 +115,6 @@ describe('Struct', function () {
         Struct().toString()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -133,7 +123,6 @@ describe('Struct', function () {
         Struct().fromJSON()
       }).should.throw('not implemented')
     })
-
   })
 
   describe('#toJSON', function () {
@@ -142,7 +131,5 @@ describe('Struct', function () {
         Struct().toJSON()
       }).should.throw('not implemented')
     })
-
   })
-
 })

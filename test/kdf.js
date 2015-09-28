@@ -1,5 +1,6 @@
+/* global describe,it */
 'use strict'
-let should = require('chai').should()
+require('chai').should()
 let KDF = require('../lib/kdf')
 let Hash = require('../lib/hash')
 let vectors = require('./vectors/kdf')
@@ -38,7 +39,6 @@ describe('KDF', function () {
         key.toString('hex').should.equal(obj.key)
       })
     })
-
   })
 
   describe('@buf2keypair', function () {
@@ -48,7 +48,6 @@ describe('KDF', function () {
       keypair.privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V')
       keypair.pubkey.toString().should.equal('03774f761ae89a0d2fda0d532bad62286ae8fcda9bc38c060036296085592a97c1')
     })
-
   })
 
   describe('@sha256hmac2keypair', function () {
@@ -58,7 +57,6 @@ describe('KDF', function () {
       keypair.privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V')
       keypair.pubkey.toString().should.equal('03774f761ae89a0d2fda0d532bad62286ae8fcda9bc38c060036296085592a97c1')
     })
-
   })
 
   describe('@sha256hmac2privkey', function () {
@@ -67,7 +65,5 @@ describe('KDF', function () {
       let privkey = KDF.sha256hmac2privkey(buf)
       privkey.toString().should.equal('KxxVszVMFLGzmxpxR7sMSaWDmqMKLVhKebX5vZbGHyuR8spreQ7V')
     })
-
   })
-
 })

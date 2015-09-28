@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let BN = require('../lib/bn')
@@ -5,7 +6,6 @@ let Txout = require('../lib/txout')
 let Script = require('../lib/script')
 let Varint = require('../lib/varint')
 let BR = require('../lib/br')
-let BW = require('../lib/bw')
 
 describe('Txout', function () {
   let valuebn = BN(5)
@@ -40,7 +40,6 @@ describe('Txout', function () {
       should.exist(txout.scriptvi)
       should.exist(txout.script)
     })
-
   })
 
   describe('#setScript', function () {
@@ -48,7 +47,6 @@ describe('Txout', function () {
       let txout2 = Txout(txout)
       txout2.setScript(Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -62,7 +60,6 @@ describe('Txout', function () {
       should.exist(txout.scriptvi)
       should.exist(txout.script)
     })
-
   })
 
   describe('#toJSON', function () {
@@ -77,7 +74,6 @@ describe('Txout', function () {
       should.exist(json.scriptvi)
       should.exist(json.script)
     })
-
   })
 
   describe('#fromHex', function () {
@@ -85,7 +81,6 @@ describe('Txout', function () {
       let txout = Txout().fromHex('050000000000000001ae')
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -93,7 +88,6 @@ describe('Txout', function () {
       let txout = Txout().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
-
   })
 
   describe('#fromBR', function () {
@@ -101,7 +95,6 @@ describe('Txout', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')))
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -109,7 +102,6 @@ describe('Txout', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')))
       txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
-
   })
 
   describe('#toBW', function () {
@@ -117,7 +109,5 @@ describe('Txout', function () {
       let txout = Txout().fromBR(BR(new Buffer('050000000000000001ae', 'hex')))
       txout.toBW().toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
-
   })
-
 })

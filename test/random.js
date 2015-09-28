@@ -1,5 +1,6 @@
+/* global describe,it */
 'use strict'
-let should = require('chai').should()
+require('chai').should()
 let Random = require('../lib/random')
 
 describe('Random', function () {
@@ -18,13 +19,14 @@ describe('Random', function () {
 
     it('should generate 100 8 byte buffers in a row that are not equal', function () {
       let hexs = []
-      for (let i = 0; i < 100; i++)
+      for (let i = 0; i < 100; i++) {
         hexs[i] = Random.getRandomBuffer(8).toString('hex')
-      for (let i = 0; i < 100; i++)
-        for (let j = i + 1; j < 100; j++)
+      }
+      for (let i = 0; i < 100; i++) {
+        for (let j = i + 1; j < 100; j++) {
           hexs[i].should.not.equal(hexs[j])
+        }
+      }
     })
-
   })
-
 })

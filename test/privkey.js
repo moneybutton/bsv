@@ -1,6 +1,6 @@
+/* global describe,it */
 'use strict'
 let Privkey = require('../lib/privkey')
-let base58check = require('../lib/base58check')
 let BN = require('../lib/bn')
 let Point = require('../lib/point')
 let should = require('chai').should()
@@ -52,7 +52,6 @@ describe('Privkey', function () {
     it('should set bn', function () {
       should.exist(Privkey().fromObject({bn: BN.fromBuffer(buf)}).bn)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -61,7 +60,6 @@ describe('Privkey', function () {
       privkey.fromJSON(encmu)
       privkey.toWIF().should.equal(encmu)
     })
-
   })
 
   describe('#toString', function () {
@@ -70,7 +68,6 @@ describe('Privkey', function () {
       privkey.fromJSON(encmu)
       privkey.toJSON().should.equal(encmu)
     })
-
   })
 
   describe('#fromRandom', function () {
@@ -80,7 +77,6 @@ describe('Privkey', function () {
       privkey.bn.lt(Point.getN()).should.equal(true)
       privkey.compressed.should.equal(true)
     })
-
   })
 
   describe('#toHex', function () {
@@ -88,7 +84,6 @@ describe('Privkey', function () {
       let privkey = Privkey().fromBN(BN(5))
       privkey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -96,7 +91,6 @@ describe('Privkey', function () {
       let privkey = Privkey().fromBN(BN(5))
       privkey.toBuffer().toString('hex').should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
-
   })
 
   describe('#fromHex', function () {
@@ -104,7 +98,6 @@ describe('Privkey', function () {
       let privkey = Privkey().fromHex('80000000000000000000000000000000000000000000000000000000000000000501')
       privkey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -114,19 +107,19 @@ describe('Privkey', function () {
     })
 
     it('should throw an error if buffer is wrong length', function () {
-      (function () {
-        let privkey = Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000000050100', 'hex'))
-      }).should.throw('Length of privkey buffer must be 33 (uncompressed pubkey) or 34 (compressed pubkey)');(function () {
-        let privkey = Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000005', 'hex'))
+      ;(function () {
+        Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000000050100', 'hex'))
+      }).should.throw('Length of privkey buffer must be 33 (uncompressed pubkey) or 34 (compressed pubkey)')
+      ;(function () {
+        Privkey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000005', 'hex'))
       }).should.throw('Length of privkey buffer must be 33 (uncompressed pubkey) or 34 (compressed pubkey)')
     })
 
     it('should throw an error if buffer has wrong version byte', function () {
       (function () {
-        let privkey = Privkey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
+        Privkey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
       }).should.throw('Invalid version byte')
     })
-
   })
 
   describe('#toBN', function () {
@@ -134,7 +127,6 @@ describe('Privkey', function () {
       let privkey = Privkey().fromBN(BN(5))
       privkey.toBN().eq(BN(5)).should.equal(true)
     })
-
   })
 
   describe('#fromBN', function () {
@@ -142,24 +134,24 @@ describe('Privkey', function () {
       let privkey = Privkey().fromBN(BN(5))
       privkey.bn.toString().should.equal('5')
     })
-
   })
 
   describe('#validate', function () {
     it('should unvalidate these privkeys', function () {
       let privkey = Privkey()
       privkey.compressed = true
-      privkey.bn = Point.getN();(function () {
+      privkey.bn = Point.getN()
+      ;(function () {
         privkey.validate()
       }).should.throw('Number must be less than N')
       privkey.bn = Point.getN().sub(1)
-      privkey.compressed = undefined;(function () {
+      privkey.compressed = undefined
+      ;(function () {
         privkey.validate()
       }).should.throw('Must specify whether the corresponding public key is compressed or not (true or false)')
       privkey.compressed = true
       privkey.validate().should.equal(privkey)
     })
-
   })
 
   describe('#fromWIF', function () {
@@ -168,7 +160,6 @@ describe('Privkey', function () {
       privkey.fromWIF(encmainnet)
       privkey.toWIF().should.equal(encmainnet)
     })
-
   })
 
   describe('#toWIF', function () {
@@ -177,7 +168,6 @@ describe('Privkey', function () {
       privkey.fromWIF(enctestnet)
       privkey.toWIF().should.equal(enctestnet)
     })
-
   })
 
   describe('#fromString', function () {
@@ -186,7 +176,6 @@ describe('Privkey', function () {
       privkey.fromString(enctu)
       privkey.toWIF().should.equal(enctu)
     })
-
   })
 
   describe('#toString', function () {
@@ -195,7 +184,5 @@ describe('Privkey', function () {
       privkey.fromString(encmu)
       privkey.toString().should.equal(encmu)
     })
-
   })
-
 })

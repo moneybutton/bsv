@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let StealthAddress = require('../lib/stealthaddress')
 let should = require('chai').should()
@@ -37,28 +38,24 @@ describe('StealthAddress', function () {
       sa.payloadPubkey.toString().should.equal(stealthkey.payloadKeypair.pubkey.toString())
       sa.scanPubkey.toString().should.equal(stealthkey.scanKeypair.pubkey.toString())
     })
-
   })
 
   describe('#toJSON', function () {
     it('should return this known address string', function () {
       StealthAddress().fromJSON(addressString).toJSON().should.equal(addressString)
     })
-
   })
 
   describe('#fromBuffer', function () {
     it('should parse this DW buffer', function () {
       StealthAddress().fromBuffer(new Buffer(dwhex, 'hex')).toBuffer().toString('hex').should.equal(dwhex)
     })
-
   })
 
   describe('#fromString', function () {
     it('should parse this DW buffer', function () {
       StealthAddress().fromString(Base58check(new Buffer(dwhex, 'hex')).toString()).toBuffer().toString('hex').should.equal(dwhex)
     })
-
   })
 
   describe('#getSharedKeypair', function () {
@@ -66,7 +63,8 @@ describe('StealthAddress', function () {
       let sa = new StealthAddress()
       sa.payloadPubkey = stealthkey.payloadKeypair.pubkey
       sa.scanPubkey = stealthkey.scanKeypair.pubkey
-      let key = sa.getSharedKeypair(senderKeypair);(key instanceof Keypair).should.equal(true)
+      let key = sa.getSharedKeypair(senderKeypair)
+      ;(key instanceof Keypair).should.equal(true)
     })
 
     it('should return the same key as StealthKey.prototype.getSharedKeypair', function () {
@@ -78,12 +76,12 @@ describe('StealthAddress', function () {
       let key2 = stealthkey.getSharedKeypair(senderKeypair.pubkey)
       key.toString().should.equal(key2.toString())
     })
-
   })
 
   describe('#getReceivePubkey', function () {
     it('should return a pubkey', function () {
-      let pubkey = StealthAddress().fromStealthKey(stealthkey).getReceivePubkey(senderKeypair);(pubkey instanceof Pubkey).should.equal(true)
+      let pubkey = StealthAddress().fromStealthKey(stealthkey).getReceivePubkey(senderKeypair)
+      ;(pubkey instanceof Pubkey).should.equal(true)
     })
 
     it('should return the same pubkey as getReceivePubkey', function () {
@@ -91,15 +89,12 @@ describe('StealthAddress', function () {
       let pubkey2 = stealthkey.getReceivePubkey(senderKeypair.pubkey)
       pubkey2.toString().should.equal(pubkey.toString())
     })
-
   })
 
   describe('#toBuffer', function () {
     it('should return this known address buffer', function () {
-      let buf = Base58check.decode(addressString)
       StealthAddress().fromBuffer(dwbuf).toBuffer().toString('hex').should.equal(dwhex)
     })
-
   })
 
   describe('#toString', function () {
@@ -107,7 +102,6 @@ describe('StealthAddress', function () {
       let buf = Base58check.decode(addressString)
       StealthAddress().fromBuffer(buf).toString().should.equal(Base58check(new Buffer(dwhex, 'hex')).toString())
     })
-
   })
 
   describe('@parseDWBuffer', function () {
@@ -122,7 +116,5 @@ describe('StealthAddress', function () {
       parsed.nSigs.should.equal(1)
       parsed.prefix.toString().should.equal('')
     })
-
   })
-
 })

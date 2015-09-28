@@ -63,7 +63,8 @@ describe('AES', function () {
     })
 
     it('should throw an error on this 5 length buffer', function () {
-      let buf = new Buffer([0, 0, 0, 0, 0]);(function () {
+      let buf = new Buffer([0, 0, 0, 0, 0])
+      ;(function () {
         AES.buf2words(buf)
       }).should.throw()
     })

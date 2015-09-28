@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Constants = require('../lib/constants').Regtest
 let Network = require('../lib/network').inject({Constants: Constants.Network})
@@ -21,7 +22,6 @@ describe('Network', function () {
           should.not.exist(network.netstream)
         })
     })
-
   })
 
   describe('#connect', function () {
@@ -65,7 +65,5 @@ describe('Network', function () {
           return network2.close()
         })
     })
-
   })
-
 })

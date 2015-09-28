@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let BW = require('../lib/bw')
 let BR = require('../lib/br')
@@ -15,10 +16,9 @@ describe('BW', function () {
       let buf1 = new Buffer([0])
       let buf2 = new Buffer([1])
       let bufs = [buf1, buf2]
-      let bw = new BW().fromObject({bufs: [buf1, buf2]})
+      let bw = new BW().fromObject({bufs: bufs})
       bw.toBuffer().toString('hex').should.equal('0001')
     })
-
   })
 
   describe('#toBuffer', function () {
@@ -28,7 +28,6 @@ describe('BW', function () {
       let bw = new BW({bufs: [buf1, buf2]})
       bw.toBuffer().toString('hex').should.equal('0001')
     })
-
   })
 
   describe('#write', function () {
@@ -38,7 +37,6 @@ describe('BW', function () {
       bw.write(buf)
       bw.toBuffer().toString('hex').should.equal('00')
     })
-
   })
 
   describe('#writeReverse', function () {
@@ -48,7 +46,6 @@ describe('BW', function () {
       bw.writeReverse(buf)
       bw.toBuffer().toString('hex').should.equal('0100')
     })
-
   })
 
   describe('#writeUInt8', function () {
@@ -56,7 +53,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt8(1).toBuffer().toString('hex').should.equal('01')
     })
-
   })
 
   describe('#writeInt8', function () {
@@ -65,7 +61,6 @@ describe('BW', function () {
       bw.writeInt8(1).toBuffer().toString('hex').should.equal('01')
       BW().writeInt8(-1).toBuffer().toString('hex').should.equal('ff')
     })
-
   })
 
   describe('#writeUInt16BE', function () {
@@ -73,7 +68,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt16BE(1).toBuffer().toString('hex').should.equal('0001')
     })
-
   })
 
   describe('#writeInt16BE', function () {
@@ -82,7 +76,6 @@ describe('BW', function () {
       bw.writeInt16BE(1).toBuffer().toString('hex').should.equal('0001')
       BW().writeInt16BE(-1).toBuffer().toString('hex').should.equal('ffff')
     })
-
   })
 
   describe('#writeUInt16LE', function () {
@@ -90,7 +83,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt16LE(1).toBuffer().toString('hex').should.equal('0100')
     })
-
   })
 
   describe('#writeInt16LE', function () {
@@ -99,7 +91,6 @@ describe('BW', function () {
       bw.writeInt16LE(1).toBuffer().toString('hex').should.equal('0100')
       BW().writeInt16LE(-1).toBuffer().toString('hex').should.equal('ffff')
     })
-
   })
 
   describe('#writeUInt32BE', function () {
@@ -107,7 +98,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt32BE(1).toBuffer().toString('hex').should.equal('00000001')
     })
-
   })
 
   describe('#writeInt32BE', function () {
@@ -116,7 +106,6 @@ describe('BW', function () {
       bw.writeInt32BE(1).toBuffer().toString('hex').should.equal('00000001')
       BW().writeInt32BE(-1).toBuffer().toString('hex').should.equal('ffffffff')
     })
-
   })
 
   describe('#writeUInt32LE', function () {
@@ -124,7 +113,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt32LE(1).toBuffer().toString('hex').should.equal('01000000')
     })
-
   })
 
   describe('#writeInt32LE', function () {
@@ -133,7 +121,6 @@ describe('BW', function () {
       bw.writeInt32LE(1).toBuffer().toString('hex').should.equal('01000000')
       BW().writeInt32LE(-1).toBuffer().toString('hex').should.equal('ffffffff')
     })
-
   })
 
   describe('#writeUInt64BEBN', function () {
@@ -141,7 +128,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt64BEBN(BN(1)).toBuffer().toString('hex').should.equal('0000000000000001')
     })
-
   })
 
   describe('#writeUInt64LEBN', function () {
@@ -149,7 +135,6 @@ describe('BW', function () {
       let bw = new BW()
       bw.writeUInt64LEBN(BN(1)).toBuffer().toString('hex').should.equal('0100000000000000')
     })
-
   })
 
   describe('#writeVarint', function () {
@@ -185,7 +170,6 @@ describe('BW', function () {
       let br = new BR({buf: bw.toBuffer()})
       br.readVarintBN().toNumber().should.equal(n)
     })
-
   })
 
   describe('#writeVarintBN', function () {
@@ -212,7 +196,5 @@ describe('BW', function () {
       bw.writeVarintBN(BN(Math.pow(2, 32 + 1)))
       bw.toBuffer().length.should.equal(9)
     })
-
   })
-
 })

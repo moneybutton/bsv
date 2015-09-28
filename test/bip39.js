@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let BIP39 = require('../lib/bip39')
@@ -59,13 +60,13 @@ describe('BIP39', function () {
         BIP39().fromRandom(256 - 1)
       }).should.throw('bits must be multiple of 32')
     })
-
   })
 
   describe('#entropy2mnemonic', function () {
     it('should throw an error if you do not use enough entropy', function () {
       let buf = new Buffer(128 / 8 - 1)
-      buf.fill(0);(function () {
+      buf.fill(0)
+      ;(function () {
         BIP39().entropy2mnemonic(buf)
       }).should.throw('Entropy is less than 128 bits. It must be 128 bits or more.')
     })
@@ -77,7 +78,6 @@ describe('BIP39', function () {
       let mnemonic2 = BIP39.en().entropy2mnemonic(buf).mnemonic
       mnemonic1.should.equal(mnemonic2)
     })
-
   })
 
   describe('#check', function () {
@@ -88,7 +88,6 @@ describe('BIP39', function () {
       BIP39().fromString(mnemonic).check().should.equal(true)
       BIP39.en().fromString(mnemonic).check().should.equal(true)
     })
-
   })
 
   describe('#fromString', function () {
@@ -97,7 +96,6 @@ describe('BIP39', function () {
         BIP39().fromString('invalid mnemonic').toSeed()
       }).should.throw('Mnemonic does not pass the check - was the mnemonic typed incorrectly? Are there extra spaces?')
     })
-
   })
 
   describe('vectors', function () {
@@ -124,7 +122,5 @@ describe('BIP39', function () {
         BIP32().fromSeed(seed).toString().should.equal(vector.bip32_xprv)
       })
     })
-
   })
-
 })

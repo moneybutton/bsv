@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Txoutmap = require('../lib/txoutmap')
@@ -30,7 +31,6 @@ describe('Txoutmap', function () {
       txoutmap.fromObject({})
       txoutmap.map.get(label).toHex().should.equal(txout.toHex())
     })
-
   })
 
   describe('#add', function () {
@@ -38,7 +38,6 @@ describe('Txoutmap', function () {
       let txoutmap = Txoutmap().add(txhashbuf, 0, txout)
       should.exist(txoutmap.map.get(label))
     })
-
   })
 
   describe('#get', function () {
@@ -46,7 +45,6 @@ describe('Txoutmap', function () {
       let txoutmap = Txoutmap().fromObject({map: map})
       txoutmap.get(txhashbuf, 0).toHex().should.equal(txout.toHex())
     })
-
   })
 
   describe('#addTx', function () {
@@ -56,7 +54,5 @@ describe('Txoutmap', function () {
       let txout = tx.txouts[0]
       txoutmap.get(txhashbuf, 0).toHex().should.equal(txout.toHex())
     })
-
   })
-
 })

@@ -262,14 +262,16 @@ describe('BR', function () {
 
     it('should throw an error on a 9 byte varint over the javascript uint precision limit', function () {
       let buf = BW().writeVarintBN(BN(Math.pow(2, 54).toString())).toBuffer()
-      let br = new BR({buf: buf});(function () {
+      let br = new BR({buf: buf})
+      ;(function () {
         br.readVarintNum()
       }).should.throw('number too large to retain precision - use readVarintBN')
     })
 
     it('should not throw an error on a 9 byte varint not over the javascript uint precision limit', function () {
       let buf = BW().writeVarintBN(BN(Math.pow(2, 53).toString())).toBuffer()
-      let br = new BR({buf: buf});(function () {
+      let br = new BR({buf: buf})
+      ;(function () {
         br.readVarintNum()
       }).should.not.throw('number too large to retain precision - use readVarintBN')
     })

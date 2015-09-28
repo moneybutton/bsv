@@ -1,17 +1,17 @@
+/* global describe,it */
 'use strict'
 let Constants = require('../lib/constants').Regtest
-let Connection = require('../lib/connection')
 let Msg = require('../lib/msg')
 let Network = require('../lib/network').inject({Constants: Constants.Network})
 let Server = require('../lib/server').inject({Network: Network})
 let should = require('chai').should()
-let Random = require('../lib/random')
 
 describe('Server', function () {
   this.timeout(5000)
 
   it('should satisfy this basic API', function () {
     let server = Server()
+    should.exist(server)
     server.connections.length.should.equal(0)
   })
 
@@ -51,7 +51,5 @@ describe('Server', function () {
           msg.getCmd().should.equal('pong')
         })
     })
-
   })
-
 })

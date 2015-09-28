@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Channel = require('../lib/channel')
 let should = require('chai').should()
@@ -40,7 +41,5 @@ describe('Channel', function () {
           should.not.exist(buf)
         })
     })
-
   })
-
 })

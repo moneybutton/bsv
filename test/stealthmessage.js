@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Keypair = require('../lib/keypair')
 let StealthMessage = require('../lib/stealthmessage')
@@ -40,7 +41,6 @@ describe('StealthMessage', function () {
       let sm = StealthMessage().fromObject({messagebuf: messagebuf})
       should.exist(sm.messagebuf)
     })
-
   })
 
   describe('@encrypt', function () {
@@ -54,7 +54,6 @@ describe('StealthMessage', function () {
       encbuf.length.should.equal(166)
       encbuf.toString('hex').should.equal(enchex)
     })
-
   })
 
   describe('@decrypt', function () {
@@ -62,7 +61,6 @@ describe('StealthMessage', function () {
       let messagebuf2 = StealthMessage.decrypt(encbuf, sk)
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
     })
-
   })
 
   describe('@isForMe', function () {
@@ -77,7 +75,6 @@ describe('StealthMessage', function () {
       should.not.exist(sk2.payloadKeypair.privkey)
       StealthMessage.isForMe(encbuf, sk2).should.equal(true)
     })
-
   })
 
   describe('#encrypt', function () {
@@ -89,7 +86,6 @@ describe('StealthMessage', function () {
       })
       sm.encrypt().encbuf.length.should.equal(113)
     })
-
   })
 
   describe('#decrypt', function () {
@@ -105,7 +101,6 @@ describe('StealthMessage', function () {
       }).decrypt().messagebuf
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
     })
-
   })
 
   describe('#isForMe', function () {
@@ -126,7 +121,5 @@ describe('StealthMessage', function () {
         receiveAddress: Address().fromObject({hashbuf: encbuf.slice(0, 20)})
       }).isForMe().should.equal(true)
     })
-
   })
-
 })

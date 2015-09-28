@@ -61,7 +61,8 @@ describe('Base58Check', function () {
     it('should throw an error when there is a checksum mismatch', function () {
       let buf2 = base58.decode(enc)
       buf2[0] = buf2[0] + 1
-      let enc2 = base58.encode(buf2);(function () {
+      let enc2 = base58.encode(buf2)
+      ;(function () {
         Base58Check.decode(enc2)
       }).should.throw('Checksum mismatch')
     })

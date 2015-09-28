@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let ECIES = require('../lib/ecies')
 let should = require('chai').should()
@@ -29,7 +30,6 @@ describe('#ECIES', function () {
       let encbuf = ECIES.encrypt(messagebuf, tokey.pubkey)
       Buffer.isBuffer(encbuf).should.equal(true)
     })
-
   })
 
   describe('@decrypt', function () {
@@ -44,7 +44,5 @@ describe('#ECIES', function () {
       let messagebuf2 = ECIES.decrypt(encbuf, tokey.privkey)
       messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
     })
-
   })
-
 })

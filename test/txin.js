@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Script = require('../lib/script')
@@ -27,7 +28,8 @@ describe('Txin', function () {
     should.exist(txin)
     let txhashbuf = new Buffer(32)
     txhashbuf.fill(0)
-    Txin(txhashbuf, 0).txhashbuf.length.should.equal(32);(function () {
+    Txin(txhashbuf, 0).txhashbuf.length.should.equal(32)
+    ;(function () {
       let txhashbuf2 = new Buffer(33)
       txhashbuf2.fill(0)
       Txin(txhashbuf2, 0)
@@ -53,7 +55,6 @@ describe('Txin', function () {
       should.exist(txin.script)
       should.exist(txin.seqnum)
     })
-
   })
 
   describe('#setScript', function () {
@@ -61,7 +62,6 @@ describe('Txin', function () {
       let txin2 = Txin(txin)
       txin2.setScript(Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptvi.toNumber().should.equal(3)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -73,7 +73,6 @@ describe('Txin', function () {
       should.exist(txin2.script)
       should.exist(txin2.seqnum)
     })
-
   })
 
   describe('#toJSON', function () {
@@ -85,7 +84,6 @@ describe('Txin', function () {
       should.exist(json.script)
       should.exist(json.seqnum)
     })
-
   })
 
   describe('#fromHex', function () {
@@ -95,7 +93,6 @@ describe('Txin', function () {
       txin.scriptvi.toNumber().should.equal(1)
       txin.script.toString().should.equal('OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -106,7 +103,6 @@ describe('Txin', function () {
       txin.scriptvi.toNumber().should.equal(1)
       txin.script.toString().should.equal('OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#fromBR', function () {
@@ -118,28 +114,23 @@ describe('Txin', function () {
       txin.scriptvi.toNumber().should.equal(1)
       txin.script.toString().should.equal('OP_CHECKMULTISIG')
     })
-
   })
 
   describe('#toHex', function () {
     it('should convert this known hex', function () {
       txin.toHex().should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
-
   })
 
   describe('#toBuffer', function () {
     it('should convert this known buffer', function () {
       txin.toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
-
   })
 
   describe('#toBW', function () {
     it('should convert this known buffer', function () {
       txin.toBW().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
-
   })
-
 })

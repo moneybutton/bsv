@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Work = require('../lib/work')
 let Msg = require('../lib/msg')
@@ -5,6 +6,11 @@ let should = require('chai').should()
 
 describe('Work', function () {
   this.timeout(5000)
+
+  it('should satisfy this basic API', function () {
+    let work = Work()
+    should.exist(work)
+  })
 
   it('should validate this message in a worker', function () {
     let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
@@ -14,5 +20,4 @@ describe('Work', function () {
         result.should.equal(true)
       })
   })
-
 })

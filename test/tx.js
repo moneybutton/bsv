@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Varint = require('../lib/varint')
 let Tx = require('../lib/tx')
@@ -5,7 +6,6 @@ let Txin = require('../lib/txin')
 let Txout = require('../lib/txout')
 let should = require('chai').should()
 let BR = require('../lib/br')
-let BW = require('../lib/bw')
 let Script = require('../lib/script')
 let Sig = require('../lib/sig')
 let Keypair = require('../lib/keypair')
@@ -59,7 +59,6 @@ describe('Tx', function () {
       tx.txouts.length.should.equal(0)
       tx.nlocktime.should.equal(0)
     })
-
   })
 
   describe('#fromObject', function () {
@@ -79,7 +78,6 @@ describe('Tx', function () {
       should.exist(tx.txouts)
       should.exist(tx.nlocktime)
     })
-
   })
 
   describe('#fromJSON', function () {
@@ -99,7 +97,6 @@ describe('Tx', function () {
       should.exist(tx.txouts)
       should.exist(tx.nlocktime)
     })
-
   })
 
   describe('#toJSON', function () {
@@ -112,7 +109,6 @@ describe('Tx', function () {
       should.exist(json.txouts)
       should.exist(json.nlocktime)
     })
-
   })
 
   describe('#fromHex', function () {
@@ -123,7 +119,6 @@ describe('Tx', function () {
     it('should recover from this known tx from the blockchain', function () {
       Tx().fromHex(tx2hex).toHex().should.equal(tx2hex)
     })
-
   })
 
   describe('#fromBuffer', function () {
@@ -134,35 +129,30 @@ describe('Tx', function () {
     it('should recover from this known tx from the blockchain', function () {
       Tx().fromBuffer(tx2buf).toBuffer().toString('hex').should.equal(tx2hex)
     })
-
   })
 
   describe('#fromBR', function () {
     it('should recover from this known tx', function () {
       Tx().fromBR(BR(txbuf)).toBuffer().toString('hex').should.equal(txhex)
     })
-
   })
 
   describe('#toHex', function () {
     it('should produce this known tx', function () {
       Tx().fromHex(txhex).toHex().should.equal(txhex)
     })
-
   })
 
   describe('#toBuffer', function () {
     it('should produce this known tx', function () {
       Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
     })
-
   })
 
   describe('#toBW', function () {
     it('should produce this known tx', function () {
       Tx().fromBuffer(txbuf).toBW().toBuffer().toString('hex').should.equal(txhex)
     })
-
   })
 
   describe('#sighash', function () {
@@ -176,7 +166,6 @@ describe('Tx', function () {
       tx.txoutsvi = Varint(1)
       tx.sighash(Sig.SIGHASH_SINGLE, 1, Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
     })
-
   })
 
   describe('#sign', function () {
@@ -189,7 +178,6 @@ describe('Tx', function () {
       sig1.toString(should.not.equal(sig2.toString()))
       sig1.toString(should.not.equal(sig3.toString()))
     })
-
   })
 
   describe('#verify', function () {
@@ -198,7 +186,6 @@ describe('Tx', function () {
       let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
       tx.verify(sig1, keypair.pubkey, 0, Script()).should.equal(true)
     })
-
   })
 
   describe('#hash', function () {
@@ -207,7 +194,6 @@ describe('Tx', function () {
       let txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
       tx.hash().toString('hex').should.equal(txhashbuf.toString('hex'))
     })
-
   })
 
   describe('#id', function () {
@@ -215,7 +201,6 @@ describe('Tx', function () {
       let tx = Tx().fromBuffer(tx2buf)
       tx.id().toString('hex').should.equal(tx2idhex)
     })
-
   })
 
   describe('#addTxin', function () {
@@ -227,7 +212,6 @@ describe('Tx', function () {
       tx.txinsvi.toNumber().should.equal(1)
       tx.txins.length.should.equal(1)
     })
-
   })
 
   describe('#addTxout', function () {
@@ -239,13 +223,13 @@ describe('Tx', function () {
       tx.txoutsvi.toNumber().should.equal(1)
       tx.txouts.length.should.equal(1)
     })
-
   })
 
   describe('vectors', function () {
     vectors_sighash.forEach(function (vector, i) {
-      if (i === 0)
+      if (i === 0) {
         return
+      }
       it('should pass sighash test vector ' + i, function () {
         let txbuf = new Buffer(vector[0], 'hex')
         let scriptbuf = new Buffer(vector[1], 'hex')
@@ -265,8 +249,9 @@ describe('Tx', function () {
 
     let j = 0
     vectors_tx_valid.forEach(function (vector, i) {
-      if (vector.length === 1)
+      if (vector.length === 1) {
         return
+      }
       it('should correctly serialized/deserialize tx_valid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
@@ -278,8 +263,9 @@ describe('Tx', function () {
 
     j = 0
     vectors_tx_invalid.forEach(function (vector, i) {
-      if (vector.length === 1)
+      if (vector.length === 1) {
         return
+      }
       it('should correctly serialized/deserialize tx_invalid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
@@ -288,7 +274,5 @@ describe('Tx', function () {
       })
       j++
     })
-
   })
-
 })

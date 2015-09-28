@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let should = require('chai').should()
 let Opcode = require('../lib/opcode')
@@ -5,13 +6,15 @@ let Opcode = require('../lib/opcode')
 describe('Opcode', function () {
   it('should create a new Opcode', function () {
     let opcode = new Opcode(5)
+    should.exist(opcode)
   })
 
   it('should have 119 opcodes', function () {
     let i = 0
     for (let key in Opcode) {
-      if (key.indexOf('OP_') !== -1)
+      if (key.indexOf('OP_') !== -1) {
         i++
+      }
     }
     i.should.equal(119)
   })
@@ -32,28 +35,24 @@ describe('Opcode', function () {
     it('should work for 0', function () {
       Opcode().fromNumber(0).num.should.equal(0)
     })
-
   })
 
   describe('#toNumber', function () {
     it('should work for 0', function () {
       Opcode().fromNumber(0).toNumber().should.equal(0)
     })
-
   })
 
   describe('#fromString', function () {
     it('should work for OP_0', function () {
       Opcode().fromString('OP_0').num.should.equal(0)
     })
-
   })
 
   describe('#toString', function () {
     it('should work for OP_0', function () {
       Opcode().fromString('OP_0').toString().should.equal('OP_0')
     })
-
   })
 
   describe('@str', function () {
@@ -61,7 +60,5 @@ describe('Opcode', function () {
       should.exist(Opcode.str)
       Opcode.str[185].should.equal('OP_NOP10')
     })
-
   })
-
 })

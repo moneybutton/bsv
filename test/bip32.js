@@ -272,14 +272,16 @@ describe('BIP32', function () {
   describe('testnet', function () {
     it('should initialize a new BIP32 correctly from a random BIP32', function () {
       let b1 = BIP32.Testnet()
-      b1.fromRandom();(b1.privkey instanceof Privkey.Testnet).should.equal(true)
+      b1.fromRandom()
+      ;(b1.privkey instanceof Privkey.Testnet).should.equal(true)
       let b2 = BIP32.Testnet().fromString(b1.toPublic().toString())
       b2.toPublic().toString().should.equal(b1.toPublic().toString())
     })
 
     it('should generate valid ext pub key for testnet', function () {
       let b = BIP32.Testnet()
-      b.fromRandom();(b.privkey instanceof Privkey.Testnet).should.equal(true)
+      b.fromRandom()
+      ;(b.privkey instanceof Privkey.Testnet).should.equal(true)
       b.toPublic().toString().substring(0, 4).should.equal('tpub')
     })
   })
@@ -391,7 +393,8 @@ describe('BIP32', function () {
     })
 
     it('should return a tprv string', function () {
-      tip32.toString().slice(0, 4).should.equal('tprv');(tip32.privkey instanceof Privkey.Testnet).should.equal(true)
+      tip32.toString().slice(0, 4).should.equal('tprv')
+      ;(tip32.privkey instanceof Privkey.Testnet).should.equal(true)
     })
 
     it('should return a tpub string', function () {

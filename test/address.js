@@ -49,7 +49,8 @@ describe('Address', function () {
     it('should throw for invalid buffers', function () {
       (function () {
         Address().fromBuffer(Buffer.concat([buf, new Buffer([0])]))
-      }).should.throw('address buffers must be exactly 21 bytes');(function () {
+      }).should.throw('address buffers must be exactly 21 bytes')
+      ;(function () {
         let buf2 = new Buffer(buf)
         buf2[0] = 50
         Address().fromBuffer(buf2)
@@ -179,7 +180,8 @@ describe('Address', function () {
       script = addr.toScript()
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
 
-      addr.version = 50;(function () {
+      addr.version = 50
+      ;(function () {
         script = addr.toScript()
       }).should.throw('script must be either pubkeyhash or scripthash')
     })
@@ -203,7 +205,8 @@ describe('Address', function () {
     it('should throw an error on this invalid version', function () {
       let address = new Address()
       address.fromString(str)
-      address.version = 1;(function () {
+      address.version = 1
+      ;(function () {
         address.validate()
       }).should.throw('invalid version')
     })
@@ -211,7 +214,8 @@ describe('Address', function () {
     it('should throw an error on this invalid version', function () {
       let address = new Address()
       address.fromString(str)
-      address.hashbuf = Buffer.concat([address.hashbuf, new Buffer([0])]);(function () {
+      address.hashbuf = Buffer.concat([address.hashbuf, new Buffer([0])])
+      ;(function () {
         address.validate()
       }).should.throw('hashbuf must be a buffer of 20 bytes')
     })
