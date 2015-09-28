@@ -7,10 +7,10 @@
   "main": "index.js",
   "scripts": {
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
-    "test-node": "gulp test-node",
-    "test-browser": "gulp test-karma",
-    "test": "gulp test-node && gulp test-browser",
-    "build": "gulp build"
+    "test-node": "./node_modules/.bin/standard && ./node_modules/.bin/gulp test-node",
+    "test-browser": "./node_modules/.bin/gulp test-karma",
+    "test": "npm run test-node && npm run test-browser",
+    "build": "./node_modules/.bin/gulp build"
   },
   "browserify": {
     "transform": [
