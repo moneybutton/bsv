@@ -40,7 +40,7 @@ describe('ECDSA', function () {
       should.exist(ecdsa.sig.recovery)
     })
 
-    it('should calulate this known pubkey recovery number', function () {
+    it('should calculate this known pubkey recovery number', function () {
       let hashbuf = Hash.sha256(new Buffer('some data'))
       let r = BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
       let s = BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
@@ -51,6 +51,17 @@ describe('ECDSA', function () {
 
       ecdsa.calcrecovery()
       ecdsa.sig.recovery.should.equal(1)
+    })
+
+    it('should do a round trip with signature parsing', function () {
+      ecdsa.calcrecovery()
+      let pubkey = ecdsa.keypair.pubkey
+      let sig = ecdsa.sig
+      let hashbuf = ecdsa.hashbuf
+      ECDSA.sig2pubkey(sig, hashbuf).toHex().should.equal(pubkey.toHex())
+
+      sig = sig.fromCompact(sig.toCompact())
+      ECDSA.sig2pubkey(sig, hashbuf).toHex().should.equal(pubkey.toHex())
     })
   })
 

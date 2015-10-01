@@ -3,6 +3,7 @@
 let BN = require('../lib/bn')
 let should = require('chai').should()
 let Sig = require('../lib/sig')
+let vectors = require('./vectors/sig')
 
 describe('Sig', function () {
   it('should make a blank signature', function () {
@@ -96,13 +97,14 @@ describe('Sig', function () {
     it('should create a signature from a compressed signature', function () {
       let blank = new Buffer(32)
       blank.fill(0)
-      let compressed = Buffer.concat([
+      let compact = Buffer.concat([
         new Buffer([0 + 27 + 4]),
         blank,
         blank
       ])
       let sig = new Sig()
-      sig.fromCompact(compressed)
+      sig.fromCompact(compact)
+      sig.compressed.should.equal(true)
       sig.r.cmp(0).should.equal(0)
       sig.s.cmp(0).should.equal(0)
     })
@@ -318,6 +320,30 @@ describe('Sig', function () {
       let sig = new Sig({r: r, s: s})
       let hex = sig.toString()
       hex.should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
+    })
+  })
+
+  describe('vectors', function () {
+    // TODO: These vectors were taken from BitcoinJS-lib during a debugging
+    // expedition. I only took a subset relevant for the stuff I wanted to
+    // test, but it would be valuable to revisit these test vectors and make
+    // sure all of them pass.
+    vectors.valid.forEach(function (vector) {
+      it('should pass this vector', function () {
+        let compact = vector.compact
+        let sig = Sig().fromCompact(new Buffer(compact.hex, 'hex'))
+        sig.recovery.should.equal(compact.i)
+        sig.compressed.should.equal(compact.compressed)
+        sig.toCompact().toString('hex').should.equal(compact.hex)
+      })
+    })
+
+    vectors.invalid.compact.forEach(function (compact) {
+      it('should pass this vector', function () {
+        ;(function () {
+          Sig().fromCompact(new Buffer(compact.hex, 'hex'))
+        }).should.throw()
+      })
     })
   })
 })
