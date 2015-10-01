@@ -54,6 +54,30 @@ describe('ECDSA', function () {
     })
   })
 
+  describe('@calcrecovery', function () {
+    it('should calculate pubkey recovery number same as #calcrecovery', function () {
+      ecdsa.randomK()
+      ecdsa.sign()
+      let sig1 = ecdsa.calcrecovery().sig
+      let sig2 = ECDSA.calcrecovery(ecdsa.sig, ecdsa.keypair.pubkey, ecdsa.hashbuf)
+      Buffer.compare(sig1.toCompact(), sig2.toCompact()).should.equal(0)
+    })
+
+    it('should calulate this known pubkey recovery number same as #calcrecovery', function () {
+      let hashbuf = Hash.sha256(new Buffer('some data'))
+      let r = BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+      let s = BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+      let ecdsa = new ECDSA()
+      ecdsa.keypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test')))))
+      ecdsa.hashbuf = hashbuf
+      ecdsa.sig = new Sig({r: r, s: s})
+
+      let sig1 = ecdsa.calcrecovery().sig
+      let sig2 = ECDSA.calcrecovery(ecdsa.sig, ecdsa.keypair.pubkey, ecdsa.hashbuf)
+      Buffer.compare(sig1.toCompact(), sig2.toCompact()).should.equal(0)
+    })
+  })
+
   describe('#fromString', function () {
     it('should to a round trip with to string', function () {
       let str = ecdsa.toString()
