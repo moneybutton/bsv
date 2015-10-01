@@ -136,6 +136,36 @@ describe('ECDSA', function () {
     })
   })
 
+  describe('@sig2pubkey', function () {
+    it('should calculate the correct public key', function () {
+      ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.sign()
+      ecdsa.sig.recovery = 0
+      let pubkey1 = ecdsa.sig2pubkey()
+      let pubkey2 = ECDSA.sig2pubkey(ecdsa.sig, ecdsa.hashbuf)
+      pubkey1.toString().should.equal(pubkey2.toString())
+    })
+
+    it('should calculate the correct public key for this signature with low s', function () {
+      ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
+      ecdsa.sig.recovery = 0
+      let pubkey1 = ecdsa.sig2pubkey()
+      let pubkey2 = ECDSA.sig2pubkey(ecdsa.sig, ecdsa.hashbuf)
+      pubkey1.toString().should.equal(pubkey2.toString())
+    })
+
+    it('should calculate the correct public key for this signature with high s', function () {
+      ecdsa.k = BN('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.sign()
+      ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
+      ecdsa.sig.recovery = 1
+      let pubkey1 = ecdsa.sig2pubkey()
+      let pubkey2 = ECDSA.sig2pubkey(ecdsa.sig, ecdsa.hashbuf)
+      pubkey1.toString().should.equal(pubkey2.toString())
+    })
+  })
+
   describe('#verifystr', function () {
     it('should return an error if the hash is invalid', function () {
       let ecdsa = new ECDSA()
