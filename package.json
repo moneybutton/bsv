@@ -40,6 +40,6 @@
   },
   "dependencies": {
     "aes": "^0.1.0",
-    "bitcore": "^0.13.0"
+    "bitcore-lib": "^0.13.7"
   }
 }
