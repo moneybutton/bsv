@@ -23,7 +23,7 @@ bower install bitcore-message
 To sign a message:
 
 ```javascript
-var bitcore = require('bitcore');
+var bitcore = require('bitcore-lib');
 var Message = require('bitcore-message');
 
 var privateKey = bitcore.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4');
