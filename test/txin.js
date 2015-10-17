@@ -3,8 +3,12 @@
 let should = require('chai').should()
 let Script = require('../lib/script')
 let Txin = require('../lib/txin')
+let Txout = require('../lib/txout')
 let Varint = require('../lib/varint')
 let BR = require('../lib/br')
+let BN = require('../lib/bn')
+let Keypair = require('../lib/keypair')
+let Address = require('../lib/address')
 
 describe('Txin', function () {
   let txhashbuf = new Buffer(32)
@@ -38,6 +42,12 @@ describe('Txin', function () {
 
   it('should calculate scriptvi correctly when creating a new txin', function () {
     Txin(txin.txhashbuf, txin.txoutnum, txin.script, txin.seqnum).scriptvi.toNumber().should.equal(1)
+  })
+
+  describe('#initialize', function () {
+    it('should default to 0xffffffff seqnum', function () {
+      Txin().seqnum.should.equal(0xffffffff)
+    })
   })
 
   describe('#fromObject', function () {
@@ -131,6 +141,19 @@ describe('Txin', function () {
   describe('#toBW', function () {
     it('should convert this known buffer', function () {
       txin.toBW().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+    })
+  })
+
+  describe('#fromTxout', function () {
+    it('should convert from pubkeyhash out', function () {
+      let keypair = Keypair().fromRandom()
+      let address = Address().fromPubkey(keypair.pubkey)
+      let txout = Txout(BN(1000), Script().fromPubkeyhash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, keypair.pubkey)
+      should.exist(txin)
     })
   })
 })
