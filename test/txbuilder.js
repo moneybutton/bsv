@@ -3,7 +3,6 @@
 let should = require('chai').should()
 let Txbuilder = require('../lib/txbuilder')
 let Txverifier = require('../lib/txverifier')
-let Txoutmap = require('../lib/txoutmap')
 let Tx = require('../lib/tx')
 let Txout = require('../lib/txout')
 let Address = require('../lib/address')
@@ -55,29 +54,28 @@ describe('Txbuilder', function () {
     let txout1 = Txout(BN(1e8), scriptout1)
     let txout2 = Txout(BN(1e8 + 0.001e8), scriptout2) // contains extra that we will use for the fee
 
-    let utxoutmap = {
-      // pubkeyhash ("normal" output)
-      '0000000000000000000000000000000000000000000000000000000000000000:0': {txout: txout1, pubkey: keypair1.pubkey},
-      '0100000000000000000000000000000000000000000000000000000000000000:0': {txout: txout2, pubkey: keypair2.pubkey}
+    let txhashbuf = new Buffer(32)
+    txhashbuf.fill(0)
+    let txoutnum1 = 0
+    let txoutnum2 = 1
 
-    // p2sh multisig
-    // '0000000000000000000000000000000000000000000000000000000000000000:1': {txout: Txout(), redeemScript: Script()}
-    }
-
-    txb.setUTxoutMap(utxoutmap)
-    txb.setFee(BN(0.001e8))
+    txb.setFeePerKBNum(0.0001e8)
     txb.setChangeAddress(changeaddr)
+    txb.from(txhashbuf, txoutnum1, txout1, keypair1.pubkey)
+    txb.from(txhashbuf, txoutnum2, txout2, keypair2.pubkey)
     txb.to(BN(1e8), saddr1) // pubkeyhash address
     txb.to(BN(1e8), saddr2) // p2sh address
+    // txb.randomizeInputs()
+    // txb.randomizeOutputs()
 
     txb.build()
     txb.sign(0, keypair1)
     txb.sign(1, keypair2)
 
-    let txoutmap = Txoutmap()
-    txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000000', 'hex'), 0, txout1)
-    txoutmap.add(new Buffer('0000000000000000000000000000000000000000000000000000000000000001', 'hex'), 0, txout2)
-    Txverifier.verify(txb.tx, txoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+    txb.tx.txouts[1].valuebn.gt(0).should.equal(true)
+    txb.tx.txouts[1].valuebn.gt(546).should.equal(true)
+
+    Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
   })
 
   describe('#to', function () {
@@ -87,7 +85,7 @@ describe('Txbuilder', function () {
       let address = Address().fromRedeemScript(Script().fromScripthash(hashbuf))
       let txb = Txbuilder()
       txb.to(BN(0), address)
-      txb.toTxouts.length.should.equal(1)
+      txb.txouts.length.should.equal(1)
     })
 
     it('should add a pubkeyhash address', function () {
@@ -95,7 +93,7 @@ describe('Txbuilder', function () {
       let address = Address().fromPubkey(pubkey)
       let txb = Txbuilder()
       txb.to(BN(0), address)
-      txb.toTxouts.length.should.equal(1)
+      txb.txouts.length.should.equal(1)
     })
   })
 })
