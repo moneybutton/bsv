@@ -45,9 +45,9 @@ gulp.task('build-bundle', function () {
       // since the pollyfill must be required exactly once. If you build things
       // yourself with babel, you will need to be sure to include the polyfill
       // exactly once yourself.
-      .add(require.resolve('babelify/polyfill'))
+      .add(require.resolve('babel-polyfill'))
       .transform(envify)
-      .transform(babelify.configure({ignore: /node_modules/}))
+      .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
       .add(require.resolve('./index.js'), {entry: true})
       .bundle()
       .on('error', reject)
@@ -60,7 +60,7 @@ gulp.task('build-worker', ['build-bundle'], function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
       .transform(envify)
-      .transform(babelify.configure({ignore: /node_modules/}))
+      .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
       .on('error', reject)
@@ -72,9 +72,9 @@ gulp.task('build-worker', ['build-bundle'], function () {
 gulp.task('build-bundle-min', ['build-worker'], function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
-      .add(require.resolve('babelify/polyfill'))
+      .add(require.resolve('babel-polyfill'))
       .transform(envify)
-      .transform(babelify.configure({ignore: /node_modules/}))
+      .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
       .transform(uglifyify)
       .require(require.resolve('./index.js'), {entry: true})
       .bundle()
@@ -88,7 +88,7 @@ gulp.task('build-worker-min', ['build-bundle-min'], function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
       .transform(envify)
-      .transform(babelify.configure({ignore: /node_modules/}))
+      .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
       .transform(uglifyify)
       .require(require.resolve('./lib/worker-browser.js'), {entry: true})
       .bundle()
@@ -107,7 +107,7 @@ gulp.task('build-tests', ['build-worker'], function () {
       }
       let b = browserify({debug: true})
         .transform(envify)
-        .transform(babelify.configure({ignore: /node_modules/}))
+        .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
       for (let file of files) {
         b.add(file)
       }
