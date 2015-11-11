@@ -401,4 +401,11 @@ describe('BIP32', function () {
       tip32.toPublic().toString().slice(0, 4).should.equal('tpub')
     })
   })
+
+  describe('#isPrivate', function () {
+    let bip32priv = BIP32().fromRandom()
+    let bip32pub = bip32priv.toPublic()
+    bip32priv.isPrivate().should.equal(true)
+    bip32pub.isPrivate().should.equal(false)
+  })
 })
