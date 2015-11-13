@@ -25,9 +25,9 @@
       }
     },
     "elliptic": {
-      "version": "6.0.1",
-      "from": "elliptic@6.0.1",
-      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.0.1.tgz",
+      "version": "6.0.2",
+      "from": "elliptic@6.0.2",
+      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.0.2.tgz",
       "dependencies": {
         "brorand": {
           "version": "1.0.5",
@@ -69,9 +69,9 @@
               "resolved": "https://registry.npmjs.org/create-hash/-/create-hash-1.1.2.tgz",
               "dependencies": {
                 "cipher-base": {
-                  "version": "1.0.1",
+                  "version": "1.0.2",
                   "from": "cipher-base@>=1.0.1 <2.0.0",
-                  "resolved": "https://registry.npmjs.org/cipher-base/-/cipher-base-1.0.1.tgz"
+                  "resolved": "https://registry.npmjs.org/cipher-base/-/cipher-base-1.0.2.tgz"
                 },
                 "ripemd160": {
                   "version": "1.0.1",
