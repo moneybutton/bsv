@@ -84,7 +84,7 @@
   },
   "dependencies": {
     "aes": "0.1.0",
-    "bn.js": "4.1.1",
+    "bn.js": "4.2.0",
     "bs58": "3.0.0",
     "elliptic": "6.0.2",
     "hash.js": "1.0.3",
@@ -95,7 +95,7 @@
     "unorm": "1.4.1"
   },
   "devDependencies": {
-    "babel-polyfill": "6.1.19",
+    "babel-polyfill": "6.2.0",
     "babel-preset-es2015": "6.1.18",
     "babel-preset-react": "6.1.18",
     "babelify": "7.2.0",
