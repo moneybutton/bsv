@@ -8,9 +8,9 @@
       "resolved": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz"
     },
     "bn.js": {
-      "version": "4.2.0",
-      "from": "bn.js@4.2.0",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.2.0.tgz"
+      "version": "4.3.0",
+      "from": "bn.js@4.3.0",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.3.0.tgz"
     },
     "bs58": {
       "version": "3.0.0",

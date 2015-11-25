@@ -84,7 +84,7 @@
   },
   "dependencies": {
     "aes": "0.1.0",
-    "bn.js": "4.2.0",
+    "bn.js": "4.3.0",
     "bs58": "3.0.0",
     "elliptic": "6.0.2",
     "hash.js": "1.0.3",
@@ -108,7 +108,7 @@
     "gulp": "3.9.0",
     "gulp-karma": "0.0.5",
     "gulp-mocha": "2.2.0",
-    "istanbul": "0.4.0",
+    "istanbul": "0.4.1",
     "karma": "0.13.15",
     "karma-firefox-launcher": "0.1.7",
     "karma-mocha": "0.2.1",
