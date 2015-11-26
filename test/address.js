@@ -58,6 +58,15 @@ describe('Address', function () {
     })
   })
 
+  describe('#fromHashbuf', function () {
+    it('should make an address from a hashbuf', function () {
+      let buf = new Buffer(20)
+      buf.fill(0)
+      let address = Address().fromHashbuf(buf)
+      address.toString().should.equal('1111111111111111111114oLvT2')
+    })
+  })
+
   describe('#fromPubkey', function () {
     it('should make this address from a compressed pubkey', function () {
       let pubkey = new Pubkey()
