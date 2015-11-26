@@ -45,13 +45,29 @@ available in the latest stable releases of node.js. fullnode is not intended to
 work with node.js 0.10, although it does work with node 0.12 with the --harmony
 flag.
 
-## Alpha Caveat ##
+Alpha Caveat
+------------
 
 fullnode is still alpha, and has an unstable API. Once the API has been
 finalized, and the code audited, version 1.0 will be released. It is
 recommended not to use fullnode for production software until that time.
 
-## Documentation ##
+Environment Variables
+---------------------
+- `FULLNODE_JS_BASE_URL` - Default "/".
+- `FULLNODE_JS_BUNDLE_FILE` - Default "fullnode.js"
+- `FULLNODE_JS_WORKER_FILE` - Default "fullnode-worker.js"
+- `FULLNODE_JS_BUNDLE_MIN_FILE` - Default "fullnode-min.js"
+- `FULLNODE_JS_WORKER_MIN_FILE` - Default "fullnode-worker-min.js"
+- `FULLNODE_NETWORK` - Default "mainnet"
+
+You can change the network to run the CLI in testnet mode:
+```
+FULLNODE_NETWORK=testnet ./bin/fullnode.js
+```
+
+Documentation
+-------------
 
 While fullnode is under heavy development, the API changes frequently, and the
 documentation is not kept up-to-date. However there is some documentation, and
@@ -62,7 +78,8 @@ npm install -g groc
 groc
 ```
 
-## License ##
+License
+-------
 
 In order to support maximum interoperability with other software, fullnode is
 MIT-licensed. See LICENSE.
