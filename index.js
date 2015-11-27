@@ -92,7 +92,6 @@ fullnode.deps.Buffer = Buffer
 fullnode.deps.elliptic = require('elliptic')
 fullnode.deps.hashjs = require('hash.js')
 fullnode.deps.pbkdf2compat = require('pbkdf2-compat')
-fullnode.deps.unorm = require('unorm')
 
 // Mainnet classes for your convenience (in case default is not what you want).
 let Mainnet = {}
