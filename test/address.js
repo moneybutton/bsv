@@ -1,10 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
-let Constants = require('../lib/constants')
-let Pubkey = require('../lib/pubkey')
 let Address = require('../lib/address')
+let Constants = require('../lib/constants')
+let Hash = require('../lib/hash')
+let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
+let should = require('chai').should()
 
 describe('Address', function () {
   let pubkeyhash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex')
@@ -58,11 +59,11 @@ describe('Address', function () {
     })
   })
 
-  describe('#fromHashbuf', function () {
+  describe('#fromPubkeyHashbuf', function () {
     it('should make an address from a hashbuf', function () {
       let buf = new Buffer(20)
       buf.fill(0)
-      let address = Address().fromHashbuf(buf)
+      let address = Address().fromPubkeyHashbuf(buf)
       address.toString().should.equal('1111111111111111111114oLvT2')
     })
   })
@@ -83,6 +84,15 @@ describe('Address', function () {
       pubkey.compressed = false
       address.fromPubkey(pubkey, 'mainnet')
       address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX')
+    })
+  })
+
+  describe('#fromRedeemScriptHashbuf', function () {
+    it('should make this address from a script', function () {
+      let script = Script().fromString('OP_CHECKMULTISIG')
+      let hashbuf = Hash.sha256ripemd160(script.toBuffer())
+      let address = Address().fromRedeemScriptHashbuf(hashbuf)
+      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
   })
 
