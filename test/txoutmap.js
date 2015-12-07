@@ -33,6 +33,28 @@ describe('Txoutmap', function () {
     })
   })
 
+  describe('#toJSON', function () {
+    it('convert to json', function () {
+      let txoutmap = Txoutmap().add(txhashbuf, 0, txout)
+        .add(txhashbuf, 1, txout)
+        .add(txhashbuf, 2, txout)
+      let json = txoutmap.toJSON()
+      Object.keys(json).length.should.equal(3)
+    })
+  })
+
+  describe('#fromJSON', function () {
+    it('convert to/from json roundtrip', function () {
+      let txoutmap = Txoutmap().add(txhashbuf, 0, txout)
+        .add(txhashbuf, 1, txout)
+        .add(txhashbuf, 2, txout)
+      let txoutmap2 = Txoutmap().fromJSON(txoutmap.toJSON())
+      txoutmap2.get(txhashbuf, 0).toHex().should.equal(txoutmap.get(txhashbuf, 0).toHex())
+      txoutmap2.get(txhashbuf, 1).toHex().should.equal(txoutmap.get(txhashbuf, 1).toHex())
+      txoutmap2.get(txhashbuf, 2).toHex().should.equal(txoutmap.get(txhashbuf, 2).toHex())
+    })
+  })
+
   describe('#add', function () {
     it('should add a txout to the txoutmap', function () {
       let txoutmap = Txoutmap().add(txhashbuf, 0, txout)

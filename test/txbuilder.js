@@ -14,6 +14,8 @@ let Privkey = require('../lib/privkey')
 let Keypair = require('../lib/keypair')
 
 describe('Txbuilder', function () {
+  let txb
+
   it('should make a new txbuilder', function () {
     let txb = new Txbuilder()
     ;(txb instanceof Txbuilder).should.equal(true)
@@ -28,7 +30,7 @@ describe('Txbuilder', function () {
   })
 
   it('should make a new tx following this API', function () {
-    let txb = new Txbuilder()
+    txb = new Txbuilder()
 
     // make change address
     let privkey = Privkey().fromBN(BN(1))
@@ -76,6 +78,34 @@ describe('Txbuilder', function () {
     txb.tx.txouts[1].valuebn.gt(546).should.equal(true)
 
     Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+  })
+
+  describe('#toJSON', function () {
+    it('should convert this txb to JSON', function () {
+      let json = txb.toJSON()
+      should.exist(json.tx)
+      should.exist(json.txins)
+      should.exist(json.txins[0])
+      should.exist(json.txouts)
+      should.exist(json.utxoutmap)
+      should.exist(json.txouts[0])
+      should.exist(json.changeAddress)
+      should.exist(json.feePerKBNum)
+    })
+  })
+
+  describe('#fromJSON', function () {
+    it('should convert to/from json isomorphically', function () {
+      let json = txb.toJSON()
+      let txb2 = Txbuilder().fromJSON(json)
+      let json2 = txb2.toJSON()
+      json2.tx.should.equal(json.tx)
+      json2.txins[0].should.equal(json.txins[0])
+      json2.txouts[0].should.equal(json.txouts[0])
+      JSON.stringify(json2.utxoutmap).should.equal(JSON.stringify(json.utxoutmap))
+      json2.changeAddress.should.equal(json.changeAddress)
+      json2.feePerKBNum.should.equal(json.feePerKBNum)
+    })
   })
 
   describe('#to', function () {
