@@ -3,6 +3,7 @@
 let Address = require('../lib/address')
 let Constants = require('../lib/constants')
 let Hash = require('../lib/hash')
+let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
 let should = require('chai').should()
@@ -84,6 +85,16 @@ describe('Address', function () {
       pubkey.compressed = false
       address.fromPubkey(pubkey, 'mainnet')
       address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX')
+    })
+  })
+
+  describe('#fromPrivkey', function () {
+    it('should make this address from a compressed pubkey', function () {
+      let privkey = Privkey().fromRandom()
+      let pubkey = Pubkey().fromPrivkey(privkey)
+      let address = Address().fromPrivkey(privkey)
+      let address2 = Address().fromPubkey(pubkey)
+      address.toString().should.equal(address2.toString())
     })
   })
 
