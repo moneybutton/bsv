@@ -75,8 +75,11 @@ describe('Txbuilder', function () {
     txb.sign(1, keypair2)
 
     txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashbuf.toString('hex'))
-    txb.tx.txouts[1].valuebn.gt(0).should.equal(true)
-    txb.tx.txouts[1].valuebn.gt(546).should.equal(true)
+    txb.tx.txouts[0].valuebn.eq(1e8).should.equal(true)
+    txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
+    txb.tx.txouts[2].valuebn.gt(0).should.equal(true)
+    txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
+    txb.tx.txouts[2].valuebn.eq(0.001e8 - 0.0001e8).should.equal(true)
     txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
 
     Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
