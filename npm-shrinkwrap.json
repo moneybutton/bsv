@@ -25,18 +25,18 @@
       }
     },
     "elliptic": {
-      "version": "6.0.2",
-      "from": "https://registry.npmjs.org/elliptic/-/elliptic-6.0.2.tgz",
-      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.0.2.tgz",
+      "version": "6.1.0",
+      "from": "elliptic@6.1.0",
+      "resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.1.0.tgz",
       "dependencies": {
         "brorand": {
           "version": "1.0.5",
-          "from": "https://registry.npmjs.org/brorand/-/brorand-1.0.5.tgz",
+          "from": "brorand@>=1.0.1 <2.0.0",
           "resolved": "https://registry.npmjs.org/brorand/-/brorand-1.0.5.tgz"
         },
         "inherits": {
           "version": "2.0.1",
-          "from": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz",
+          "from": "inherits@>=2.0.1 <3.0.0",
           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
         }
       }
