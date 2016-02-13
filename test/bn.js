@@ -149,26 +149,40 @@ describe('BN', function () {
     })
 
     it('should mod a small number', function () {
+      let bn1 = BN(-50)
+      let bn2 = BN(25)
+      let bn3 = bn1.mod(bn2)
+      bn3.toString().should.equal('0')
+    })
+
+    it('should mod a small number', function () {
       let bn1 = BN(50)
       let bn2 = BN(47)
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('3')
     })
+
+    it('should mod a small number', function () {
+      let bn1 = BN(-50)
+      let bn2 = BN(47)
+      let bn3 = bn1.mod(bn2)
+      bn3.toString().should.equal('-3')
+    })
   })
 
   describe('#umod', function () {
-    it('should umod a small number', function () {
-      let bn1 = BN(-50)
+    it('should mod a small number', function () {
+      let bn1 = BN(50)
       let bn2 = BN(25)
       let bn3 = bn1.umod(bn2)
-      bn3.toString().should.equal('25')
+      bn3.toString().should.equal('0')
     })
 
-    it('should umod a small number', function () {
-      let bn1 = BN(-50)
+    it('should mod a small number', function () {
+      let bn1 = BN(50)
       let bn2 = BN(47)
       let bn3 = bn1.umod(bn2)
-      bn3.toString().should.equal('44')
+      bn3.toString().should.equal('3')
     })
   })
 
