@@ -1,7 +1,7 @@
 fullnode (alpha)
 ================
 
-fullnode is an ES6 (javascript) implementation of the Genesis Blockchain
+fullnode is an ES6 (javascript) implementation of the Bitcoin Blockchain
 intended to satisfy certain goals:
 
 1. Bring the blockchain to web browsers and node.js in a decentralized,
