@@ -2,6 +2,7 @@
 'use strict'
 let should = require('chai').should()
 let Struct = require('../lib/struct')
+let sinon = require('sinon')
 let BR = require('../lib/br')
 
 describe('Struct', function () {
@@ -65,11 +66,29 @@ describe('Struct', function () {
     })
   })
 
+  describe('#fromFastBuffer', function () {
+    it('should call fromBuffer', function () {
+      let struct = Struct()
+      struct.fromBuffer = sinon.spy()
+      struct.fromFastBuffer()
+      struct.fromBuffer.calledOnce.should.equal(true)
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should throw a not implemented error', function () {
       (function () {
         Struct().toBuffer()
       }).should.throw('not implemented')
+    })
+  })
+
+  describe('#toFastBuffer', function () {
+    it('should call toBuffer', function () {
+      let struct = Struct()
+      struct.toBuffer = sinon.spy()
+      struct.toFastBuffer()
+      struct.toBuffer.calledOnce.should.equal(true)
     })
   })
 
