@@ -1,9 +1,10 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
 let BIP32 = require('../lib/bip32')
 let Base58Check = require('../lib/base58check')
 let Privkey = require('../lib/privkey')
+let asink = require('asink')
+let should = require('chai').should()
 
 describe('BIP32', function () {
   // test vectors: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
@@ -378,6 +379,19 @@ describe('BIP32', function () {
     })
   })
 
+  describe('#asyncFromString', function () {
+    it('should make a bip32 from a string asynchronously', function () {
+      return asink(function *() {
+        let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+        let bip32 = BIP32().fromString(str)
+        should.exist(bip32)
+        let bip32b = yield BIP32().asyncFromString(str)
+        bip32.toString().should.equal(str)
+        bip32.toString().should.equal(bip32b.toString())
+      }, this)
+    })
+  })
+
   describe('#toString', function () {
     let bip32 = BIP32()
     bip32.fromRandom()
@@ -399,6 +413,17 @@ describe('BIP32', function () {
 
     it('should return a tpub string', function () {
       tip32.toPublic().toString().slice(0, 4).should.equal('tpub')
+    })
+  })
+
+  describe('#asyncToString', function () {
+    it('should convert to a string same as toString', function () {
+      return asink(function *() {
+        let bip32 = BIP32().fromRandom()
+        let str1 = bip32.toString()
+        let str2 = yield bip32.asyncToString()
+        str1.should.equal(str2)
+      }, this)
     })
   })
 

@@ -1,12 +1,10 @@
 /* global describe,it */
 'use strict'
-let BIP32 = require('../lib/bip32')
 let WorkersResult = require('../lib/workers-result')
 let cmp = require('../lib/cmp')
 let should = require('chai').should()
 
 describe('WorkersResult', function () {
-
   it('should satisfy this basic API', function () {
     let workersResult = WorkersResult()
     should.exist(workersResult)
@@ -14,7 +12,7 @@ describe('WorkersResult', function () {
 
   describe('#fromResult', function () {
     it('should make a workersResult from a string', function () {
-      let result = "test result"
+      let result = 'test result'
       let workersResult = WorkersResult().fromResult(result, 0)
       cmp(workersResult.resbuf, new Buffer(JSON.stringify(result))).should.equal(true)
       workersResult.isError.should.equal(false)
@@ -34,7 +32,7 @@ describe('WorkersResult', function () {
 
   describe('#toBuffer', function () {
     it('should make a buffer from a workersResult', function () {
-      let result = "test result"
+      let result = 'test result'
       let workersResult = WorkersResult().fromResult(result, 0)
       workersResult.toBuffer().length.should.greaterThan(0)
     })
@@ -48,7 +46,7 @@ describe('WorkersResult', function () {
 
   describe('#fromBuffer', function () {
     it('should make a workersResult from a workersResult buffer', function () {
-      let result = "test result"
+      let result = 'test result'
       let workersResult = WorkersResult().fromResult(result, 0)
       let buf = workersResult.toBuffer()
       workersResult = WorkersResult().fromBuffer(buf)
@@ -63,5 +61,4 @@ describe('WorkersResult', function () {
       cmp(workersResult.resbuf, new Buffer(JSON.stringify(error.message))).should.equal(true)
     })
   })
-
 })

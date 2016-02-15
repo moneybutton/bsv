@@ -68,8 +68,9 @@ fullnode.Txin = require('./lib/txin')
 fullnode.Txout = require('./lib/txout')
 fullnode.Txverifier = require('./lib/txverifier')
 fullnode.Varint = require('./lib/varint')
-fullnode.Work = require('./lib/work')
 fullnode.Workers = require('./lib/workers')
+fullnode.WorkersCmd = require('./lib/workers-cmd')
+fullnode.WorkersResult = require('./lib/workers-result')
 
 // Experimental, nonstandard, or unstable features.
 fullnode.ACH = require('./lib/ach')
