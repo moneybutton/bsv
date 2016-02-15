@@ -86,6 +86,13 @@ describe('Pubkey', function () {
     })
   })
 
+  describe('#fromFastBuffer', function () {
+    it('should convert from this known fast buffer', function () {
+      let pubkey = Pubkey().fromFastBuffer(new Buffer('01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'))
+      pubkey.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+    })
+  })
+
   describe('#fromDER', function () {
     it('should parse this uncompressed public key', function () {
       let pk = new Pubkey()
@@ -143,6 +150,15 @@ describe('Pubkey', function () {
       let pk = new Pubkey()
       pk.fromX(true, x)
       pk.toBuffer().toString('hex').should.equal('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+    })
+  })
+
+  describe('#toFastBuffer', function () {
+    it('should return fast buffer', function () {
+      let x = BN.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
+      let pk = new Pubkey()
+      pk.fromX(true, x)
+      pk.toFastBuffer().toString('hex').should.equal('01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
     })
   })
 
