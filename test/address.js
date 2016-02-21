@@ -133,6 +133,17 @@ describe('Address', function () {
     })
   })
 
+  describe('#asyncFromRedeemScript', function () {
+    it('should derive the same as fromRedeemScript', function () {
+      return asink(function *() {
+        let script = Script().fromString('OP_CHECKMULTISIG')
+        let address1 = Address().fromRedeemScript(script)
+        let address2 = yield Address().asyncFromRedeemScript(script)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
   describe('#fromString', function () {
     it('should derive from this known address string mainnet', function () {
       let address = new Address()
@@ -162,6 +173,16 @@ describe('Address', function () {
       address.version = Constants.Testnet.Address['scripthash']
       address.fromString(address.toString())
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
+    })
+  })
+
+  describe('#asyncFromString', function () {
+    it('should derive the same as fromString', function () {
+      return asink(function *() {
+        let address1 = Address().fromString(str)
+        let address2 = yield Address().asyncFromString(str)
+        address1.toString().should.equal(address2.toString())
+      }, this)
     })
   })
 
@@ -234,6 +255,16 @@ describe('Address', function () {
       let address = new Address()
       address.fromString(str)
       address.toString().should.equal(str)
+    })
+  })
+
+  describe('#asyncToString', function () {
+    it('should output the same as toString', function () {
+      return asink(function *() {
+        let str1 = Address().fromString(str).toString()
+        let str2 = yield Address().fromString(str).asyncToString()
+        str1.should.equal(str2)
+      }, this)
     })
   })
 
