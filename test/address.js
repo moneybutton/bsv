@@ -6,6 +6,7 @@ let Hash = require('../lib/hash')
 let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
+let asink = require('asink')
 let should = require('chai').should()
 
 describe('Address', function () {
@@ -85,6 +86,17 @@ describe('Address', function () {
       pubkey.compressed = false
       address.fromPubkey(pubkey, 'mainnet')
       address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX')
+    })
+  })
+
+  describe('#asyncFromPubkey', function () {
+    it('should asynchronously convert pubkey to address same as fromPubkey', function () {
+      return asink(function *() {
+        let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
+        let address1 = Address().fromPubkey(pubkey)
+        let address2 = yield Address().asyncFromPubkey(pubkey)
+        address1.toString().should.equal(address2.toString())
+      }, this)
     })
   })
 
