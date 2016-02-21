@@ -1,10 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
-let Pubkey = require('../lib/pubkey')
-let Point = require('../lib/point')
 let BN = require('../lib/bn')
+let Point = require('../lib/point')
 let Privkey = require('../lib/privkey')
+let Pubkey = require('../lib/pubkey')
+let asink = require('asink')
+let should = require('chai').should()
 
 describe('Pubkey', function () {
   it('should create a blank public key', function () {
@@ -51,6 +52,17 @@ describe('Pubkey', function () {
   describe('#fromPrivkey', function () {
     it('should make a public key from a privkey', function () {
       should.exist(Pubkey().fromPrivkey(Privkey().fromRandom()))
+    })
+  })
+
+  describe('#asyncFromPrivkey', function () {
+    it('should result the same as fromPrivkey', function () {
+      return asink(function *() {
+        let privkey = Privkey().fromRandom()
+        let pubkey1 = Pubkey().fromPrivkey(privkey)
+        let pubkey2 = yield Pubkey().asyncFromPrivkey(privkey)
+        pubkey1.toString().should.equal(pubkey2.toString())
+      }, this)
     })
   })
 
