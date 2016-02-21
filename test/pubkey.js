@@ -98,6 +98,17 @@ describe('Pubkey', function () {
     })
   })
 
+  describe('#asyncFromBuffer', function () {
+    it('should derive the same as fromBuffer', function () {
+      return asink(function *() {
+        let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
+        let pubkey1 = Pubkey().fromBuffer(pubkey.toBuffer())
+        let pubkey2 = yield Pubkey().asyncFromBuffer(pubkey.toBuffer())
+        pubkey1.toString().should.equal(pubkey2.toString())
+      }, this)
+    })
+  })
+
   describe('#fromFastBuffer', function () {
     it('should convert from this known fast buffer', function () {
       let pubkey = Pubkey().fromFastBuffer(new Buffer('01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'))
