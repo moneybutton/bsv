@@ -70,8 +70,19 @@ describe('Struct', function () {
     it('should call fromBuffer', function () {
       let struct = Struct()
       struct.fromBuffer = sinon.spy()
-      struct.fromFastBuffer()
+      struct = Object.create(struct)
+      let buf = new Buffer('00', 'hex')
+      struct.fromFastBuffer(buf)
       struct.fromBuffer.calledOnce.should.equal(true)
+    })
+
+    it('should not call fromBuffer if buf length is zero', function () {
+      let struct = Struct()
+      struct.fromBuffer = sinon.spy()
+      struct = Object.create(struct)
+      let buf = new Buffer('', 'hex')
+      struct.fromFastBuffer(buf)
+      struct.fromBuffer.calledOnce.should.equal(false)
     })
   })
 
@@ -87,8 +98,20 @@ describe('Struct', function () {
     it('should call toBuffer', function () {
       let struct = Struct()
       struct.toBuffer = sinon.spy()
+      struct = Object.create(struct)
+      struct.property = 'test'
+      Object.keys(struct).length.should.equal(1)
       struct.toFastBuffer()
       struct.toBuffer.calledOnce.should.equal(true)
+    })
+
+    it('should return zero-length buffer if object has no keys', function () {
+      let struct = Struct()
+      struct.toBuffer = sinon.spy()
+      struct = Object.create(struct)
+      Object.keys(struct).length.should.equal(0)
+      struct.toFastBuffer().length.should.equal(0)
+      struct.toBuffer.calledOnce.should.equal(false)
     })
   })
 
