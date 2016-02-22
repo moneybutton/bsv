@@ -12,6 +12,7 @@ let Keypair = require('../lib/keypair')
 let vectors_sighash = require('./vectors/bitcoind/sighash')
 let vectors_tx_valid = require('./vectors/bitcoind/tx_valid')
 let vectors_tx_invalid = require('./vectors/bitcoind/tx_invalid')
+let largesttxvector = require('./vectors/largesttx')
 
 describe('Tx', function () {
   let txin = Txin().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
@@ -225,7 +226,17 @@ describe('Tx', function () {
     })
   })
 
-  describe('vectors', function () {
+  describe('vectors: a 1mb transaction', function () {
+    it('should find the correct id of this (valid, on the blockchain) 1 mb transaction', function () {
+      let txidhex = largesttxvector.txidhex
+      let txhex = largesttxvector.txhex
+      let tx = Tx().fromHex(txhex)
+      let txid = tx.id()
+      txid.toString('hex').should.equal(txidhex)
+    })
+  })
+
+  describe('vectors: sighash and serialization', function () {
     vectors_sighash.forEach(function (vector, i) {
       if (i === 0) {
         return
