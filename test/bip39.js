@@ -3,6 +3,7 @@
 let should = require('chai').should()
 let BIP39 = require('../lib/bip39')
 let BIP32 = require('../lib/bip32')
+let asink = require('asink')
 let vectors = require('./vectors/bip39')
 
 describe('BIP39', function () {
@@ -48,6 +49,25 @@ describe('BIP39', function () {
     BIP39.en().fromString(mnemonic).check().should.equal(false)
   })
 
+  describe('#toFastBuffer', function () {
+    it('should convert to a buffer', function () {
+      let bip39 = BIP39().fromRandom()
+      should.exist(bip39.seed)
+      should.exist(bip39.mnemonic)
+      let buf = bip39.toFastBuffer()
+      buf.length.should.greaterThan(512 / 8 + 1 + 1)
+    })
+  })
+
+  describe('#fromFastBuffer', function () {
+    it('should convert from a buffer', function () {
+      let bip39a = BIP39().fromRandom()
+      let bip39b = BIP39().fromFastBuffer(bip39a.toFastBuffer())
+      bip39a.mnemonic.should.equal(bip39b.mnemonic)
+      bip39b.seed.toString('hex').should.equal(bip39b.seed.toString('hex'))
+    })
+  })
+
   describe('#fromRandom', function () {
     it('should throw an error if bits is too low', function () {
       (function () {
@@ -59,6 +79,19 @@ describe('BIP39', function () {
       (function () {
         BIP39().fromRandom(256 - 1)
       }).should.throw('bits must be multiple of 32')
+    })
+  })
+
+  describe('#asyncFromRandom', function () {
+    it('should have a seed and a mnemonic', function () {
+      return asink(function *() {
+        let bip39 = yield BIP39().asyncFromRandom()
+        should.exist(bip39.mnemonic)
+        should.exist(bip39.seed)
+        let seed = bip39.seed
+        bip39.mnemonic2seed()
+        seed.toString('hex').should.equal(bip39.seed.toString('hex'))
+      }, this)
     })
   })
 
@@ -95,6 +128,20 @@ describe('BIP39', function () {
       (function () {
         BIP39().fromString('invalid mnemonic').toSeed()
       }).should.throw('Mnemonic does not pass the check - was the mnemonic typed incorrectly? Are there extra spaces?')
+    })
+  })
+
+  describe('#asyncToSeed', function () {
+    it('should result the same as toSeed', function () {
+      return asink(function *() {
+        let bip39 = BIP39().fromRandom()
+        let seed1a = bip39.toSeed()
+        let seed2a = yield bip39.asyncToSeed()
+        seed1a.toString('hex').should.equal(seed2a.toString('hex'))
+        let seed1b = bip39.toSeed('pass')
+        let seed2b = yield bip39.asyncToSeed('pass')
+        seed1b.toString('hex').should.equal(seed2b.toString('hex'))
+      }, this)
     })
   })
 
