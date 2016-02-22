@@ -110,6 +110,17 @@ describe('Address', function () {
     })
   })
 
+  describe('#asyncFromPrivkey', function () {
+    it('should asynchronously convert privkey to address same as fromPrivkey', function () {
+      return asink(function *() {
+        let privkey = Privkey().fromRandom()
+        let address1 = Address().fromPrivkey(privkey)
+        let address2 = yield Address().asyncFromPrivkey(privkey)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
   describe('#fromRedeemScriptHashbuf', function () {
     it('should make this address from a script', function () {
       let script = Script().fromString('OP_CHECKMULTISIG')
