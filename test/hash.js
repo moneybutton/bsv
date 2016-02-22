@@ -2,6 +2,7 @@
 'use strict'
 require('chai').should()
 let Hash = require('../lib/hash')
+let asink = require('asink')
 let vectors = require('./vectors/hash')
 
 describe('Hash', function () {
@@ -43,12 +44,34 @@ describe('Hash', function () {
     })
   })
 
+  describe('@asyncSha1', function () {
+    it('should compute the same as sha1', function () {
+      return asink(function *() {
+        let sha1buf1 = Hash.sha1(buf)
+        let sha1buf2 = yield Hash.asyncSha1(buf)
+        sha1buf1.toString('hex').should.equal(sha1buf2.toString('hex'))
+      }, this)
+    })
+  })
+
   describe('@sha1hmac', function () {
     // http://tools.ietf.org/html/rfc2202.html
 
     it('should calculate this known empty test vector correctly', function () {
       let hex = 'b617318655057264e28bc0b6fb378c8ef146be00'
       Hash.sha1hmac(new Buffer('Hi There'), new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')).toString('hex').should.equal(hex)
+    })
+  })
+
+  describe('@asyncSha1hmac', function () {
+    it('should compute the same as sha1hmac', function () {
+      return asink(function *() {
+        let data = new Buffer('Hi There')
+        let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
+        let sha1hmacbuf1 = Hash.sha1hmac(data, key)
+        let sha1hmacbuf2 = yield Hash.asyncSha1hmac(data, key)
+        sha1hmacbuf1.toString('hex').should.equal(sha1hmacbuf2.toString('hex'))
+      }, this)
     })
   })
 
@@ -62,6 +85,16 @@ describe('Hash', function () {
       (function () {
         Hash.sha256(str)
       }).should.throw('sha256 hash must be of a buffer')
+    })
+  })
+
+  describe('@asyncSha256', function () {
+    it('should compute the same as sha256', function () {
+      return asink(function *() {
+        let sha256buf1 = Hash.sha1(buf)
+        let sha256buf2 = yield Hash.asyncSha1(buf)
+        sha256buf1.toString('hex').should.equal(sha256buf2.toString('hex'))
+      }, this)
     })
   })
 
@@ -79,6 +112,18 @@ describe('Hash', function () {
     })
   })
 
+  describe('@asyncSha256hmac', function () {
+    it('should compute the same as sha256hmac', function () {
+      return asink(function *() {
+        let data = new Buffer('Hi There')
+        let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
+        let sha256hmacbuf1 = Hash.sha256hmac(data, key)
+        let sha256hmacbuf2 = yield Hash.asyncSha256hmac(data, key)
+        sha256hmacbuf1.toString('hex').should.equal(sha256hmacbuf2.toString('hex'))
+      }, this)
+    })
+  })
+
   describe('@sha256sha256', function () {
     it('should calculate the hash of this buffer correctly', function () {
       let hash = Hash.sha256sha256(buf)
@@ -89,6 +134,16 @@ describe('Hash', function () {
       (function () {
         Hash.sha256sha256(str)
       }).should.throw('sha256sha256 hash must be of a buffer')
+    })
+  })
+
+  describe('@asyncSha256sha256', function () {
+    it('should compute the same as sha256sha256', function () {
+      return asink(function *() {
+        let sha256sha256buf1 = Hash.sha256sha256(buf)
+        let sha256sha256buf2 = yield Hash.asyncSha256sha256(buf)
+        sha256sha256buf1.toString('hex').should.equal(sha256sha256buf2.toString('hex'))
+      }, this)
     })
   })
 
@@ -105,6 +160,16 @@ describe('Hash', function () {
     })
   })
 
+  describe('@asyncSha256ripemd160', function () {
+    it('should compute the same as sha256sha256', function () {
+      return asink(function *() {
+        let sha256ripemd160buf1 = Hash.sha256ripemd160(buf)
+        let sha256ripemd160buf2 = yield Hash.asyncSha256ripemd160(buf)
+        sha256ripemd160buf1.toString('hex').should.equal(sha256ripemd160buf2.toString('hex'))
+      }, this)
+    })
+  })
+
   describe('@ripemd160', function () {
     it('should calculate the hash of this buffer correctly', function () {
       let hash = Hash.ripemd160(buf)
@@ -118,6 +183,16 @@ describe('Hash', function () {
     })
   })
 
+  describe('@asyncRipemd160', function () {
+    it('should compute the same as ripemd160', function () {
+      return asink(function *() {
+        let ripemd160buf1 = Hash.ripemd160(buf)
+        let ripemd160buf2 = yield Hash.asyncRipemd160(buf)
+        ripemd160buf1.toString('hex').should.equal(ripemd160buf2.toString('hex'))
+      }, this)
+    })
+  })
+
   describe('@sha512', function () {
     it('should calculate the hash of this buffer correctly', function () {
       let hash = Hash.sha512(buf)
@@ -128,6 +203,16 @@ describe('Hash', function () {
       (function () {
         Hash.sha512(str)
       }).should.throw('sha512 hash must be of a buffer')
+    })
+  })
+
+  describe('@asyncSha512', function () {
+    it('should compute the same as sha512', function () {
+      return asink(function *() {
+        let sha512buf1 = Hash.sha512(buf)
+        let sha512buf2 = yield Hash.asyncSha512(buf)
+        sha512buf1.toString('hex').should.equal(sha512buf2.toString('hex'))
+      }, this)
     })
   })
 
@@ -151,6 +236,18 @@ describe('Hash', function () {
       let data = new Buffer('test1')
       let key = new Buffer('test2')
       Hash.sha512hmac(data, key).toString('hex').should.equal(hex)
+    })
+  })
+
+  describe('@asyncSha512hmac', function () {
+    it('should compute the same as sha512hmac', function () {
+      return asink(function *() {
+        let data = new Buffer('Hi There')
+        let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
+        let sha512hmacbuf1 = Hash.sha512hmac(data, key)
+        let sha512hmacbuf2 = yield Hash.asyncSha512hmac(data, key)
+        sha512hmacbuf1.toString('hex').should.equal(sha512hmacbuf2.toString('hex'))
+      }, this)
     })
   })
 

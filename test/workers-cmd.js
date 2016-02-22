@@ -12,11 +12,11 @@ describe('WorkersCmd', function () {
     should.exist(workersCmd)
   })
 
-  describe('#fromMethod', function () {
+  describe('#fromObjectMethod', function () {
     it('should convert a bip32 into a workerscmd', function () {
       let bip32 = BIP32().fromRandom()
       let args = []
-      let workersCmd = WorkersCmd().fromMethod(bip32, 'toString', args, 0)
+      let workersCmd = WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
       workersCmd.args.length.should.equal(0)
       workersCmd.id.should.equal(0)
@@ -29,7 +29,7 @@ describe('WorkersCmd', function () {
       arg1.fill(0)
       let arg2 = BIP32().fromRandom()
       let args = [arg0, arg1, arg2]
-      let workersCmd = WorkersCmd().fromMethod(bip32, 'toString', args, 0)
+      let workersCmd = WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
       workersCmd.args.length.should.equal(3)
       workersCmd.args[0].should.equal(arg0)
@@ -39,11 +39,21 @@ describe('WorkersCmd', function () {
     })
   })
 
+  describe('#fromClassMethod', function () {
+    it('should convert Hash.sha1 into a workerscmd', function () {
+      let buf = new Buffer([0, 1, 2, 3])
+      let args = [buf]
+      let workersCmd = WorkersCmd().fromClassMethod('Hash', 'sha1', args, 0)
+      workersCmd.args[0].toString('hex').should.equal(buf.toString('hex'))
+      workersCmd.isobj.should.equal(false)
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should convert a bip32 into a workerscmd buffer', function () {
       let bip32 = BIP32().fromRandom()
       let args = []
-      let workersCmd = WorkersCmd().fromMethod(bip32, 'toString', args, 0)
+      let workersCmd = WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       workersCmd.toBuffer().length.should.greaterThan(0)
     })
 
@@ -54,7 +64,7 @@ describe('WorkersCmd', function () {
       arg1.fill(0)
       let arg2 = BIP32().fromRandom()
       let args = [arg0, arg1, arg2]
-      let workersCmd = WorkersCmd().fromMethod(bip32, 'toString', args, 0)
+      let workersCmd = WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       let buf = workersCmd.toBuffer(BW())
       workersCmd = WorkersCmd().fromBuffer(buf, {BIP32})
       cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
@@ -70,7 +80,7 @@ describe('WorkersCmd', function () {
     it('should read a buffer', function () {
       let bip32 = BIP32().fromRandom()
       let args = []
-      let workersCmd = WorkersCmd().fromMethod(bip32, 'toString', args, 0)
+      let workersCmd = WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       let buf = workersCmd.toBuffer()
       workersCmd = WorkersCmd().fromBuffer(buf)
       cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
