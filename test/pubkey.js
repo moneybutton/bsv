@@ -182,6 +182,7 @@ describe('Pubkey', function () {
       let pk = new Pubkey()
       pk.fromX(true, x)
       pk.toFastBuffer().toString('hex').should.equal('01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+      pk.toFastBuffer().length.should.greaterThan(64)
     })
   })
 

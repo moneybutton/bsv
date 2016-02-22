@@ -3,6 +3,7 @@
 let Address = require('../lib/address')
 let BSM = require('../lib/bsm')
 let Keypair = require('../lib/keypair')
+let asink = require('asink')
 let should = require('chai').should()
 
 describe('BSM', function () {
@@ -52,6 +53,19 @@ describe('BSM', function () {
     })
   })
 
+  describe('@asyncSign', function () {
+    let messagebuf = new Buffer('this is my message')
+    let keypair = Keypair().fromRandom()
+
+    it('should return the same as sign', function () {
+      return asink(function *() {
+        let sigstr1 = BSM.sign(messagebuf, keypair)
+        let sigstr2 = yield BSM.asyncSign(messagebuf, keypair)
+        sigstr1.should.equal(sigstr2)
+      }, this)
+    })
+  })
+
   describe('@verify', function () {
     let messagebuf = new Buffer('this is my message')
     let keypair = Keypair().fromRandom()
@@ -67,6 +81,20 @@ describe('BSM', function () {
       let address = Address().fromString(addrstr)
       let sigstr = 'IOrTlbNBI0QO990xOw4HAjnvRl/1zR+oBMS6HOjJgfJqXp/1EnFrcJly0UcNelqJNIAH4f0abxOZiSpYmenMH4M='
       BSM.verify(messagebuf, sigstr, address)
+    })
+  })
+
+  describe('@asyncVerify', function () {
+    let messagebuf = new Buffer('this is my message')
+    let keypair = Keypair().fromRandom()
+
+    it('should verify a signed message', function () {
+      return asink(function *() {
+        let sigstr = BSM.sign(messagebuf, keypair)
+        let addr = Address().fromPubkey(keypair.pubkey)
+        let verified = yield BSM.verify(messagebuf, sigstr, addr)
+        verified.should.equal(true)
+      }, this)
     })
   })
 

@@ -52,6 +52,40 @@ describe('Keypair', function () {
     })
   })
 
+  describe('#fromFastBuffer', function () {
+    it('should convert from a fast buffer', function () {
+      let keypair = Keypair().fromRandom()
+      let privkey1 = keypair.privkey
+      let pubkey1 = keypair.pubkey
+      let buf = keypair.toFastBuffer()
+      keypair = Keypair().fromFastBuffer(buf)
+      let privkey2 = keypair.privkey
+      let pubkey2 = keypair.pubkey
+      privkey1.toString().should.equal(privkey2.toString())
+      pubkey1.toString().should.equal(pubkey2.toString())
+    })
+  })
+
+  describe('#toFastBuffer', function () {
+    it('should convert to a fast buffer', function () {
+      let keypair, buf
+
+      keypair = Keypair().fromRandom()
+      keypair.pubkey = undefined
+      buf = keypair.toFastBuffer()
+      buf.length.should.greaterThan(32)
+
+      keypair = Keypair().fromRandom()
+      keypair.privkey = undefined
+      buf = keypair.toFastBuffer()
+      buf.length.should.greaterThan(64)
+
+      keypair = Keypair().fromRandom()
+      buf = keypair.toFastBuffer()
+      buf.length.should.greaterThan(32 + 64)
+    })
+  })
+
   describe('#fromString', function () {
     it('should convert to and from a string', function () {
       let keypair = Keypair().fromRandom()
