@@ -1,12 +1,14 @@
 /* global describe,it */
 'use strict'
-let Blockheader = require('../lib/blockheader')
-let Block = require('../lib/block')
 let BR = require('../lib/br')
 let BW = require('../lib/bw')
-let Varint = require('../lib/varint')
-let should = require('chai').should()
+let Block = require('../lib/block')
+let Blockheader = require('../lib/blockheader')
 let Tx = require('../lib/tx')
+let Varint = require('../lib/varint')
+let asink = require('asink')
+let largesttxblockvector = require('./vectors/largesttxblock')
+let should = require('chai').should()
 
 describe('Block', function () {
   // let txidhex = '8c9aa966d35bfeaf031409e0001b90ccdafd8d859799eb945a3c515b8260bcf2'
@@ -138,10 +140,55 @@ describe('Block', function () {
     })
   })
 
+  describe('#asyncHash', function () {
+    it('should return the correct hash of the genesis block', function () {
+      return asink(function *() {
+        let block = Block().fromBuffer(genesisbuf)
+        let hash = yield block.asyncHash()
+        let genesishashhex = BR(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
+        hash.toString('hex').should.equal(genesishashhex)
+      }, this)
+    })
+
+    it.skip('should return the correct hash of block containing the largest tx', function () {
+      return asink(function *() {
+        let block = Block().fromHex(largesttxblockvector.blockhex)
+        let hash = yield block.asyncHash()
+        let blockidhex = largesttxblockvector.blockidhex
+        let blockhashbuf = BR(new Buffer(blockidhex, 'hex')).readReverse()
+        let blockhashhex = blockhashbuf.toString('hex')
+        hash.toString('hex').should.equal(blockhashhex)
+      }, this)
+    })
+  })
+
   describe('#id', function () {
     it('should return the correct id of the genesis block', function () {
       let block = Block().fromBuffer(genesisbuf)
       block.id().toString('hex').should.equal(genesisidhex)
+    })
+
+    it('should return the correct id of block containing the largest tx', function () {
+      let block = Block().fromHex(largesttxblockvector.blockhex)
+      block.id().toString('hex').should.equal(largesttxblockvector.blockidhex)
+    })
+  })
+
+  describe('#asyncId', function () {
+    it('should return the correct id of the genesis block', function () {
+      return asink(function *() {
+        let block = Block().fromBuffer(genesisbuf)
+        let id = yield block.asyncId()
+        id.toString('hex').should.equal(genesisidhex)
+      }, this)
+    })
+
+    it.skip('should return the correct id of block containing the largest tx', function () {
+      return asink(function *() {
+        let block = Block().fromHex(largesttxblockvector.blockhex)
+        let id = yield block.asyncId()
+        id.toString('hex').should.equal(largesttxblockvector.blockidhex)
+      }, this)
     })
   })
 })
