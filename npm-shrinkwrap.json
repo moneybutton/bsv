@@ -7,10 +7,14 @@
       "from": "aes@0.1.0",
       "resolved": "https://registry.npmjs.org/aes/-/aes-0.1.0.tgz"
     },
+    "asink": {
+      "version": "1.0.4",
+      "from": "asink@*"
+    },
     "bn.js": {
-      "version": "4.10.3",
-      "from": "bn.js@4.10.3",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.10.3.tgz"
+      "version": "4.10.5",
+      "from": "bn.js@4.10.5",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.10.5.tgz"
     },
     "bs58": {
       "version": "3.0.0",
@@ -289,9 +293,9 @@
       }
     },
     "randombytes": {
-      "version": "2.0.2",
-      "from": "randombytes@2.0.2",
-      "resolved": "https://registry.npmjs.org/randombytes/-/randombytes-2.0.2.tgz"
+      "version": "2.0.3",
+      "from": "randombytes@2.0.3",
+      "resolved": "https://registry.npmjs.org/randombytes/-/randombytes-2.0.3.tgz"
     }
   }
 }

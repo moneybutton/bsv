@@ -92,7 +92,7 @@
     "pbkdf2-compat": "4.0.0",
     "peer": "0.2.8",
     "peerjs": "0.3.14",
-    "randombytes": "2.0.2"
+    "randombytes": "2.0.3"
   },
   "devDependencies": {
     "babel-polyfill": "6.6.1",
