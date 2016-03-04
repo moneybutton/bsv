@@ -150,9 +150,11 @@ describe('Block', function () {
       }, this)
     })
 
-    it.skip('should return the correct hash of block containing the largest tx', function () {
+    it('should return the correct hash of block containing the largest tx', function () {
       return asink(function *() {
         let block = Block().fromHex(largesttxblockvector.blockhex)
+        let buf = block.toBuffer()
+        block = block.fromBuffer(buf)
         let hash = yield block.asyncHash()
         let blockidhex = largesttxblockvector.blockidhex
         let blockhashbuf = BR(new Buffer(blockidhex, 'hex')).readReverse()
@@ -183,7 +185,7 @@ describe('Block', function () {
       }, this)
     })
 
-    it.skip('should return the correct id of block containing the largest tx', function () {
+    it('should return the correct id of block containing the largest tx', function () {
       return asink(function *() {
         let block = Block().fromHex(largesttxblockvector.blockhex)
         let id = yield block.asyncId()
