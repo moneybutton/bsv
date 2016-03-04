@@ -21,6 +21,15 @@ describe('BW', function () {
     })
   })
 
+  describe('#getLength', function () {
+    it('should compute length correctly of two 2 byte buffers', function () {
+      let buf1 = new Buffer('0000', 'hex')
+      let buf2 = new Buffer('0000', 'hex')
+      let bw = BW().write(buf1).write(buf2)
+      bw.getLength().should.equal(4)
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should concat these two bufs', function () {
       let buf1 = new Buffer([0])
