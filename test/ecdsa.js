@@ -287,7 +287,7 @@ describe('ECDSA', function () {
     })
 
     it('should default to deterministicK', function () {
-      let ecdsa2 = new ECDSA(ecdsa)
+      let ecdsa2 = new ECDSA().fromObject(ecdsa)
       ecdsa2.k = undefined
       let called = 0
       let deterministicK = ecdsa2.deterministicK.bind(ecdsa2)
@@ -316,7 +316,7 @@ describe('ECDSA', function () {
     it('should produce a signature, and be different when called twice', function () {
       ecdsa.signRandomK()
       should.exist(ecdsa.sig)
-      let ecdsa2 = ECDSA(ecdsa)
+      let ecdsa2 = ECDSA().fromObject(ecdsa)
       ecdsa2.signRandomK()
       ecdsa.sig.toString().should.not.equal(ecdsa2.sig.toString())
     })
@@ -391,7 +391,7 @@ describe('ECDSA', function () {
             recovery: obj.i
           })
         })
-        let ecdsa2 = ECDSA(ecdsa)
+        let ecdsa2 = ECDSA().fromObject(ecdsa)
         ecdsa2.k = undefined
         ecdsa2.sign()
         ecdsa2.calcrecovery()
@@ -417,7 +417,7 @@ describe('ECDSA', function () {
       it('should validate deterministicK vector ' + i, function () {
         let hashbuf = Hash.sha256(new Buffer(obj.message))
         let privkey = Privkey().fromObject({bn: BN().fromBuffer(new Buffer(obj.privkey, 'hex'))})
-        let ecdsa = ECDSA({
+        let ecdsa = ECDSA().fromObject({
           keypair: Keypair().fromObject({privkey: privkey}),
           hashbuf: hashbuf
         })
