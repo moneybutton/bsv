@@ -1,12 +1,13 @@
 /* global describe,it */
 'use strict'
+let BN = require('../lib/bn')
 let ECDSA = require('../lib/ecdsa')
 let Hash = require('../lib/hash')
 let Keypair = require('../lib/keypair')
 let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
 let Sig = require('../lib/sig')
-let BN = require('../lib/bn')
+let asink = require('asink')
 let point = require('../lib/point')
 let should = require('chai').should()
 let vectors = require('./vectors/ecdsa')
@@ -29,6 +30,39 @@ describe('ECDSA', function () {
   describe('#fromObject', function () {
     it('should set hashbuf', function () {
       should.exist(ECDSA().fromObject({hashbuf: ecdsa.hashbuf}).hashbuf)
+    })
+  })
+
+  describe('#toJSON', function () {
+    it('should return json', function () {
+      let json = ecdsa.toJSON()
+      should.exist(json.keypair)
+      should.exist(json.hashbuf)
+    })
+  })
+
+  describe('#fromJSON', function () {
+    it('should convert from json', function () {
+      let json = ecdsa.toJSON()
+      let ecdsa2 = ECDSA().fromJSON(json)
+      should.exist(ecdsa2.keypair)
+      should.exist(ecdsa2.hashbuf)
+    })
+  })
+
+  describe('#toBuffer', function () {
+    it('should return buffer', function () {
+      let buf = ecdsa.toBuffer()
+      Buffer.isBuffer(buf).should.equal(true)
+    })
+  })
+
+  describe('#fromBuffer', function () {
+    it('should return from buffer', function () {
+      let buf = ecdsa.toBuffer()
+      let ecdsa2 = ECDSA().fromBuffer(buf)
+      should.exist(ecdsa2.keypair)
+      should.exist(ecdsa2.hashbuf)
     })
   })
 
@@ -266,6 +300,18 @@ describe('ECDSA', function () {
     })
   })
 
+  describe('#asyncSign', function () {
+    it('should create the same signature as sign', function () {
+      return asink(function *() {
+        ecdsa.sign()
+        let sig = ecdsa.sig
+        let sig2 = ecdsa.sig
+        yield ecdsa.asyncSign()
+        sig.toString().should.equal(sig2.toString())
+      }, this)
+    })
+  })
+
   describe('#signRandomK', function () {
     it('should produce a signature, and be different when called twice', function () {
       ecdsa.signRandomK()
@@ -293,6 +339,17 @@ describe('ECDSA', function () {
     it('should verify this known good signature', function () {
       ecdsa.signRandomK()
       ecdsa.verify().verified.should.equal(true)
+    })
+  })
+
+  describe('#asyncVerify', function () {
+    it('should verify this known good signature', function () {
+      return asink(function *() {
+        ecdsa.verified = undefined
+        ecdsa.signRandomK()
+        yield ecdsa.asyncVerify()
+        ecdsa.verified.should.equal(true)
+      }, this)
     })
   })
 
