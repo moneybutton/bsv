@@ -96,6 +96,16 @@ describe('Hash', function () {
         sha256buf1.toString('hex').should.equal(sha256buf2.toString('hex'))
       }, this)
     })
+
+    it('should compute a hash for 5mb data', function () {
+      return asink(function *() {
+        let data = new Buffer(5e6)
+        data.fill(0)
+        let hash1 = Hash.sha256(data)
+        let hash2 = yield Hash.asyncSha256(data)
+        hash1.toString('hex').should.equal(hash2.toString('hex'))
+      }, this)
+    })
   })
 
   describe('@sha256hmac', function () {
