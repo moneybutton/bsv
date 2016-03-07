@@ -1,14 +1,16 @@
 /* global describe,it */
 'use strict'
-let Varint = require('../lib/varint')
+let BR = require('../lib/br')
+let Keypair = require('../lib/keypair')
+let Script = require('../lib/script')
+let Sig = require('../lib/sig')
 let Tx = require('../lib/tx')
 let Txin = require('../lib/txin')
 let Txout = require('../lib/txout')
+let Varint = require('../lib/varint')
+let asink = require('asink')
 let should = require('chai').should()
-let BR = require('../lib/br')
-let Script = require('../lib/script')
-let Sig = require('../lib/sig')
-let Keypair = require('../lib/keypair')
+
 let vectors_sighash = require('./vectors/bitcoind/sighash')
 let vectors_tx_valid = require('./vectors/bitcoind/tx_valid')
 let vectors_tx_invalid = require('./vectors/bitcoind/tx_invalid')
@@ -169,6 +171,25 @@ describe('Tx', function () {
     })
   })
 
+  describe('#asyncSighash', function () {
+    it('should hash this transaction', function () {
+      return asink(function *() {
+        let hashbuf = yield tx.asyncSighash(0, 0, Script())
+        hashbuf.length.should.equal(32)
+      }, this)
+    })
+
+    it('should return 1 for the SIGHASH_SINGLE bug', function () {
+      return asink(function *() {
+        let tx = Tx(tx2buf)
+        tx.txouts.length = 1
+        tx.txoutsvi = Varint(1)
+        let hashbuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, Script())
+        hashbuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
+      }, this)
+    })
+  })
+
   describe('#sign', function () {
     it('should return a signature', function () {
       let keypair = Keypair().fromRandom()
@@ -181,11 +202,39 @@ describe('Tx', function () {
     })
   })
 
+  describe('#asyncSign', function () {
+    it('should return a signature', function () {
+      return asink(function *() {
+        let keypair = Keypair().fromRandom()
+        let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
+        let sig1b = yield tx.asyncSign(keypair, Sig.SIGHASH_ALL, 0, Script())
+        let sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script())
+        let sig2b = yield tx.asyncSign(keypair, Sig.SIGHASH_SINGLE, 0, Script())
+        let sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+        let sig3b = yield tx.asyncSign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+        sig1.toString().should.equal(sig1b.toString())
+        sig2.toString().should.equal(sig2b.toString())
+        sig3.toString().should.equal(sig3b.toString())
+      }, this)
+    })
+  })
+
   describe('#verify', function () {
     it('should return a signature', function () {
       let keypair = Keypair().fromRandom()
       let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
       tx.verify(sig1, keypair.pubkey, 0, Script()).should.equal(true)
+    })
+  })
+
+  describe('#asyncVerify', function () {
+    it('should return a signature', function () {
+      return asink(function *() {
+        let keypair = Keypair().fromRandom()
+        let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
+        let verified = yield tx.asyncVerify(sig1, keypair.pubkey, 0, Script())
+        verified.should.equal(true)
+      }, this)
     })
   })
 
@@ -197,10 +246,31 @@ describe('Tx', function () {
     })
   })
 
+  describe('#asyncHash', function () {
+    it('should correctly calculate the hash of this known transaction', function () {
+      return asink(function *() {
+        let tx = Tx().fromBuffer(tx2buf)
+        let txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
+        let hashbuf = yield tx.asyncHash()
+        hashbuf.toString('hex').should.equal(txhashbuf.toString('hex'))
+      }, this)
+    })
+  })
+
   describe('#id', function () {
     it('should correctly calculate the id of this known transaction', function () {
       let tx = Tx().fromBuffer(tx2buf)
       tx.id().toString('hex').should.equal(tx2idhex)
+    })
+  })
+
+  describe('#asyncId', function () {
+    it('should correctly calculate the id of this known transaction', function () {
+      return asink(function *() {
+        let tx = Tx().fromBuffer(tx2buf)
+        let idbuf = yield tx.id()
+        idbuf.toString('hex').should.equal(tx2idhex)
+      }, this)
     })
   })
 
