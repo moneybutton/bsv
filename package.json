@@ -114,7 +114,7 @@
     "karma-mocha": "0.2.2",
     "mocha": "2.4.5",
     "sinon": "1.17.3",
-    "standard": "6.0.7",
+    "standard": "6.0.8",
     "uglifyify": "3.0.1"
   },
   "license": "MIT"
