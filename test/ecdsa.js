@@ -99,6 +99,45 @@ describe('ECDSA', function () {
     })
   })
 
+  describe('#asyncCalcrecovery', function () {
+    it('should calculate pubkey recovery number', function () {
+      return asink(function *() {
+        ecdsa.randomK()
+        ecdsa.sign()
+        yield ecdsa.asyncCalcrecovery()
+        should.exist(ecdsa.sig.recovery)
+      }, this)
+    })
+
+    it('should calculate this known pubkey recovery number', function () {
+      return asink(function *() {
+        let hashbuf = Hash.sha256(new Buffer('some data'))
+        let r = BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+        let s = BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+        let ecdsa = new ECDSA()
+        ecdsa.keypair = Keypair().fromPrivkey(Privkey().fromBN(BN().fromBuffer(Hash.sha256(new Buffer('test')))))
+        ecdsa.hashbuf = hashbuf
+        ecdsa.sig = new Sig({r: r, s: s})
+
+        yield ecdsa.asyncCalcrecovery()
+        ecdsa.sig.recovery.should.equal(1)
+      }, this)
+    })
+
+    it('should do a round trip with signature parsing', function () {
+      return asink(function *() {
+        yield ecdsa.asyncCalcrecovery()
+        let pubkey = ecdsa.keypair.pubkey
+        let sig = ecdsa.sig
+        let hashbuf = ecdsa.hashbuf
+        ECDSA.sig2pubkey(sig, hashbuf).toHex().should.equal(pubkey.toHex())
+
+        sig = sig.fromCompact(sig.toCompact())
+        ECDSA.sig2pubkey(sig, hashbuf).toHex().should.equal(pubkey.toHex())
+      }, this)
+    })
+  })
+
   describe('@calcrecovery', function () {
     it('should calculate pubkey recovery number same as #calcrecovery', function () {
       ecdsa.randomK()
@@ -360,6 +399,18 @@ describe('ECDSA', function () {
     })
   })
 
+  describe('@asyncSign', function () {
+    it('should produce the same signature as @sign', function () {
+      return asink(function *() {
+        let sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair)
+        let sigstr = sig.toString()
+        let sig2 = yield ECDSA.asyncSign(ecdsa.hashbuf, ecdsa.keypair)
+        let sig2str = sig2.toString()
+        sigstr.should.equal(sig2str)
+      }, this)
+    })
+  })
+
   describe('@verify', function () {
     it('should verify a valid signature, and unverify an invalid signature', function () {
       let sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair)
@@ -375,6 +426,19 @@ describe('ECDSA', function () {
       sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair, 'little')
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'big').should.equal(false)
       ECDSA.verify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey, 'little').should.equal(true)
+    })
+  })
+
+  describe('@asyncVerify', function () {
+    it('should verify a valid signature, and unverify an invalid signature', function () {
+      return asink(function *() {
+        let sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.keypair)
+        let verified = yield ECDSA.asyncVerify(ecdsa.hashbuf, sig, ecdsa.keypair.pubkey)
+        verified.should.equal(true)
+        let fakesig = Sig(sig.r.add(1), sig.s)
+        verified = yield ECDSA.asyncVerify(ecdsa.hashbuf, fakesig, ecdsa.keypair.pubkey)
+        verified.should.equal(false)
+      }, this)
     })
   })
 
