@@ -125,9 +125,6 @@ gulp.task('test-node', function () {
     .once('error', function (error) { // eslint-disable-line
       process.exit(1)
     })
-    .once('end', function () {
-      process.exit()
-    })
 })
 
 gulp.task('build-karma-url', function () {
@@ -149,7 +146,6 @@ gulp.task('test-karma', ['build-karma'], function () {
     })
     .on('end', function () {
       server.close()
-      process.exit()
     })
 })
 

@@ -50,6 +50,11 @@ describe('Server', function () {
         .then(function (msg) {
           msg.getCmd().should.equal('pong')
         })
+        .then(function () {
+          connection.close()
+          server1.close()
+          server2.close()
+        })
     })
   })
 })
