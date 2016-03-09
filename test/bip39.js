@@ -1,9 +1,10 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
-let BIP39 = require('../lib/bip39')
 let BIP32 = require('../lib/bip32')
+let BIP39 = require('../lib/bip39')
+let Random = require('../lib/random')
 let asink = require('asink')
+let should = require('chai').should()
 let vectors = require('./vectors/bip39')
 
 describe('BIP39', function () {
@@ -92,6 +93,17 @@ describe('BIP39', function () {
         bip39.mnemonic2seed()
         seed.toString('hex').should.equal(bip39.seed.toString('hex'))
       }, this)
+    })
+  })
+
+  describe('#asyncFromEntropy', function () {
+    it('should return same as fromEntropy', function () {
+      return asink(function *() {
+        let entropy = Random.getRandomBuffer(32)
+        let bip39a = yield BIP39().asyncFromEntropy(entropy)
+        let bip39b = yield BIP39().fromEntropy(entropy)
+        bip39a.toSeed().toString('hex').should.equal(bip39b.toSeed().toString('hex'))
+      })
     })
   })
 
