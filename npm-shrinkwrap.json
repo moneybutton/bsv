@@ -1,6 +1,6 @@
 {
   "name": "fullnode",
-  "version": "0.11.11",
+  "version": "0.11.12",
   "dependencies": {
     "aes": {
       "version": "0.1.0",
@@ -12,9 +12,9 @@
       "from": "asink@*"
     },
     "bn.js": {
-      "version": "4.10.5",
-      "from": "bn.js@4.10.5",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.10.5.tgz"
+      "version": "4.11.0",
+      "from": "bn.js@4.11.0",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.11.0.tgz"
     },
     "bs58": {
       "version": "3.0.0",
