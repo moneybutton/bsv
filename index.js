@@ -15,6 +15,8 @@
   * let Address = require('fullnode/lib/address').
   */
 'use strict'
+require('./config')
+
 let fullnode = module.exports
 global.fullnode = fullnode
 
