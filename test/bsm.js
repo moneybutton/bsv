@@ -24,6 +24,24 @@ describe('BSM', function () {
     })
   })
 
+  describe('@MagicHash', function () {
+    it('should return a hash', function () {
+      let buf = new Buffer('001122', 'hex')
+      let hashbuf = BSM.magicHash(buf)
+      Buffer.isBuffer(hashbuf).should.equal(true)
+    })
+  })
+
+  describe('@asyncMagicHash', function () {
+    it('should return a hash', function () {
+      return asink(function *() {
+        let buf = new Buffer('001122', 'hex')
+        let hashbuf = yield BSM.asyncMagicHash(buf)
+        Buffer.isBuffer(hashbuf).should.equal(true)
+      }, this)
+    })
+  })
+
   describe('@sign', function () {
     let messagebuf = new Buffer('this is my message')
     let keypair = Keypair().fromRandom()
