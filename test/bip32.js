@@ -323,6 +323,28 @@ describe('BIP32', function () {
     })
   })
 
+  describe('#asyncFromSeed', function () {
+    it('should initialize a new BIP32 correctly from test vector 1 seed', function () {
+      return asink(function *() {
+        let hex = vector1_master
+        let bip32 = yield BIP32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        should.exist(bip32)
+        bip32.toString().should.equal(vector1_m_private)
+        bip32.toPublic().toString().should.equal(vector1_m_public)
+      }, this)
+    })
+
+    it('should initialize a new BIP32 correctly from test vector 2 seed', function () {
+      return asink(function *() {
+        let hex = vector2_master
+        let bip32 = yield BIP32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        should.exist(bip32)
+        bip32.toString().should.equal(vector2_m_private)
+        bip32.toPublic().toString().should.equal(vector2_m_public)
+      }, this)
+    })
+  })
+
   describe('#fromHex', function () {
     it('should make a bip32 from a hex string', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
