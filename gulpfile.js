@@ -21,7 +21,7 @@ gulp.task('build-bundle', function () {
       // exactly once yourself.
       .add(require.resolve('babel-polyfill'))
       .transform(envify)
-      .transform(babelify.configure({ignore: /node_modules/, presets: ['es2015']}))
+      .transform(babelify.configure({presets: ['es2015']}))
       .add(require.resolve('./index.js'), {entry: true})
       .bundle()
       .on('error', reject)
