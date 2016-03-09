@@ -68,6 +68,15 @@ describe('BIP32', function () {
     child.toString().should.equal(vector1_m0h_private)
   })
 
+  it("should asynchronously get m/0' ext. private key from test vector 1", function () {
+    return asink(function *() {
+      let bip32 = BIP32().fromString(vector1_m_private)
+      let child = yield bip32.asyncDerive("m/0'")
+      should.exist(child)
+      child.toString().should.equal(vector1_m0h_private)
+    }, this)
+  })
+
   it("should get m/0' ext. public key from test vector 1", function () {
     let bip32 = BIP32().fromString(vector1_m_private)
     let child = bip32.derive("m/0'")
