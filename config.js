@@ -25,3 +25,6 @@ if (!process.env.FULLNODE_JS_WORKER_MIN_FILE) {
   process.env.FULLNODE_JS_WORKER_MIN_FILE = 'fullnode-worker-min.js'
 }
 
+if (!process.env.FULLNODE_NETWORK) {
+  process.env.FULLNODE_NETWORK = 'mainnet'
+}
