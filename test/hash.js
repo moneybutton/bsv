@@ -52,6 +52,17 @@ describe('Hash', function () {
         sha1buf1.toString('hex').should.equal(sha1buf2.toString('hex'))
       }, this)
     })
+
+    it('should compute the same as sha1 twice in a row', function () {
+      return asink(function *() {
+        let sha1buf1 = Hash.sha1(buf)
+        let sha1buf1b = Hash.sha1(buf)
+        let sha1buf2 = yield Hash.asyncSha1(buf)
+        let sha1buf2b = yield Hash.asyncSha1(buf)
+        sha1buf1.toString('hex').should.equal(sha1buf2.toString('hex'))
+        sha1buf1b.toString('hex').should.equal(sha1buf2b.toString('hex'))
+      }, this)
+    })
   })
 
   describe('@sha1hmac', function () {
@@ -98,6 +109,7 @@ describe('Hash', function () {
     })
 
     it('should compute a hash for 5mb data', function () {
+      this.timeout(10000)
       return asink(function *() {
         let data = new Buffer(5e6)
         data.fill(0)

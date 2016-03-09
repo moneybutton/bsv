@@ -64,6 +64,15 @@ describe('Pubkey', function () {
         pubkey1.toString().should.equal(pubkey2.toString())
       }, this)
     })
+
+    it('should result the same as fromPrivkey', function () {
+      return asink(function *() {
+        let privkey = Privkey().fromBN(BN(5))
+        let pubkey1 = Pubkey().fromPrivkey(privkey)
+        let pubkey2 = yield Pubkey().asyncFromPrivkey(privkey)
+        pubkey1.toString().should.equal(pubkey2.toString())
+      }, this)
+    })
   })
 
   describe('#fromHex', function () {
