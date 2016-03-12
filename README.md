@@ -1,8 +1,8 @@
 fullnode
 ========
 
-fullnode is an ES6 (javascript) implementation of the Bitcoin Blockchain
-intended to satisfy certain goals:
+fullnode is an ES6 (javascript) implementation of bitcoin intended to satisfy
+certain goals:
 
 1. Bring the blockchain to web browsers and node.js in a decentralized,
 trust-minimized manner, without the required use of a third-party API.
@@ -43,6 +43,9 @@ of an instance method, you must access the object property(s) that it modifies.
 10. Use the features of ES6 (ECMAScript 6, the latest version of javascript)
 available in the latest long-term support releases of node.js (currently
 version 4).
+
+fullnode is still being developed and does not yet support downloading the
+blockchain.
 
 Environment Variables
 ---------------------
