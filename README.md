@@ -41,9 +41,8 @@ unless there is a good reason to do something different. To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
 10. Use the features of ES6 (ECMAScript 6, the latest version of javascript)
-available in the latest stable releases of node.js. fullnode is not intended to
-work with node.js 0.10, although it does work with node 0.12 with the --harmony
-flag.
+available in the latest long-term support releases of node.js (currently
+version 4).
 
 Environment Variables
 ---------------------
