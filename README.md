@@ -1,5 +1,5 @@
-fullnode (alpha)
-================
+fullnode
+========
 
 fullnode is an ES6 (javascript) implementation of the Bitcoin Blockchain
 intended to satisfy certain goals:
@@ -44,13 +44,6 @@ of an instance method, you must access the object property(s) that it modifies.
 available in the latest stable releases of node.js. fullnode is not intended to
 work with node.js 0.10, although it does work with node 0.12 with the --harmony
 flag.
-
-Alpha Caveat
-------------
-
-fullnode is still alpha, and has an unstable API. Once the API has been
-finalized, and the code audited, version 1.0 will be released. It is
-recommended not to use fullnode for production software until that time.
 
 Environment Variables
 ---------------------
