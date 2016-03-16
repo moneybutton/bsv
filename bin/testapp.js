@@ -6,7 +6,6 @@
 let express = require('express')
 let path = require('path')
 let app = express()
-var ExpressPeerServer = require('peer').ExpressPeerServer
 
 app.use(express.static(path.join(__dirname, '../build')))
 app.use(express.static(path.join(__dirname, '../node_modules')))
@@ -16,9 +15,6 @@ let server = app.listen(3000, function () {
   let port = server.address().port
   console.log('Run the mocha tests at http://%s:%s/', host, port)
 })
-
-let expressPeerServer = ExpressPeerServer(server, {debug: true})
-app.use('/', expressPeerServer)
 
 module.exports.app = app
 module.exports.server = server

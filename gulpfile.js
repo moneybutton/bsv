@@ -109,7 +109,6 @@ gulp.task('build-karma-url', function () {
 gulp.task('build-karma', ['build-karma-url', 'build-tests'])
 
 gulp.task('test-karma', ['build-karma'], function () {
-  let server = require(path.join(__dirname, 'bin', 'testapp')).server // runs the PeerJS server
   return gulp.src([])
     .pipe(karma({
       configFile: '.karma.conf.js',
@@ -119,7 +118,6 @@ gulp.task('test-karma', ['build-karma'], function () {
       throw err
     })
     .on('end', function () {
-      server.close()
       process.exit()
     })
 })
