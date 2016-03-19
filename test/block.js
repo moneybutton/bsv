@@ -193,4 +193,11 @@ describe('Block', function () {
       }, this)
     })
   })
+
+  describe('#verifyMerkleRoot', function () {
+    it.only('should verify the merkle root of this known block with one tx (in addition to the coinbase tx)', function () {
+      let block = Block().fromHex(largesttxblockvector.blockhex)
+      block.verifyMerkleRoot().should.equal(0)
+    })
+  })
 })
