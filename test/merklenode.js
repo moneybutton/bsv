@@ -18,6 +18,9 @@ describe('MerkleNode', function () {
       let hashbuf = merkleNode.hash()
       hashbuf.length.should.equal(32)
       hashbuf.toString('hex').should.equal('352b71f195e85adbaefdcd6d7380d87067865d9a17c44d38982bb8a40bd0b393')
+      // and a second time ...
+      hashbuf = merkleNode.hash()
+      hashbuf.toString('hex').should.equal('352b71f195e85adbaefdcd6d7380d87067865d9a17c44d38982bb8a40bd0b393')
     })
 
     it('should hash this buffer', function () {
