@@ -43,14 +43,6 @@ describe('Struct', function () {
     })
   })
 
-  describe('#fromBuffers', function () {
-    it('should throw an error', function () {
-      (function () {
-        Struct().fromBuffers().next()
-      }).should.throw('not implemented')
-    })
-  })
-
   describe('#fromBuffer', function () {
     it('should throw an error if arg is not a buffer', function () {
       (function () {
