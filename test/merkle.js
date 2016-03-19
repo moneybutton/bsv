@@ -1,3 +1,4 @@
+/* global describe,it */
 'use strict'
 let Merkle = require('../lib/merkle')
 let should = require('chai').should()
@@ -28,6 +29,56 @@ describe('Merkle', function () {
       let hashbuf = merkle.hash()
       hashbuf.length.should.equal(32)
       hashbuf.toString('hex').should.equal('5df6e0e2761359d30a8275058e299fcc0381534545f55cf43e41983f5d4c9456')
+    })
+  })
+
+  describe('fromBuffers', function () {
+    it('should find this merkle root from three buffers', function () {
+      let bufs = [new Buffer(0), new Buffer(0), new Buffer(0)]
+      let merkle = Merkle().fromBuffers(bufs)
+      let hashbuf = merkle.hash()
+      hashbuf.length.should.equal(32)
+      hashbuf.toString('hex').should.equal('647fedb4d19e11915076dd60fa72a8e03eb33f6dec87a4f0662b0c1f378a81cb')
+      merkle.leavesNum().should.equal(4)
+    })
+
+    it('should find this merkle root from four buffers', function () {
+      let bufs = [new Buffer(0), new Buffer(0), new Buffer(0), new Buffer(0)]
+      let merkle = Merkle().fromBuffers(bufs)
+      let hashbuf = merkle.hash()
+      hashbuf.length.should.equal(32)
+      hashbuf.toString('hex').should.equal('647fedb4d19e11915076dd60fa72a8e03eb33f6dec87a4f0662b0c1f378a81cb')
+      merkle.leavesNum().should.equal(4)
+    })
+
+    it('should find this merkle root from 9 buffers', function () {
+      let bufs = []
+      for (let i = 0; i < 9; i++) {
+        bufs[i] = new Buffer(0)
+      }
+      let merkle = Merkle().fromBuffers(bufs)
+      let hashbuf = merkle.hash()
+      hashbuf.length.should.equal(32)
+      hashbuf.toString('hex').should.equal('9f187f4339d07e1963d404f31d28e4557cd72a320085d188f26c943fc604281e')
+      merkle.leavesNum().should.equal(16)
+    })
+  })
+
+  describe('fromBufferArrays', function () {
+    it('should find this merkle root from two buffers', function () {
+      let bufs1 = [new Buffer(0)]
+      let bufs2 = [new Buffer(0)]
+      let merkle = Merkle().fromBufferArrays(bufs1, bufs2)
+      let hashbuf = merkle.hash()
+      hashbuf.length.should.equal(32)
+    })
+
+    it('should find this merkle root from four buffers', function () {
+      let bufs1 = [new Buffer(0), new Buffer(0)]
+      let bufs2 = [new Buffer(0), new Buffer(0)]
+      let merkle = Merkle().fromBufferArrays(bufs1, bufs2)
+      let hashbuf = merkle.hash()
+      hashbuf.length.should.equal(32)
     })
   })
 })
