@@ -1,9 +1,11 @@
 /* global describe,it */
 'use strict'
-let Constants = require('../lib/constants').Default
-let Msg = require('../lib/msg')
 let BR = require('../lib/br')
 let BW = require('../lib/bw')
+let Constants = require('../lib/constants').Default
+let Hash = require('../lib/hash')
+let Msg = require('../lib/msg')
+let asink = require('asink')
 let should = require('chai').should()
 
 describe('Msg', function () {
@@ -53,12 +55,43 @@ describe('Msg', function () {
     })
   })
 
+  describe('@checksum', function () {
+    it('should return known value', function () {
+      let buf = new Buffer(0)
+      let checksumbuf = Msg.checksum(buf)
+      Buffer.compare(checksumbuf, Hash.sha256sha256(buf).slice(0, 4)).should.equal(0)
+    })
+  })
+
+  describe('@asyncChecksum', function () {
+    it('should return known value and compute same as @checksum', function () {
+      return asink(function *() {
+        let buf = new Buffer(0)
+        let checksumbuf = yield Msg.asyncChecksum(buf)
+        Buffer.compare(checksumbuf, Hash.sha256sha256(buf).slice(0, 4)).should.equal(0)
+        let checksumbuf2 = Msg.checksum(buf)
+        Buffer.compare(checksumbuf, checksumbuf2).should.equal(0)
+      }, this)
+    })
+  })
+
   describe('#setData', function () {
     it('should data to a blank buffer', function () {
       let msg = Msg()
       msg.setCmd('inv')
       msg.setData(new Buffer([]))
       msg.isValid().should.equal(true)
+    })
+  })
+
+  describe('#asyncSetData', function () {
+    it('should data to a blank buffer', function () {
+      return asink(function *() {
+        let msg = Msg()
+        msg.setCmd('inv')
+        yield msg.asyncSetData(new Buffer([]))
+        msg.isValid().should.equal(true)
+      }, this)
     })
   })
 
