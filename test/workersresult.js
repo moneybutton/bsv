@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let WorkersResult = require('../lib/workers-result')
+let WorkersResult = require('../lib/workersresult')
 let cmp = require('../lib/cmp')
 let should = require('chai').should()
 

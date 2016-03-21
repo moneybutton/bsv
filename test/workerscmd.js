@@ -2,7 +2,7 @@
 'use strict'
 let BIP32 = require('../lib/bip32')
 let BW = require('../lib/bw')
-let WorkersCmd = require('../lib/workers-cmd')
+let WorkersCmd = require('../lib/workerscmd')
 let cmp = require('../lib/cmp')
 let should = require('chai').should()
 
