@@ -5,6 +5,7 @@ let BW = require('../lib/bw')
 let Constants = require('../lib/constants').Default
 let Hash = require('../lib/hash')
 let Msg = require('../lib/msg')
+let Random = require('../lib/random')
 let asink = require('asink')
 let should = require('chai').should()
 
@@ -201,6 +202,55 @@ describe('Msg', function () {
   describe('#isValid', function () {
     it('should know these messages are valid or invalid', function () {
       Msg().fromHex(msghex).isValid().should.equal(true)
+    })
+  })
+
+  describe('#asyncIsValid', function () {
+    it('should return same as isValid', function () {
+      return asink(function *() {
+        let msg = Msg()
+        msg.setCmd('ping')
+        msg.setData(Random.getRandomBuffer(8))
+        msg.isValid().should.equal(true)
+        let res = yield msg.asyncIsValid()
+        res.should.equal(msg.isValid())
+      }, this)
+    })
+  })
+
+  describe('#asyncValidate', function () {
+    it('should validate this known valid message', function () {
+      let msg = Msg()
+      msg.setCmd('ping')
+      msg.setData(Random.getRandomBuffer(8))
+      msg.validate()
+    })
+  })
+
+  describe('#asyncValidate', function () {
+    it('should validate this known valid message', function () {
+      return asink(function *() {
+        let msg = Msg()
+        msg.setCmd('ping')
+        msg.setData(Random.getRandomBuffer(8))
+        yield msg.asyncValidate()
+      }, this)
+    })
+
+    it('should validate this known valid message', function () {
+      return asink(function *() {
+        let msg = Msg()
+        msg.setCmd('ping')
+        msg.setData(Random.getRandomBuffer(8))
+        msg.checksumbuf = new Buffer('00000000', 'hex')
+        let errors = 0
+        try {
+          yield msg.asyncValidate()
+        } catch (e) {
+          errors++
+        }
+        errors.should.equal(1)
+      }, this)
     })
   })
 })
