@@ -1,7 +1,7 @@
-fullnode
+Fullnode
 ========
 
-fullnode is an ES6 (javascript) implementation of bitcoin intended to satisfy
+Fullnode is an ES6 (javascript) implementation of bitcoin intended to satisfy
 certain goals:
 
 1. Bring the blockchain to web browsers and node.js in a decentralized,
@@ -23,7 +23,7 @@ fromString, toJSON, fromJSON, toBuffer, fromBuffer, toHex, fromHex methods.
 5. All standard features of the blockchain are implemented (or will be) and
 saved in lib/. All BIPs are correctly implemented and, where appropriate, saved
 as bipxx.js in lib/ (since that is their standard name). In order to allow
-rapid development, fullnode includes non-standard and experimental features.
+rapid development, Fullnode includes non-standard and experimental features.
 Any non-standard features (such as colored coins or stealth addresses) are
 labeled as such in index.js as well as in comments.
 
@@ -44,7 +44,7 @@ of an instance method, you must access the object property(s) that it modifies.
 available in the latest long-term support releases of node.js (currently
 version 4).
 
-fullnode is still being developed and does not yet support downloading the
+Fullnode is still being developed and does not yet support downloading the
 blockchain.
 
 Environment Variables
@@ -64,7 +64,7 @@ FULLNODE_NETWORK=testnet ./bin/fullnode.js
 Documentation
 -------------
 
-While fullnode is under heavy development, the API changes frequently, and the
+While Fullnode is under heavy development, the API changes frequently, and the
 documentation is not kept up-to-date. However there is some documentation, and
 it can be built with groc:
 
@@ -76,5 +76,5 @@ groc
 License
 -------
 
-In order to support maximum interoperability with other software, fullnode is
+In order to support maximum interoperability with other software, Fullnode is
 MIT-licensed. See LICENSE.

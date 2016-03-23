@@ -25,7 +25,7 @@ describe('Workers', function () {
       }, this)
     })
 
-    it('should compute this method with fullnode object in args in the workers', function () {
+    it('should compute this method with Fullnode object in args in the workers', function () {
       return asink(function *() {
         let privkey = Privkey().fromRandom()
         let pubkey1 = Pubkey().fromPrivkey(privkey)

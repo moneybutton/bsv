@@ -15,7 +15,7 @@ gulp.task('build-bundle', function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
       // The babel polyfill is include once in the main bundle, and no where
-      // else. You must include the main bundle in any HTML that uses fullnode,
+      // else. You must include the main bundle in any HTML that uses Fullnode,
       // since the pollyfill must be required exactly once. If you build things
       // yourself with babel, you will need to be sure to include the polyfill
       // exactly once yourself.
