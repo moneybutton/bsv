@@ -506,9 +506,9 @@
       "resolved": "./node_shrinkwrap/bluebird-2.10.2.tgz"
     },
     "bn.js": {
-      "version": "4.11.0",
-      "from": "bn.js@4.11.0",
-      "resolved": "./node_shrinkwrap/bn.js-4.11.0.tgz"
+      "version": "4.11.1",
+      "from": "bn.js@4.11.1",
+      "resolved": "./node_shrinkwrap/bn.js-4.11.1.tgz"
     },
     "body-parser": {
       "version": "1.15.0",
