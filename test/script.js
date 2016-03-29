@@ -1,11 +1,14 @@
 /* global describe,it */
 'use strict'
+let BN = require('../lib/bn')
+let Opcode = require('../lib/opcode')
+let Privkey = require('../lib/privkey')
+let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
 let should = require('chai').should()
-let Opcode = require('../lib/opcode')
-let script_valid = require('./vectors/bitcoind/script_valid')
+
 let script_invalid = require('./vectors/bitcoind/script_invalid')
-let BN = require('../lib/bn')
+let script_valid = require('./vectors/bitcoind/script_valid')
 
 describe('Script', function () {
   it('should make a new script', function () {
@@ -241,6 +244,15 @@ describe('Script', function () {
       let hashbuf = new Buffer(20)
       hashbuf.fill(0)
       Script().fromScripthash(hashbuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
+    })
+  })
+
+  describe('#fromPubkeys', function () {
+    it('should generate this known script from a list of public keys', function () {
+      let privkey = Privkey().fromBN(BN(5))
+      let pubkey = Pubkey().fromPrivkey(privkey)
+      let script = Script().fromPubkeys(2, [pubkey, pubkey, pubkey])
+      script.toString().should.equal('OP_2 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 OP_3 OP_CHECKMULTISIG')
     })
   })
 
