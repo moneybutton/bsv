@@ -132,6 +132,47 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#to', function () {
+    it('should add a scripthash address', function () {
+      let hashbuf = new Buffer(20)
+      hashbuf.fill(0)
+      let address = Address().fromRedeemScript(Script().fromScripthash(hashbuf))
+      let txb = Txbuilder()
+      txb.to(BN(0), address)
+      txb.txouts.length.should.equal(1)
+    })
+
+    it('should add a pubkeyhash address', function () {
+      let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
+      let address = Address().fromPubkey(pubkey)
+      let txb = Txbuilder()
+      txb.to(BN(0), address)
+      txb.txouts.length.should.equal(1)
+    })
+  })
+
+  describe('@allSigsPresent', function () {
+    it('should know all sigs are or are not present these scripts', function () {
+      let script
+      script = Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      Txbuilder.allSigsPresent(2, script).should.equal(true)
+      script = Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      Txbuilder.allSigsPresent(3, script).should.equal(true)
+      script = Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      Txbuilder.allSigsPresent(3, script).should.equal(false)
+    })
+  })
+
+  describe('@removeBlankSigs', function () {
+    it('should know all sigs are or are not present these scripts', function () {
+      let script
+      script = Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      Txbuilder.allSigsPresent(3, script).should.equal(false)
+      script = Txbuilder.removeBlankSigs(script)
+      Txbuilder.allSigsPresent(2, script).should.equal(true)
+    })
+  })
+
   describe('#fromPubkeyhash', function () {
     it('should add an input from a pubkeyhash output', function () {
       let keypair = Keypair().fromRandom()
@@ -158,25 +199,6 @@ describe('Txbuilder', function () {
       // let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
       let txbuilder = Txbuilder().fromScripthashMultisig(txhashbuf, txoutnum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
-    })
-  })
-
-  describe('#to', function () {
-    it('should add a scripthash address', function () {
-      let hashbuf = new Buffer(20)
-      hashbuf.fill(0)
-      let address = Address().fromRedeemScript(Script().fromScripthash(hashbuf))
-      let txb = Txbuilder()
-      txb.to(BN(0), address)
-      txb.txouts.length.should.equal(1)
-    })
-
-    it('should add a pubkeyhash address', function () {
-      let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
-      let address = Address().fromPubkey(pubkey)
-      let txb = Txbuilder()
-      txb.to(BN(0), address)
-      txb.txouts.length.should.equal(1)
     })
   })
 
