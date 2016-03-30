@@ -123,6 +123,17 @@ describe('Txbuilder', function () {
   })
 
   describe('#from', function () {
+    it('should add an input from a pubkeyhash output', function () {
+      let keypair = Keypair().fromRandom()
+      let address = Address().fromPubkey(keypair.pubkey)
+      let txout = Txout(BN(1000), Script().fromPubkeyhash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txbuilder = Txbuilder().from(txhashbuf, txoutnum, txout, keypair.pubkey)
+      Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keypair.pubkey.toBuffer()).should.equal(0)
+    })
+
     it('should add an input from a scripthash output', function () {
       let keypair1 = Keypair().fromRandom()
       let keypair2 = Keypair().fromRandom()
