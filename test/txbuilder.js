@@ -10,9 +10,11 @@ let Script = require('../lib/script')
 let Tx = require('../lib/tx')
 let Txbuilder = require('../lib/txbuilder')
 let Txout = require('../lib/txout')
+let Txoutmap = require('../lib/txoutmap')
 let Txverifier = require('../lib/txverifier')
 let asink = require('asink')
 let should = require('chai').should()
+let sinon = require('sinon')
 
 describe('Txbuilder', function () {
   it('should make a new txbuilder', function () {
@@ -96,13 +98,33 @@ describe('Txbuilder', function () {
     // txb.randomizeInputs()
     // txb.randomizeOutputs()
 
-    txb.build()
-    return {txb, keypair1, keypair2, keypair3, addr1, addr2, addr3, saddr1, saddr2, changeaddr}
+    return {
+      txb,
+      keypair1,
+      keypair2,
+      keypair3,
+      addr1,
+      addr2,
+      addr3,
+      saddr1,
+      saddr2,
+      changeaddr,
+      txout1,
+      txout2,
+      txout3,
+      txout4
+    }
+  }
+
+  function prepareAndBuildTxbuilder () {
+    let obj = prepareTxbuilder()
+    obj.txb.build()
+    return obj
   }
 
   describe('#toJSON', function () {
     it('should convert this txb to JSON', function () {
-      let obj = prepareTxbuilder()
+      let obj = prepareAndBuildTxbuilder()
       let txb = obj.txb
       let json = txb.toJSON()
       should.exist(json.tx)
@@ -118,7 +140,7 @@ describe('Txbuilder', function () {
 
   describe('#fromJSON', function () {
     it('should convert to/from json isomorphically', function () {
-      let obj = prepareTxbuilder()
+      let obj = prepareAndBuildTxbuilder()
       let txb = obj.txb
       let json = txb.toJSON()
       let txb2 = Txbuilder().fromJSON(json)
@@ -129,6 +151,52 @@ describe('Txbuilder', function () {
       JSON.stringify(json2.utxoutmap).should.equal(JSON.stringify(json.utxoutmap))
       json2.changeAddress.should.equal(json.changeAddress)
       json2.feePerKBNum.should.equal(json.feePerKBNum)
+    })
+  })
+
+  describe('#setFeePerKBNum', function () {
+    it('should set the feePerKBNum', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
+      txb.setFeePerKBNum(1000)
+      txb.feePerKBNum.should.equal(1000)
+    })
+  })
+
+  describe('#setChangeAddress', function () {
+    it('should set the changeaddress', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
+      let privkey = Privkey().fromRandom()
+      let address = Address().fromPrivkey(privkey)
+      txb.setChangeAddress(address)
+      txb.changeAddress.should.equal(address)
+    })
+  })
+
+  describe('#setNLocktime', function () {
+    it('should set the nlocktime', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
+      txb.setNLocktime(1)
+      txb.build()
+      txb.tx.nlocktime.should.equal(1)
+    })
+  })
+
+  describe('#importPartiallySignedTx', function () {
+    it('should set tx', function () {
+      let tx = Tx()
+      let txb = Txbuilder().importPartiallySignedTx(tx)
+      should.exist(txb.tx)
+    })
+
+    it('should set tx and utxoutmap', function () {
+      let tx = Tx()
+      let utxoutmap = Txoutmap()
+      let txb = Txbuilder().importPartiallySignedTx(tx, utxoutmap)
+      should.exist(txb.tx)
+      should.exist(txb.utxoutmap)
     })
   })
 
@@ -203,15 +271,16 @@ describe('Txbuilder', function () {
   })
 
   describe('#sign', function () {
-    let txb, keypair1, keypair2, saddr1, changeaddr
+    let txb, keypair1, keypair2, saddr1, changeaddr, txout1
 
     before(function () {
-      let obj = prepareTxbuilder()
+      let obj = prepareAndBuildTxbuilder()
       txb = obj.txb
       keypair1 = obj.keypair1
       keypair2 = obj.keypair2
       saddr1 = obj.saddr1
       changeaddr = obj.changeaddr
+      txout1 = obj.txout1
     })
 
     it('should sign and verify synchronously', function () {
@@ -236,18 +305,28 @@ describe('Txbuilder', function () {
 
       Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
     })
+
+    it('should pass in txout', function () {
+      txb.txoutmap = sinon.spy()
+      txb.utxoutmap = {
+        get: sinon.spy()
+      }
+      txb.sign(0, keypair1, txout1)
+      txb.utxoutmap.get.calledOnce.should.equal(false)
+    })
   })
 
   describe('#asyncSign', function () {
-    let txb, keypair1, keypair2, saddr1, changeaddr
+    let txb, keypair1, keypair2, saddr1, changeaddr, txout1
 
     before(function () {
-      let obj = prepareTxbuilder()
+      let obj = prepareAndBuildTxbuilder()
       txb = obj.txb
       keypair1 = obj.keypair1
       keypair2 = obj.keypair2
       saddr1 = obj.saddr1
       changeaddr = obj.changeaddr
+      txout1 = obj.txout1
     })
 
     it('should sign and verify asynchronously', function () {
@@ -273,6 +352,17 @@ describe('Txbuilder', function () {
         txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
 
         Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+      }, this)
+    })
+
+    it('should pass in txout', function () {
+      return asink(function *() {
+        txb.txoutmap = sinon.spy()
+        txb.utxoutmap = {
+          get: sinon.spy()
+        }
+        yield txb.asyncSign(0, keypair1, txout1)
+        txb.utxoutmap.get.calledOnce.should.equal(false)
       }, this)
     })
   })
