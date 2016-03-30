@@ -15,8 +15,6 @@ let asink = require('asink')
 let should = require('chai').should()
 
 describe('Txbuilder', function () {
-  let txb
-
   it('should make a new txbuilder', function () {
     let txb = new Txbuilder()
     ;(txb instanceof Txbuilder).should.equal(true)
@@ -30,66 +28,76 @@ describe('Txbuilder', function () {
     should.exist(txb.tx)
   })
 
+  function prepareTxbuilder () {
+    let txb = new Txbuilder()
+
+    // make change address
+    let privkey = Privkey().fromBN(BN(1))
+    let keypair = Keypair().fromPrivkey(privkey)
+    let changeaddr = Address().fromPubkey(keypair.pubkey)
+
+    // make addresses to send from
+    let privkey1 = Privkey().fromBN(BN(2))
+    let keypair1 = Keypair().fromPrivkey(privkey1)
+    let addr1 = Address().fromPubkey(keypair1.pubkey)
+
+    let privkey2 = Privkey().fromBN(BN(3))
+    let keypair2 = Keypair().fromPrivkey(privkey2)
+    let addr2 = Address().fromPubkey(keypair2.pubkey)
+
+    // make addresses to send to
+    let saddr1 = addr1
+    let saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
+
+    // txouts that we are spending
+
+    // pubkeyhash out
+    let scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+
+    // pubkeyhash out
+    let scriptout2 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+
+    // p2sh 2-of-2 multisig out
+    let redeemScript3 = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
+    let address3 = Address().fromRedeemScript(redeemScript3)
+    let scriptout3 = address3.toScript()
+
+    let txout1 = Txout(BN(1e8), scriptout1)
+    let txout2 = Txout(BN(1e8), scriptout2)
+    let txout3 = Txout(BN(1e8), scriptout3)
+    // total balance: 3e8
+
+    let txhashbuf = new Buffer(32)
+    txhashbuf.fill(0)
+    let txoutnum1 = 0
+    let txoutnum2 = 1
+    let txoutnum3 = 2
+
+    txb.setFeePerKBNum(0.0001e8)
+    txb.setChangeAddress(changeaddr)
+    txb.fromPubkeyhash(txhashbuf, txoutnum1, txout1, keypair1.pubkey)
+    txb.fromPubkeyhash(txhashbuf, txoutnum2, txout2, keypair2.pubkey)
+    txb.fromScripthashMultisig(txhashbuf, txoutnum3, txout3, redeemScript3)
+    txb.to(BN(1e8), saddr1) // pubkeyhash address
+    txb.to(BN(1e8), saddr2) // p2sh address
+    // total sending: 2e8 (plus fee)
+    // txb.randomizeInputs()
+    // txb.randomizeOutputs()
+
+    txb.build()
+    return {txb, keypair1, keypair2, addr1, addr2, saddr1, saddr2, changeaddr}
+  }
+
   describe('#sign', function () {
-    let keypair1, keypair2, addr1, addr2, saddr1, saddr2, changeaddr
+    let txb, keypair1, keypair2, saddr1, changeaddr
 
     before(function () {
-      txb = new Txbuilder()
-
-      // make change address
-      let privkey = Privkey().fromBN(BN(1))
-      let keypair = Keypair().fromPrivkey(privkey)
-      changeaddr = Address().fromPubkey(keypair.pubkey)
-
-      // make addresses to send from
-      let privkey1 = Privkey().fromBN(BN(2))
-      keypair1 = Keypair().fromPrivkey(privkey1)
-      addr1 = Address().fromPubkey(keypair1.pubkey)
-
-      let privkey2 = Privkey().fromBN(BN(3))
-      keypair2 = Keypair().fromPrivkey(privkey2)
-      addr2 = Address().fromPubkey(keypair2.pubkey)
-
-      // make addresses to send to
-      saddr1 = addr1
-      saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
-
-      // txouts that we are spending
-
-      // pubkeyhash out
-      let scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
-
-      // pubkeyhash out
-      let scriptout2 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
-
-      // p2sh 2-of-2 multisig out
-      let redeemScript3 = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
-      let address3 = Address().fromRedeemScript(redeemScript3)
-      let scriptout3 = address3.toScript()
-
-      let txout1 = Txout(BN(1e8), scriptout1)
-      let txout2 = Txout(BN(1e8), scriptout2)
-      let txout3 = Txout(BN(1e8), scriptout3)
-      // total balance: 3e8
-
-      let txhashbuf = new Buffer(32)
-      txhashbuf.fill(0)
-      let txoutnum1 = 0
-      let txoutnum2 = 1
-      let txoutnum3 = 2
-
-      txb.setFeePerKBNum(0.0001e8)
-      txb.setChangeAddress(changeaddr)
-      txb.fromPubkeyhash(txhashbuf, txoutnum1, txout1, keypair1.pubkey)
-      txb.fromPubkeyhash(txhashbuf, txoutnum2, txout2, keypair2.pubkey)
-      txb.fromScripthashMultisig(txhashbuf, txoutnum3, txout3, redeemScript3)
-      txb.to(BN(1e8), saddr1) // pubkeyhash address
-      txb.to(BN(1e8), saddr2) // p2sh address
-      // total sending: 2e8 (plus fee)
-      // txb.randomizeInputs()
-      // txb.randomizeOutputs()
-
-      txb.build()
+      let obj = prepareTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      keypair2 = obj.keypair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
     })
 
     it('should sign and verify synchronously', function () {
@@ -114,65 +122,15 @@ describe('Txbuilder', function () {
   })
 
   describe('#asyncSign', function () {
-    let keypair1, keypair2, addr1, addr2, saddr1, saddr2, changeaddr
+    let txb, keypair1, keypair2, saddr1, changeaddr
 
     before(function () {
-      txb = new Txbuilder()
-
-      // make change address
-      let privkey = Privkey().fromBN(BN(1))
-      let keypair = Keypair().fromPrivkey(privkey)
-      changeaddr = Address().fromPubkey(keypair.pubkey)
-
-      // make addresses to send from
-      let privkey1 = Privkey().fromBN(BN(2))
-      keypair1 = Keypair().fromPrivkey(privkey1)
-      addr1 = Address().fromPubkey(keypair1.pubkey)
-
-      let privkey2 = Privkey().fromBN(BN(3))
-      keypair2 = Keypair().fromPrivkey(privkey2)
-      addr2 = Address().fromPubkey(keypair2.pubkey)
-
-      // make addresses to send to
-      saddr1 = addr1
-      saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
-
-      // txouts that we are spending
-
-      // pubkeyhash out
-      let scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
-
-      // pubkeyhash out
-      let scriptout2 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashbuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
-
-      // p2sh 2-of-2 multisig out
-      let redeemScript3 = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
-      let address3 = Address().fromRedeemScript(redeemScript3)
-      let scriptout3 = address3.toScript()
-
-      let txout1 = Txout(BN(1e8), scriptout1)
-      let txout2 = Txout(BN(1e8), scriptout2)
-      let txout3 = Txout(BN(1e8), scriptout3)
-      // total balance: 3e8
-
-      let txhashbuf = new Buffer(32)
-      txhashbuf.fill(0)
-      let txoutnum1 = 0
-      let txoutnum2 = 1
-      let txoutnum3 = 2
-
-      txb.setFeePerKBNum(0.0001e8)
-      txb.setChangeAddress(changeaddr)
-      txb.fromPubkeyhash(txhashbuf, txoutnum1, txout1, keypair1.pubkey)
-      txb.fromPubkeyhash(txhashbuf, txoutnum2, txout2, keypair2.pubkey)
-      txb.fromScripthashMultisig(txhashbuf, txoutnum3, txout3, redeemScript3)
-      txb.to(BN(1e8), saddr1) // pubkeyhash address
-      txb.to(BN(1e8), saddr2) // p2sh address
-      // total sending: 2e8 (plus fee)
-      // txb.randomizeInputs()
-      // txb.randomizeOutputs()
-
-      txb.build()
+      let obj = prepareTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      keypair2 = obj.keypair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
     })
 
     it('should sign and verify asynchronously', function () {
@@ -201,6 +159,8 @@ describe('Txbuilder', function () {
 
   describe('#toJSON', function () {
     it('should convert this txb to JSON', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
       let json = txb.toJSON()
       should.exist(json.tx)
       should.exist(json.txins)
@@ -215,6 +175,8 @@ describe('Txbuilder', function () {
 
   describe('#fromJSON', function () {
     it('should convert to/from json isomorphically', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
       let json = txb.toJSON()
       let txb2 = Txbuilder().fromJSON(json)
       let json2 = txb2.toJSON()
