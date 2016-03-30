@@ -144,7 +144,7 @@ describe('Txin', function () {
     })
   })
 
-  describe('#fromTxout', function () {
+  describe('#fromPubkeyhashTxout', function () {
     it('should convert from pubkeyhash out', function () {
       let keypair = Keypair().fromRandom()
       let address = Address().fromPubkey(keypair.pubkey)
@@ -152,10 +152,12 @@ describe('Txin', function () {
       let txhashbuf = new Buffer(32)
       txhashbuf.fill(0)
       let txoutnum = 0
-      let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, keypair.pubkey)
+      let txin = Txin().fromPubkeyhashTxout(txhashbuf, txoutnum, txout, keypair.pubkey)
       should.exist(txin)
     })
+  })
 
+  describe('#fromScripthashMultisigTxout', function () {
     it('should convert from scripthash out', function () {
       let keypair1 = Keypair().fromRandom()
       let keypair2 = Keypair().fromRandom()
@@ -165,7 +167,7 @@ describe('Txin', function () {
       let txhashbuf = new Buffer(32)
       txhashbuf.fill(0)
       let txoutnum = 0
-      let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
+      let txin = Txin().fromScripthashMultisigTxout(txhashbuf, txoutnum, txout, script)
       Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
   })
