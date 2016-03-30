@@ -1,10 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
-let bn = require('../lib/bn')
+let Keypair = require('../lib/keypair')
 let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
-let Keypair = require('../lib/keypair')
+let asink = require('asink')
+let bn = require('../lib/bn')
+let should = require('chai').should()
 
 describe('Keypair', function () {
   it('should satisfy this basic API', function () {
@@ -116,6 +117,17 @@ describe('Keypair', function () {
     })
   })
 
+  describe('#asyncFromPrivkey', function () {
+    it('should convert a privkey same as .fromPrivkey', function () {
+      return asink(function *() {
+        let privkey = Privkey().fromRandom()
+        let keypair = Keypair().fromPrivkey(privkey)
+        let keypair2 = yield Keypair().asyncFromPrivkey(privkey)
+        keypair.pubkey.toString().should.equal(keypair2.pubkey.toString())
+      })
+    })
+  })
+
   describe('#fromRandom', function () {
     it('should make a new priv and pub, should be compressed, mainnet', function () {
       let key = Keypair()
@@ -127,6 +139,16 @@ describe('Keypair', function () {
       key.pubkey.point.getY().gt(bn(0)).should.equal(true)
       key.privkey.compressed.should.equal(true)
       key.pubkey.compressed.should.equal(true)
+    })
+  })
+
+  describe('#fromRandom', function () {
+    it('should have a privkey and pubkey and compute same as pubkey methods', function () {
+      return asink(function *() {
+        let keypair = yield Keypair().asyncFromRandom()
+        let pubkey = Pubkey().fromPrivkey(keypair.privkey)
+        pubkey.toString().should.equal(keypair.pubkey.toString())
+      })
     })
   })
 })
