@@ -155,5 +155,18 @@ describe('Txin', function () {
       let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, keypair.pubkey)
       should.exist(txin)
     })
+
+    it('should convert from scripthash out', function () {
+      let keypair1 = Keypair().fromRandom()
+      let keypair2 = Keypair().fromRandom()
+      let script = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
+      let address = Address().fromRedeemScript(script)
+      let txout = Txout(BN(1000), Script().fromScripthash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
+      Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+    })
   })
 })

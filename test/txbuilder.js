@@ -122,6 +122,22 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#from', function () {
+    it('should add an input from a scripthash output', function () {
+      let keypair1 = Keypair().fromRandom()
+      let keypair2 = Keypair().fromRandom()
+      let script = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
+      let address = Address().fromRedeemScript(script)
+      let txout = Txout(BN(1000), Script().fromScripthash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      // let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
+      let txbuilder = Txbuilder().from(txhashbuf, txoutnum, txout, script)
+      Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
+    })
+  })
+
   describe('#to', function () {
     it('should add a scripthash address', function () {
       let hashbuf = new Buffer(20)
