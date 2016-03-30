@@ -348,6 +348,10 @@ describe('Script', function () {
 
   describe('#isMultisigOut', function () {
     it('should know this is a valid multisig output', function () {
+      Script().writeString('OP_1 33 0x029cf97e1052008852da9d107411b2d47aad387612558fa864b723c484f8931176 33 0x02f23ab919b3a4795c75552b3985982f54c4164a26948b9fe87625705f694e7aa9 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
+    })
+
+    it('should know this is a valid multisig output', function () {
       Script().writeString('OP_2 33 0x029cf97e1052008852da9d107411b2d47aad387612558fa864b723c484f8931176 33 0x02f23ab919b3a4795c75552b3985982f54c4164a26948b9fe87625705f694e7aa9 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
     })
 
