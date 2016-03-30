@@ -100,81 +100,6 @@ describe('Txbuilder', function () {
     return {txb, keypair1, keypair2, keypair3, addr1, addr2, addr3, saddr1, saddr2, changeaddr}
   }
 
-  describe('#sign', function () {
-    let txb, keypair1, keypair2, saddr1, changeaddr
-
-    before(function () {
-      let obj = prepareTxbuilder()
-      txb = obj.txb
-      keypair1 = obj.keypair1
-      keypair2 = obj.keypair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
-    })
-
-    it('should sign and verify synchronously', function () {
-      txb.sign(0, keypair1)
-      txb.sign(1, keypair2)
-
-      // transaction not fully signed yet, so should be invalid
-      Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
-
-      txb.sign(2, keypair1) // 2-of-2 needs 2 sigs
-      txb.sign(2, keypair2) // 2-of-2 needs 2 sigs
-
-      txb.sign(3, keypair1) // 2-of-3 needs 2 sigs
-      txb.sign(3, keypair2) // 2-of-3 needs 2 sigs
-
-      txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashbuf.toString('hex'))
-      txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
-      txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
-      txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
-      txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
-      txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
-
-      Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
-    })
-  })
-
-  describe('#asyncSign', function () {
-    let txb, keypair1, keypair2, saddr1, changeaddr
-
-    before(function () {
-      let obj = prepareTxbuilder()
-      txb = obj.txb
-      keypair1 = obj.keypair1
-      keypair2 = obj.keypair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
-    })
-
-    it('should sign and verify asynchronously', function () {
-      return asink(function *() {
-        // or:
-        yield txb.asyncSign(0, keypair1)
-        yield txb.asyncSign(1, keypair2)
-
-        // transaction not fully signed yet, so should be invalid
-        Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
-
-        yield txb.asyncSign(2, keypair1) // 2-of-2 needs 2 sigs
-        yield txb.asyncSign(2, keypair2) // 2-of-2 needs 2 sigs
-
-        yield txb.asyncSign(3, keypair1) // 2-of-3 needs 2 sigs
-        yield txb.asyncSign(3, keypair2) // 2-of-3 needs 2 sigs
-
-        txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashbuf.toString('hex'))
-        txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
-        txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
-        txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
-        txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
-        txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
-
-        Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
-      }, this)
-    })
-  })
-
   describe('#toJSON', function () {
     it('should convert this txb to JSON', function () {
       let obj = prepareTxbuilder()
@@ -252,6 +177,81 @@ describe('Txbuilder', function () {
       let txb = Txbuilder()
       txb.to(BN(0), address)
       txb.txouts.length.should.equal(1)
+    })
+  })
+
+  describe('#sign', function () {
+    let txb, keypair1, keypair2, saddr1, changeaddr
+
+    before(function () {
+      let obj = prepareTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      keypair2 = obj.keypair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
+    })
+
+    it('should sign and verify synchronously', function () {
+      txb.sign(0, keypair1)
+      txb.sign(1, keypair2)
+
+      // transaction not fully signed yet, so should be invalid
+      Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
+
+      txb.sign(2, keypair1) // 2-of-2 needs 2 sigs
+      txb.sign(2, keypair2) // 2-of-2 needs 2 sigs
+
+      txb.sign(3, keypair1) // 2-of-3 needs 2 sigs
+      txb.sign(3, keypair2) // 2-of-3 needs 2 sigs
+
+      txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashbuf.toString('hex'))
+      txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
+      txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
+      txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
+      txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
+      txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
+
+      Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+    })
+  })
+
+  describe('#asyncSign', function () {
+    let txb, keypair1, keypair2, saddr1, changeaddr
+
+    before(function () {
+      let obj = prepareTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      keypair2 = obj.keypair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
+    })
+
+    it('should sign and verify asynchronously', function () {
+      return asink(function *() {
+        // or:
+        yield txb.asyncSign(0, keypair1)
+        yield txb.asyncSign(1, keypair2)
+
+        // transaction not fully signed yet, so should be invalid
+        Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
+
+        yield txb.asyncSign(2, keypair1) // 2-of-2 needs 2 sigs
+        yield txb.asyncSign(2, keypair2) // 2-of-2 needs 2 sigs
+
+        yield txb.asyncSign(3, keypair1) // 2-of-3 needs 2 sigs
+        yield txb.asyncSign(3, keypair2) // 2-of-3 needs 2 sigs
+
+        txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashbuf.toString('hex'))
+        txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
+        txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
+        txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
+        txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
+        txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashbuf.toString('hex'))
+
+        Txverifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+      }, this)
     })
   })
 })
