@@ -93,7 +93,7 @@ describe('Txbuilder', function () {
     })
 
     describe('#sign', function () {
-      it.only('should sign and verify synchronously', function () {
+      it('should sign and verify synchronously', function () {
         txb.sign(0, keypair1)
         txb.sign(1, keypair2)
         txb.sign(2, keypair1) // 2-of-2 needs 2 sigs
