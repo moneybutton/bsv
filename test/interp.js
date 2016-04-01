@@ -34,6 +34,37 @@ describe('Interp', function () {
     interp.flags.should.equal(0)
   })
 
+  describe('#fromJSON', function () {
+    it('should convert a json to an interp', function () {
+      let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']})
+      let json = interp.toJSON()
+      let interp2 = Interp().fromJSON(json)
+      should.exist(interp2.script)
+      should.exist(interp2.stack[0])
+      should.exist(interp2.altstack[0])
+    })
+  })
+
+  describe('#fromFastBuffer', function () {
+    it('should convert an interp buf to an interp', function () {
+      let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']})
+      let buf = interp.toFastBuffer()
+      let interp2 = Interp().fromFastBuffer(buf)
+      should.exist(interp2.script)
+      should.exist(interp2.stack[0])
+      should.exist(interp2.altstack[0])
+    })
+
+    it('should convert an interp buf to an interp', function () {
+      let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00'], tx: Tx()})
+      let buf = interp.toFastBuffer()
+      let interp2 = Interp().fromFastBuffer(buf)
+      should.exist(interp2.script)
+      should.exist(interp2.stack[0])
+      should.exist(interp2.altstack[0])
+    })
+  })
+
   describe('#toJSON', function () {
     it('should convert an interp to json', function () {
       let interp = Interp().fromObject({script: Script()})
@@ -43,14 +74,15 @@ describe('Interp', function () {
     })
   })
 
-  describe('#fromJSON', function () {
-    it('should convert a json to an interp', function () {
-      let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']})
-      let json = interp.toJSON()
-      let interp2 = Interp().fromJSON(json)
-      should.exist(interp2.script)
-      should.exist(interp2.stack[0])
-      should.exist(interp2.altstack[0])
+  describe('#toFastBuffer', function () {
+    it('should convert an interp to buf with no tx', function () {
+      let interp = Interp().fromObject({script: Script()})
+      Buffer.isBuffer(interp.toFastBuffer()).should.equal(true)
+    })
+
+    it('should convert an interp to buf with a tx', function () {
+      let interp = Interp().fromObject({script: Script(), tx: Tx()})
+      Buffer.isBuffer(interp.toFastBuffer()).should.equal(true)
     })
   })
 
