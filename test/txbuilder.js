@@ -92,8 +92,8 @@ describe('Txbuilder', function () {
     txb.fromPubkeyhash(txhashbuf, txoutnum2, txout2, keypair2.pubkey)
     txb.fromScripthashMultisig(txhashbuf, txoutnum3, txout3, redeemScript3)
     txb.fromScripthashMultisig(txhashbuf, txoutnum4, txout4, redeemScript4)
-    txb.to(BN(2e8), saddr1) // pubkeyhash address
-    txb.to(BN(1e8), saddr2) // p2sh address
+    txb.toAddress(BN(2e8), saddr1) // pubkeyhash address
+    txb.toAddress(BN(1e8), saddr2) // p2sh address
     // total sending: 2e8 (plus fee)
     // txb.randomizeInputs()
     // txb.randomizeOutputs()
@@ -200,13 +200,13 @@ describe('Txbuilder', function () {
     })
   })
 
-  describe('#to', function () {
+  describe('#toAddress', function () {
     it('should add a scripthash address', function () {
       let hashbuf = new Buffer(20)
       hashbuf.fill(0)
       let address = Address().fromRedeemScript(Script().fromScripthash(hashbuf))
       let txb = Txbuilder()
-      txb.to(BN(0), address)
+      txb.toAddress(BN(0), address)
       txb.txouts.length.should.equal(1)
     })
 
@@ -214,7 +214,7 @@ describe('Txbuilder', function () {
       let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
       let address = Address().fromPubkey(pubkey)
       let txb = Txbuilder()
-      txb.to(BN(0), address)
+      txb.toAddress(BN(0), address)
       txb.txouts.length.should.equal(1)
     })
   })
