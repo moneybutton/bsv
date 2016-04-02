@@ -219,6 +219,15 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#toScript', function () {
+    it('should add an OP_RETURN output', function () {
+      let script = Script().fromString('OP_RETURN')
+      let txb = Txbuilder()
+      txb.toScript(BN(0), script)
+      txb.txouts.length.should.equal(1)
+    })
+  })
+
   describe('@allSigsPresent', function () {
     it('should know all sigs are or are not present these scripts', function () {
       let script
