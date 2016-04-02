@@ -9,14 +9,14 @@ describe('Opcode', function () {
     should.exist(opcode)
   })
 
-  it('should have 119 opcodes', function () {
+  it('should have 120 opcodes', function () {
     let i = 0
     for (let key in Opcode) {
       if (key.indexOf('OP_') !== -1) {
         i++
       }
     }
-    i.should.equal(119)
+    i.should.equal(120)
   })
 
   it('should convert to a string with this handy syntax', function () {
