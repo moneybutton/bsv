@@ -7,6 +7,7 @@ let Keypair = require('../lib/keypair')
 let Privkey = require('../lib/privkey')
 let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
+let Sig = require('../lib/sig')
 let Tx = require('../lib/tx')
 let Txbuilder = require('../lib/txbuilder')
 let Txout = require('../lib/txout')
@@ -279,6 +280,22 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#getSig', function () {
+    let txb, keypair1, txout1
+
+    before(function () {
+      let obj = prepareAndBuildTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      txout1 = obj.txout1
+    })
+
+    it('should sign and verify synchronously', function () {
+      let sig = txb.getSig(keypair1, Sig.SIGHASH_ALL, 0, keypair1, txout1)
+      ;(sig instanceof Sig).should.equal(true)
+    })
+  })
+
   describe('#sign', function () {
     let txb, keypair1, keypair2, saddr1, changeaddr, txout1
 
@@ -322,6 +339,24 @@ describe('Txbuilder', function () {
       }
       txb.sign(0, keypair1, txout1)
       txb.utxoutmap.get.calledOnce.should.equal(false)
+    })
+  })
+
+  describe('#asyncGetSig', function () {
+    let txb, keypair1, txout1
+
+    before(function () {
+      let obj = prepareAndBuildTxbuilder()
+      txb = obj.txb
+      keypair1 = obj.keypair1
+      txout1 = obj.txout1
+    })
+
+    it('should sign and verify synchronously', function () {
+      return asink(function *() {
+        let sig = txb.asyncGetSig(keypair1, Sig.SIGHASH_ALL, 0, keypair1, txout1)
+        ;(sig instanceof Sig).should.equal(true)
+      }, this)
     })
   })
 
