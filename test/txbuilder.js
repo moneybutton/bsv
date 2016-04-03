@@ -251,6 +251,33 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#fromScript', function () {
+    it('should add an input from a script', function () {
+      let keypair = Keypair().fromRandom()
+      let address = Address().fromPubkey(keypair.pubkey)
+      let txout = Txout(BN(1000), Script().fromPubkeyhash(address.hashbuf))
+      let script = Script().fromString('OP_RETURN')
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txbuilder = Txbuilder().fromScript(txhashbuf, txoutnum, txout, script)
+      txbuilder.txins.length.should.equal(1)
+    })
+
+    it('should add an input from a script and set seqnum', function () {
+      let keypair = Keypair().fromRandom()
+      let address = Address().fromPubkey(keypair.pubkey)
+      let txout = Txout(BN(1000), Script().fromPubkeyhash(address.hashbuf))
+      let script = Script().fromString('OP_RETURN')
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txbuilder = Txbuilder().fromScript(txhashbuf, txoutnum, txout, script, 0xf0f0f0f0)
+      txbuilder.txins.length.should.equal(1)
+      txbuilder.txins[0].seqnum.should.equal(0xf0f0f0f0)
+    })
+  })
+
   describe('#fromPubkeyhash', function () {
     it('should add an input from a pubkeyhash output', function () {
       let keypair = Keypair().fromRandom()
@@ -261,6 +288,18 @@ describe('Txbuilder', function () {
       let txoutnum = 0
       let txbuilder = Txbuilder().fromPubkeyhash(txhashbuf, txoutnum, txout, keypair.pubkey)
       Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keypair.pubkey.toBuffer()).should.equal(0)
+    })
+
+    it('should add an input from a pubkeyhash output and set seqnum', function () {
+      let keypair = Keypair().fromRandom()
+      let address = Address().fromPubkey(keypair.pubkey)
+      let txout = Txout(BN(1000), Script().fromPubkeyhash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      let txbuilder = Txbuilder().fromPubkeyhash(txhashbuf, txoutnum, txout, keypair.pubkey, 0xf0f0f0f0)
+      Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keypair.pubkey.toBuffer()).should.equal(0)
+      txbuilder.txins[0].seqnum.should.equal(0xf0f0f0f0)
     })
   })
 
@@ -277,6 +316,21 @@ describe('Txbuilder', function () {
       // let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
       let txbuilder = Txbuilder().fromScripthashMultisig(txhashbuf, txoutnum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
+    })
+
+    it('should add an input from a scripthash output and set seqnum', function () {
+      let keypair1 = Keypair().fromRandom()
+      let keypair2 = Keypair().fromRandom()
+      let script = Script().fromPubkeys(2, [keypair1.pubkey, keypair2.pubkey])
+      let address = Address().fromRedeemScript(script)
+      let txout = Txout(BN(1000), Script().fromScripthash(address.hashbuf))
+      let txhashbuf = new Buffer(32)
+      txhashbuf.fill(0)
+      let txoutnum = 0
+      // let txin = Txin().fromTxout(txhashbuf, txoutnum, txout, script)
+      let txbuilder = Txbuilder().fromScripthashMultisig(txhashbuf, txoutnum, txout, script, 0xf0f0f0f0)
+      Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      txbuilder.txins[0].seqnum.should.equal(0xf0f0f0f0)
     })
   })
 
