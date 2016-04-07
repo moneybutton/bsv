@@ -105,7 +105,7 @@
     "gulp": "3.9.1",
     "gulp-karma": "0.0.5",
     "gulp-mocha": "2.2.0",
-    "istanbul": "0.4.2",
+    "istanbul": "0.4.3",
     "karma": "0.13.22",
     "karma-firefox-launcher": "0.1.7",
     "karma-mocha": "0.2.2",
