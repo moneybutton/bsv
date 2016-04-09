@@ -74,7 +74,6 @@ Fullnode.Workers = require('./lib/workers')
 Fullnode.WorkersCmd = require('./lib/workerscmd')
 Fullnode.WorkersResult = require('./lib/workersresult')
 Fullnode.cmp = require('./lib/cmp')
-Fullnode.injector = require('./lib/injector')
 
 // Encryption tools
 Fullnode.ACH = require('./lib/ach')

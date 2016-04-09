@@ -89,6 +89,7 @@
     "bs58": "3.0.0",
     "elliptic": "6.2.3",
     "hash.js": "1.0.3",
+    "injecter": "1.0.0",
     "pbkdf2-compat": "4.0.0",
     "randombytes": "2.0.3"
   },
