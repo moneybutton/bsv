@@ -16,7 +16,7 @@ describe('Inv', function () {
     it('should convert from a buffer', function () {
       let hashbuf = Hash.sha256(new Buffer(0))
       let typenum = 1
-      let typebuf = BW().writeUInt32BE(typenum).toBuffer()
+      let typebuf = BW().writeUInt32LE(typenum).toBuffer()
       let buf = Buffer.concat([typebuf, hashbuf])
       let inv = Inv().fromBuffer(buf)
       inv.typenum.should.equal(typenum)
@@ -28,7 +28,7 @@ describe('Inv', function () {
     it('should convert to a buffer', function () {
       let hashbuf = Hash.sha256(new Buffer(0))
       let typenum = 1
-      let typebuf = BW().writeUInt32BE(typenum).toBuffer()
+      let typebuf = BW().writeUInt32LE(typenum).toBuffer()
       let buf = Buffer.concat([typebuf, hashbuf])
       let inv = Inv().fromBuffer(buf)
       let buf2 = inv.toBuffer()
