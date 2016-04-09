@@ -90,6 +90,7 @@ Fullnode.deps.bs58 = require('bs58')
 Fullnode.deps.Buffer = Buffer
 Fullnode.deps.elliptic = require('elliptic')
 Fullnode.deps.hashjs = require('hash.js')
+Fullnode.deps.injecter = require('injecter')
 Fullnode.deps.pbkdf2compat = require('pbkdf2-compat')
 
 // Mainnet classes for your convenience (in case default is not what you want).
