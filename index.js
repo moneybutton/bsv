@@ -51,6 +51,7 @@ Fullnode.Constants = require('./lib/constants')
 Fullnode.ECDSA = require('./lib/ecdsa')
 Fullnode.Hash = require('./lib/hash')
 Fullnode.Interp = require('./lib/interp')
+Fullnode.Inv = require('./lib/inv')
 Fullnode.KDF = require('./lib/kdf')
 Fullnode.Keypair = require('./lib/keypair')
 Fullnode.Msg = require('./lib/msg')
@@ -76,7 +77,8 @@ Fullnode.WorkersCmd = require('./lib/workerscmd')
 Fullnode.WorkersResult = require('./lib/workersresult')
 Fullnode.cmp = require('./lib/cmp')
 
-// Encryption tools
+// Encryption tools. Some bitcoin standards use AES encryption, so that's why
+// these are available.
 Fullnode.ACH = require('./lib/ach')
 Fullnode.AES = require('./lib/aes')
 Fullnode.AESCBC = require('./lib/aescbc')
