@@ -129,11 +129,33 @@ describe('Struct', function () {
     })
   })
 
+  describe('#fromFastHex', function () {
+    it('should throw an error for invalid hex string', function () {
+      (function () {
+        Struct().fromFastHex('0')
+      }).should.throw('invalid hex string')
+    })
+
+    it('should throw a not implemented error', function () {
+      (function () {
+        Struct().fromFastHex('00')
+      }).should.throw('not implemented')
+    })
+  })
+
   describe('#toHex', function () {
     it('should throw a not implemented error', function () {
       (function () {
         Struct().toHex()
       }).should.throw('not implemented')
+    })
+  })
+
+  describe('#toFastHex', function () {
+    it('should return an empty string for blank data', function () {
+      let hex = Struct().toFastHex()
+      ;(typeof hex === 'string').should.equal(true)
+      hex.length.should.equal(0)
     })
   })
 
