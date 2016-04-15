@@ -247,12 +247,52 @@ describe('Script', function () {
     })
   })
 
+  describe('@sortPubkeys', function () {
+    it('should sort these pubkeys in a known order', function () {
+      let testPubKeysHex = [
+        '02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0',
+        '02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758',
+        '0266dd7664e65958f3cc67bf92ad6243bc495df5ab56691719263977104b635bea',
+        '02ee91377073b04d1d9d19597b81a7be3db6554bd7d16151cb5599a6107a589e70',
+        '02c8f63ad4822ef360b5c300f08488fa0fa24af2b2bebb6d6b602ca938ee5af793'
+      ]
+      let pubkeys = testPubKeysHex.map((hex) => Pubkey().fromHex(hex))
+      let pubkeysSorted = Script.sortPubkeys(pubkeys)
+      pubkeysSorted[0].toString('hex').should.equal(testPubKeysHex[2])
+      pubkeysSorted[1].toString('hex').should.equal(testPubKeysHex[1])
+      pubkeysSorted[2].toString('hex').should.equal(testPubKeysHex[0])
+      pubkeysSorted[3].toString('hex').should.equal(testPubKeysHex[4])
+      pubkeysSorted[4].toString('hex').should.equal(testPubKeysHex[3])
+    })
+  })
+
   describe('#fromPubkeys', function () {
     it('should generate this known script from a list of public keys', function () {
       let privkey = Privkey().fromBN(BN(5))
       let pubkey = Pubkey().fromPrivkey(privkey)
       let script = Script().fromPubkeys(2, [pubkey, pubkey, pubkey])
       script.toString().should.equal('OP_2 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 OP_3 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, sorted', function () {
+      let pubkey1 = Pubkey().fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubkey2 = Pubkey().fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script().fromPubkeys(2, [pubkey1, pubkey2])
+      script.toString().should.equal('OP_2 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 OP_2 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, sorted explicitly', function () {
+      let pubkey1 = Pubkey().fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubkey2 = Pubkey().fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script().fromPubkeys(2, [pubkey1, pubkey2], true)
+      script.toString().should.equal('OP_2 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 OP_2 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, unsorted', function () {
+      let pubkey1 = Pubkey().fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubkey2 = Pubkey().fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script().fromPubkeys(2, [pubkey1, pubkey2], false)
+      script.toString().should.equal('OP_2 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 OP_2 OP_CHECKMULTISIG')
     })
   })
 
