@@ -1,7 +1,9 @@
-Copyright (c) 2016 Datt, Inc.
-
 Copyright (c) 2014-2016 Ryan X. Charles
 
+Parts of this software are based on Bitcoin Core
+Copyright (c) 2009-2016 The Bitcoin Core developers
+
+Parts of this software were developed by reddit
 Copyright (c) 2014 reddit, Inc.
 
 Parts of this software are based on bitcore
@@ -9,9 +11,6 @@ Copyright (c) 2014 BitPay Inc.
 
 Parts of this software are based on BitcoinJS
 Copyright (c) 2011-2014 Bitcoinjs-lib contributors
-
-Parts of this software are based on Bitcoin Core
-Copyright (c) 2009-2014 Bitcoin Developers
 
 Parts of this software are based on BitcoinJ
 Copyright (c) 2011 Google Inc.
