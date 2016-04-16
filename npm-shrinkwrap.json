@@ -512,9 +512,9 @@
       "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-2.10.2.tgz"
     },
     "bn.js": {
-      "version": "4.11.1",
-      "from": "bn.js@4.11.1",
-      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.11.1.tgz"
+      "version": "4.11.3",
+      "from": "bn.js@4.11.3",
+      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.11.3.tgz"
     },
     "body-parser": {
       "version": "1.15.0",
