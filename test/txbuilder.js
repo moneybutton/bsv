@@ -185,6 +185,16 @@ describe('Txbuilder', function () {
     })
   })
 
+  describe('#setVersion', function () {
+    it('should set the version', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
+      txb.setVersion(2)
+      txb.build()
+      txb.tx.nlocktime.should.equal(2)
+    })
+  })
+
   describe('#importPartiallySignedTx', function () {
     it('should set tx', function () {
       let tx = Tx()
