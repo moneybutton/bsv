@@ -191,7 +191,7 @@ describe('Txbuilder', function () {
       let txb = obj.txb
       txb.setVersion(2)
       txb.build()
-      txb.tx.nlocktime.should.equal(2)
+      txb.tx.version.should.equal(2)
     })
   })
 
