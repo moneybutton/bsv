@@ -438,6 +438,14 @@ describe('Script', function () {
     })
   })
 
+  describe('#setChunkOpcode', function () {
+    it('should set this op', function () {
+      let script = Script().writeOpcode(Opcode.OP_CHECKMULTISIG)
+      script.setChunkOpcode(0, Opcode.OP_CHECKSEQUENCEVERIFY)
+      script.chunks[0].opcodenum.should.equal(Opcode.OP_CHECKSEQUENCEVERIFY)
+    })
+  })
+
   describe('#writeBN', function () {
     it('should write these numbers', function () {
       Script().writeBN(BN(0)).toBuffer().toString('hex').should.equal('00')
@@ -445,6 +453,14 @@ describe('Script', function () {
       Script().writeBN(BN(16)).toBuffer().toString('hex').should.equal('60')
       Script().writeBN(BN(-1)).toBuffer().toString('hex').should.equal('4f')
       Script().writeBN(BN(-2)).toBuffer().toString('hex').should.equal('0182')
+    })
+  })
+
+  describe('#setChunkBN', function () {
+    it('should set this bn', function () {
+      let script = Script().writeOpcode(Opcode.OP_CHECKMULTISIG)
+      script.setChunkBN(0, BN(5000000000000000))
+      script.chunks[0].buf.toString('hex').should.equal(BN(5000000000000000).toBuffer({endian: 'little'}).toString('hex'))
     })
   })
 
@@ -462,6 +478,15 @@ describe('Script', function () {
       buf = new Buffer(Math.pow(2, 16))
       buf.fill(0)
       Script().writeBuffer(buf).toString().should.equal('OP_PUSHDATA4 ' + Math.pow(2, 16) + ' 0x' + buf.toString('hex'))
+    })
+  })
+
+  describe('#setChunkBuffer', function () {
+    it('should set this buffer', function () {
+      let script = Script().writeOpcode(Opcode.OP_CHECKMULTISIG)
+      let buf = BN(5000000000000000).toBuffer()
+      script.setChunkBuffer(0, buf)
+      script.chunks[0].buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
