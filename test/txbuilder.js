@@ -134,7 +134,7 @@ describe('Txbuilder', function () {
       should.exist(json.txouts)
       should.exist(json.utxoutmap)
       should.exist(json.txouts[0])
-      should.exist(json.changeAddress)
+      should.exist(json.changeScript)
       should.exist(json.feePerKBNum)
     })
   })
@@ -150,7 +150,7 @@ describe('Txbuilder', function () {
       json2.txins[0].should.equal(json.txins[0])
       json2.txouts[0].should.equal(json.txouts[0])
       JSON.stringify(json2.utxoutmap).should.equal(JSON.stringify(json.utxoutmap))
-      json2.changeAddress.should.equal(json.changeAddress)
+      json2.changeScript.should.equal(json.changeScript)
       json2.feePerKBNum.should.equal(json.feePerKBNum)
     })
   })
@@ -165,13 +165,24 @@ describe('Txbuilder', function () {
   })
 
   describe('#setChangeAddress', function () {
-    it('should set the changeaddress', function () {
+    it('should set the change address', function () {
       let obj = prepareTxbuilder()
       let txb = obj.txb
       let privkey = Privkey().fromRandom()
       let address = Address().fromPrivkey(privkey)
       txb.setChangeAddress(address)
-      txb.changeAddress.should.equal(address)
+      txb.changeScript.toString().should.equal(address.toScript().toString())
+    })
+  })
+
+  describe('#setChangeScript', function () {
+    it('should set the changeScript', function () {
+      let obj = prepareTxbuilder()
+      let txb = obj.txb
+      let privkey = Privkey().fromRandom()
+      let address = Address().fromPrivkey(privkey)
+      txb.setChangeScript(address.toScript())
+      txb.changeScript.toString().should.equal(address.toScript().toString())
     })
   })
 
