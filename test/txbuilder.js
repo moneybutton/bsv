@@ -428,7 +428,7 @@ describe('Txbuilder', function () {
     })
 
     it('should sign and verify synchronously', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sig = yield txb.asyncGetSig(keypair1, Sig.SIGHASH_ALL, 0, keypair1, txout1)
         ;(sig instanceof Sig).should.equal(true)
       }, this)
@@ -449,7 +449,7 @@ describe('Txbuilder', function () {
     })
 
     it('should sign and verify asynchronously', function () {
-      return asink(function *() {
+      return asink(function * () {
         // or:
         yield txb.asyncSign(0, keypair1)
         yield txb.asyncSign(1, keypair2)
@@ -475,7 +475,7 @@ describe('Txbuilder', function () {
     })
 
     it('should pass in txout', function () {
-      return asink(function *() {
+      return asink(function * () {
         txb.txoutmap = sinon.spy()
         txb.utxoutmap = {
           get: sinon.spy()

@@ -66,7 +66,7 @@ describe('Msg', function () {
 
   describe('@asyncChecksum', function () {
     it('should return known value and compute same as @checksum', function () {
-      return asink(function *() {
+      return asink(function * () {
         let buf = new Buffer(0)
         let checksumbuf = yield Msg.asyncChecksum(buf)
         Buffer.compare(checksumbuf, Hash.sha256sha256(buf).slice(0, 4)).should.equal(0)
@@ -87,7 +87,7 @@ describe('Msg', function () {
 
   describe('#asyncSetData', function () {
     it('should data to a blank buffer', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msg = Msg()
         msg.setCmd('inv')
         yield msg.asyncSetData(new Buffer([]))
@@ -207,7 +207,7 @@ describe('Msg', function () {
 
   describe('#asyncIsValid', function () {
     it('should return same as isValid', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msg = Msg()
         msg.setCmd('ping')
         msg.setData(Random.getRandomBuffer(8))
@@ -229,7 +229,7 @@ describe('Msg', function () {
 
   describe('#asyncValidate', function () {
     it('should validate this known valid message', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msg = Msg()
         msg.setCmd('ping')
         msg.setData(Random.getRandomBuffer(8))
@@ -238,7 +238,7 @@ describe('Msg', function () {
     })
 
     it('should validate this known valid message', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msg = Msg()
         msg.setCmd('ping')
         msg.setData(Random.getRandomBuffer(8))

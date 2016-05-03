@@ -142,7 +142,7 @@ describe('Block', function () {
 
   describe('#asyncHash', function () {
     it('should return the correct hash of the genesis block', function () {
-      return asink(function *() {
+      return asink(function * () {
         let block = Block().fromBuffer(genesisbuf)
         let hash = yield block.asyncHash()
         let genesishashhex = BR(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
@@ -151,7 +151,7 @@ describe('Block', function () {
     })
 
     it('should return the correct hash of block containing the largest tx', function () {
-      return asink(function *() {
+      return asink(function * () {
         let block = Block().fromHex(largesttxblockvector.blockhex)
         let buf = block.toBuffer()
         block = block.fromBuffer(buf)
@@ -178,7 +178,7 @@ describe('Block', function () {
 
   describe('#asyncId', function () {
     it('should return the correct id of the genesis block', function () {
-      return asink(function *() {
+      return asink(function * () {
         let block = Block().fromBuffer(genesisbuf)
         let id = yield block.asyncId()
         id.toString('hex').should.equal(genesisidhex)
@@ -186,7 +186,7 @@ describe('Block', function () {
     })
 
     it('should return the correct id of block containing the largest tx', function () {
-      return asink(function *() {
+      return asink(function * () {
         let block = Block().fromHex(largesttxblockvector.blockhex)
         let id = yield block.asyncId()
         id.toString('hex').should.equal(largesttxblockvector.blockidhex)

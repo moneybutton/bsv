@@ -91,7 +91,7 @@ describe('Address', function () {
 
   describe('#asyncFromPubkey', function () {
     it('should asynchronously convert pubkey to address same as fromPubkey', function () {
-      return asink(function *() {
+      return asink(function * () {
         let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
         let address1 = Address().fromPubkey(pubkey)
         let address2 = yield Address().asyncFromPubkey(pubkey)
@@ -112,7 +112,7 @@ describe('Address', function () {
 
   describe('#asyncFromPrivkey', function () {
     it('should asynchronously convert privkey to address same as fromPrivkey', function () {
-      return asink(function *() {
+      return asink(function * () {
         let privkey = Privkey().fromRandom()
         let address1 = Address().fromPrivkey(privkey)
         let address2 = yield Address().asyncFromPrivkey(privkey)
@@ -146,7 +146,7 @@ describe('Address', function () {
 
   describe('#asyncFromRedeemScript', function () {
     it('should derive the same as fromRedeemScript', function () {
-      return asink(function *() {
+      return asink(function * () {
         let script = Script().fromString('OP_CHECKMULTISIG')
         let address1 = Address().fromRedeemScript(script)
         let address2 = yield Address().asyncFromRedeemScript(script)
@@ -189,7 +189,7 @@ describe('Address', function () {
 
   describe('#asyncFromString', function () {
     it('should derive the same as fromString', function () {
-      return asink(function *() {
+      return asink(function * () {
         let address1 = Address().fromString(str)
         let address2 = yield Address().asyncFromString(str)
         address1.toString().should.equal(address2.toString())
@@ -271,7 +271,7 @@ describe('Address', function () {
 
   describe('#asyncToString', function () {
     it('should output the same as toString', function () {
-      return asink(function *() {
+      return asink(function * () {
         let str1 = Address().fromString(str).toString()
         let str2 = yield Address().fromString(str).asyncToString()
         str1.should.equal(str2)

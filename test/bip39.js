@@ -85,7 +85,7 @@ describe('BIP39', function () {
 
   describe('#asyncFromRandom', function () {
     it('should have a seed and a mnemonic', function () {
-      return asink(function *() {
+      return asink(function * () {
         let bip39 = yield BIP39().asyncFromRandom()
         should.exist(bip39.mnemonic)
         should.exist(bip39.seed)
@@ -98,7 +98,7 @@ describe('BIP39', function () {
 
   describe('#asyncFromEntropy', function () {
     it('should return same as fromEntropy', function () {
-      return asink(function *() {
+      return asink(function * () {
         let entropy = Random.getRandomBuffer(32)
         let bip39a = yield BIP39().asyncFromEntropy(entropy)
         let bip39b = yield BIP39().fromEntropy(entropy)
@@ -145,7 +145,7 @@ describe('BIP39', function () {
 
   describe('#asyncToSeed', function () {
     it('should result the same as toSeed', function () {
-      return asink(function *() {
+      return asink(function * () {
         let bip39 = BIP39().fromRandom()
         let seed1a = bip39.toSeed()
         let seed2a = yield bip39.asyncToSeed()

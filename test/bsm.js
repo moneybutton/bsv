@@ -34,7 +34,7 @@ describe('BSM', function () {
 
   describe('@asyncMagicHash', function () {
     it('should return a hash', function () {
-      return asink(function *() {
+      return asink(function * () {
         let buf = new Buffer('001122', 'hex')
         let hashbuf = yield BSM.asyncMagicHash(buf)
         Buffer.isBuffer(hashbuf).should.equal(true)
@@ -76,7 +76,7 @@ describe('BSM', function () {
     let keypair = Keypair().fromRandom()
 
     it('should return the same as sign', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sigstr1 = BSM.sign(messagebuf, keypair)
         let sigstr2 = yield BSM.asyncSign(messagebuf, keypair)
         sigstr1.should.equal(sigstr2)
@@ -107,7 +107,7 @@ describe('BSM', function () {
     let keypair = Keypair().fromRandom()
 
     it('should verify a signed message', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sigstr = BSM.sign(messagebuf, keypair)
         let addr = Address().fromPubkey(keypair.pubkey)
         let verified = yield BSM.verify(messagebuf, sigstr, addr)

@@ -10,8 +10,8 @@ let Txoutmap = require('../lib/txoutmap')
 let Txverifier = require('../lib/txverifier')
 let asink = require('asink')
 let should = require('chai').should()
-let tx_invalid = require('./vectors/bitcoind/tx_invalid')
-let tx_valid = require('./vectors/bitcoind/tx_valid')
+let txInvalid = require('./vectors/bitcoind/tx_invalid')
+let txValid = require('./vectors/bitcoind/tx_valid')
 
 describe('Txverifier', function () {
   it('should make a new txverifier', function () {
@@ -27,12 +27,12 @@ describe('Txverifier', function () {
 
   describe('vectors', function () {
     let c = 0
-    tx_valid.forEach(function (vector, i) {
+    txValid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }
       c++
-      it('should verify tx_valid vector ' + c, function () {
+      it('should verify txValid vector ' + c, function () {
         let inputs = vector[0]
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
@@ -53,8 +53,8 @@ describe('Txverifier', function () {
         verified.should.equal(true)
       })
 
-      it('should async verify tx_valid vector ' + c, function () {
-        return asink(function *() {
+      it('should async verify txValid vector ' + c, function () {
+        return asink(function * () {
           let inputs = vector[0]
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
@@ -78,12 +78,12 @@ describe('Txverifier', function () {
     })
 
     c = 0
-    tx_invalid.forEach(function (vector, i) {
+    txInvalid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }
       c++
-      it('should unverify tx_invalid vector ' + c, function () {
+      it('should unverify txInvalid vector ' + c, function () {
         let inputs = vector[0]
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
@@ -105,8 +105,8 @@ describe('Txverifier', function () {
         verified.should.equal(false)
       })
 
-      it('should async unverify tx_invalid vector ' + c, function () {
-        return asink(function *() {
+      it('should async unverify txInvalid vector ' + c, function () {
+        return asink(function * () {
           let inputs = vector[0]
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])

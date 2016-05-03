@@ -25,7 +25,7 @@ describe('MsgPing', function () {
 
   describe('#asyncFromRandom', function () {
     it('should find a msgping from random', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msgping = yield MsgPing().asyncFromRandom()
         msgping.getCmd().should.equal('ping')
         msgping.databuf.length.should.equal(8)

@@ -7,8 +7,8 @@ let Script = require('../lib/script')
 let BN = require('../lib/bn')
 let Keypair = require('../lib/keypair')
 let Sig = require('../lib/sig')
-let script_valid = require('./vectors/bitcoind/script_valid')
-let script_invalid = require('./vectors/bitcoind/script_invalid')
+let scriptValid = require('./vectors/bitcoind/script_valid')
+let scriptInvalid = require('./vectors/bitcoind/script_invalid')
 
 describe('Interp', function () {
   it('should make a new interp', function () {
@@ -171,12 +171,12 @@ describe('Interp', function () {
     let c
 
     c = 0
-    script_valid.forEach(function (vector, i) {
+    scriptValid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }
       c++
-      it('should verify script_valid vector ' + c, function () {
+      it('should verify scriptValid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
         let scriptPubkey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
@@ -199,12 +199,12 @@ describe('Interp', function () {
     })
 
     c = 0
-    script_invalid.forEach(function (vector, i) {
+    scriptInvalid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }
       c++
-      it('should unverify script_invalid vector ' + c, function () {
+      it('should unverify scriptInvalid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
         let scriptPubkey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])

@@ -11,9 +11,9 @@ let Varint = require('../lib/varint')
 let asink = require('asink')
 let should = require('chai').should()
 
-let vectors_sighash = require('./vectors/bitcoind/sighash')
-let vectors_tx_valid = require('./vectors/bitcoind/tx_valid')
-let vectors_tx_invalid = require('./vectors/bitcoind/tx_invalid')
+let vectorsSighash = require('./vectors/bitcoind/sighash')
+let vectorsTxValid = require('./vectors/bitcoind/tx_valid')
+let vectorsTxInvalid = require('./vectors/bitcoind/tx_invalid')
 let largesttxvector = require('./vectors/largesttx')
 
 describe('Tx', function () {
@@ -173,14 +173,14 @@ describe('Tx', function () {
 
   describe('#asyncSighash', function () {
     it('should hash this transaction', function () {
-      return asink(function *() {
+      return asink(function * () {
         let hashbuf = yield tx.asyncSighash(0, 0, Script())
         hashbuf.length.should.equal(32)
       }, this)
     })
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
-      return asink(function *() {
+      return asink(function * () {
         let tx = Tx(tx2buf)
         tx.txouts.length = 1
         tx.txoutsvi = Varint(1)
@@ -204,7 +204,7 @@ describe('Tx', function () {
 
   describe('#asyncSign', function () {
     it('should return a signature', function () {
-      return asink(function *() {
+      return asink(function * () {
         let keypair = Keypair().fromRandom()
         let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
         let sig1b = yield tx.asyncSign(keypair, Sig.SIGHASH_ALL, 0, Script())
@@ -229,7 +229,7 @@ describe('Tx', function () {
 
   describe('#asyncVerify', function () {
     it('should return a signature', function () {
-      return asink(function *() {
+      return asink(function * () {
         let keypair = Keypair().fromRandom()
         let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
         let verified = yield tx.asyncVerify(sig1, keypair.pubkey, 0, Script())
@@ -248,7 +248,7 @@ describe('Tx', function () {
 
   describe('#asyncHash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
-      return asink(function *() {
+      return asink(function * () {
         let tx = Tx().fromBuffer(tx2buf)
         let txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
         let hashbuf = yield tx.asyncHash()
@@ -266,7 +266,7 @@ describe('Tx', function () {
 
   describe('#asyncId', function () {
     it('should correctly calculate the id of this known transaction', function () {
-      return asink(function *() {
+      return asink(function * () {
         let tx = Tx().fromBuffer(tx2buf)
         let idbuf = yield tx.id()
         idbuf.toString('hex').should.equal(tx2idhex)
@@ -307,7 +307,7 @@ describe('Tx', function () {
   })
 
   describe('vectors: sighash and serialization', function () {
-    vectors_sighash.forEach(function (vector, i) {
+    vectorsSighash.forEach(function (vector, i) {
       if (i === 0) {
         return
       }
@@ -329,7 +329,7 @@ describe('Tx', function () {
     })
 
     let j = 0
-    vectors_tx_valid.forEach(function (vector, i) {
+    vectorsTxValid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }
@@ -343,7 +343,7 @@ describe('Tx', function () {
     })
 
     j = 0
-    vectors_tx_invalid.forEach(function (vector, i) {
+    vectorsTxInvalid.forEach(function (vector, i) {
       if (vector.length === 1) {
         return
       }

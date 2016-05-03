@@ -7,8 +7,8 @@ let Pubkey = require('../lib/pubkey')
 let Script = require('../lib/script')
 let should = require('chai').should()
 
-let script_invalid = require('./vectors/bitcoind/script_invalid')
-let script_valid = require('./vectors/bitcoind/script_valid')
+let scriptInvalid = require('./vectors/bitcoind/script_invalid')
+let scriptValid = require('./vectors/bitcoind/script_valid')
 
 describe('Script', function () {
   it('should make a new script', function () {
@@ -519,11 +519,11 @@ describe('Script', function () {
   })
 
   describe('vectors', function () {
-    script_valid.forEach(function (a, i) {
+    scriptValid.forEach(function (a, i) {
       if (a.length === 1) {
         return
       }
-      it('should not fail when reading script_valid vector ' + i, function () {
+      it('should not fail when reading scriptValid vector ' + i, function () {
         (function () {
           Script().fromBitcoindString(a[0]).toString()
           Script().fromBitcoindString(a[0]).toBitcoindString()
@@ -541,11 +541,11 @@ describe('Script', function () {
       })
     })
 
-    script_invalid.forEach(function (a, i) {
+    scriptInvalid.forEach(function (a, i) {
       if (a.length === 1) {
         return
       }
-      it('should not fail when reading script_invalid vector ' + i, function () {
+      it('should not fail when reading scriptInvalid vector ' + i, function () {
         (function () {
           Script().fromBitcoindString(a[0]).toString()
           Script().fromBitcoindString(a[0]).toBitcoindString()

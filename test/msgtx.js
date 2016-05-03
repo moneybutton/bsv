@@ -24,7 +24,7 @@ describe('MsgTx', function () {
 
   describe('#asyncFromTx', function () {
     it('should convert a tx into a msgtx', function () {
-      return asink(function *() {
+      return asink(function * () {
         let tx = Tx().fromHex(txhex)
         let msgtx = yield MsgTx().asyncFromTx(tx)
         msgtx.isValid().should.equal(true)

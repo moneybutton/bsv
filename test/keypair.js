@@ -119,7 +119,7 @@ describe('Keypair', function () {
 
   describe('#asyncFromPrivkey', function () {
     it('should convert a privkey same as .fromPrivkey', function () {
-      return asink(function *() {
+      return asink(function * () {
         let privkey = Privkey().fromRandom()
         let keypair = Keypair().fromPrivkey(privkey)
         let keypair2 = yield Keypair().asyncFromPrivkey(privkey)
@@ -144,7 +144,7 @@ describe('Keypair', function () {
 
   describe('#fromRandom', function () {
     it('should have a privkey and pubkey and compute same as pubkey methods', function () {
-      return asink(function *() {
+      return asink(function * () {
         let keypair = yield Keypair().asyncFromRandom()
         let pubkey = Pubkey().fromPrivkey(keypair.privkey)
         pubkey.toString().should.equal(keypair.pubkey.toString())

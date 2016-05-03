@@ -17,7 +17,7 @@ describe('Workers', function () {
 
   describe('#asyncObjectMethod', function () {
     it('should compute this method in the workers', function () {
-      return asink(function *() {
+      return asink(function * () {
         let bip32 = BIP32().fromRandom()
         let workersResult = yield Workers.asyncObjectMethod(bip32, 'toString', [])
         let str = JSON.parse(workersResult.resbuf.toString())
@@ -26,7 +26,7 @@ describe('Workers', function () {
     })
 
     it('should compute this method with Fullnode object in args in the workers', function () {
-      return asink(function *() {
+      return asink(function * () {
         let privkey = Privkey().fromRandom()
         let pubkey1 = Pubkey().fromPrivkey(privkey)
         let workersResult = yield Workers.asyncObjectMethod(Pubkey(), 'fromPrivkey', [privkey])
@@ -38,7 +38,7 @@ describe('Workers', function () {
 
   describe('#asyncClassMethod', function () {
     it('should compute this method in the workers', function () {
-      return asink(function *() {
+      return asink(function * () {
         let buf = new Buffer([0, 1, 2, 3, 4])
         let args = [buf]
         let workersResult = yield Workers.asyncClassMethod('Hash', 'sha1', args)

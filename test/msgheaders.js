@@ -25,7 +25,7 @@ describe('MsgHeaders', function () {
 
   describe('#asyncFromBlockheaders', function () {
     it('should make a msg from blockheaders', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msgheaders = yield MsgHeaders().asyncFromBlockheaders([blockheader])
         msgheaders.databuf.length.should.greaterThan(0)
       }, this)

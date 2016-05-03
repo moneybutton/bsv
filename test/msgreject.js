@@ -29,7 +29,7 @@ describe('MsgReject', function () {
 
   describe('#asyncFromReject', function () {
     it('should convert from a reject', function () {
-      return asink(function *() {
+      return asink(function * () {
         let reject = Reject().fromObject({
           typevi: Varint().fromNumber(2),
           typestr: 'tx',
@@ -46,7 +46,7 @@ describe('MsgReject', function () {
 
   describe('#toReject', function () {
     it('should convert to a reject', function () {
-      return asink(function *() {
+      return asink(function * () {
         let reject = Reject().fromObject({
           typevi: Varint().fromNumber(2),
           typestr: 'tx',

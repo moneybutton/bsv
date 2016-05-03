@@ -25,7 +25,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#asyncFromGetBlocks', function () {
     it('should convert from getblocks', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msggetblocks = yield MsgGetHeaders().asyncFromGetBlocks(getblocks)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)
@@ -41,7 +41,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#asyncFromHashes', function () {
     it('should convert from hashes', function () {
-      return asink(function *() {
+      return asink(function * () {
         let msggetblocks = yield MsgGetHeaders().asyncFromHashes(hashes)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)

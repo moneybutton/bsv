@@ -46,7 +46,7 @@ describe('Hash', function () {
 
   describe('@asyncSha1', function () {
     it('should compute the same as sha1', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha1buf1 = Hash.sha1(buf)
         let sha1buf2 = yield Hash.asyncSha1(buf)
         sha1buf1.toString('hex').should.equal(sha1buf2.toString('hex'))
@@ -54,7 +54,7 @@ describe('Hash', function () {
     })
 
     it('should compute the same as sha1 twice in a row', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha1buf1 = Hash.sha1(buf)
         let sha1buf1b = Hash.sha1(buf)
         let sha1buf2 = yield Hash.asyncSha1(buf)
@@ -76,7 +76,7 @@ describe('Hash', function () {
 
   describe('@asyncSha1hmac', function () {
     it('should compute the same as sha1hmac', function () {
-      return asink(function *() {
+      return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha1hmacbuf1 = Hash.sha1hmac(data, key)
@@ -101,7 +101,7 @@ describe('Hash', function () {
 
   describe('@asyncSha256', function () {
     it('should compute the same as sha256', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha256buf1 = Hash.sha1(buf)
         let sha256buf2 = yield Hash.asyncSha1(buf)
         sha256buf1.toString('hex').should.equal(sha256buf2.toString('hex'))
@@ -110,7 +110,7 @@ describe('Hash', function () {
 
     it('should compute a hash for 5mb data', function () {
       this.timeout(10000)
-      return asink(function *() {
+      return asink(function * () {
         let data = new Buffer(5e6)
         data.fill(0)
         let hash1 = Hash.sha256(data)
@@ -136,7 +136,7 @@ describe('Hash', function () {
 
   describe('@asyncSha256hmac', function () {
     it('should compute the same as sha256hmac', function () {
-      return asink(function *() {
+      return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha256hmacbuf1 = Hash.sha256hmac(data, key)
@@ -161,7 +161,7 @@ describe('Hash', function () {
 
   describe('@asyncSha256sha256', function () {
     it('should compute the same as sha256sha256', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha256sha256buf1 = Hash.sha256sha256(buf)
         let sha256sha256buf2 = yield Hash.asyncSha256sha256(buf)
         sha256sha256buf1.toString('hex').should.equal(sha256sha256buf2.toString('hex'))
@@ -184,7 +184,7 @@ describe('Hash', function () {
 
   describe('@asyncSha256ripemd160', function () {
     it('should compute the same as sha256sha256', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha256ripemd160buf1 = Hash.sha256ripemd160(buf)
         let sha256ripemd160buf2 = yield Hash.asyncSha256ripemd160(buf)
         sha256ripemd160buf1.toString('hex').should.equal(sha256ripemd160buf2.toString('hex'))
@@ -207,7 +207,7 @@ describe('Hash', function () {
 
   describe('@asyncRipemd160', function () {
     it('should compute the same as ripemd160', function () {
-      return asink(function *() {
+      return asink(function * () {
         let ripemd160buf1 = Hash.ripemd160(buf)
         let ripemd160buf2 = yield Hash.asyncRipemd160(buf)
         ripemd160buf1.toString('hex').should.equal(ripemd160buf2.toString('hex'))
@@ -230,7 +230,7 @@ describe('Hash', function () {
 
   describe('@asyncSha512', function () {
     it('should compute the same as sha512', function () {
-      return asink(function *() {
+      return asink(function * () {
         let sha512buf1 = Hash.sha512(buf)
         let sha512buf2 = yield Hash.asyncSha512(buf)
         sha512buf1.toString('hex').should.equal(sha512buf2.toString('hex'))
@@ -263,7 +263,7 @@ describe('Hash', function () {
 
   describe('@asyncSha512hmac', function () {
     it('should compute the same as sha512hmac', function () {
-      return asink(function *() {
+      return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha512hmacbuf1 = Hash.sha512hmac(data, key)

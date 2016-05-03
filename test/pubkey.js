@@ -57,7 +57,7 @@ describe('Pubkey', function () {
 
   describe('#asyncFromPrivkey', function () {
     it('should result the same as fromPrivkey', function () {
-      return asink(function *() {
+      return asink(function * () {
         let privkey = Privkey().fromRandom()
         let pubkey1 = Pubkey().fromPrivkey(privkey)
         let pubkey2 = yield Pubkey().asyncFromPrivkey(privkey)
@@ -66,7 +66,7 @@ describe('Pubkey', function () {
     })
 
     it('should result the same as fromPrivkey', function () {
-      return asink(function *() {
+      return asink(function * () {
         let privkey = Privkey().fromBN(BN(5))
         let pubkey1 = Pubkey().fromPrivkey(privkey)
         let pubkey2 = yield Pubkey().asyncFromPrivkey(privkey)
@@ -109,7 +109,7 @@ describe('Pubkey', function () {
 
   describe('#asyncFromBuffer', function () {
     it('should derive the same as fromBuffer', function () {
-      return asink(function *() {
+      return asink(function * () {
         let pubkey = Pubkey().fromPrivkey(Privkey().fromRandom())
         let pubkey1 = Pubkey().fromBuffer(pubkey.toBuffer())
         let pubkey2 = yield Pubkey().asyncFromBuffer(pubkey.toBuffer())

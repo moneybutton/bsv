@@ -24,7 +24,7 @@ describe('MsgBlock', function () {
 
   describe('#asyncFromBlock', function () {
     it('should convert a block into a msgblock', function () {
-      return asink(function *() {
+      return asink(function * () {
         let block = Block().fromHex(blockhex)
         let msgblock = yield MsgBlock().asyncFromBlock(block)
         msgblock.isValid().should.equal(true)
