@@ -429,7 +429,7 @@ describe('Txbuilder', function () {
 
     it('should sign and verify synchronously', function () {
       return asink(function *() {
-        let sig = txb.asyncGetSig(keypair1, Sig.SIGHASH_ALL, 0, keypair1, txout1)
+        let sig = yield txb.asyncGetSig(keypair1, Sig.SIGHASH_ALL, 0, keypair1, txout1)
         ;(sig instanceof Sig).should.equal(true)
       }, this)
     })
