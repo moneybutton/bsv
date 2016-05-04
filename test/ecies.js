@@ -1,48 +1,48 @@
 /* global describe,it */
 'use strict'
-let ECIES = require('../lib/ecies')
+let Ecies = require('../lib/ecies')
 let should = require('chai').should()
-let Keypair = require('../lib/keypair')
+let KeyPair = require('../lib/key-pair')
 let Hash = require('../lib/hash')
 
-describe('#ECIES', function () {
-  it('should make a new ECIES object', function () {
-    let ecies = new ECIES()
+describe('#Ecies', function () {
+  it('should make a new Ecies object', function () {
+    let ecies = new Ecies()
     should.exist(ecies)
   })
 
-  it('should make a new ECIES object when called without "new"', function () {
-    let ecies = ECIES()
+  it('should make a new Ecies object when called without "new"', function () {
+    let ecies = Ecies()
     should.exist(ecies)
   })
 
-  let fromkey = Keypair().fromRandom()
-  let tokey = Keypair().fromRandom()
-  let messagebuf = Hash.sha256(new Buffer('my message is the hash of this string'))
+  let fromkey = KeyPair().fromRandom()
+  let tokey = KeyPair().fromRandom()
+  let messageBuf = Hash.sha256(new Buffer('my message is the hash of this string'))
 
   describe('@encrypt', function () {
     it('should return a buffer', function () {
-      let encbuf = ECIES.encrypt(messagebuf, tokey.pubkey, fromkey)
-      Buffer.isBuffer(encbuf).should.equal(true)
+      let encBuf = Ecies.encrypt(messageBuf, tokey.pubKey, fromkey)
+      Buffer.isBuffer(encBuf).should.equal(true)
     })
 
     it('should return a buffer if fromkey is not present', function () {
-      let encbuf = ECIES.encrypt(messagebuf, tokey.pubkey)
-      Buffer.isBuffer(encbuf).should.equal(true)
+      let encBuf = Ecies.encrypt(messageBuf, tokey.pubKey)
+      Buffer.isBuffer(encBuf).should.equal(true)
     })
   })
 
   describe('@decrypt', function () {
     it('should decrypt that which was encrypted', function () {
-      let encbuf = ECIES.encrypt(messagebuf, tokey.pubkey, fromkey)
-      let messagebuf2 = ECIES.decrypt(encbuf, tokey.privkey)
-      messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
+      let encBuf = Ecies.encrypt(messageBuf, tokey.pubKey, fromkey)
+      let messageBuf2 = Ecies.decrypt(encBuf, tokey.privKey)
+      messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))
     })
 
-    it('should decrypt that which was encrypted if fromkeypair was randomly generated', function () {
-      let encbuf = ECIES.encrypt(messagebuf, tokey.pubkey)
-      let messagebuf2 = ECIES.decrypt(encbuf, tokey.privkey)
-      messagebuf2.toString('hex').should.equal(messagebuf.toString('hex'))
+    it('should decrypt that which was encrypted if fromkeyPair was randomly generated', function () {
+      let encBuf = Ecies.encrypt(messageBuf, tokey.pubKey)
+      let messageBuf2 = Ecies.decrypt(encBuf, tokey.privKey)
+      messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))
     })
   })
 })

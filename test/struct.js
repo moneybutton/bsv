@@ -3,7 +3,7 @@
 let should = require('chai').should()
 let Struct = require('../lib/struct')
 let sinon = require('sinon')
-let BR = require('../lib/br')
+let Br = require('../lib/br')
 
 describe('Struct', function () {
   it('should make a new struct', function () {
@@ -20,25 +20,25 @@ describe('Struct', function () {
     })
   })
 
-  describe('#fromBR', function () {
-    it('should throw an error if arg is not a BR', function () {
+  describe('#fromBr', function () {
+    it('should throw an error if arg is not a Br', function () {
       (function () {
-        Struct().fromBR({})
+        Struct().fromBr({})
       }).should.throw('br must be a buffer reader')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
-        let br = BR()
-        Struct().fromBR(br)
+        let br = Br()
+        Struct().fromBr(br)
       }).should.throw('not implemented')
     })
   })
 
-  describe('#toBW', function () {
+  describe('#toBw', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toBW()
+        Struct().toBw()
       }).should.throw('not implemented')
     })
   })
@@ -181,18 +181,18 @@ describe('Struct', function () {
     })
   })
 
-  describe('#fromJSON', function () {
+  describe('#fromJson', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().fromJSON()
+        Struct().fromJson()
       }).should.throw('not implemented')
     })
   })
 
-  describe('#toJSON', function () {
+  describe('#toJson', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toJSON()
+        Struct().toJson()
       }).should.throw('not implemented')
     })
   })

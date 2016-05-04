@@ -65,23 +65,23 @@ describe('Hash', function () {
     })
   })
 
-  describe('@sha1hmac', function () {
+  describe('@sha1Hmac', function () {
     // http://tools.ietf.org/html/rfc2202.html
 
     it('should calculate this known empty test vector correctly', function () {
       let hex = 'b617318655057264e28bc0b6fb378c8ef146be00'
-      Hash.sha1hmac(new Buffer('Hi There'), new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')).toString('hex').should.equal(hex)
+      Hash.sha1Hmac(new Buffer('Hi There'), new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')).toString('hex').should.equal(hex)
     })
   })
 
   describe('@asyncSha1hmac', function () {
-    it('should compute the same as sha1hmac', function () {
+    it('should compute the same as sha1Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
-        let sha1hmacbuf1 = Hash.sha1hmac(data, key)
-        let sha1hmacbuf2 = yield Hash.asyncSha1hmac(data, key)
-        sha1hmacbuf1.toString('hex').should.equal(sha1hmacbuf2.toString('hex'))
+        let sha1Hmacbuf1 = Hash.sha1Hmac(data, key)
+        let sha1Hmacbuf2 = yield Hash.asyncSha1hmac(data, key)
+        sha1Hmacbuf1.toString('hex').should.equal(sha1Hmacbuf2.toString('hex'))
       }, this)
     })
   })
@@ -120,28 +120,28 @@ describe('Hash', function () {
     })
   })
 
-  describe('@sha256hmac', function () {
+  describe('@sha256Hmac', function () {
     it('should compute this known empty test vector correctly', function () {
       let key = new Buffer('')
       let data = new Buffer('')
-      Hash.sha256hmac(data, key).toString('hex').should.equal('b613679a0814d9ec772f95d778c35fc5ff1697c493715653c6c712144292c5ad')
+      Hash.sha256Hmac(data, key).toString('hex').should.equal('b613679a0814d9ec772f95d778c35fc5ff1697c493715653c6c712144292c5ad')
     })
 
     it('should compute this known non-empty test vector correctly', function () {
       let key = new Buffer('key')
       let data = new Buffer('The quick brown fox jumps over the lazy dog')
-      Hash.sha256hmac(data, key).toString('hex').should.equal('f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8')
+      Hash.sha256Hmac(data, key).toString('hex').should.equal('f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8')
     })
   })
 
   describe('@asyncSha256hmac', function () {
-    it('should compute the same as sha256hmac', function () {
+    it('should compute the same as sha256Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
-        let sha256hmacbuf1 = Hash.sha256hmac(data, key)
-        let sha256hmacbuf2 = yield Hash.asyncSha256hmac(data, key)
-        sha256hmacbuf1.toString('hex').should.equal(sha256hmacbuf2.toString('hex'))
+        let sha256Hmacbuf1 = Hash.sha256Hmac(data, key)
+        let sha256Hmacbuf2 = yield Hash.asyncSha256hmac(data, key)
+        sha256Hmacbuf1.toString('hex').should.equal(sha256Hmacbuf2.toString('hex'))
       }, this)
     })
   })
@@ -238,37 +238,37 @@ describe('Hash', function () {
     })
   })
 
-  describe('@sha512hmac', function () {
+  describe('@sha512Hmac', function () {
     it('should calculate this value where key size is the same as block size', function () {
       let key = new Buffer(Hash.sha512.blocksize / 8)
       key.fill(0)
       let data = new Buffer([])
       // test vector calculated with node's createHmac
       let hex = 'b936cee86c9f87aa5d3c6f2e84cb5a4239a5fe50480a6ec66b70ab5b1f4ac6730c6c515421b327ec1d69402e53dfb49ad7381eb067b338fd7b0cb22247225d47'
-      Hash.sha512hmac(data, key).toString('hex').should.equal(hex)
+      Hash.sha512Hmac(data, key).toString('hex').should.equal(hex)
     })
 
     it('should calculate this known empty test vector correctly', function () {
       let hex = 'b936cee86c9f87aa5d3c6f2e84cb5a4239a5fe50480a6ec66b70ab5b1f4ac6730c6c515421b327ec1d69402e53dfb49ad7381eb067b338fd7b0cb22247225d47'
-      Hash.sha512hmac(new Buffer([]), new Buffer([])).toString('hex').should.equal(hex)
+      Hash.sha512Hmac(new Buffer([]), new Buffer([])).toString('hex').should.equal(hex)
     })
 
     it('should calculate this known non-empty test vector correctly', function () {
       let hex = 'c40bd7c15aa493b309c940e08a73ffbd28b2e4cb729eb94480d727e4df577b13cc403a78e6150d83595f3b17c4cc331f12ca5952691de3735a63c1d4c69a2bac'
       let data = new Buffer('test1')
       let key = new Buffer('test2')
-      Hash.sha512hmac(data, key).toString('hex').should.equal(hex)
+      Hash.sha512Hmac(data, key).toString('hex').should.equal(hex)
     })
   })
 
   describe('@asyncSha512hmac', function () {
-    it('should compute the same as sha512hmac', function () {
+    it('should compute the same as sha512Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
-        let sha512hmacbuf1 = Hash.sha512hmac(data, key)
-        let sha512hmacbuf2 = yield Hash.asyncSha512hmac(data, key)
-        sha512hmacbuf1.toString('hex').should.equal(sha512hmacbuf2.toString('hex'))
+        let sha512Hmacbuf1 = Hash.sha512Hmac(data, key)
+        let sha512Hmacbuf2 = yield Hash.asyncSha512hmac(data, key)
+        sha512Hmacbuf1.toString('hex').should.equal(sha512Hmacbuf2.toString('hex'))
       }, this)
     })
   })
@@ -299,8 +299,8 @@ describe('Hash', function () {
       it('should pass standard hmac test vector ' + i, function () {
         let keybuf = new Buffer(vector.key, 'hex')
         let databuf = new Buffer(vector.data, 'hex')
-        Hash.sha256hmac(databuf, keybuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
-        Hash.sha512hmac(databuf, keybuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
+        Hash.sha256Hmac(databuf, keybuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
+        Hash.sha512Hmac(databuf, keybuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
       })
     })
   })

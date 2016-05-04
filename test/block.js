@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let BR = require('../lib/br')
-let BW = require('../lib/bw')
+let Br = require('../lib/br')
+let Bw = require('../lib/bw')
 let Block = require('../lib/block')
-let Blockheader = require('../lib/blockheader')
+let BlockHeader = require('../lib/block-header')
 let Tx = require('../lib/tx')
-let Varint = require('../lib/varint')
+let VarInt = require('../lib/var-int')
 let asink = require('asink')
 let largesttxblockvector = require('./vectors/largesttxblock')
 let should = require('chai').should()
@@ -18,13 +18,13 @@ describe('Block', function () {
   let blocksize = 50
   let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
   let bhbuf = new Buffer(bhhex, 'hex')
-  let bh = Blockheader().fromBuffer(bhbuf)
-  let txsvi = Varint(1)
+  let bh = BlockHeader().fromBuffer(bhbuf)
+  let txsvi = VarInt(1)
   let txs = [Tx().fromBuffer(txbuf)]
   let block = Block().fromObject({
     magicnum: magicnum,
     blocksize: blocksize,
-    blockheader: bh,
+    blockHeader: bh,
     txsvi: txsvi,
     txs: txs
   })
@@ -47,41 +47,41 @@ describe('Block', function () {
       let block = Block().fromObject({
         magicnum: magicnum,
         blocksize: blocksize,
-        blockheader: bh,
+        blockHeader: bh,
         txsvi: txsvi,
         txs: txs
       })
       should.exist(block.magicnum)
       should.exist(block.blocksize)
-      should.exist(block.blockheader)
+      should.exist(block.blockHeader)
       should.exist(block.txsvi)
       should.exist(block.txs)
     })
   })
 
-  describe('#fromJSON', function () {
+  describe('#fromJson', function () {
     it('should set these known values', function () {
-      let block = Block().fromJSON({
+      let block = Block().fromJson({
         magicnum: magicnum,
         blocksize: blocksize,
-        blockheader: bh.toJSON(),
-        txsvi: txsvi.toJSON(),
-        txs: [txs[0].toJSON()]
+        blockHeader: bh.toJson(),
+        txsvi: txsvi.toJson(),
+        txs: [txs[0].toJson()]
       })
       should.exist(block.magicnum)
       should.exist(block.blocksize)
-      should.exist(block.blockheader)
+      should.exist(block.blockHeader)
       should.exist(block.txsvi)
       should.exist(block.txs)
     })
   })
 
-  describe('#toJSON', function () {
+  describe('#toJson', function () {
     it('should recover these known values', function () {
-      let json = block.toJSON()
+      let json = block.toJson()
       should.exist(json.magicnum)
       should.exist(json.blocksize)
-      should.exist(json.blockheader)
+      should.exist(json.blockHeader)
       should.exist(json.txsvi)
       should.exist(json.txs)
     })
@@ -101,9 +101,9 @@ describe('Block', function () {
     })
   })
 
-  describe('#fromBR', function () {
+  describe('#fromBr', function () {
     it('should make a block from this known buffer', function () {
-      let block = Block().fromBR(BR(blockbuf))
+      let block = Block().fromBr(Br(blockbuf))
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
@@ -122,12 +122,12 @@ describe('Block', function () {
     })
   })
 
-  describe('#toBW', function () {
+  describe('#toBw', function () {
     it('should recover a block from this known buffer', function () {
       let block = Block().fromBuffer(blockbuf)
-      block.toBW().toBuffer().toString('hex').should.equal(blockhex)
-      let bw = BW()
-      block.toBW(bw)
+      block.toBw().toBuffer().toString('hex').should.equal(blockhex)
+      let bw = Bw()
+      block.toBw(bw)
       bw.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
@@ -145,7 +145,7 @@ describe('Block', function () {
       return asink(function * () {
         let block = Block().fromBuffer(genesisbuf)
         let hash = yield block.asyncHash()
-        let genesishashhex = BR(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
+        let genesishashhex = Br(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
         hash.toString('hex').should.equal(genesishashhex)
       }, this)
     })
@@ -157,8 +157,8 @@ describe('Block', function () {
         block = block.fromBuffer(buf)
         let hash = yield block.asyncHash()
         let blockidhex = largesttxblockvector.blockidhex
-        let blockhashbuf = BR(new Buffer(blockidhex, 'hex')).readReverse()
-        let blockhashhex = blockhashbuf.toString('hex')
+        let blockhashBuf = Br(new Buffer(blockidhex, 'hex')).readReverse()
+        let blockhashhex = blockhashBuf.toString('hex')
         hash.toString('hex').should.equal(blockhashhex)
       }, this)
     })

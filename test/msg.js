@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let BR = require('../lib/br')
-let BW = require('../lib/bw')
+let Br = require('../lib/br')
+let Bw = require('../lib/bw')
 let Constants = require('../lib/constants').Default
 let Hash = require('../lib/hash')
 let Msg = require('../lib/msg')
@@ -13,7 +13,7 @@ describe('Msg', function () {
   let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
   let msgbuf = new Buffer(msghex, 'hex')
   let msg = Msg().fromHex(msghex)
-  let msgjson = msg.toJSON()
+  let msgjson = msg.toJson()
   let msgjsonstr = JSON.stringify(msgjson)
 
   it('should satisfy this basic API', function () {
@@ -171,31 +171,31 @@ describe('Msg', function () {
     })
   })
 
-  describe('#fromBR', function () {
+  describe('#fromBr', function () {
     it('should parse this known message', function () {
-      let br = BR(msgbuf)
-      let msg = Msg().fromBR(br)
+      let br = Br(msgbuf)
+      let msg = Msg().fromBr(br)
       msg.toHex().should.equal(msghex)
     })
   })
 
-  describe('#toBW', function () {
+  describe('#toBw', function () {
     it('should create this known message', function () {
-      let bw = BW()
-      Msg().fromHex(msghex).toBW(bw).toBuffer().toString('hex').should.equal(msghex)
-      Msg().fromHex(msghex).toBW().toBuffer().toString('hex').should.equal(msghex)
+      let bw = Bw()
+      Msg().fromHex(msghex).toBw(bw).toBuffer().toString('hex').should.equal(msghex)
+      Msg().fromHex(msghex).toBw().toBuffer().toString('hex').should.equal(msghex)
     })
   })
 
-  describe('#fromJSON', function () {
+  describe('#fromJson', function () {
     it('should parse this known json msg', function () {
-      Msg().fromJSON(msgjson).toHex().should.equal(msghex)
+      Msg().fromJson(msgjson).toHex().should.equal(msghex)
     })
   })
 
-  describe('#toJSON', function () {
+  describe('#toJson', function () {
     it('should create this known message', function () {
-      JSON.stringify(Msg().fromHex(msghex).toJSON()).should.equal(msgjsonstr)
+      JSON.stringify(Msg().fromHex(msghex).toJson()).should.equal(msgjsonstr)
     })
   })
 

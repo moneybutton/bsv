@@ -5,8 +5,8 @@
   *
   * index.js is an example of how to build a bundle with Fullnode. This bundle
   * includes the entire library, which uses the default configuration (which is
-  * the same as Mainnet) and can be overridden. It also includes Mainnet and
-  * Testnet configuration which are accessible even if you override the
+  * the same as MainNet) and can be overridden. It also includes MainNet and
+  * TestNet configuration which are accessible even if you override the
   * defaults. It is not necessary to  use Fullnode this way, since you probably
   * do not use every component, and therefore do not need to include every
   * component into your project. You can simply directly require the elements
@@ -38,67 +38,67 @@ Fullnode.version = require('./package').version
 // utilities.
 Fullnode.Address = require('./lib/address')
 Fullnode.Addr = require('./lib/addr')
-Fullnode.BIP32 = require('./lib/bip32')
-Fullnode.BIP39 = require('./lib/bip39')
-Fullnode.BIP68 = require('./lib/bip68')
-Fullnode.BN = require('./lib/bn')
-Fullnode.BR = require('./lib/br')
-Fullnode.BSM = require('./lib/bsm')
-Fullnode.BW = require('./lib/bw')
-Fullnode.Base58 = require('./lib/base58')
-Fullnode.Base58Check = require('./lib/base58check')
+Fullnode.Bip32 = require('./lib/bip-32')
+Fullnode.Bip39 = require('./lib/bip-39')
+Fullnode.Bip68 = require('./lib/bip-68')
+Fullnode.Bn = require('./lib/bn')
+Fullnode.Br = require('./lib/br')
+Fullnode.Bsm = require('./lib/bsm')
+Fullnode.Bw = require('./lib/bw')
+Fullnode.Base58 = require('./lib/base-58')
+Fullnode.Base58Check = require('./lib/base-58-check')
 Fullnode.Block = require('./lib/block')
-Fullnode.Blockheader = require('./lib/blockheader')
+Fullnode.BlockHeader = require('./lib/block-header')
 Fullnode.Constants = require('./lib/constants')
-Fullnode.ECDSA = require('./lib/ecdsa')
-Fullnode.GetBlocks = require('./lib/getblocks')
+Fullnode.Ecdsa = require('./lib/ecdsa')
+Fullnode.GetBlocks = require('./lib/get-blocks')
 Fullnode.Hash = require('./lib/hash')
 Fullnode.Interp = require('./lib/interp')
 Fullnode.Inv = require('./lib/inv')
-Fullnode.KDF = require('./lib/kdf')
-Fullnode.Keypair = require('./lib/keypair')
+Fullnode.Kdf = require('./lib/kdf')
+Fullnode.KeyPair = require('./lib/key-pair')
 Fullnode.Msg = require('./lib/msg')
-Fullnode.MsgAddr = require('./lib/msgaddr')
-Fullnode.MsgAlert = require('./lib/msgalert')
-Fullnode.MsgBlock = require('./lib/msgblock')
-Fullnode.MsgGetBlocks = require('./lib/msggetblocks')
-Fullnode.MsgGetData = require('./lib/msggetdata')
-Fullnode.MsgGetHeaders = require('./lib/msggetheaders')
-Fullnode.MsgHeaders = require('./lib/msgheaders')
-Fullnode.MsgInv = require('./lib/msginv')
-Fullnode.MsgMempool = require('./lib/msgmempool')
-Fullnode.MsgNotFound = require('./lib/msgnotfound')
-Fullnode.MsgPing = require('./lib/msgping')
-Fullnode.MsgPong = require('./lib/msgpong')
-Fullnode.MsgReject = require('./lib/msgreject')
-Fullnode.MsgTx = require('./lib/msgtx')
-Fullnode.Opcode = require('./lib/opcode')
+Fullnode.MsgAddr = require('./lib/msg-addr')
+Fullnode.MsgAlert = require('./lib/msg-alert')
+Fullnode.MsgBlock = require('./lib/msg-block')
+Fullnode.MsgGetBlocks = require('./lib/msg-get-blocks')
+Fullnode.MsgGetData = require('./lib/msg-get-data')
+Fullnode.MsgGetHeaders = require('./lib/msg-get-headers')
+Fullnode.MsgHeaders = require('./lib/msg-headers')
+Fullnode.MsgInv = require('./lib/msg-inv')
+Fullnode.MsgMempool = require('./lib/msg-mem-pool')
+Fullnode.MsgNotFound = require('./lib/msg-not-found')
+Fullnode.MsgPing = require('./lib/msg-ping')
+Fullnode.MsgPong = require('./lib/msg-pong')
+Fullnode.MsgReject = require('./lib/msg-reject')
+Fullnode.MsgTx = require('./lib/msg-tx')
+Fullnode.OpCode = require('./lib/op-code')
 Fullnode.Point = require('./lib/point')
-Fullnode.Privkey = require('./lib/privkey')
-Fullnode.Pubkey = require('./lib/pubkey')
+Fullnode.PrivKey = require('./lib/priv-key')
+Fullnode.PubKey = require('./lib/pub-key')
 Fullnode.Random = require('./lib/random')
 Fullnode.Reject = require('./lib/reject')
 Fullnode.Script = require('./lib/script')
 Fullnode.Sig = require('./lib/sig')
 Fullnode.Struct = require('./lib/struct')
 Fullnode.Tx = require('./lib/tx')
-Fullnode.Txbuilder = require('./lib/txbuilder')
-Fullnode.Txin = require('./lib/txin')
-Fullnode.Txout = require('./lib/txout')
-Fullnode.Txverifier = require('./lib/txverifier')
-Fullnode.Varint = require('./lib/varint')
+Fullnode.TxBuilder = require('./lib/tx-builder')
+Fullnode.TxIn = require('./lib/tx-in')
+Fullnode.TxOut = require('./lib/tx-out')
+Fullnode.TxVerifier = require('./lib/tx-verifier')
+Fullnode.VarInt = require('./lib/var-int')
 Fullnode.Workers = require('./lib/workers')
-Fullnode.WorkersCmd = require('./lib/workerscmd')
-Fullnode.WorkersResult = require('./lib/workersresult')
+Fullnode.WorkersCmd = require('./lib/workers-cmd')
+Fullnode.WorkersResult = require('./lib/workers-result')
 Fullnode.cmp = require('./lib/cmp')
 
-// Encryption tools. Some bitcoin standards use AES encryption, so that's why
+// Encryption tools. Some bitcoin standards use Aes encryption, so that's why
 // these are available.
-Fullnode.ACH = require('./lib/ach')
-Fullnode.AES = require('./lib/aes')
-Fullnode.AESCBC = require('./lib/aescbc')
-Fullnode.CBC = require('./lib/cbc')
-Fullnode.ECIES = require('./lib/ecies')
+Fullnode.Ach = require('./lib/ach')
+Fullnode.Aes = require('./lib/aes')
+Fullnode.Aescbc = require('./lib/aescbc')
+Fullnode.Cbc = require('./lib/cbc')
+Fullnode.Ecies = require('./lib/ecies')
 
 // Dependencies, subject to change.
 Fullnode.deps = {}
@@ -111,17 +111,17 @@ Fullnode.deps.hashjs = require('hash.js')
 Fullnode.deps.injecter = require('injecter')
 Fullnode.deps.pbkdf2compat = require('pbkdf2-compat')
 
-// Mainnet classes for your convenience (in case default is not what you want).
-let Mainnet = {}
+// MainNet classes for your convenience (in case default is not what you want).
+let MainNet = {}
 Object.keys(Fullnode).forEach(function (key) {
-  Mainnet[key] = Fullnode[key].Mainnet ? Fullnode[key].Mainnet : Fullnode[key]
+  MainNet[key] = Fullnode[key].MainNet ? Fullnode[key].MainNet : Fullnode[key]
 })
 
-// Testnet classes for your convenience (in case default is not what you want).
-let Testnet = {}
+// TestNet classes for your convenience (in case default is not what you want).
+let TestNet = {}
 Object.keys(Fullnode).forEach(function (key) {
-  Testnet[key] = Fullnode[key].Testnet ? Fullnode[key].Testnet : Fullnode[key]
+  TestNet[key] = Fullnode[key].TestNet ? Fullnode[key].TestNet : Fullnode[key]
 })
 
-Fullnode.Mainnet = Mainnet
-Fullnode.Testnet = Testnet
+Fullnode.MainNet = MainNet
+Fullnode.TestNet = TestNet

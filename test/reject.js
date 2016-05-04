@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
 let Reject = require('../lib/reject')
-let Varint = require('../lib/varint')
+let VarInt = require('../lib/var-int')
 let should = require('chai').should()
 
 describe('Reject', function () {
@@ -13,10 +13,10 @@ describe('Reject', function () {
   describe('#toBuffer', function () {
     it('should convert to a buffer', function () {
       let reject = Reject().fromObject({
-        typevi: Varint().fromNumber(2),
+        typevi: VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: Varint().fromNumber(2),
+        reasonvi: VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })
@@ -27,10 +27,10 @@ describe('Reject', function () {
   describe('#fromBuffer', function () {
     it('should convert from a buffer', function () {
       let reject = Reject().fromObject({
-        typevi: Varint().fromNumber(2),
+        typevi: VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: Varint().fromNumber(2),
+        reasonvi: VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })

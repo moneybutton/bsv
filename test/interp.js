@@ -4,8 +4,8 @@ let should = require('chai').should()
 let Interp = require('../lib/interp')
 let Tx = require('../lib/tx')
 let Script = require('../lib/script')
-let BN = require('../lib/bn')
-let Keypair = require('../lib/keypair')
+let Bn = require('../lib/bn')
+let KeyPair = require('../lib/key-pair')
 let Sig = require('../lib/sig')
 let scriptValid = require('./vectors/bitcoind/script_valid')
 let scriptInvalid = require('./vectors/bitcoind/script_invalid')
@@ -34,11 +34,11 @@ describe('Interp', function () {
     interp.flags.should.equal(0)
   })
 
-  describe('#fromJSON', function () {
+  describe('#fromJson', function () {
     it('should convert a json to an interp', function () {
       let interp = Interp().fromObject({script: Script(), stack: ['00'], altstack: ['00']})
-      let json = interp.toJSON()
-      let interp2 = Interp().fromJSON(json)
+      let json = interp.toJson()
+      let interp2 = Interp().fromJson(json)
       should.exist(interp2.script)
       should.exist(interp2.stack[0])
       should.exist(interp2.altstack[0])
@@ -65,10 +65,10 @@ describe('Interp', function () {
     })
   })
 
-  describe('#toJSON', function () {
+  describe('#toJson', function () {
     it('should convert an interp to json', function () {
       let interp = Interp().fromObject({script: Script()})
-      let json = interp.toJSON()
+      let json = interp.toJson()
       should.exist(json.script)
       should.not.exist(json.tx)
     })
@@ -88,13 +88,13 @@ describe('Interp', function () {
 
   describe('@castToBool', function () {
     it('should cast these bufs to bool correctly', function () {
-      Interp.castToBool(BN(0).toSM({endian: 'little'})).should.equal(false)
+      Interp.castToBool(Bn(0).toSm({endian: 'little'})).should.equal(false)
       Interp.castToBool(new Buffer('0080', 'hex')).should.equal(false) // negative 0
-      Interp.castToBool(BN(1).toSM({endian: 'little'})).should.equal(true)
-      Interp.castToBool(BN(-1).toSM({endian: 'little'})).should.equal(true)
+      Interp.castToBool(Bn(1).toSm({endian: 'little'})).should.equal(true)
+      Interp.castToBool(Bn(-1).toSm({endian: 'little'})).should.equal(true)
 
       let buf = new Buffer('00', 'hex')
-      let bool = BN().fromSM(buf, {endian: 'little'}).cmp(0) !== 0
+      let bool = Bn().fromSm(buf, {endian: 'little'}).cmp(0) !== 0
       Interp.castToBool(buf).should.equal(bool)
     })
   })
@@ -122,47 +122,47 @@ describe('Interp', function () {
       verified.should.equal(true)
     })
 
-    it('should verify this new pay-to-pubkey script', function () {
-      let keypair = Keypair().fromRandom()
-      let scriptPubkey = Script().writeBuffer(keypair.pubkey.toDER(true)).writeString('OP_CHECKSIG')
+    it('should verify this new pay-to-pubKey script', function () {
+      let keyPair = KeyPair().fromRandom()
+      let scriptPubKey = Script().writeBuffer(keyPair.pubKey.toDer(true)).writeString('OP_CHECKSIG')
 
-      let hashbuf = new Buffer(32)
-      hashbuf.fill(0)
+      let hashBuf = new Buffer(32)
+      hashBuf.fill(0)
       let credtx = Tx()
-      credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
-      credtx.addTxout(BN(0), scriptPubkey)
+      credtx.addTxIn(hashBuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
+      credtx.addTxOut(Bn(0), scriptPubKey)
 
       let idbuf = credtx.hash()
       let spendtx = Tx()
-      spendtx.addTxin(idbuf, 0, Script(), 0xffffffff)
-      spendtx.addTxout(BN(0), Script())
+      spendtx.addTxIn(idbuf, 0, Script(), 0xffffffff)
+      spendtx.addTxOut(Bn(0), Script())
 
-      let sig = spendtx.sign(keypair, Sig.SIGHASH_ALL, 0, scriptPubkey)
+      let sig = spendtx.sign(keyPair, Sig.SIGHASH_ALL, 0, scriptPubKey)
       let scriptSig = Script().writeBuffer(sig.toTxFormat())
       spendtx.txins[0].setScript(scriptSig)
 
       let interp = Interp()
-      let verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0)
+      let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0)
       verified.should.equal(true)
     })
 
-    it('should verify this pay-to-pubkey script from script_valid.json', function () {
+    it('should verify this pay-to-pubKey script from script_valid.json', function () {
       let scriptSig = Script().fromBitcoindString('0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501')
-      let scriptPubkey = Script().fromBitcoindString('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
+      let scriptPubKey = Script().fromBitcoindString('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
 
-      let hashbuf = new Buffer(32)
-      hashbuf.fill(0)
+      let hashBuf = new Buffer(32)
+      hashBuf.fill(0)
       let credtx = Tx()
-      credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
-      credtx.addTxout(BN(0), scriptPubkey)
+      credtx.addTxIn(hashBuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
+      credtx.addTxOut(Bn(0), scriptPubKey)
 
       let idbuf = credtx.hash()
       let spendtx = Tx()
-      spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff)
-      spendtx.addTxout(BN(0), Script())
+      spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
+      spendtx.addTxOut(Bn(0), Script())
 
       let interp = Interp()
-      let verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, 0)
+      let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, 0)
       verified.should.equal(true)
     })
   })
@@ -178,22 +178,22 @@ describe('Interp', function () {
       c++
       it('should verify scriptValid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
-        let scriptPubkey = Script().fromBitcoindString(vector[1])
+        let scriptPubKey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
 
-        let hashbuf = new Buffer(32)
-        hashbuf.fill(0)
+        let hashBuf = new Buffer(32)
+        hashBuf.fill(0)
         let credtx = Tx()
-        credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
-        credtx.addTxout(BN(0), scriptPubkey)
+        credtx.addTxIn(hashBuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
+        credtx.addTxOut(Bn(0), scriptPubKey)
 
         let idbuf = credtx.hash()
         let spendtx = Tx()
-        spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff)
-        spendtx.addTxout(BN(0), Script())
+        spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
+        spendtx.addTxOut(Bn(0), Script())
 
         let interp = Interp()
-        let verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags)
+        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
         verified.should.equal(true)
       })
     })
@@ -206,22 +206,22 @@ describe('Interp', function () {
       c++
       it('should unverify scriptInvalid vector ' + c, function () {
         let scriptSig = Script().fromBitcoindString(vector[0])
-        let scriptPubkey = Script().fromBitcoindString(vector[1])
+        let scriptPubKey = Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
 
-        let hashbuf = new Buffer(32)
-        hashbuf.fill(0)
+        let hashBuf = new Buffer(32)
+        hashBuf.fill(0)
         let credtx = Tx()
-        credtx.addTxin(hashbuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
-        credtx.addTxout(BN(0), scriptPubkey)
+        credtx.addTxIn(hashBuf, 0xffffffff, Script().writeString('OP_0 OP_0'), 0xffffffff)
+        credtx.addTxOut(Bn(0), scriptPubKey)
 
         let idbuf = credtx.hash()
         let spendtx = Tx()
-        spendtx.addTxin(idbuf, 0, scriptSig, 0xffffffff)
-        spendtx.addTxout(BN(0), Script())
+        spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
+        spendtx.addTxOut(Bn(0), Script())
 
         let interp = Interp()
-        let verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags)
+        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
         verified.should.equal(false)
       })
     })

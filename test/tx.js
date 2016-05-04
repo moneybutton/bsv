@@ -1,13 +1,13 @@
 /* global describe,it */
 'use strict'
-let BR = require('../lib/br')
-let Keypair = require('../lib/keypair')
+let Br = require('../lib/br')
+let KeyPair = require('../lib/key-pair')
 let Script = require('../lib/script')
 let Sig = require('../lib/sig')
 let Tx = require('../lib/tx')
-let Txin = require('../lib/txin')
-let Txout = require('../lib/txout')
-let Varint = require('../lib/varint')
+let TxIn = require('../lib/tx-in')
+let TxOut = require('../lib/tx-out')
+let VarInt = require('../lib/var-int')
 let asink = require('asink')
 let should = require('chai').should()
 
@@ -17,15 +17,15 @@ let vectorsTxInvalid = require('./vectors/bitcoind/tx_invalid')
 let largesttxvector = require('./vectors/largesttx')
 
 describe('Tx', function () {
-  let txin = Txin().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
-  let txout = Txout().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
+  let txin = TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
+  let txout = TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
   let tx = Tx().fromObject({
     version: 0,
-    txinsvi: Varint(1),
+    txinsvi: VarInt(1),
     txins: [txin],
-    txoutsvi: Varint(1),
+    txoutsvi: VarInt(1),
     txouts: [txout],
-    nlocktime: 0
+    nLockTime: 0
   })
   let txhex = '000000000100000000000000000000000000000000000000000000000000000000000000000000000001ae0000000001050000000000000001ae00000000'
   let txbuf = new Buffer(txhex, 'hex')
@@ -48,7 +48,7 @@ describe('Tx', function () {
     tx.txins.length.should.equal(0)
     tx.txoutsvi.toNumber().should.equal(0)
     tx.txouts.length.should.equal(0)
-    tx.nlocktime.should.equal(0)
+    tx.nLockTime.should.equal(0)
   })
 
   describe('#initialize', function () {
@@ -60,7 +60,7 @@ describe('Tx', function () {
       tx.txins.length.should.equal(0)
       tx.txoutsvi.toNumber().should.equal(0)
       tx.txouts.length.should.equal(0)
-      tx.nlocktime.should.equal(0)
+      tx.nLockTime.should.equal(0)
     })
   })
 
@@ -68,49 +68,49 @@ describe('Tx', function () {
     it('should set all the basic parameters', function () {
       let tx = Tx().fromObject({
         version: 0,
-        txinsvi: Varint(1),
+        txinsvi: VarInt(1),
         txins: [txin],
-        txoutsvi: Varint(1),
+        txoutsvi: VarInt(1),
         txouts: [txout],
-        nlocktime: 0
+        nLockTime: 0
       })
       should.exist(tx.version)
       should.exist(tx.txinsvi)
       should.exist(tx.txins)
       should.exist(tx.txoutsvi)
       should.exist(tx.txouts)
-      should.exist(tx.nlocktime)
+      should.exist(tx.nLockTime)
     })
   })
 
-  describe('#fromJSON', function () {
+  describe('#fromJson', function () {
     it('should set all the basic parameters', function () {
-      let tx = Tx().fromJSON({
+      let tx = Tx().fromJson({
         version: 0,
-        txinsvi: Varint(1).toJSON(),
-        txins: [txin.toJSON()],
-        txoutsvi: Varint(1).toJSON(),
-        txouts: [txout.toJSON()],
-        nlocktime: 0
+        txinsvi: VarInt(1).toJson(),
+        txins: [txin.toJson()],
+        txoutsvi: VarInt(1).toJson(),
+        txouts: [txout.toJson()],
+        nLockTime: 0
       })
       should.exist(tx.version)
       should.exist(tx.txinsvi)
       should.exist(tx.txins)
       should.exist(tx.txoutsvi)
       should.exist(tx.txouts)
-      should.exist(tx.nlocktime)
+      should.exist(tx.nLockTime)
     })
   })
 
-  describe('#toJSON', function () {
+  describe('#toJson', function () {
     it('should recover all the basic parameters', function () {
-      let json = tx.toJSON()
+      let json = tx.toJson()
       should.exist(json.version)
       should.exist(json.txinsvi)
       should.exist(json.txins)
       should.exist(json.txoutsvi)
       should.exist(json.txouts)
-      should.exist(json.nlocktime)
+      should.exist(json.nLockTime)
     })
   })
 
@@ -134,9 +134,9 @@ describe('Tx', function () {
     })
   })
 
-  describe('#fromBR', function () {
+  describe('#fromBr', function () {
     it('should recover from this known tx', function () {
-      Tx().fromBR(BR(txbuf)).toBuffer().toString('hex').should.equal(txhex)
+      Tx().fromBr(Br(txbuf)).toBuffer().toString('hex').should.equal(txhex)
     })
   })
 
@@ -152,9 +152,9 @@ describe('Tx', function () {
     })
   })
 
-  describe('#toBW', function () {
+  describe('#toBw', function () {
     it('should produce this known tx', function () {
-      Tx().fromBuffer(txbuf).toBW().toBuffer().toString('hex').should.equal(txhex)
+      Tx().fromBuffer(txbuf).toBw().toBuffer().toString('hex').should.equal(txhex)
     })
   })
 
@@ -166,7 +166,7 @@ describe('Tx', function () {
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       let tx = Tx(tx2buf)
       tx.txouts.length = 1
-      tx.txoutsvi = Varint(1)
+      tx.txoutsvi = VarInt(1)
       tx.sighash(Sig.SIGHASH_SINGLE, 1, Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
     })
   })
@@ -174,8 +174,8 @@ describe('Tx', function () {
   describe('#asyncSighash', function () {
     it('should hash this transaction', function () {
       return asink(function * () {
-        let hashbuf = yield tx.asyncSighash(0, 0, Script())
-        hashbuf.length.should.equal(32)
+        let hashBuf = yield tx.asyncSighash(0, 0, Script())
+        hashBuf.length.should.equal(32)
       }, this)
     })
 
@@ -183,20 +183,20 @@ describe('Tx', function () {
       return asink(function * () {
         let tx = Tx(tx2buf)
         tx.txouts.length = 1
-        tx.txoutsvi = Varint(1)
-        let hashbuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, Script())
-        hashbuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
+        tx.txoutsvi = VarInt(1)
+        let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, Script())
+        hashBuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
       }, this)
     })
   })
 
   describe('#sign', function () {
     it('should return a signature', function () {
-      let keypair = Keypair().fromRandom()
-      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
+      let keyPair = KeyPair().fromRandom()
+      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
       should.exist(sig1)
-      let sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script())
-      let sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+      let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
+      let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
       sig1.toString(should.not.equal(sig2.toString()))
       sig1.toString(should.not.equal(sig3.toString()))
     })
@@ -205,13 +205,13 @@ describe('Tx', function () {
   describe('#asyncSign', function () {
     it('should return a signature', function () {
       return asink(function * () {
-        let keypair = Keypair().fromRandom()
-        let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
-        let sig1b = yield tx.asyncSign(keypair, Sig.SIGHASH_ALL, 0, Script())
-        let sig2 = tx.sign(keypair, Sig.SIGHASH_SINGLE, 0, Script())
-        let sig2b = yield tx.asyncSign(keypair, Sig.SIGHASH_SINGLE, 0, Script())
-        let sig3 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
-        let sig3b = yield tx.asyncSign(keypair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+        let keyPair = KeyPair().fromRandom()
+        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
+        let sig1b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, Script())
+        let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
+        let sig2b = yield tx.asyncSign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
+        let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+        let sig3b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
         sig1.toString().should.equal(sig1b.toString())
         sig2.toString().should.equal(sig2b.toString())
         sig3.toString().should.equal(sig3b.toString())
@@ -221,18 +221,18 @@ describe('Tx', function () {
 
   describe('#verify', function () {
     it('should return a signature', function () {
-      let keypair = Keypair().fromRandom()
-      let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
-      tx.verify(sig1, keypair.pubkey, 0, Script()).should.equal(true)
+      let keyPair = KeyPair().fromRandom()
+      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
+      tx.verify(sig1, keyPair.pubKey, 0, Script()).should.equal(true)
     })
   })
 
   describe('#asyncVerify', function () {
     it('should return a signature', function () {
       return asink(function * () {
-        let keypair = Keypair().fromRandom()
-        let sig1 = tx.sign(keypair, Sig.SIGHASH_ALL, 0, Script())
-        let verified = yield tx.asyncVerify(sig1, keypair.pubkey, 0, Script())
+        let keyPair = KeyPair().fromRandom()
+        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
+        let verified = yield tx.asyncVerify(sig1, keyPair.pubKey, 0, Script())
         verified.should.equal(true)
       }, this)
     })
@@ -241,8 +241,8 @@ describe('Tx', function () {
   describe('#hash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
       let tx = Tx().fromBuffer(tx2buf)
-      let txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
-      tx.hash().toString('hex').should.equal(txhashbuf.toString('hex'))
+      let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
+      tx.hash().toString('hex').should.equal(txHashBuf.toString('hex'))
     })
   })
 
@@ -250,9 +250,9 @@ describe('Tx', function () {
     it('should correctly calculate the hash of this known transaction', function () {
       return asink(function * () {
         let tx = Tx().fromBuffer(tx2buf)
-        let txhashbuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
-        let hashbuf = yield tx.asyncHash()
-        hashbuf.toString('hex').should.equal(txhashbuf.toString('hex'))
+        let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
+        let hashBuf = yield tx.asyncHash()
+        hashBuf.toString('hex').should.equal(txHashBuf.toString('hex'))
       }, this)
     })
   })
@@ -274,23 +274,23 @@ describe('Tx', function () {
     })
   })
 
-  describe('#addTxin', function () {
+  describe('#addTxIn', function () {
     it('should add an input', function () {
-      let txin = Txin()
+      let txin = TxIn()
       let tx = Tx()
       tx.txinsvi.toNumber().should.equal(0)
-      tx.addTxin(txin)
+      tx.addTxIn(txin)
       tx.txinsvi.toNumber().should.equal(1)
       tx.txins.length.should.equal(1)
     })
   })
 
-  describe('#addTxout', function () {
+  describe('#addTxOut', function () {
     it('should add an output', function () {
-      let txout = Txout()
+      let txout = TxOut()
       let tx = Tx()
       tx.txoutsvi.toNumber().should.equal(0)
-      tx.addTxout(txout)
+      tx.addTxOut(txout)
       tx.txoutsvi.toNumber().should.equal(1)
       tx.txouts.length.should.equal(1)
     })
@@ -314,17 +314,17 @@ describe('Tx', function () {
       it('should pass sighash test vector ' + i, function () {
         let txbuf = new Buffer(vector[0], 'hex')
         let scriptbuf = new Buffer(vector[1], 'hex')
-        let subscript = Script().fromBuffer(scriptbuf)
+        let subScript = Script().fromBuffer(scriptbuf)
         let nin = vector[2]
         let nhashtype = vector[3]
-        let sighashbuf = new Buffer(vector[4], 'hex')
+        let sighashBuf = new Buffer(vector[4], 'hex')
         let tx = Tx().fromBuffer(txbuf)
 
         // make sure transacion to/from buffer is isomorphic
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'))
 
         // sighash ought to be correct
-        tx.sighash(nhashtype, nin, subscript).toString('hex').should.equal(sighashbuf.toString('hex'))
+        tx.sighash(nhashtype, nin, subScript).toString('hex').should.equal(sighashBuf.toString('hex'))
       })
     })
 
