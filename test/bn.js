@@ -10,24 +10,24 @@ describe('Bn', function () {
     let bn = new Bn(50)
     should.exist(bn)
     bn.toString().should.equal('50')
-    bn = Bn(50)
+    bn = new Bn(50)
     bn.toString().should.equal('50')
     ;(bn instanceof Bn).should.equal(true)
-    bn = Bn('ff00', 16)
+    bn = new Bn('ff00', 16)
     bn.toString(16).should.equal('ff00')
     bn = new Bn('ff00', 16)
     bn.toString(16).should.equal('ff00')
   })
 
   it('should parse this number', function () {
-    let bn = Bn(999970000)
+    let bn = new Bn(999970000)
     bn.toString().should.equal('999970000')
   })
 
   it('should parse numbers below and at bn.js internal word size', function () {
-    let bn = Bn(Math.pow(2, 26) - 1)
+    let bn = new Bn(Math.pow(2, 26) - 1)
     bn.toString().should.equal((Math.pow(2, 26) - 1).toString())
-    bn = Bn(Math.pow(2, 26))
+    bn = new Bn(Math.pow(2, 26))
     bn.toString().should.equal((Math.pow(2, 26)).toString())
   })
 
@@ -75,7 +75,7 @@ describe('Bn', function () {
      */
     let p = Bn._prime('k256').p
 
-    let n = Bn('80000000000000008000000000000001FFFFFFFFFFFFFFFE0000000000000000', 16)
+    let n = new Bn('80000000000000008000000000000001FFFFFFFFFFFFFFFE0000000000000000', 16)
     let sqr = n.sqr()
     let nn = n.mul(n)
     nn.toString().should.equal(sqr.toString())
@@ -83,7 +83,7 @@ describe('Bn', function () {
     nn = n.mul(n).mod(p)
     nn.toString().should.equal(sqr.toString())
 
-    n = Bn('80000000000000000000000080000001FFFFFFFE000000000000000000000000', 16)
+    n = new Bn('80000000000000000000000080000001FFFFFFFE000000000000000000000000', 16)
     sqr = n.sqr()
     nn = n.mul(n)
     nn.toString().should.equal(sqr.toString())
@@ -94,12 +94,12 @@ describe('Bn', function () {
 
   describe('#copy', function () {
     it('should copy 5', function () {
-      let bn = Bn('5')
+      let bn = new Bn('5')
       let bn2
       ;(function () {
         bn.copy(bn2)
       }).should.throw() // bn2 is not a Bn yet
-      bn2 = Bn()
+      bn2 = new Bn()
       bn.copy(bn2)
       bn2.toString().should.equal('5')
     })
@@ -107,7 +107,7 @@ describe('Bn', function () {
 
   describe('#neg', function () {
     it('should produce a negative', function () {
-      let bn = Bn(1).neg()
+      let bn = new Bn(1).neg()
       ;(bn instanceof Bn).should.equal(true)
       bn.toString().should.equal('-1')
     })
@@ -115,8 +115,8 @@ describe('Bn', function () {
 
   describe('#add', function () {
     it('should add two small numbers together', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(75)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(75)
       let bn3 = bn1.add(bn2)
       bn3.toString().should.equal('125')
     })
@@ -124,8 +124,8 @@ describe('Bn', function () {
 
   describe('#sub', function () {
     it('should subtract a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.sub(bn2)
       bn3.toString().should.equal('25')
     })
@@ -133,8 +133,8 @@ describe('Bn', function () {
 
   describe('#mul', function () {
     it('should mul a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.mul(bn2)
       bn3.toString().should.equal('1250')
     })
@@ -142,29 +142,29 @@ describe('Bn', function () {
 
   describe('#mod', function () {
     it('should mod a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('0')
     })
 
     it('should mod a small number', function () {
-      let bn1 = Bn(-50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(-50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('0')
     })
 
     it('should mod a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(47)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(47)
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('3')
     })
 
     it('should mod a small number', function () {
-      let bn1 = Bn(-50)
-      let bn2 = Bn(47)
+      let bn1 = new Bn(-50)
+      let bn2 = new Bn(47)
       let bn3 = bn1.mod(bn2)
       bn3.toString().should.equal('-3')
     })
@@ -172,15 +172,15 @@ describe('Bn', function () {
 
   describe('#umod', function () {
     it('should mod a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.umod(bn2)
       bn3.toString().should.equal('0')
     })
 
     it('should mod a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(47)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(47)
       let bn3 = bn1.umod(bn2)
       bn3.toString().should.equal('3')
     })
@@ -188,15 +188,15 @@ describe('Bn', function () {
 
   describe('#invm', function () {
     it('should invm a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.invm(bn2)
       bn3.toString().should.equal('0')
     })
 
     it('should invm a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(47)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(47)
       let bn3 = bn1.invm(bn2)
       bn3.toString().should.equal('16')
     })
@@ -204,15 +204,15 @@ describe('Bn', function () {
 
   describe('#div', function () {
     it('should div a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(25)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(25)
       let bn3 = bn1.div(bn2)
       bn3.toString().should.equal('2')
     })
 
     it('should div a small number', function () {
-      let bn1 = Bn(50)
-      let bn2 = Bn(47)
+      let bn1 = new Bn(50)
+      let bn2 = new Bn(47)
       let bn3 = bn1.div(bn2)
       bn3.toString().should.equal('1')
     })
@@ -220,91 +220,91 @@ describe('Bn', function () {
 
   describe('#cmp', function () {
     it('should know A=B', function () {
-      Bn(5).cmp(5).should.equal(0)
-      Bn(5).cmp(4).should.equal(1)
-      Bn(5).cmp(6).should.equal(-1)
+      new Bn(5).cmp(5).should.equal(0)
+      new Bn(5).cmp(4).should.equal(1)
+      new Bn(5).cmp(6).should.equal(-1)
     })
   })
 
   describe('#eq', function () {
     it('should know A=B', function () {
-      Bn(5).eq(5).should.equal(true)
-      Bn(5).eq(4).should.equal(false)
+      new Bn(5).eq(5).should.equal(true)
+      new Bn(5).eq(4).should.equal(false)
     })
   })
 
   describe('#neq', function () {
     it('should know A!=B', function () {
-      Bn(5).neq(5).should.equal(false)
-      Bn(5).neq(4).should.equal(true)
+      new Bn(5).neq(5).should.equal(false)
+      new Bn(5).neq(4).should.equal(true)
     })
   })
 
   describe('#gt', function () {
     it('should say 1 is greater than 0', function () {
-      let bn1 = Bn(1)
-      let bn0 = Bn(0)
+      let bn1 = new Bn(1)
+      let bn0 = new Bn(0)
       bn1.gt(bn0).should.equal(true)
     })
 
     it('should say a big number is greater than a small big number', function () {
-      let bn1 = Bn('24023452345398529485723980457')
-      let bn0 = Bn('34098234283412341234049357')
+      let bn1 = new Bn('24023452345398529485723980457')
+      let bn0 = new Bn('34098234283412341234049357')
       bn1.gt(bn0).should.equal(true)
     })
 
     it('should say a big number is great than a standard number', function () {
-      let bn1 = Bn('24023452345398529485723980457')
-      let bn0 = Bn(5)
+      let bn1 = new Bn('24023452345398529485723980457')
+      let bn0 = new Bn(5)
       bn1.gt(bn0).should.equal(true)
     })
   })
 
   describe('#geq', function () {
     it('should know that A >= B', function () {
-      Bn(6).geq(5).should.equal(true)
-      Bn(5).geq(5).should.equal(true)
-      Bn(4).geq(5).should.equal(false)
+      new Bn(6).geq(5).should.equal(true)
+      new Bn(5).geq(5).should.equal(true)
+      new Bn(4).geq(5).should.equal(false)
     })
   })
 
   describe('#lt', function () {
     it('should know A < B', function () {
-      Bn(5).lt(6).should.equal(true)
-      Bn(5).lt(4).should.equal(false)
+      new Bn(5).lt(6).should.equal(true)
+      new Bn(5).lt(4).should.equal(false)
     })
   })
 
   describe('#leq', function () {
     it('should know A <= B', function () {
-      Bn(5).leq(6).should.equal(true)
-      Bn(5).leq(5).should.equal(true)
-      Bn(5).leq(4).should.equal(false)
+      new Bn(5).leq(6).should.equal(true)
+      new Bn(5).leq(5).should.equal(true)
+      new Bn(5).leq(4).should.equal(false)
     })
   })
 
   describe('#fromJson', function () {
     it('should make Bn from a string', function () {
-      Bn().fromJson('5').toString().should.equal('5')
+      new Bn().fromJson('5').toString().should.equal('5')
     })
   })
 
   describe('#toJson', function () {
     it('should make string from a Bn', function () {
-      Bn(5).toJson().should.equal('5')
-      Bn().fromJson('5').toJson().should.equal('5')
+      new Bn(5).toJson().should.equal('5')
+      new Bn().fromJson('5').toJson().should.equal('5')
     })
   })
 
   describe('#fromString', function () {
     it('should make Bn from a string', function () {
-      Bn().fromString('5').toString().should.equal('5')
+      new Bn().fromString('5').toString().should.equal('5')
     })
   })
 
   describe('#toString', function () {
     it('should make a string', function () {
-      Bn(5).toString().should.equal('5')
+      new Bn(5).toString().should.equal('5')
     })
   })
 
@@ -327,99 +327,99 @@ describe('Bn', function () {
 
   describe('#fromHex', function () {
     it('should create bn from known hex', function () {
-      let bn = Bn().fromHex('0100', {size: 2, endian: 'little'})
+      let bn = new Bn().fromHex('0100', {size: 2, endian: 'little'})
       bn.toString().should.equal('1')
     })
   })
 
   describe('#fromBuffer', function () {
     it('should work as a prototype method', function () {
-      let bn = Bn().fromBuffer(new Buffer('0100', 'hex'), {size: 2, endian: 'little'})
+      let bn = new Bn().fromBuffer(new Buffer('0100', 'hex'), {size: 2, endian: 'little'})
       bn.toString().should.equal('1')
     })
   })
 
   describe('#toHex', function () {
     it('should create a hex string of 4 byte buffer', function () {
-      let bn = Bn(1)
+      let bn = new Bn(1)
       bn.toHex({size: 4}).should.equal('00000001')
     })
   })
 
   describe('#toBuffer', function () {
     it('should convert zero to empty buffer', function () {
-      Bn(0).toBuffer().length.should.equal(0)
+      new Bn(0).toBuffer().length.should.equal(0)
     })
 
     it('should create a 4 byte buffer', function () {
-      let bn = Bn(1)
+      let bn = new Bn(1)
       bn.toBuffer({size: 4}).toString('hex').should.equal('00000001')
     })
 
     it('should create a 4 byte buffer in little endian', function () {
-      let bn = Bn(1)
+      let bn = new Bn(1)
       bn.toBuffer({size: 4, endian: 'little'}).toString('hex').should.equal('01000000')
     })
 
     it('should create a 2 byte buffer even if you ask for a 1 byte', function () {
-      let bn = Bn('ff00', 16)
+      let bn = new Bn('ff00', 16)
       bn.toBuffer({size: 1}).toString('hex').should.equal('ff00')
     })
 
     it('should create a 4 byte buffer even if you ask for a 1 byte', function () {
-      let bn = Bn('ffffff00', 16)
+      let bn = new Bn('ffffff00', 16)
       bn.toBuffer({size: 4}).toString('hex').should.equal('ffffff00')
     })
   })
 
   describe('#toBits', function () {
     it('should convert these known Bns to bits', function () {
-      Bn().fromHex('00').toBits().should.equal(0x00000000)
-      Bn().fromHex('01').toBits().should.equal(0x01000001)
-      Bn().fromHex('0101').toBits().should.equal(0x02000101)
-      Bn().fromHex('010101').toBits().should.equal(0x03010101)
-      Bn().fromHex('01010101').toBits().should.equal(0x04010101)
-      Bn().fromHex('0101010101').toBits().should.equal(0x05010101)
-      Bn().fromHex('010101010101').toBits().should.equal(0x06010101)
-      Bn().fromNumber(-1).toBits().should.equal(0x01800001)
+      new Bn().fromHex('00').toBits().should.equal(0x00000000)
+      new Bn().fromHex('01').toBits().should.equal(0x01000001)
+      new Bn().fromHex('0101').toBits().should.equal(0x02000101)
+      new Bn().fromHex('010101').toBits().should.equal(0x03010101)
+      new Bn().fromHex('01010101').toBits().should.equal(0x04010101)
+      new Bn().fromHex('0101010101').toBits().should.equal(0x05010101)
+      new Bn().fromHex('010101010101').toBits().should.equal(0x06010101)
+      new Bn().fromNumber(-1).toBits().should.equal(0x01800001)
     })
   })
 
   describe('#fromBits', function () {
     it('should convert these known bits to Bns', function () {
-      Bn().fromBits(0x01003456).toHex().should.equal('')
-      Bn().fromBits(0x02003456).toHex().should.equal('34')
-      Bn().fromBits(0x03003456).toHex().should.equal('3456')
-      Bn().fromBits(0x04003456).toHex().should.equal('345600')
-      Bn().fromBits(0x05003456).toHex().should.equal('34560000')
-      Bn().fromBits(0x05f03456).lt(0).should.equal(true) // sign bit set
+      new Bn().fromBits(0x01003456).toHex().should.equal('')
+      new Bn().fromBits(0x02003456).toHex().should.equal('34')
+      new Bn().fromBits(0x03003456).toHex().should.equal('3456')
+      new Bn().fromBits(0x04003456).toHex().should.equal('345600')
+      new Bn().fromBits(0x05003456).toHex().should.equal('34560000')
+      new Bn().fromBits(0x05f03456).lt(0).should.equal(true) // sign bit set
       ;(function () {
-        Bn().fromBits(0x05f03456, {strict: true}) // sign bit set
+        new Bn().fromBits(0x05f03456, {strict: true}) // sign bit set
       }).should.throw('negative bit set')
-      Bn().fromBits(0x04923456).lt(0).should.equal(true)
+      new Bn().fromBits(0x04923456).lt(0).should.equal(true)
     })
   })
 
   describe('#toSm', function () {
     it('should convert to Sm', function () {
       let buf
-      buf = Bn().toSm()
+      buf = new Bn().toSm()
       buf.toString('hex').should.equal('')
-      buf = Bn(5).toSm()
+      buf = new Bn(5).toSm()
       buf.toString('hex').should.equal('05')
-      buf = Bn(-5).toSm()
+      buf = new Bn(-5).toSm()
       buf.toString('hex').should.equal('85')
-      buf = Bn(128).toSm()
+      buf = new Bn(128).toSm()
       buf.toString('hex').should.equal('0080')
-      buf = Bn(-128).toSm()
+      buf = new Bn(-128).toSm()
       buf.toString('hex').should.equal('8080')
-      buf = Bn(127).toSm()
+      buf = new Bn(127).toSm()
       buf.toString('hex').should.equal('7f')
-      buf = Bn(-127).toSm()
+      buf = new Bn(-127).toSm()
       buf.toString('hex').should.equal('ff')
-      buf = Bn(128).toSm({endian: 'little'})
+      buf = new Bn(128).toSm({endian: 'little'})
       buf.toString('hex').should.equal('8000')
-      buf = Bn(-128).toSm({endian: 'little'})
+      buf = new Bn(-128).toSm({endian: 'little'})
       buf.toString('hex').should.equal('8080')
     })
   })
@@ -428,76 +428,76 @@ describe('Bn', function () {
     it('should convert from Sm', function () {
       let buf
       buf = new Buffer([0])
-      Bn().fromSm(buf).cmp(0).should.equal(0)
+      new Bn().fromSm(buf).cmp(0).should.equal(0)
       buf = new Buffer('05', 'hex')
-      Bn().fromSm(buf).cmp(5).should.equal(0)
+      new Bn().fromSm(buf).cmp(5).should.equal(0)
       buf = new Buffer('85', 'hex')
-      Bn().fromSm(buf).cmp(-5).should.equal(0)
+      new Bn().fromSm(buf).cmp(-5).should.equal(0)
       buf = new Buffer('0080', 'hex')
-      Bn().fromSm(buf).cmp(128).should.equal(0)
+      new Bn().fromSm(buf).cmp(128).should.equal(0)
       buf = new Buffer('8080', 'hex')
-      Bn().fromSm(buf).cmp(-128).should.equal(0)
+      new Bn().fromSm(buf).cmp(-128).should.equal(0)
       buf = new Buffer('8000', 'hex')
-      Bn().fromSm(buf, {endian: 'little'}).cmp(128).should.equal(0)
+      new Bn().fromSm(buf, {endian: 'little'}).cmp(128).should.equal(0)
       buf = new Buffer('8080', 'hex')
-      Bn().fromSm(buf, {endian: 'little'}).cmp(-128).should.equal(0)
+      new Bn().fromSm(buf, {endian: 'little'}).cmp(-128).should.equal(0)
       buf = new Buffer('0080', 'hex') // negative zero
-      Bn().fromSm(buf, {endian: 'little'}).cmp(0).should.equal(0)
+      new Bn().fromSm(buf, {endian: 'little'}).cmp(0).should.equal(0)
     })
   })
 
   describe('#toScriptNumBuffer', function () {
     it('should output a little endian Sm number', function () {
-      let bn = Bn(-23434234)
+      let bn = new Bn(-23434234)
       bn.toScriptNumBuffer().toString('hex').should.equal(bn.toSm({endian: 'little'}).toString('hex'))
     })
   })
 
   describe('#fromScriptNumBuffer', function () {
     it('should parse this normal number', function () {
-      Bn().fromScriptNumBuffer(new Buffer('01', 'hex')).toNumber().should.equal(1)
-      Bn().fromScriptNumBuffer(new Buffer('0080', 'hex')).toNumber().should.equal(0)
-      Bn().fromScriptNumBuffer(new Buffer('0180', 'hex')).toNumber().should.equal(-1)
+      new Bn().fromScriptNumBuffer(new Buffer('01', 'hex')).toNumber().should.equal(1)
+      new Bn().fromScriptNumBuffer(new Buffer('0080', 'hex')).toNumber().should.equal(0)
+      new Bn().fromScriptNumBuffer(new Buffer('0180', 'hex')).toNumber().should.equal(-1)
     })
 
     it('should throw an error for a number over 4 bytes', function () {
       (function () {
-        Bn().fromScriptNumBuffer(new Buffer('8100000000', 'hex')).toNumber().should.equal(-1)
+        new Bn().fromScriptNumBuffer(new Buffer('8100000000', 'hex')).toNumber().should.equal(-1)
       }).should.throw('script number overflow')
     })
 
     it('should throw an error for number that is not a minimal size representation', function () {
       // invalid
       (function () {
-        Bn().fromScriptNumBuffer(new Buffer('80000000', 'hex'), true)
+        new Bn().fromScriptNumBuffer(new Buffer('80000000', 'hex'), true)
       }).should.throw('non-minimally encoded script number')
       ;(function () {
-        Bn().fromScriptNumBuffer(new Buffer('800000', 'hex'), true)
+        new Bn().fromScriptNumBuffer(new Buffer('800000', 'hex'), true)
       }).should.throw('non-minimally encoded script number')
       ;(function () {
-        Bn().fromScriptNumBuffer(new Buffer('00', 'hex'), true)
+        new Bn().fromScriptNumBuffer(new Buffer('00', 'hex'), true)
       }).should.throw('non-minimally encoded script number')
 
       // valid
-      Bn().fromScriptNumBuffer(new Buffer('8000', 'hex'), true).toString().should.equal('128')
-      Bn().fromScriptNumBuffer(new Buffer('0081', 'hex'), true).toString().should.equal('-256')
-      Bn().fromScriptNumBuffer(new Buffer('', 'hex'), true).toString().should.equal('0')
-      Bn().fromScriptNumBuffer(new Buffer('01', 'hex'), true).toString().should.equal('1')
+      new Bn().fromScriptNumBuffer(new Buffer('8000', 'hex'), true).toString().should.equal('128')
+      new Bn().fromScriptNumBuffer(new Buffer('0081', 'hex'), true).toString().should.equal('-256')
+      new Bn().fromScriptNumBuffer(new Buffer('', 'hex'), true).toString().should.equal('0')
+      new Bn().fromScriptNumBuffer(new Buffer('01', 'hex'), true).toString().should.equal('1')
 
       // invalid, but flag not set
-      Bn().fromScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0')
+      new Bn().fromScriptNumBuffer(new Buffer('00000000', 'hex')).toString().should.equal('0')
     })
   })
 
   describe('#fromNumber', function () {
     it('should convert from a number', function () {
-      Bn().fromNumber(5).toNumber().should.equal(5)
+      new Bn().fromNumber(5).toNumber().should.equal(5)
     })
   })
 
   describe('#toNumber', function () {
     it('it should convert to a number', function () {
-      Bn(5).toNumber().should.equal(5)
+      new Bn(5).toNumber().should.equal(5)
     })
   })
 })

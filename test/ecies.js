@@ -12,12 +12,12 @@ describe('#Ecies', function () {
   })
 
   it('should make a new Ecies object when called without "new"', function () {
-    let ecies = Ecies()
+    let ecies = new Ecies()
     should.exist(ecies)
   })
 
-  let fromkey = KeyPair().fromRandom()
-  let tokey = KeyPair().fromRandom()
+  let fromkey = new KeyPair().fromRandom()
+  let tokey = new KeyPair().fromRandom()
   let messageBuf = Hash.sha256(new Buffer('my message is the hash of this string'))
 
   describe('@encrypt', function () {

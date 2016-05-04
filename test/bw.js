@@ -25,7 +25,7 @@ describe('Bw', function () {
     it('should compute length correctly of two 2 byte buffers', function () {
       let buf1 = new Buffer('0000', 'hex')
       let buf2 = new Buffer('0000', 'hex')
-      let bw = Bw().write(buf1).write(buf2)
+      let bw = new Bw().write(buf1).write(buf2)
       bw.getLEngth().should.equal(4)
     })
   })
@@ -68,7 +68,7 @@ describe('Bw', function () {
     it('should write 1', function () {
       let bw = new Bw()
       bw.writeInt8(1).toBuffer().toString('hex').should.equal('01')
-      Bw().writeInt8(-1).toBuffer().toString('hex').should.equal('ff')
+      new Bw().writeInt8(-1).toBuffer().toString('hex').should.equal('ff')
     })
   })
 
@@ -83,7 +83,7 @@ describe('Bw', function () {
     it('should write 1', function () {
       let bw = new Bw()
       bw.writeInt16BE(1).toBuffer().toString('hex').should.equal('0001')
-      Bw().writeInt16BE(-1).toBuffer().toString('hex').should.equal('ffff')
+      new Bw().writeInt16BE(-1).toBuffer().toString('hex').should.equal('ffff')
     })
   })
 
@@ -98,7 +98,7 @@ describe('Bw', function () {
     it('should write 1', function () {
       let bw = new Bw()
       bw.writeInt16LE(1).toBuffer().toString('hex').should.equal('0100')
-      Bw().writeInt16LE(-1).toBuffer().toString('hex').should.equal('ffff')
+      new Bw().writeInt16LE(-1).toBuffer().toString('hex').should.equal('ffff')
     })
   })
 
@@ -113,7 +113,7 @@ describe('Bw', function () {
     it('should write 1', function () {
       let bw = new Bw()
       bw.writeInt32BE(1).toBuffer().toString('hex').should.equal('00000001')
-      Bw().writeInt32BE(-1).toBuffer().toString('hex').should.equal('ffffffff')
+      new Bw().writeInt32BE(-1).toBuffer().toString('hex').should.equal('ffffffff')
     })
   })
 
@@ -128,21 +128,21 @@ describe('Bw', function () {
     it('should write 1', function () {
       let bw = new Bw()
       bw.writeInt32LE(1).toBuffer().toString('hex').should.equal('01000000')
-      Bw().writeInt32LE(-1).toBuffer().toString('hex').should.equal('ffffffff')
+      new Bw().writeInt32LE(-1).toBuffer().toString('hex').should.equal('ffffffff')
     })
   })
 
   describe('#writeUInt64BEBn', function () {
     it('should write 1', function () {
       let bw = new Bw()
-      bw.writeUInt64BEBn(Bn(1)).toBuffer().toString('hex').should.equal('0000000000000001')
+      bw.writeUInt64BEBn(new Bn(1)).toBuffer().toString('hex').should.equal('0000000000000001')
     })
   })
 
   describe('#writeUInt64LEBn', function () {
     it('should write 1', function () {
       let bw = new Bw()
-      bw.writeUInt64LEBn(Bn(1)).toBuffer().toString('hex').should.equal('0100000000000000')
+      bw.writeUInt64LEBn(new Bn(1)).toBuffer().toString('hex').should.equal('0100000000000000')
     })
   })
 
@@ -184,25 +184,25 @@ describe('Bw', function () {
   describe('#writeVarIntBn', function () {
     it('should write a 1 byte varInt', function () {
       let bw = new Bw()
-      bw.writeVarIntBn(Bn(1))
+      bw.writeVarIntBn(new Bn(1))
       bw.toBuffer().length.should.equal(1)
     })
 
     it('should write a 3 byte varInt', function () {
       let bw = new Bw()
-      bw.writeVarIntBn(Bn(1000))
+      bw.writeVarIntBn(new Bn(1000))
       bw.toBuffer().length.should.equal(3)
     })
 
     it('should write a 5 byte varInt', function () {
       let bw = new Bw()
-      bw.writeVarIntBn(Bn(Math.pow(2, 16 + 1)))
+      bw.writeVarIntBn(new Bn(Math.pow(2, 16 + 1)))
       bw.toBuffer().length.should.equal(5)
     })
 
     it('should write a 9 byte varInt', function () {
       let bw = new Bw()
-      bw.writeVarIntBn(Bn(Math.pow(2, 32 + 1)))
+      bw.writeVarIntBn(new Bn(Math.pow(2, 32 + 1)))
       bw.toBuffer().length.should.equal(9)
     })
   })

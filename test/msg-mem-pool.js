@@ -1,17 +1,17 @@
 /* global describe,it */
 'use strict'
-let MsgMempool = require('../lib/msg-headers')
+let MsgMemPool = require('../lib/msg-headers')
 let should = require('chai').should()
 
-describe('MsgMempool', function () {
+describe('MsgMemPool', function () {
   it('should exist', function () {
-    should.exist(MsgMempool)
-    should.exist(MsgMempool())
+    should.exist(MsgMemPool)
+    should.exist(new MsgMemPool())
   })
 
   describe('#isValid', function () {
     it('should know this is a valid mempool msg', function () {
-      MsgMempool().isValid().should.equal(true)
+      new MsgMemPool().isValid().should.equal(true)
     })
   })
 })

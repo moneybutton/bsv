@@ -18,11 +18,11 @@ describe('Address', function () {
   it('should satisfy these basic API features', function () {
     let address = new Address()
     should.exist(address)
-    address = Address()
+    address = new Address()
     should.exist(address)
-    address = Address(version, pubKeyHash)
+    address = new Address(version, pubKeyHash)
     should.exist(address)
-    Address().constructor.should.equal(Address().constructor)
+    new Address().constructor.should.equal(new Address().constructor)
     Address.TestNet().constructor.should.equal(Address.TestNet().constructor)
   })
 
@@ -38,25 +38,25 @@ describe('Address', function () {
 
   describe('#fromHex', function () {
     it('should make an address from a hex string', function () {
-      Address().fromHex(buf.toString('hex')).toBuffer().slice(1).toString('hex').should.equal(pubKeyHash.toString('hex'))
-      Address().fromHex(buf.toString('hex')).toString().should.equal(str)
+      new Address().fromHex(buf.toString('hex')).toBuffer().slice(1).toString('hex').should.equal(pubKeyHash.toString('hex'))
+      new Address().fromHex(buf.toString('hex')).toString().should.equal(str)
     })
   })
 
   describe('#fromBuffer', function () {
     it('should make an address from a buffer', function () {
-      Address().fromBuffer(buf).toBuffer().slice(1).toString('hex').should.equal(pubKeyHash.toString('hex'))
-      Address().fromBuffer(buf).toString().should.equal(str)
+      new Address().fromBuffer(buf).toBuffer().slice(1).toString('hex').should.equal(pubKeyHash.toString('hex'))
+      new Address().fromBuffer(buf).toString().should.equal(str)
     })
 
     it('should throw for invalid buffers', function () {
       (function () {
-        Address().fromBuffer(Buffer.concat([buf, new Buffer([0])]))
+        new Address().fromBuffer(Buffer.concat([buf, new Buffer([0])]))
       }).should.throw('address buffers must be exactly 21 bytes')
       ;(function () {
         let buf2 = new Buffer(buf)
         buf2[0] = 50
-        Address().fromBuffer(buf2)
+        new Address().fromBuffer(buf2)
       }).should.throw('invalid version byte')
     })
   })
@@ -65,7 +65,7 @@ describe('Address', function () {
     it('should make an address from a hashBuf', function () {
       let buf = new Buffer(20)
       buf.fill(0)
-      let address = Address().fromPubKeyHashBuf(buf)
+      let address = new Address().fromPubKeyHashBuf(buf)
       address.toString().should.equal('1111111111111111111114oLvT2')
     })
   })
@@ -92,9 +92,9 @@ describe('Address', function () {
   describe('#asyncFromPubKey', function () {
     it('should asynchronously convert pubKey to address same as fromPubKey', function () {
       return asink(function * () {
-        let pubKey = PubKey().fromPrivKey(PrivKey().fromRandom())
-        let address1 = Address().fromPubKey(pubKey)
-        let address2 = yield Address().asyncFromPubKey(pubKey)
+        let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
+        let address1 = new Address().fromPubKey(pubKey)
+        let address2 = yield new Address().asyncFromPubKey(pubKey)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -102,10 +102,10 @@ describe('Address', function () {
 
   describe('#fromPrivKey', function () {
     it('should make this address from a compressed pubKey', function () {
-      let privKey = PrivKey().fromRandom()
-      let pubKey = PubKey().fromPrivKey(privKey)
-      let address = Address().fromPrivKey(privKey)
-      let address2 = Address().fromPubKey(pubKey)
+      let privKey = new PrivKey().fromRandom()
+      let pubKey = new PubKey().fromPrivKey(privKey)
+      let address = new Address().fromPrivKey(privKey)
+      let address2 = new Address().fromPubKey(pubKey)
       address.toString().should.equal(address2.toString())
     })
   })
@@ -113,9 +113,9 @@ describe('Address', function () {
   describe('#asyncFromPrivKey', function () {
     it('should asynchronously convert privKey to address same as fromPrivKey', function () {
       return asink(function * () {
-        let privKey = PrivKey().fromRandom()
-        let address1 = Address().fromPrivKey(privKey)
-        let address2 = yield Address().asyncFromPrivKey(privKey)
+        let privKey = new PrivKey().fromRandom()
+        let address1 = new Address().fromPrivKey(privKey)
+        let address2 = yield new Address().asyncFromPrivKey(privKey)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -123,23 +123,23 @@ describe('Address', function () {
 
   describe('#fromRedeemScriptHashBuf', function () {
     it('should make this address from a script', function () {
-      let script = Script().fromString('OP_CHECKMULTISIG')
+      let script = new Script().fromString('OP_CHECKMULTISIG')
       let hashBuf = Hash.sha256ripemd160(script.toBuffer())
-      let address = Address().fromRedeemScriptHashBuf(hashBuf)
+      let address = new Address().fromRedeemScriptHashBuf(hashBuf)
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
   })
 
   describe('#fromRedeemScript', function () {
     it('should make this address from a script', function () {
-      let script = Script().fromString('OP_CHECKMULTISIG')
-      let address = Address().fromRedeemScript(script)
+      let script = new Script().fromString('OP_CHECKMULTISIG')
+      let address = new Address().fromRedeemScript(script)
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
 
     it('should make this address from other script', function () {
-      let script = Script().fromString('OP_CHECKSIG OP_HASH160')
-      let address = Address().fromRedeemScript(script)
+      let script = new Script().fromString('OP_CHECKSIG OP_HASH160')
+      let address = new Address().fromRedeemScript(script)
       address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7')
     })
   })
@@ -147,9 +147,9 @@ describe('Address', function () {
   describe('#asyncFromRedeemScript', function () {
     it('should derive the same as fromRedeemScript', function () {
       return asink(function * () {
-        let script = Script().fromString('OP_CHECKMULTISIG')
-        let address1 = Address().fromRedeemScript(script)
-        let address2 = yield Address().asyncFromRedeemScript(script)
+        let script = new Script().fromString('OP_CHECKMULTISIG')
+        let address1 = new Address().fromRedeemScript(script)
+        let address2 = yield new Address().asyncFromRedeemScript(script)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -190,8 +190,8 @@ describe('Address', function () {
   describe('#asyncFromString', function () {
     it('should derive the same as fromString', function () {
       return asink(function * () {
-        let address1 = Address().fromString(str)
-        let address2 = yield Address().asyncFromString(str)
+        let address1 = new Address().fromString(str)
+        let address2 = yield new Address().asyncFromString(str)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -214,14 +214,14 @@ describe('Address', function () {
 
   describe('#type', function () {
     it('should give pubKeyHash for this address', function () {
-      let addr = Address().fromString(str)
+      let addr = new Address().fromString(str)
       addr.type().should.equal('pubKeyHash')
       addr.version = 1
       addr.type().should.equal('unknown')
     })
 
     it('should give scripthash for this address', function () {
-      let addr = Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
+      let addr = new Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
       addr.type().should.equal('scripthash')
     })
   })
@@ -246,7 +246,7 @@ describe('Address', function () {
     it('should convert this address into known scripts', function () {
       let addrbuf = new Buffer(21)
       addrbuf.fill(0)
-      let addr = Address().fromBuffer(addrbuf)
+      let addr = new Address().fromBuffer(addrbuf)
       let script = addr.toScript()
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
 
@@ -272,8 +272,8 @@ describe('Address', function () {
   describe('#asyncToString', function () {
     it('should output the same as toString', function () {
       return asink(function * () {
-        let str1 = Address().fromString(str).toString()
-        let str2 = yield Address().fromString(str).asyncToString()
+        let str1 = new Address().fromString(str).toString()
+        let str2 = yield new Address().fromString(str).asyncToString()
         str1.should.equal(str2)
       }, this)
     })

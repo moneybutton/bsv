@@ -22,11 +22,11 @@ describe('TxBuilder', function () {
     let txb = new TxBuilder()
     ;(txb instanceof TxBuilder).should.equal(true)
     should.exist(txb.tx)
-    txb = TxBuilder()
+    txb = new TxBuilder()
     ;(txb instanceof TxBuilder).should.equal(true)
     should.exist(txb.tx)
-    txb = TxBuilder({
-      tx: Tx()
+    txb = new TxBuilder({
+      tx: new Tx()
     })
     should.exist(txb.tx)
   })
@@ -35,49 +35,49 @@ describe('TxBuilder', function () {
     let txb = new TxBuilder()
 
     // make change address
-    let privKey = PrivKey().fromBn(Bn(1))
-    let keyPair = KeyPair().fromPrivKey(privKey)
-    let changeaddr = Address().fromPubKey(keyPair.pubKey)
+    let privKey = new PrivKey().fromBn(new Bn(1))
+    let keyPair = new KeyPair().fromPrivKey(privKey)
+    let changeaddr = new Address().fromPubKey(keyPair.pubKey)
 
     // make addresses to send from
-    let privKey1 = PrivKey().fromBn(Bn(2))
-    let keyPair1 = KeyPair().fromPrivKey(privKey1)
-    let addr1 = Address().fromPubKey(keyPair1.pubKey)
+    let privKey1 = new PrivKey().fromBn(new Bn(2))
+    let keyPair1 = new KeyPair().fromPrivKey(privKey1)
+    let addr1 = new Address().fromPubKey(keyPair1.pubKey)
 
-    let privKey2 = PrivKey().fromBn(Bn(3))
-    let keyPair2 = KeyPair().fromPrivKey(privKey2)
-    let addr2 = Address().fromPubKey(keyPair2.pubKey)
+    let privKey2 = new PrivKey().fromBn(new Bn(3))
+    let keyPair2 = new KeyPair().fromPrivKey(privKey2)
+    let addr2 = new Address().fromPubKey(keyPair2.pubKey)
 
-    let privKey3 = PrivKey().fromBn(Bn(3))
-    let keyPair3 = KeyPair().fromPrivKey(privKey3)
-    let addr3 = Address().fromPubKey(keyPair3.pubKey)
+    let privKey3 = new PrivKey().fromBn(new Bn(3))
+    let keyPair3 = new KeyPair().fromPrivKey(privKey3)
+    let addr3 = new Address().fromPubKey(keyPair3.pubKey)
 
     // make addresses to send to
     let saddr1 = addr1
-    let saddr2 = Address().fromRedeemScript(Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
+    let saddr2 = new Address().fromRedeemScript(new Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
 
     // txouts that we are spending
 
     // pubKeyHash out
-    let scriptout1 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+    let scriptout1 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
 
     // pubKeyHash out
-    let scriptout2 = Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+    let scriptout2 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
 
     // p2sh 2-of-2 multisig out
-    let redeemScript3 = Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
-    let address3 = Address().fromRedeemScript(redeemScript3)
+    let redeemScript3 = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
+    let address3 = new Address().fromRedeemScript(redeemScript3)
     let scriptout3 = address3.toScript()
 
     // p2sh 2-of-3 multisig out
-    let redeemScript4 = Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey, keyPair3.pubKey])
-    let address4 = Address().fromRedeemScript(redeemScript4)
+    let redeemScript4 = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey, keyPair3.pubKey])
+    let address4 = new Address().fromRedeemScript(redeemScript4)
     let scriptout4 = address4.toScript()
 
-    let txout1 = TxOut(Bn(1e8), scriptout1)
-    let txout2 = TxOut(Bn(1e8), scriptout2)
-    let txout3 = TxOut(Bn(1e8), scriptout3)
-    let txout4 = TxOut(Bn(1e8), scriptout4)
+    let txout1 = new TxOut(new Bn(1e8), scriptout1)
+    let txout2 = new TxOut(new Bn(1e8), scriptout2)
+    let txout3 = new TxOut(new Bn(1e8), scriptout3)
+    let txout4 = new TxOut(new Bn(1e8), scriptout4)
     // total balance: 4e8
 
     let txHashBuf = new Buffer(32)
@@ -93,8 +93,8 @@ describe('TxBuilder', function () {
     txb.fromPubKeyHash(txHashBuf, txOutNum2, txout2, keyPair2.pubKey)
     txb.fromScripthashMultisig(txHashBuf, txOutNum3, txout3, redeemScript3)
     txb.fromScripthashMultisig(txHashBuf, txOutNum4, txout4, redeemScript4)
-    txb.toAddress(Bn(2e8), saddr1) // pubKeyHash address
-    txb.toAddress(Bn(1e8), saddr2) // p2sh address
+    txb.toAddress(new Bn(2e8), saddr1) // pubKeyHash address
+    txb.toAddress(new Bn(1e8), saddr2) // p2sh address
     // total sending: 2e8 (plus fee)
     // txb.randomizeInputs()
     // txb.randomizeOutputs()
@@ -144,7 +144,7 @@ describe('TxBuilder', function () {
       let obj = prepareAndBuildTxBuilder()
       let txb = obj.txb
       let json = txb.toJson()
-      let txb2 = TxBuilder().fromJson(json)
+      let txb2 = new TxBuilder().fromJson(json)
       let json2 = txb2.toJson()
       json2.tx.should.equal(json.tx)
       json2.txins[0].should.equal(json.txins[0])
@@ -168,8 +168,8 @@ describe('TxBuilder', function () {
     it('should set the change address', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      let privKey = PrivKey().fromRandom()
-      let address = Address().fromPrivKey(privKey)
+      let privKey = new PrivKey().fromRandom()
+      let address = new Address().fromPrivKey(privKey)
       txb.setChangeAddress(address)
       txb.changeScript.toString().should.equal(address.toScript().toString())
     })
@@ -179,8 +179,8 @@ describe('TxBuilder', function () {
     it('should set the changeScript', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      let privKey = PrivKey().fromRandom()
-      let address = Address().fromPrivKey(privKey)
+      let privKey = new PrivKey().fromRandom()
+      let address = new Address().fromPrivKey(privKey)
       txb.setChangeScript(address.toScript())
       txb.changeScript.toString().should.equal(address.toScript().toString())
     })
@@ -208,15 +208,15 @@ describe('TxBuilder', function () {
 
   describe('#importPartiallySignedTx', function () {
     it('should set tx', function () {
-      let tx = Tx()
-      let txb = TxBuilder().importPartiallySignedTx(tx)
+      let tx = new Tx()
+      let txb = new TxBuilder().importPartiallySignedTx(tx)
       should.exist(txb.tx)
     })
 
     it('should set tx and utxoutmap', function () {
-      let tx = Tx()
+      let tx = new Tx()
       let utxoutmap = TxOutmap()
-      let txb = TxBuilder().importPartiallySignedTx(tx, utxoutmap)
+      let txb = new TxBuilder().importPartiallySignedTx(tx, utxoutmap)
       should.exist(txb.tx)
       should.exist(txb.utxoutmap)
     })
@@ -226,26 +226,26 @@ describe('TxBuilder', function () {
     it('should add a scripthash address', function () {
       let hashBuf = new Buffer(20)
       hashBuf.fill(0)
-      let address = Address().fromRedeemScript(Script().fromScripthash(hashBuf))
-      let txb = TxBuilder()
-      txb.toAddress(Bn(0), address)
+      let address = new Address().fromRedeemScript(new Script().fromScripthash(hashBuf))
+      let txb = new TxBuilder()
+      txb.toAddress(new Bn(0), address)
       txb.txouts.length.should.equal(1)
     })
 
     it('should add a pubKeyHash address', function () {
-      let pubKey = PubKey().fromPrivKey(PrivKey().fromRandom())
-      let address = Address().fromPubKey(pubKey)
-      let txb = TxBuilder()
-      txb.toAddress(Bn(0), address)
+      let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
+      let address = new Address().fromPubKey(pubKey)
+      let txb = new TxBuilder()
+      txb.toAddress(new Bn(0), address)
       txb.txouts.length.should.equal(1)
     })
   })
 
   describe('#toScript', function () {
     it('should add an OP_RETURN output', function () {
-      let script = Script().fromString('OP_RETURN')
-      let txb = TxBuilder()
-      txb.toScript(Bn(0), script)
+      let script = new Script().fromString('OP_RETURN')
+      let txb = new TxBuilder()
+      txb.toScript(new Bn(0), script)
       txb.txouts.length.should.equal(1)
     })
   })
@@ -253,11 +253,11 @@ describe('TxBuilder', function () {
   describe('@allSigsPresent', function () {
     it('should know all sigs are or are not present these scripts', function () {
       let script
-      script = Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      script = new Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
       TxBuilder.allSigsPresent(2, script).should.equal(true)
-      script = Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      script = new Script().fromString('OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
       TxBuilder.allSigsPresent(3, script).should.equal(true)
-      script = Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      script = new Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
       TxBuilder.allSigsPresent(3, script).should.equal(false)
     })
   })
@@ -265,7 +265,7 @@ describe('TxBuilder', function () {
   describe('@removeBlankSigs', function () {
     it('should know all sigs are or are not present these scripts', function () {
       let script
-      script = Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
+      script = new Script().fromString('OP_0 OP_0 71 0x304402204c99f293ca4d84f01e8f319e93978866877c948628cb4d4ff5ccdf42ae8434cc02206516aa37dcd9f50ddb2f7484aeaef3c0fbab77db60eeafd5ad91b0ba54b715e901 72 0x3045022100ff53e3f8ee64eb0f816a85a244d5e3bc20e7ade814e4377be5279a12130c8414022068e00c79272539d03357d4d589bf4c0c7a517023aaa2abe3f341c26ca9077d0801 OP_PUSHDATA1 105 0x522102c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee52102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f92102f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f953ae')
       TxBuilder.allSigsPresent(3, script).should.equal(false)
       script = TxBuilder.removeBlankSigs(script)
       TxBuilder.allSigsPresent(2, script).should.equal(true)
@@ -274,26 +274,26 @@ describe('TxBuilder', function () {
 
   describe('#fromScript', function () {
     it('should add an input from a script', function () {
-      let keyPair = KeyPair().fromRandom()
-      let address = Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut(Bn(1000), Script().fromPubKeyHash(address.hashBuf))
-      let script = Script().fromString('OP_RETURN')
+      let keyPair = new KeyPair().fromRandom()
+      let address = new Address().fromPubKey(keyPair.pubKey)
+      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = TxBuilder().fromScript(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().fromScript(txHashBuf, txOutNum, txout, script)
       txbuilder.txins.length.should.equal(1)
     })
 
     it('should add an input from a script and set nSequence', function () {
-      let keyPair = KeyPair().fromRandom()
-      let address = Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut(Bn(1000), Script().fromPubKeyHash(address.hashBuf))
-      let script = Script().fromString('OP_RETURN')
+      let keyPair = new KeyPair().fromRandom()
+      let address = new Address().fromPubKey(keyPair.pubKey)
+      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = TxBuilder().fromScript(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().fromScript(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       txbuilder.txins.length.should.equal(1)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })
@@ -301,24 +301,24 @@ describe('TxBuilder', function () {
 
   describe('#fromPubKeyHash', function () {
     it('should add an input from a pubKeyHash output', function () {
-      let keyPair = KeyPair().fromRandom()
-      let address = Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut(Bn(1000), Script().fromPubKeyHash(address.hashBuf))
+      let keyPair = new KeyPair().fromRandom()
+      let address = new Address().fromPubKey(keyPair.pubKey)
+      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey)
+      let txbuilder = new TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey)
       Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
     })
 
     it('should add an input from a pubKeyHash output and set nSequence', function () {
-      let keyPair = KeyPair().fromRandom()
-      let address = Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut(Bn(1000), Script().fromPubKeyHash(address.hashBuf))
+      let keyPair = new KeyPair().fromRandom()
+      let address = new Address().fromPubKey(keyPair.pubKey)
+      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })
@@ -326,30 +326,30 @@ describe('TxBuilder', function () {
 
   describe('#fromScripthashMultisig', function () {
     it('should add an input from a scripthash output', function () {
-      let keyPair1 = KeyPair().fromRandom()
-      let keyPair2 = KeyPair().fromRandom()
-      let script = Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
-      let address = Address().fromRedeemScript(script)
-      let txout = TxOut(Bn(1000), Script().fromScripthash(address.hashBuf))
+      let keyPair1 = new KeyPair().fromRandom()
+      let keyPair2 = new KeyPair().fromRandom()
+      let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
+      let address = new Address().fromRedeemScript(script)
+      let txout = new TxOut(new Bn(1000), new Script().fromScripthash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      // let txin = TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script)
+      // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
 
     it('should add an input from a scripthash output and set nSequence', function () {
-      let keyPair1 = KeyPair().fromRandom()
-      let keyPair2 = KeyPair().fromRandom()
-      let script = Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
-      let address = Address().fromRedeemScript(script)
-      let txout = TxOut(Bn(1000), Script().fromScripthash(address.hashBuf))
+      let keyPair1 = new KeyPair().fromRandom()
+      let keyPair2 = new KeyPair().fromRandom()
+      let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
+      let address = new Address().fromRedeemScript(script)
+      let txout = new TxOut(new Bn(1000), new Script().fromScripthash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      // let txin = TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
+      // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })

@@ -17,13 +17,13 @@ let vectorsTxInvalid = require('./vectors/bitcoind/tx_invalid')
 let largesttxvector = require('./vectors/largesttx')
 
 describe('Tx', function () {
-  let txin = TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
-  let txout = TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
-  let tx = Tx().fromObject({
+  let txin = new TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
+  let txout = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
+  let tx = new Tx().fromObject({
     version: 0,
-    txinsvi: VarInt(1),
+    txinsvi: new VarInt(1),
     txins: [txin],
-    txoutsvi: VarInt(1),
+    txoutsvi: new VarInt(1),
     txouts: [txout],
     nLockTime: 0
   })
@@ -37,10 +37,10 @@ describe('Tx', function () {
   it('should make a new transaction', function () {
     let tx = new Tx()
     should.exist(tx)
-    tx = Tx()
+    tx = new Tx()
     should.exist(tx)
 
-    Tx(txbuf).toBuffer().toString('hex').should.equal(txhex)
+    new Tx(txbuf).toBuffer().toString('hex').should.equal(txhex)
 
     // should set known defaults
     tx.version.should.equal(1)
@@ -66,11 +66,11 @@ describe('Tx', function () {
 
   describe('#fromObject', function () {
     it('should set all the basic parameters', function () {
-      let tx = Tx().fromObject({
+      let tx = new Tx().fromObject({
         version: 0,
-        txinsvi: VarInt(1),
+        txinsvi: new VarInt(1),
         txins: [txin],
-        txoutsvi: VarInt(1),
+        txoutsvi: new VarInt(1),
         txouts: [txout],
         nLockTime: 0
       })
@@ -85,11 +85,11 @@ describe('Tx', function () {
 
   describe('#fromJson', function () {
     it('should set all the basic parameters', function () {
-      let tx = Tx().fromJson({
+      let tx = new Tx().fromJson({
         version: 0,
-        txinsvi: VarInt(1).toJson(),
+        txinsvi: new VarInt(1).toJson(),
         txins: [txin.toJson()],
-        txoutsvi: VarInt(1).toJson(),
+        txoutsvi: new VarInt(1).toJson(),
         txouts: [txout.toJson()],
         nLockTime: 0
       })
@@ -116,75 +116,75 @@ describe('Tx', function () {
 
   describe('#fromHex', function () {
     it('should recover from this known tx', function () {
-      Tx().fromHex(txhex).toHex().should.equal(txhex)
+      new Tx().fromHex(txhex).toHex().should.equal(txhex)
     })
 
     it('should recover from this known tx from the blockchain', function () {
-      Tx().fromHex(tx2hex).toHex().should.equal(tx2hex)
+      new Tx().fromHex(tx2hex).toHex().should.equal(tx2hex)
     })
   })
 
   describe('#fromBuffer', function () {
     it('should recover from this known tx', function () {
-      Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
+      new Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
     })
 
     it('should recover from this known tx from the blockchain', function () {
-      Tx().fromBuffer(tx2buf).toBuffer().toString('hex').should.equal(tx2hex)
+      new Tx().fromBuffer(tx2buf).toBuffer().toString('hex').should.equal(tx2hex)
     })
   })
 
   describe('#fromBr', function () {
     it('should recover from this known tx', function () {
-      Tx().fromBr(Br(txbuf)).toBuffer().toString('hex').should.equal(txhex)
+      new Tx().fromBr(new Br(txbuf)).toBuffer().toString('hex').should.equal(txhex)
     })
   })
 
   describe('#toHex', function () {
     it('should produce this known tx', function () {
-      Tx().fromHex(txhex).toHex().should.equal(txhex)
+      new Tx().fromHex(txhex).toHex().should.equal(txhex)
     })
   })
 
   describe('#toBuffer', function () {
     it('should produce this known tx', function () {
-      Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
+      new Tx().fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
     })
   })
 
   describe('#toBw', function () {
     it('should produce this known tx', function () {
-      Tx().fromBuffer(txbuf).toBw().toBuffer().toString('hex').should.equal(txhex)
+      new Tx().fromBuffer(txbuf).toBw().toBuffer().toString('hex').should.equal(txhex)
     })
   })
 
   describe('#sighash', function () {
     it('should hash this transaction', function () {
-      tx.sighash(0, 0, Script()).length.should.equal(32)
+      tx.sighash(0, 0, new Script()).length.should.equal(32)
     })
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
-      let tx = Tx(tx2buf)
+      let tx = new Tx(tx2buf)
       tx.txouts.length = 1
-      tx.txoutsvi = VarInt(1)
-      tx.sighash(Sig.SIGHASH_SINGLE, 1, Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
+      tx.txoutsvi = new VarInt(1)
+      tx.sighash(Sig.SIGHASH_SINGLE, 1, new Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
     })
   })
 
   describe('#asyncSighash', function () {
     it('should hash this transaction', function () {
       return asink(function * () {
-        let hashBuf = yield tx.asyncSighash(0, 0, Script())
+        let hashBuf = yield tx.asyncSighash(0, 0, new Script())
         hashBuf.length.should.equal(32)
       }, this)
     })
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       return asink(function * () {
-        let tx = Tx(tx2buf)
+        let tx = new Tx(tx2buf)
         tx.txouts.length = 1
-        tx.txoutsvi = VarInt(1)
-        let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, Script())
+        tx.txoutsvi = new VarInt(1)
+        let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, new Script())
         hashBuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
       }, this)
     })
@@ -192,11 +192,11 @@ describe('Tx', function () {
 
   describe('#sign', function () {
     it('should return a signature', function () {
-      let keyPair = KeyPair().fromRandom()
-      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
+      let keyPair = new KeyPair().fromRandom()
+      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script())
       should.exist(sig1)
-      let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
-      let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+      let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, new Script())
+      let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script().fromString('OP_RETURN'))
       sig1.toString(should.not.equal(sig2.toString()))
       sig1.toString(should.not.equal(sig3.toString()))
     })
@@ -205,13 +205,13 @@ describe('Tx', function () {
   describe('#asyncSign', function () {
     it('should return a signature', function () {
       return asink(function * () {
-        let keyPair = KeyPair().fromRandom()
-        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
-        let sig1b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, Script())
-        let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
-        let sig2b = yield tx.asyncSign(keyPair, Sig.SIGHASH_SINGLE, 0, Script())
-        let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
-        let sig3b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, Script().fromString('OP_RETURN'))
+        let keyPair = new KeyPair().fromRandom()
+        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script())
+        let sig1b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, new Script())
+        let sig2 = tx.sign(keyPair, Sig.SIGHASH_SINGLE, 0, new Script())
+        let sig2b = yield tx.asyncSign(keyPair, Sig.SIGHASH_SINGLE, 0, new Script())
+        let sig3 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script().fromString('OP_RETURN'))
+        let sig3b = yield tx.asyncSign(keyPair, Sig.SIGHASH_ALL, 0, new Script().fromString('OP_RETURN'))
         sig1.toString().should.equal(sig1b.toString())
         sig2.toString().should.equal(sig2b.toString())
         sig3.toString().should.equal(sig3b.toString())
@@ -221,18 +221,18 @@ describe('Tx', function () {
 
   describe('#verify', function () {
     it('should return a signature', function () {
-      let keyPair = KeyPair().fromRandom()
-      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
-      tx.verify(sig1, keyPair.pubKey, 0, Script()).should.equal(true)
+      let keyPair = new KeyPair().fromRandom()
+      let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script())
+      tx.verify(sig1, keyPair.pubKey, 0, new Script()).should.equal(true)
     })
   })
 
   describe('#asyncVerify', function () {
     it('should return a signature', function () {
       return asink(function * () {
-        let keyPair = KeyPair().fromRandom()
-        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, Script())
-        let verified = yield tx.asyncVerify(sig1, keyPair.pubKey, 0, Script())
+        let keyPair = new KeyPair().fromRandom()
+        let sig1 = tx.sign(keyPair, Sig.SIGHASH_ALL, 0, new Script())
+        let verified = yield tx.asyncVerify(sig1, keyPair.pubKey, 0, new Script())
         verified.should.equal(true)
       }, this)
     })
@@ -240,7 +240,7 @@ describe('Tx', function () {
 
   describe('#hash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
-      let tx = Tx().fromBuffer(tx2buf)
+      let tx = new Tx().fromBuffer(tx2buf)
       let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
       tx.hash().toString('hex').should.equal(txHashBuf.toString('hex'))
     })
@@ -249,7 +249,7 @@ describe('Tx', function () {
   describe('#asyncHash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
       return asink(function * () {
-        let tx = Tx().fromBuffer(tx2buf)
+        let tx = new Tx().fromBuffer(tx2buf)
         let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
         let hashBuf = yield tx.asyncHash()
         hashBuf.toString('hex').should.equal(txHashBuf.toString('hex'))
@@ -259,7 +259,7 @@ describe('Tx', function () {
 
   describe('#id', function () {
     it('should correctly calculate the id of this known transaction', function () {
-      let tx = Tx().fromBuffer(tx2buf)
+      let tx = new Tx().fromBuffer(tx2buf)
       tx.id().toString('hex').should.equal(tx2idhex)
     })
   })
@@ -267,7 +267,7 @@ describe('Tx', function () {
   describe('#asyncId', function () {
     it('should correctly calculate the id of this known transaction', function () {
       return asink(function * () {
-        let tx = Tx().fromBuffer(tx2buf)
+        let tx = new Tx().fromBuffer(tx2buf)
         let idbuf = yield tx.id()
         idbuf.toString('hex').should.equal(tx2idhex)
       }, this)
@@ -276,8 +276,8 @@ describe('Tx', function () {
 
   describe('#addTxIn', function () {
     it('should add an input', function () {
-      let txin = TxIn()
-      let tx = Tx()
+      let txin = new TxIn()
+      let tx = new Tx()
       tx.txinsvi.toNumber().should.equal(0)
       tx.addTxIn(txin)
       tx.txinsvi.toNumber().should.equal(1)
@@ -287,8 +287,8 @@ describe('Tx', function () {
 
   describe('#addTxOut', function () {
     it('should add an output', function () {
-      let txout = TxOut()
-      let tx = Tx()
+      let txout = new TxOut()
+      let tx = new Tx()
       tx.txoutsvi.toNumber().should.equal(0)
       tx.addTxOut(txout)
       tx.txoutsvi.toNumber().should.equal(1)
@@ -300,7 +300,7 @@ describe('Tx', function () {
     it('should find the correct id of this (valid, on the blockchain) 1 mb transaction', function () {
       let txidhex = largesttxvector.txidhex
       let txhex = largesttxvector.txhex
-      let tx = Tx().fromHex(txhex)
+      let tx = new Tx().fromHex(txhex)
       let txid = tx.id()
       txid.toString('hex').should.equal(txidhex)
     })
@@ -314,11 +314,11 @@ describe('Tx', function () {
       it('should pass sighash test vector ' + i, function () {
         let txbuf = new Buffer(vector[0], 'hex')
         let scriptbuf = new Buffer(vector[1], 'hex')
-        let subScript = Script().fromBuffer(scriptbuf)
+        let subScript = new Script().fromBuffer(scriptbuf)
         let nin = vector[2]
         let nhashtype = vector[3]
         let sighashBuf = new Buffer(vector[4], 'hex')
-        let tx = Tx().fromBuffer(txbuf)
+        let tx = new Tx().fromBuffer(txbuf)
 
         // make sure transacion to/from buffer is isomorphic
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'))
@@ -336,7 +336,7 @@ describe('Tx', function () {
       it('should correctly serialized/deserialize tx_valid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
-        let tx = Tx(txbuf)
+        let tx = new Tx(txbuf)
         tx.toBuffer().toString('hex').should.equal(txhex)
       })
       j++
@@ -350,7 +350,7 @@ describe('Tx', function () {
       it('should correctly serialized/deserialize tx_invalid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
-        let tx = Tx(txbuf)
+        let tx = new Tx(txbuf)
         tx.toBuffer().toString('hex').should.equal(txhex)
       })
       j++

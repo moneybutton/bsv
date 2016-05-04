@@ -16,10 +16,10 @@ describe('PrivKey', function () {
   it('should satisfy these basic API features', function () {
     let privKey = new PrivKey()
     should.exist(privKey)
-    privKey = PrivKey()
+    privKey = new PrivKey()
     should.exist(privKey)
 
-    PrivKey().constructor.should.equal(PrivKey().constructor)
+    new PrivKey().constructor.should.equal(new PrivKey().constructor)
     PrivKey.TestNet().constructor.should.equal(PrivKey.TestNet().constructor)
 
     let deps = {}
@@ -28,13 +28,13 @@ describe('PrivKey', function () {
   })
 
   it('should create a 0 private key with this convenience method', function () {
-    let bn = Bn(0)
-    let privKey = PrivKey(bn)
+    let bn = new Bn(0)
+    let privKey = new PrivKey(bn)
     privKey.bn.toString().should.equal(bn.toString())
   })
 
   it('should create a mainnet private key', function () {
-    let privKey = PrivKey(Bn.fromBuffer(buf), true)
+    let privKey = new PrivKey(Bn.fromBuffer(buf), true)
     privKey.toString().should.equal(encmainnet)
   })
 
@@ -44,19 +44,19 @@ describe('PrivKey', function () {
   })
 
   it('should create an uncompressed mainnet private key', function () {
-    let privKey = PrivKey(Bn.fromBuffer(buf), false)
+    let privKey = new PrivKey(Bn.fromBuffer(buf), false)
     privKey.toString().should.equal(encmu)
   })
 
   describe('#fromObject', function () {
     it('should set bn', function () {
-      should.exist(PrivKey().fromObject({bn: Bn.fromBuffer(buf)}).bn)
+      should.exist(new PrivKey().fromObject({bn: Bn.fromBuffer(buf)}).bn)
     })
   })
 
   describe('#fromJson', function () {
     it('should input this address correctly', function () {
-      let privKey = PrivKey()
+      let privKey = new PrivKey()
       privKey.fromJson(encmu)
       privKey.toWIF().should.equal(encmu)
     })
@@ -64,7 +64,7 @@ describe('PrivKey', function () {
 
   describe('#toString', function () {
     it('should output this address correctly', function () {
-      let privKey = PrivKey()
+      let privKey = new PrivKey()
       privKey.fromJson(encmu)
       privKey.toJson().should.equal(encmu)
     })
@@ -72,8 +72,8 @@ describe('PrivKey', function () {
 
   describe('#fromRandom', function () {
     it('should set bn gt 0 and lt n, and should be compressed', function () {
-      let privKey = PrivKey().fromRandom()
-      privKey.bn.gt(Bn(0)).should.equal(true)
+      let privKey = new PrivKey().fromRandom()
+      privKey.bn.gt(new Bn(0)).should.equal(true)
       privKey.bn.lt(Point.getN()).should.equal(true)
       privKey.compressed.should.equal(true)
     })
@@ -81,64 +81,64 @@ describe('PrivKey', function () {
 
   describe('#toHex', function () {
     it('should return a hex string', function () {
-      let privKey = PrivKey().fromBn(Bn(5))
+      let privKey = new PrivKey().fromBn(new Bn(5))
       privKey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
   })
 
   describe('#toBuffer', function () {
     it('should return a buffer', function () {
-      let privKey = PrivKey().fromBn(Bn(5))
+      let privKey = new PrivKey().fromBn(new Bn(5))
       privKey.toBuffer().toString('hex').should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
   })
 
   describe('#fromHex', function () {
     it('should return a hex string', function () {
-      let privKey = PrivKey().fromHex('80000000000000000000000000000000000000000000000000000000000000000501')
+      let privKey = new PrivKey().fromHex('80000000000000000000000000000000000000000000000000000000000000000501')
       privKey.toHex().should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
   })
 
   describe('#fromBuffer', function () {
     it('should return a buffer', function () {
-      let privKey = PrivKey().fromBuffer(new Buffer('80000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
+      let privKey = new PrivKey().fromBuffer(new Buffer('80000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
       privKey.toBuffer().toString('hex').should.equal('80000000000000000000000000000000000000000000000000000000000000000501')
     })
 
     it('should throw an error if buffer is wrong length', function () {
       ;(function () {
-        PrivKey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000000050100', 'hex'))
+        new PrivKey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000000050100', 'hex'))
       }).should.throw('LEngth of privKey buffer must be 33 (uncompressed pubKey) or 34 (compressed pubKey)')
       ;(function () {
-        PrivKey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000005', 'hex'))
+        new PrivKey().fromBuffer(new Buffer('8000000000000000000000000000000000000000000000000000000000000005', 'hex'))
       }).should.throw('LEngth of privKey buffer must be 33 (uncompressed pubKey) or 34 (compressed pubKey)')
     })
 
     it('should throw an error if buffer has wrong version byte', function () {
       (function () {
-        PrivKey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
+        new PrivKey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
       }).should.throw('Invalid version byte')
     })
   })
 
   describe('#toBn', function () {
     it('should return a bn', function () {
-      let privKey = PrivKey().fromBn(Bn(5))
-      privKey.toBn().eq(Bn(5)).should.equal(true)
+      let privKey = new PrivKey().fromBn(new Bn(5))
+      privKey.toBn().eq(new Bn(5)).should.equal(true)
     })
   })
 
   describe('#fromBn', function () {
     it('should create a privKey from a bignum', function () {
-      let privKey = PrivKey().fromBn(Bn(5))
+      let privKey = new PrivKey().fromBn(new Bn(5))
       privKey.bn.toString().should.equal('5')
     })
   })
 
   describe('#validate', function () {
     it('should unvalidate these privKeys', function () {
-      let privKey = PrivKey()
+      let privKey = new PrivKey()
       privKey.compressed = true
       privKey.bn = Point.getN()
       ;(function () {
@@ -156,7 +156,7 @@ describe('PrivKey', function () {
 
   describe('#fromWIF', function () {
     it('should parse this compressed testnet address correctly', function () {
-      let privKey = PrivKey()
+      let privKey = new PrivKey()
       privKey.fromWIF(encmainnet)
       privKey.toWIF().should.equal(encmainnet)
     })
@@ -180,7 +180,7 @@ describe('PrivKey', function () {
 
   describe('#toString', function () {
     it('should parse this uncompressed mainnet address correctly', function () {
-      let privKey = PrivKey()
+      let privKey = new PrivKey()
       privKey.fromString(encmu)
       privKey.toString().should.equal(encmu)
     })

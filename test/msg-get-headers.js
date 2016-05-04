@@ -9,16 +9,16 @@ describe('MsgGetHeaders', function () {
   let hashBuf = new Buffer(32)
   hashBuf.fill(0)
   let hashes = [hashBuf]
-  let getblocks = GetBlocks().fromHashes(hashes)
+  let getblocks = new GetBlocks().fromHashes(hashes)
 
   it('should exist', function () {
     should.exist(MsgGetHeaders)
-    should.exist(MsgGetHeaders())
+    should.exist(new MsgGetHeaders())
   })
 
   describe('#fromGetBlocks', function () {
     it('should convert from getblocks', function () {
-      let msggetblocks = MsgGetHeaders().fromGetBlocks(getblocks)
+      let msggetblocks = new MsgGetHeaders().fromGetBlocks(getblocks)
       msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
     })
   })
@@ -26,7 +26,7 @@ describe('MsgGetHeaders', function () {
   describe('#asyncFromGetBlocks', function () {
     it('should convert from getblocks', function () {
       return asink(function * () {
-        let msggetblocks = yield MsgGetHeaders().asyncFromGetBlocks(getblocks)
+        let msggetblocks = yield new MsgGetHeaders().asyncFromGetBlocks(getblocks)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)
     })
@@ -34,7 +34,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#fromHashes', function () {
     it('should convert from hashes', function () {
-      let msggetblocks = MsgGetHeaders().fromHashes(hashes)
+      let msggetblocks = new MsgGetHeaders().fromHashes(hashes)
       msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
     })
   })
@@ -42,7 +42,7 @@ describe('MsgGetHeaders', function () {
   describe('#asyncFromHashes', function () {
     it('should convert from hashes', function () {
       return asink(function * () {
-        let msggetblocks = yield MsgGetHeaders().asyncFromHashes(hashes)
+        let msggetblocks = yield new MsgGetHeaders().asyncFromHashes(hashes)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)
     })
@@ -50,7 +50,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#toGetBlocks', function () {
     it('should return getblocks', function () {
-      let msggetblocks = MsgGetHeaders().fromHashes(hashes)
+      let msggetblocks = new MsgGetHeaders().fromHashes(hashes)
       let getblocks2 = msggetblocks.toGetBlocks()
       getblocks2.toHex().should.equal(getblocks2.toHex())
     })
@@ -58,7 +58,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#toHashes', function () {
     it('should return getblocks', function () {
-      let msggetblocks = MsgGetHeaders().fromHashes(hashes)
+      let msggetblocks = new MsgGetHeaders().fromHashes(hashes)
       let hashes2 = msggetblocks.toHashes()
       hashes2.length.should.equal(1)
     })
@@ -66,7 +66,7 @@ describe('MsgGetHeaders', function () {
 
   describe('#isValid', function () {
     it('should know this is a valid getheaders msg', function () {
-      let msggetblocks = MsgGetHeaders().fromHashes(hashes)
+      let msggetblocks = new MsgGetHeaders().fromHashes(hashes)
       msggetblocks.getCmd().should.equal('getheaders')
       msggetblocks.isValid().should.equal(true)
     })

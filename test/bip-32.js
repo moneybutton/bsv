@@ -39,30 +39,30 @@ describe('Bip32', function () {
     let bip32
     bip32 = new Bip32()
     should.exist(bip32)
-    bip32 = Bip32()
+    bip32 = new Bip32()
     should.exist(bip32)
-    Bip32().fromString(vector1mPrivate).toString().should.equal(vector1mPrivate)
-    Bip32().fromString(vector1mPrivate).toString().should.equal(vector1mPrivate)
-    Bip32().fromString(Bip32().fromString(vector1mPrivate).toString()).toString().should.equal(vector1mPrivate)
+    new Bip32().fromString(vector1mPrivate).toString().should.equal(vector1mPrivate)
+    new Bip32().fromString(vector1mPrivate).toString().should.equal(vector1mPrivate)
+    new Bip32().fromString(new Bip32().fromString(vector1mPrivate).toString()).toString().should.equal(vector1mPrivate)
   })
 
   it('should initialize test vector 1 from the extended public key', function () {
-    let bip32 = Bip32().fromString(vector1mPublic)
+    let bip32 = new Bip32().fromString(vector1mPublic)
     should.exist(bip32)
   })
 
   it('should initialize test vector 1 from the extended private key', function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     should.exist(bip32)
   })
 
   it('should get the extended public key from the extended private key for test vector 1', function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     bip32.toPublic().toString().should.equal(vector1mPublic)
   })
 
   it("should get m/0' ext. private key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'")
     should.exist(child)
     child.toString().should.equal(vector1m0hPrivate)
@@ -70,7 +70,7 @@ describe('Bip32', function () {
 
   it("should asynchronously get m/0' ext. private key from test vector 1", function () {
     return asink(function * () {
-      let bip32 = Bip32().fromString(vector1mPrivate)
+      let bip32 = new Bip32().fromString(vector1mPrivate)
       let child = yield bip32.asyncDerive("m/0'")
       should.exist(child)
       child.toString().should.equal(vector1m0hPrivate)
@@ -78,30 +78,30 @@ describe('Bip32', function () {
   })
 
   it("should get m/0' ext. public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'")
     should.exist(child)
     child.toPublic().toString().should.equal(vector1m0hPublic)
   })
 
   it("should get m/0'/1 ext. private key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1")
     should.exist(child)
     child.toString().should.equal(vector1m0h1Private)
   })
 
   it("should get m/0'/1 ext. public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1")
     should.exist(child)
     child.toPublic().toString().should.equal(vector1m0h1Public)
   })
 
   it("should get m/0'/1 ext. public key from m/0' public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'")
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/1')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector1m0h1Public)
@@ -109,9 +109,9 @@ describe('Bip32', function () {
 
   it("should asynchronously get m/0'/1 ext. public key from m/0' public key from test vector 1", function () {
     return asink(function * () {
-      let bip32 = Bip32().fromString(vector1mPrivate)
+      let bip32 = new Bip32().fromString(vector1mPrivate)
       let child = bip32.derive("m/0'")
-      let childPub = Bip32().fromString(child.toPublic().toString())
+      let childPub = new Bip32().fromString(child.toPublic().toString())
       let child2 = yield childPub.asyncDerive('m/1')
       should.exist(child2)
       child2.toPublic().toString().should.equal(vector1m0h1Public)
@@ -119,172 +119,172 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2h ext. private key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'")
     should.exist(child)
     child.toString().should.equal(vector1m0h12hPrivate)
   })
 
   it("should get m/0'/1/2h ext. public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'")
     should.exist(child)
     child.toPublic().toString().should.equal(vector1m0h12hPublic)
   })
 
   it("should get m/0'/1/2h/2 ext. private key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'/2")
     should.exist(child)
     child.toString().should.equal(vector1m0h12h2Private)
   })
 
   it("should get m/0'/1/2'/2 ext. public key from m/0'/1/2' public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'")
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/2')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector1m0h12h2Public)
   })
 
   it("should get m/0'/1/2h/2 ext. public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'/2")
     should.exist(child)
     child.toPublic().toString().should.equal(vector1m0h12h2Public)
   })
 
   it("should get m/0'/1/2h/2/1000000000 ext. private key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'/2/1000000000")
     should.exist(child)
     child.toString().should.equal(vector1m0h12h21000000000Private)
   })
 
   it("should get m/0'/1/2h/2/1000000000 ext. public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'/2/1000000000")
     should.exist(child)
     child.toPublic().toString().should.equal(vector1m0h12h21000000000Public)
   })
 
   it("should get m/0'/1/2'/2/1000000000 ext. public key from m/0'/1/2'/2 public key from test vector 1", function () {
-    let bip32 = Bip32().fromString(vector1mPrivate)
+    let bip32 = new Bip32().fromString(vector1mPrivate)
     let child = bip32.derive("m/0'/1/2'/2")
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/1000000000')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector1m0h12h21000000000Public)
   })
 
   it('should initialize test vector 2 from the extended public key', function () {
-    let bip32 = Bip32().fromString(vector2mPublic)
+    let bip32 = new Bip32().fromString(vector2mPublic)
     should.exist(bip32)
   })
 
   it('should initialize test vector 2 from the extended private key', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     should.exist(bip32)
   })
 
   it('should get the extended public key from the extended private key for test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     bip32.toPublic().toString().should.equal(vector2mPublic)
   })
 
   it('should get m/0 ext. private key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive('m/0')
     should.exist(child)
     child.toString().should.equal(vector2m0Private)
   })
 
   it('should get m/0 ext. public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive('m/0')
     should.exist(child)
     child.toPublic().toString().should.equal(vector2m0Public)
   })
 
   it('should get m/0 ext. public key from m public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive('m')
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/0')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector2m0Public)
   })
 
   it('should get m/0/2147483647h ext. private key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647hPrivate)
   })
 
   it('should get m/0/2147483647h ext. public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'")
     should.exist(child)
     child.toPublic().toString().should.equal(vector2m02147483647hPublic)
   })
 
   it('should get m/0/2147483647h/1 ext. private key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h1Private)
   })
 
   it('should get m/0/2147483647h/1 ext. public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1")
     should.exist(child)
     child.toPublic().toString().should.equal(vector2m02147483647h1Public)
   })
 
   it('should get m/0/2147483647h/1 ext. public key from m/0/2147483647h public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'")
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/1')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector2m02147483647h1Public)
   })
 
   it('should get m/0/2147483647h/1/2147483646h ext. private key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1/2147483646'")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h12147483646hPrivate)
   })
 
   it('should get m/0/2147483647h/1/2147483646h ext. public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1/2147483646'")
     should.exist(child)
     child.toPublic().toString().should.equal(vector2m02147483647h12147483646hPublic)
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. private key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1/2147483646'/2")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h12147483646h2Private)
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1/2147483646'/2")
     should.exist(child)
     child.toPublic().toString().should.equal(vector2m02147483647h12147483646h2Public)
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. public key from m/0/2147483647h/2147483646h public key from test vector 2', function () {
-    let bip32 = Bip32().fromString(vector2mPrivate)
+    let bip32 = new Bip32().fromString(vector2mPrivate)
     let child = bip32.derive("m/0/2147483647'/1/2147483646'")
-    let childPub = Bip32().fromString(child.toPublic().toString())
+    let childPub = new Bip32().fromString(child.toPublic().toString())
     let child2 = childPub.derive('m/2')
     should.exist(child2)
     child2.toPublic().toString().should.equal(vector2m02147483647h12147483646h2Public)
@@ -309,8 +309,8 @@ describe('Bip32', function () {
 
   describe('#fromObject', function () {
     it('should set this bip32', function () {
-      let bip32 = Bip32().fromString(vector1mPrivate)
-      let bip322 = Bip32().fromObject({
+      let bip32 = new Bip32().fromString(vector1mPrivate)
+      let bip322 = new Bip32().fromObject({
         version: bip32.version,
         depth: bip32.depth,
         parentfingerprint: bip32.parentfingerprint,
@@ -328,7 +328,7 @@ describe('Bip32', function () {
   describe('#fromSeed', function () {
     it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
       let hex = vector1master
-      let bip32 = (Bip32()).fromSeed(new Buffer(hex, 'hex'), 'mainnet')
+      let bip32 = (new Bip32()).fromSeed(new Buffer(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector1mPrivate)
       bip32.toPublic().toString().should.equal(vector1mPublic)
@@ -336,7 +336,7 @@ describe('Bip32', function () {
 
     it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
       let hex = vector2master
-      let bip32 = (Bip32()).fromSeed(new Buffer(hex, 'hex'), 'mainnet')
+      let bip32 = (new Bip32()).fromSeed(new Buffer(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector2mPrivate)
       bip32.toPublic().toString().should.equal(vector2mPublic)
@@ -347,7 +347,7 @@ describe('Bip32', function () {
     it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
       return asink(function * () {
         let hex = vector1master
-        let bip32 = yield Bip32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        let bip32 = yield new Bip32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
         should.exist(bip32)
         bip32.toString().should.equal(vector1mPrivate)
         bip32.toPublic().toString().should.equal(vector1mPublic)
@@ -357,7 +357,7 @@ describe('Bip32', function () {
     it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
       return asink(function * () {
         let hex = vector2master
-        let bip32 = yield Bip32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        let bip32 = yield new Bip32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
         should.exist(bip32)
         bip32.toString().should.equal(vector2mPrivate)
         bip32.toPublic().toString().should.equal(vector2mPublic)
@@ -370,12 +370,12 @@ describe('Bip32', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       let buf = Base58Check.decode(str)
       let hex = buf.toString('hex')
-      let bip32 = Bip32().fromHex(hex)
+      let bip32 = new Bip32().fromHex(hex)
       should.exist(bip32)
       bip32.toString().should.equal(str)
       bip32 = bip32.toPublic()
       let xpub = bip32.toString()
-      bip32 = Bip32().fromHex(bip32.toHex())
+      bip32 = new Bip32().fromHex(bip32.toHex())
       bip32.toString().should.equal(xpub)
     })
   })
@@ -384,12 +384,12 @@ describe('Bip32', function () {
     it('should make a bip32 from a buffer', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       let buf = Base58Check.decode(str)
-      let bip32 = Bip32().fromBuffer(buf)
+      let bip32 = new Bip32().fromBuffer(buf)
       should.exist(bip32)
       bip32.toString().should.equal(str)
       bip32 = bip32.toPublic()
       let xpub = bip32.toString()
-      bip32 = Bip32().fromBuffer(bip32.toBuffer())
+      bip32 = new Bip32().fromBuffer(bip32.toBuffer())
       bip32.toString().should.equal(xpub)
     })
   })
@@ -398,7 +398,7 @@ describe('Bip32', function () {
     it('should return a bip32 hex string', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       let hex = Base58Check.decode(str).toString('hex')
-      let bip32 = Bip32().fromString(str)
+      let bip32 = new Bip32().fromString(str)
       bip32.toHex().should.equal(hex)
     })
   })
@@ -407,7 +407,7 @@ describe('Bip32', function () {
     it('should return a bip32 buffer', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       let buf = Base58Check.decode(str)
-      let bip32 = Bip32().fromString(str)
+      let bip32 = new Bip32().fromString(str)
       bip32.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -415,7 +415,7 @@ describe('Bip32', function () {
   describe('#fromString', function () {
     it('should make a bip32 from a string', function () {
       let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
-      let bip32 = Bip32().fromString(str)
+      let bip32 = new Bip32().fromString(str)
       should.exist(bip32)
       bip32.toString().should.equal(str)
     })
@@ -425,9 +425,9 @@ describe('Bip32', function () {
     it('should make a bip32 from a string asynchronously', function () {
       return asink(function * () {
         let str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
-        let bip32 = Bip32().fromString(str)
+        let bip32 = new Bip32().fromString(str)
         should.exist(bip32)
-        let bip32b = yield Bip32().asyncFromString(str)
+        let bip32b = yield new Bip32().asyncFromString(str)
         bip32.toString().should.equal(str)
         bip32.toString().should.equal(bip32b.toString())
       }, this)
@@ -435,7 +435,7 @@ describe('Bip32', function () {
   })
 
   describe('#toString', function () {
-    let bip32 = Bip32()
+    let bip32 = new Bip32()
     bip32.fromRandom()
     let tip32 = Bip32.TestNet()
     tip32.fromRandom()
@@ -461,7 +461,7 @@ describe('Bip32', function () {
   describe('#asyncToString', function () {
     it('should convert to a string same as toString', function () {
       return asink(function * () {
-        let bip32 = Bip32().fromRandom()
+        let bip32 = new Bip32().fromRandom()
         let str1 = bip32.toString()
         let str2 = yield bip32.asyncToString()
         str1.should.equal(str2)
@@ -470,7 +470,7 @@ describe('Bip32', function () {
   })
 
   describe('#isPrivate', function () {
-    let bip32priv = Bip32().fromRandom()
+    let bip32priv = new Bip32().fromRandom()
     let bip32pub = bip32priv.toPublic()
     bip32priv.isPrivate().should.equal(true)
     bip32pub.isPrivate().should.equal(false)

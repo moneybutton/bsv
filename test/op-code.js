@@ -20,38 +20,38 @@ describe('OpCode', function () {
   })
 
   it('should convert to a string with this handy syntax', function () {
-    OpCode(0).toString().should.equal('OP_0')
-    OpCode(96).toString().should.equal('OP_16')
-    OpCode(97).toString().should.equal('OP_NOP')
+    new OpCode(0).toString().should.equal('OP_0')
+    new OpCode(96).toString().should.equal('OP_16')
+    new OpCode(97).toString().should.equal('OP_NOP')
   })
 
   it('should convert to a number with this handy syntax', function () {
-    OpCode('OP_0').toNumber().should.equal(0)
-    OpCode('OP_16').toNumber().should.equal(96)
-    OpCode('OP_NOP').toNumber().should.equal(97)
+    new OpCode('OP_0').toNumber().should.equal(0)
+    new OpCode('OP_16').toNumber().should.equal(96)
+    new OpCode('OP_NOP').toNumber().should.equal(97)
   })
 
   describe('#fromNumber', function () {
     it('should work for 0', function () {
-      OpCode().fromNumber(0).num.should.equal(0)
+      new OpCode().fromNumber(0).num.should.equal(0)
     })
   })
 
   describe('#toNumber', function () {
     it('should work for 0', function () {
-      OpCode().fromNumber(0).toNumber().should.equal(0)
+      new OpCode().fromNumber(0).toNumber().should.equal(0)
     })
   })
 
   describe('#fromString', function () {
     it('should work for OP_0', function () {
-      OpCode().fromString('OP_0').num.should.equal(0)
+      new OpCode().fromString('OP_0').num.should.equal(0)
     })
   })
 
   describe('#toString', function () {
     it('should work for OP_0', function () {
-      OpCode().fromString('OP_0').toString().should.equal('OP_0')
+      new OpCode().fromString('OP_0').toString().should.equal('OP_0')
     })
   })
 

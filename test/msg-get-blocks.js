@@ -9,7 +9,7 @@ describe('MsgGetBlocks', function () {
   let hashBuf = new Buffer(32)
   hashBuf.fill(0)
   let hashes = [hashBuf]
-  let getblocks = GetBlocks().fromHashes(hashes)
+  let getblocks = new GetBlocks().fromHashes(hashes)
 
   it('should exist', function () {
     should.exist(MsgGetBlocks)

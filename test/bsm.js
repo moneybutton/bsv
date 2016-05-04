@@ -13,14 +13,14 @@ describe('Bsm', function () {
   })
 
   it('should make a new bsm when called without "new"', function () {
-    let bsm = Bsm()
+    let bsm = new Bsm()
     should.exist(bsm)
   })
 
   describe('#fromObject', function () {
     it('should set the messageBuf', function () {
       let messageBuf = new Buffer('message')
-      should.exist(Bsm().fromObject({messageBuf: messageBuf}).messageBuf)
+      should.exist(new Bsm().fromObject({messageBuf: messageBuf}).messageBuf)
     })
   })
 
@@ -44,7 +44,7 @@ describe('Bsm', function () {
 
   describe('@sign', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should return a base64 string', function () {
       let sigstr = Bsm.sign(messageBuf, keyPair)
@@ -53,7 +53,7 @@ describe('Bsm', function () {
     })
 
     it('should sign with a compressed pubKey', function () {
-      let keyPair = KeyPair().fromRandom()
+      let keyPair = new KeyPair().fromRandom()
       keyPair.pubKey.compressed = true
       let sigstr = Bsm.sign(messageBuf, keyPair)
       let sigbuf = new Buffer(sigstr, 'base64')
@@ -62,7 +62,7 @@ describe('Bsm', function () {
     })
 
     it('should sign with an uncompressed pubKey', function () {
-      let keyPair = KeyPair().fromRandom()
+      let keyPair = new KeyPair().fromRandom()
       keyPair.pubKey.compressed = false
       let sigstr = Bsm.sign(messageBuf, keyPair)
       let sigbuf = new Buffer(sigstr, 'base64')
@@ -73,7 +73,7 @@ describe('Bsm', function () {
 
   describe('@asyncSign', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should return the same as sign', function () {
       return asink(function * () {
@@ -86,17 +86,17 @@ describe('Bsm', function () {
 
   describe('@verify', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should verify a signed message', function () {
       let sigstr = Bsm.sign(messageBuf, keyPair)
-      let addr = Address().fromPubKey(keyPair.pubKey)
+      let addr = new Address().fromPubKey(keyPair.pubKey)
       Bsm.verify(messageBuf, sigstr, addr).should.equal(true)
     })
 
     it('should verify this known good signature', function () {
       let addrstr = '1CKTmxj6DjGrGTfbZzVxnY4Besbv8oxSZb'
-      let address = Address().fromString(addrstr)
+      let address = new Address().fromString(addrstr)
       let sigstr = 'IOrTlbNBI0QO990xOw4HAjnvRl/1zR+oBMS6HOjJgfJqXp/1EnFrcJly0UcNelqJNIAH4f0abxOZiSpYmenMH4M='
       Bsm.verify(messageBuf, sigstr, address)
     })
@@ -104,12 +104,12 @@ describe('Bsm', function () {
 
   describe('@asyncVerify', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should verify a signed message', function () {
       return asink(function * () {
         let sigstr = Bsm.sign(messageBuf, keyPair)
-        let addr = Address().fromPubKey(keyPair.pubKey)
+        let addr = new Address().fromPubKey(keyPair.pubKey)
         let verified = yield Bsm.verify(messageBuf, sigstr, addr)
         verified.should.equal(true)
       }, this)
@@ -118,7 +118,7 @@ describe('Bsm', function () {
 
   describe('#sign', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should sign a message', function () {
       let bsm = new Bsm()
@@ -132,13 +132,13 @@ describe('Bsm', function () {
 
   describe('#verify', function () {
     let messageBuf = new Buffer('this is my message')
-    let keyPair = KeyPair().fromRandom()
+    let keyPair = new KeyPair().fromRandom()
 
     it('should verify a message that was just signed', function () {
       let bsm = new Bsm()
       bsm.messageBuf = messageBuf
       bsm.keyPair = keyPair
-      bsm.address = Address().fromPubKey(keyPair.pubKey)
+      bsm.address = new Address().fromPubKey(keyPair.pubKey)
       bsm.sign()
       bsm.verify()
       bsm.verified.should.equal(true)

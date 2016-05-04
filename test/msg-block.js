@@ -16,7 +16,7 @@ describe('MsgBlock', function () {
 
   describe('#fromBlock', function () {
     it('should convert a block into a msgblock', function () {
-      let block = Block().fromHex(blockhex)
+      let block = new Block().fromHex(blockhex)
       let msgblock = MsgBlock().fromBlock(block)
       msgblock.isValid().should.equal(true)
     })
@@ -25,7 +25,7 @@ describe('MsgBlock', function () {
   describe('#asyncFromBlock', function () {
     it('should convert a block into a msgblock', function () {
       return asink(function * () {
-        let block = Block().fromHex(blockhex)
+        let block = new Block().fromHex(blockhex)
         let msgblock = yield MsgBlock().asyncFromBlock(block)
         msgblock.isValid().should.equal(true)
       }, this)
@@ -34,7 +34,7 @@ describe('MsgBlock', function () {
 
   describe('#toBlock', function () {
     it('should convert a msgblock into a block', function () {
-      let block = Block().fromHex(blockhex)
+      let block = new Block().fromHex(blockhex)
       let msgblock = MsgBlock().fromBlock(block)
       let block2 = msgblock.toBlock()
       block.toHex().should.equal(block2.toHex())
@@ -43,7 +43,7 @@ describe('MsgBlock', function () {
 
   describe('#isValid', function () {
     it('should know this msgblock is or is not valid', function () {
-      let block = Block().fromHex(blockhex)
+      let block = new Block().fromHex(blockhex)
       let msgblock = MsgBlock().fromBlock(block)
       msgblock.isValid().should.equal(true)
       msgblock.setCmd('blocko')

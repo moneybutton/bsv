@@ -6,7 +6,7 @@ let should = require('chai').should()
 describe('GetBlocks', function () {
   it('should exist', function () {
     should.exist(GetBlocks)
-    should.exist(GetBlocks())
+    should.exist(new GetBlocks())
   })
 
   describe('#toBuffer', function () {
@@ -14,7 +14,7 @@ describe('GetBlocks', function () {
       let buf = new Buffer(32)
       buf.fill(0)
       let hashes = [buf]
-      let getblocks = GetBlocks().fromHashes(hashes)
+      let getblocks = new GetBlocks().fromHashes(hashes)
       let getblocksbuf = getblocks.toBuffer()
       getblocksbuf.length.should.equal(4 + 1 + 0 + 32)
     })
@@ -25,9 +25,9 @@ describe('GetBlocks', function () {
       let buf = new Buffer(32)
       buf.fill(0)
       let hashes = [buf]
-      let getblocks = GetBlocks().fromHashes(hashes)
+      let getblocks = new GetBlocks().fromHashes(hashes)
       let getblocksbuf = getblocks.toBuffer()
-      let getblocks2 = GetBlocks().fromBuffer(getblocksbuf)
+      let getblocks2 = new GetBlocks().fromBuffer(getblocksbuf)
       should.exist(getblocks2.versionnum)
       should.exist(getblocks2.hashBufsVi)
       should.exist(getblocks2.hashBufs)
@@ -40,7 +40,7 @@ describe('GetBlocks', function () {
       let buf = new Buffer(32)
       buf.fill(0)
       let hashes = [buf]
-      let getblocks = GetBlocks().fromHashes(hashes)
+      let getblocks = new GetBlocks().fromHashes(hashes)
       should.exist(getblocks)
       getblocks.hashBufs.length.should.equal(0)
       should.exist(getblocks.stopHashBuf)
@@ -50,7 +50,7 @@ describe('GetBlocks', function () {
       let buf = new Buffer(32)
       buf.fill(0)
       let hashes = [buf, buf]
-      let getblocks = GetBlocks().fromHashes(hashes)
+      let getblocks = new GetBlocks().fromHashes(hashes)
       should.exist(getblocks)
       getblocks.hashBufs.length.should.equal(1)
       should.exist(getblocks.stopHashBuf)
@@ -62,7 +62,7 @@ describe('GetBlocks', function () {
       let buf = new Buffer(32)
       buf.fill(0)
       let hashes = [buf, buf]
-      let getblocks = GetBlocks().fromHashes(hashes)
+      let getblocks = new GetBlocks().fromHashes(hashes)
       let hashes2 = getblocks.toHashes()
       hashes2.length.should.equal(2)
     })

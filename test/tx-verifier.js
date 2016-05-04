@@ -17,10 +17,10 @@ describe('TxVerifier', function () {
   it('should make a new txverifier', function () {
     let txverifier = new TxVerifier()
     ;(txverifier instanceof TxVerifier).should.equal(true)
-    txverifier = TxVerifier()
+    txverifier = new TxVerifier()
     ;(txverifier instanceof TxVerifier).should.equal(true)
-    txverifier = TxVerifier({
-      tx: Tx()
+    txverifier = new TxVerifier({
+      tx: new Tx()
     })
     should.exist(txverifier.tx)
   })
@@ -43,12 +43,12 @@ describe('TxVerifier', function () {
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = TxOut(Bn(0), Script().fromBitcoindString(input[2]))
-          let txHashBuf = Br(new Buffer(input[0], 'hex')).readReverse()
+          let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
           txoutmap.add(txHashBuf, txOutNum, txout)
         })
 
-        let tx = Tx().fromBuffer(new Buffer(txhex, 'hex'))
+        let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
         let verified = TxVerifier.verify(tx, txoutmap, flags)
         verified.should.equal(true)
       })
@@ -65,12 +65,12 @@ describe('TxVerifier', function () {
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = TxOut(Bn(0), Script().fromBitcoindString(input[2]))
-            let txHashBuf = Br(new Buffer(input[0], 'hex')).readReverse()
+            let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
             txoutmap.add(txHashBuf, txOutNum, txout)
           })
 
-          let tx = Tx().fromBuffer(new Buffer(txhex, 'hex'))
+          let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
           let verified = yield TxVerifier.asyncVerify(tx, txoutmap, flags)
           verified.should.equal(true)
         }, this)
@@ -94,12 +94,12 @@ describe('TxVerifier', function () {
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = TxOut(Bn(0), Script().fromBitcoindString(input[2]))
-          let txHashBuf = Br(new Buffer(input[0], 'hex')).readReverse()
+          let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
           txoutmap.add(txHashBuf, txOutNum, txout)
         })
 
-        let tx = Tx().fromBuffer(new Buffer(txhex, 'hex'))
+        let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
         let verified = TxVerifier.verify(tx, txoutmap, flags)
         verified.should.equal(false)
@@ -117,12 +117,12 @@ describe('TxVerifier', function () {
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = TxOut(Bn(0), Script().fromBitcoindString(input[2]))
-            let txHashBuf = Br(new Buffer(input[0], 'hex')).readReverse()
+            let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
             txoutmap.add(txHashBuf, txOutNum, txout)
           })
 
-          let tx = Tx().fromBuffer(new Buffer(txhex, 'hex'))
+          let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
           let verified = yield TxVerifier.asyncVerify(tx, txoutmap, flags)
           verified.should.equal(false)

@@ -12,24 +12,24 @@ describe('VarInt', function () {
     let varInt = new VarInt(buf)
     should.exist(varInt)
     varInt.buf.toString('hex').should.equal('00')
-    varInt = VarInt(buf)
+    varInt = new VarInt(buf)
     should.exist(varInt)
     varInt.buf.toString('hex').should.equal('00')
 
     // various ways to use the constructor
-    VarInt(VarInt(0).toBuffer()).toNumber().should.equal(0)
-    VarInt(0).toNumber().should.equal(0)
-    VarInt(Bn(0)).toNumber().should.equal(0)
+    new VarInt(new VarInt(0).toBuffer()).toNumber().should.equal(0)
+    new VarInt(0).toNumber().should.equal(0)
+    new VarInt(new Bn(0)).toNumber().should.equal(0)
 
     // varInts can have multiple buffer representations
-    VarInt(0).toNumber().should.equal(VarInt(new Buffer([0xFD, 0, 0])).toNumber())
-    VarInt(0).toBuffer().toString('hex').should.not.equal(VarInt().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
+    new VarInt(0).toNumber().should.equal(new VarInt(new Buffer([0xFD, 0, 0])).toNumber())
+    new VarInt(0).toBuffer().toString('hex').should.not.equal(new VarInt().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
   })
 
   describe('#fromObject', function () {
     it('should set a buffer', function () {
       let buf = new Buffer('00', 'hex')
-      let varInt = VarInt().fromObject({buf: buf})
+      let varInt = new VarInt().fromObject({buf: buf})
       varInt.buf.toString('hex').should.equal('00')
       varInt.fromObject({})
       varInt.buf.toString('hex').should.equal('00')
@@ -38,69 +38,69 @@ describe('VarInt', function () {
 
   describe('#fromJson', function () {
     it('should set a buffer', function () {
-      let buf = Bw().writeVarIntNum(5).toBuffer()
-      let varInt = VarInt().fromJson(buf.toString('hex'))
+      let buf = new Bw().writeVarIntNum(5).toBuffer()
+      let varInt = new VarInt().fromJson(buf.toString('hex'))
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#toJson', function () {
     it('should return a buffer', function () {
-      let buf = Bw().writeVarIntNum(5).toBuffer()
-      let varInt = VarInt().fromJson(buf.toString('hex'))
+      let buf = new Bw().writeVarIntNum(5).toBuffer()
+      let varInt = new VarInt().fromJson(buf.toString('hex'))
       varInt.toJson().should.equal('05')
     })
   })
 
   describe('#fromBuffer', function () {
     it('should set a buffer', function () {
-      let buf = Bw().writeVarIntNum(5).toBuffer()
-      let varInt = VarInt().fromBuffer(buf)
+      let buf = new Bw().writeVarIntNum(5).toBuffer()
+      let varInt = new VarInt().fromBuffer(buf)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromBr', function () {
     it('should set a buffer reader', function () {
-      let buf = Bw().writeVarIntNum(5).toBuffer()
-      let br = Br(buf)
-      let varInt = VarInt().fromBr(br)
+      let buf = new Bw().writeVarIntNum(5).toBuffer()
+      let br = new Br(buf)
+      let varInt = new VarInt().fromBr(br)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromBn', function () {
     it('should set a number', function () {
-      let varInt = VarInt().fromBn(Bn(5))
+      let varInt = new VarInt().fromBn(new Bn(5))
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromNumber', function () {
     it('should set a number', function () {
-      let varInt = VarInt().fromNumber(5)
+      let varInt = new VarInt().fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#toBuffer', function () {
     it('should return a buffer', function () {
-      let buf = Bw().writeVarIntNum(5).toBuffer()
-      let varInt = VarInt(buf)
+      let buf = new Bw().writeVarIntNum(5).toBuffer()
+      let varInt = new VarInt(buf)
       varInt.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toBn', function () {
     it('should return a buffer', function () {
-      let varInt = VarInt(5)
-      varInt.toBn().toString().should.equal(Bn(5).toString())
+      let varInt = new VarInt(5)
+      varInt.toBn().toString().should.equal(new Bn(5).toString())
     })
   })
 
   describe('#toNumber', function () {
     it('should return a buffer', function () {
-      let varInt = VarInt(5)
+      let varInt = new VarInt(5)
       varInt.toNumber().should.equal(5)
     })
   })

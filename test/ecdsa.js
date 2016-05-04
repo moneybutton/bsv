@@ -18,18 +18,18 @@ describe('Ecdsa', function () {
     should.exist(ecdsa)
   })
 
-  let ecdsa = Ecdsa()
+  let ecdsa = new Ecdsa()
   ecdsa.hashBuf = Hash.sha256(new Buffer('test data'))
-  ecdsa.keyPair = KeyPair()
-  ecdsa.keyPair.privKey = PrivKey().fromBn(Bn().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')))
-  ecdsa.keyPair.pubKey = PubKey().fromObject({
-    point: point(Bn().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
-      Bn().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
+  ecdsa.keyPair = new KeyPair()
+  ecdsa.keyPair.privKey = new PrivKey().fromBn(new Bn().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')))
+  ecdsa.keyPair.pubKey = new PubKey().fromObject({
+    point: point(new Bn().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
+      new Bn().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
   })
 
   describe('#fromObject', function () {
     it('should set hashBuf', function () {
-      should.exist(Ecdsa().fromObject({hashBuf: ecdsa.hashBuf}).hashBuf)
+      should.exist(new Ecdsa().fromObject({hashBuf: ecdsa.hashBuf}).hashBuf)
     })
   })
 
@@ -44,7 +44,7 @@ describe('Ecdsa', function () {
   describe('#fromJson', function () {
     it('should convert from json', function () {
       let json = ecdsa.toJson()
-      let ecdsa2 = Ecdsa().fromJson(json)
+      let ecdsa2 = new Ecdsa().fromJson(json)
       should.exist(ecdsa2.keyPair)
       should.exist(ecdsa2.hashBuf)
     })
@@ -60,7 +60,7 @@ describe('Ecdsa', function () {
   describe('#fromBuffer', function () {
     it('should return from buffer', function () {
       let buf = ecdsa.toBuffer()
-      let ecdsa2 = Ecdsa().fromBuffer(buf)
+      let ecdsa2 = new Ecdsa().fromBuffer(buf)
       should.exist(ecdsa2.keyPair)
       should.exist(ecdsa2.hashBuf)
     })
@@ -76,10 +76,10 @@ describe('Ecdsa', function () {
 
     it('should calculate this known pubKey recovery number', function () {
       let hashBuf = Hash.sha256(new Buffer('some data'))
-      let r = Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
-      let s = Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+      let r = new Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+      let s = new Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
       let ecdsa = new Ecdsa()
-      ecdsa.keyPair = KeyPair().fromPrivKey(PrivKey().fromBn(Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
+      ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
       ecdsa.hashBuf = hashBuf
       ecdsa.sig = new Sig({r: r, s: s})
 
@@ -112,10 +112,10 @@ describe('Ecdsa', function () {
     it('should calculate this known pubKey recovery number', function () {
       return asink(function * () {
         let hashBuf = Hash.sha256(new Buffer('some data'))
-        let r = Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
-        let s = Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+        let r = new Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+        let s = new Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
         let ecdsa = new Ecdsa()
-        ecdsa.keyPair = KeyPair().fromPrivKey(PrivKey().fromBn(Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
+        ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
         ecdsa.hashBuf = hashBuf
         ecdsa.sig = new Sig({r: r, s: s})
 
@@ -149,10 +149,10 @@ describe('Ecdsa', function () {
 
     it('should calulate this known pubKey recovery number same as #calcrecovery', function () {
       let hashBuf = Hash.sha256(new Buffer('some data'))
-      let r = Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
-      let s = Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+      let r = new Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+      let s = new Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
       let ecdsa = new Ecdsa()
-      ecdsa.keyPair = KeyPair().fromPrivKey(PrivKey().fromBn(Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
+      ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
       ecdsa.hashBuf = hashBuf
       ecdsa.sig = new Sig({r: r, s: s})
 
@@ -176,10 +176,10 @@ describe('Ecdsa', function () {
     it('should calulate this known pubKey recovery number same as #calcrecovery', function () {
       return asink(function * () {
         let hashBuf = Hash.sha256(new Buffer('some data'))
-        let r = Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
-        let s = Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
+        let r = new Bn('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
+        let s = new Bn('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
         let ecdsa = new Ecdsa()
-        ecdsa.keyPair = KeyPair().fromPrivKey(PrivKey().fromBn(Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
+        ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
         ecdsa.hashBuf = hashBuf
         ecdsa.sig = new Sig({r: r, s: s})
 
@@ -212,7 +212,7 @@ describe('Ecdsa', function () {
     it('should generate a random k that is (almost always) greater than this relatively small number', function () {
       ecdsa.randomK()
       let k1 = ecdsa.k
-      let k2 = Bn(Math.pow(2, 32)).mul(Bn(Math.pow(2, 32))).mul(Bn(Math.pow(2, 32)))
+      let k2 = new Bn(Math.pow(2, 32)).mul(new Bn(Math.pow(2, 32))).mul(new Bn(Math.pow(2, 32)))
       k2.gt(k1).should.equal(false)
     })
   })
@@ -236,7 +236,7 @@ describe('Ecdsa', function () {
       // https://github.com/bitcoinjs/bitcoinjs-lib/blob/10630873ebaa42381c5871e20336fbfb46564ac8/test/fixtures/ecdsa.json#L6
       let ecdsa = new Ecdsa()
       ecdsa.hashBuf = Hash.sha256(new Buffer('Everything should be made as simple as possible, but not simpler.'))
-      ecdsa.keyPair = KeyPair().fromPrivKey(PrivKey().fromObject({bn: Bn(1)}))
+      ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromObject({bn: new Bn(1)}))
       ecdsa.deterministicK()
       ecdsa.k.toBuffer().toString('hex').should.equal('ec633bd56a5774a0940cb97e27a9e4e51dc94af737596a0c5cbb3d30332d92a5')
       ecdsa.sign()
@@ -247,7 +247,7 @@ describe('Ecdsa', function () {
 
   describe('#sig2pubKey', function () {
     it('should calculate the correct public key', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
       ecdsa.sign()
       ecdsa.sig.recovery = 0
       let pubKey = ecdsa.sig2pubKey()
@@ -255,17 +255,17 @@ describe('Ecdsa', function () {
     })
 
     it('should calculate the correct public key for this signature with low s', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
-      ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
       ecdsa.sig.recovery = 0
       let pubKey = ecdsa.sig2pubKey()
       pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
     })
 
     it('should calculate the correct public key for this signature with high s', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
       ecdsa.sign()
-      ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
+      ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
       ecdsa.sig.recovery = 1
       let pubKey = ecdsa.sig2pubKey()
       pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
@@ -275,7 +275,7 @@ describe('Ecdsa', function () {
   describe('#asyncSig2pubKey', function () {
     it('should calculate the correct public key', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
         ecdsa.sig.recovery = 0
         let pubKey = yield ecdsa.asyncSig2pubKey()
@@ -285,8 +285,8 @@ describe('Ecdsa', function () {
 
     it('should calculate the correct public key for this signature with low s', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
-        ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
         ecdsa.sig.recovery = 0
         let pubKey = yield ecdsa.asyncSig2pubKey()
         pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
@@ -295,9 +295,9 @@ describe('Ecdsa', function () {
 
     it('should calculate the correct public key for this signature with high s', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
-        ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
+        ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
         ecdsa.sig.recovery = 1
         let pubKey = yield ecdsa.asyncSig2pubKey()
         pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
@@ -307,7 +307,7 @@ describe('Ecdsa', function () {
 
   describe('@sig2pubKey', function () {
     it('should calculate the correct public key', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
       ecdsa.sign()
       ecdsa.sig.recovery = 0
       let pubKey1 = ecdsa.sig2pubKey()
@@ -316,8 +316,8 @@ describe('Ecdsa', function () {
     })
 
     it('should calculate the correct public key for this signature with low s', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
-      ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
       ecdsa.sig.recovery = 0
       let pubKey1 = ecdsa.sig2pubKey()
       let pubKey2 = Ecdsa.sig2pubKey(ecdsa.sig, ecdsa.hashBuf)
@@ -325,9 +325,9 @@ describe('Ecdsa', function () {
     })
 
     it('should calculate the correct public key for this signature with high s', function () {
-      ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+      ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
       ecdsa.sign()
-      ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
+      ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
       ecdsa.sig.recovery = 1
       let pubKey1 = ecdsa.sig2pubKey()
       let pubKey2 = Ecdsa.sig2pubKey(ecdsa.sig, ecdsa.hashBuf)
@@ -338,7 +338,7 @@ describe('Ecdsa', function () {
   describe('@asyncSig2pubKey', function () {
     it('should calculate the correct public key', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
         ecdsa.sig.recovery = 0
         let pubKey1 = ecdsa.sig2pubKey()
@@ -349,8 +349,8 @@ describe('Ecdsa', function () {
 
     it('should calculate the correct public key for this signature with low s', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
-        ecdsa.sig = Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
         ecdsa.sig.recovery = 0
         let pubKey1 = ecdsa.sig2pubKey()
         let pubKey2 = yield Ecdsa.asyncSig2pubKey(ecdsa.sig, ecdsa.hashBuf)
@@ -360,9 +360,9 @@ describe('Ecdsa', function () {
 
     it('should calculate the correct public key for this signature with high s', function () {
       return asink(function * () {
-        ecdsa.k = Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
+        ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
-        ecdsa.sig = Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
+        ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
         ecdsa.sig.recovery = 1
         let pubKey1 = ecdsa.sig2pubKey()
         let pubKey2 = yield Ecdsa.asyncSig2pubKey(ecdsa.sig, ecdsa.hashBuf)
@@ -391,15 +391,15 @@ describe('Ecdsa', function () {
       ecdsa.keyPair = new KeyPair()
       ecdsa.keyPair.pubKey = pk
       ecdsa.sig = new Sig()
-      ecdsa.sig.r = Bn(0)
-      ecdsa.sig.s = Bn(0)
+      ecdsa.sig.r = new Bn(0)
+      ecdsa.sig.s = new Bn(0)
       ecdsa.verifystr().should.equal('r and s not in range')
     })
 
     it('should return an error if the signature is incorrect', function () {
       ecdsa.sig = new Sig()
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827')
-      ecdsa.sig.r = ecdsa.sig.r.add(Bn(1))
+      ecdsa.sig.r = ecdsa.sig.r.add(new Bn(1))
       ecdsa.verifystr().should.equal('Invalid signature')
     })
   })
@@ -412,7 +412,7 @@ describe('Ecdsa', function () {
     })
 
     it('should should throw an error if hashBuf is not 32 bytes', function () {
-      let ecdsa2 = Ecdsa().fromObject({
+      let ecdsa2 = new Ecdsa().fromObject({
         hashBuf: ecdsa.hashBuf.slice(0, 31),
         keyPair: ecdsa.keyPair
       })
@@ -452,7 +452,7 @@ describe('Ecdsa', function () {
     it('should produce a signature, and be different when called twice', function () {
       ecdsa.signRandomK()
       should.exist(ecdsa.sig)
-      let ecdsa2 = Ecdsa().fromObject(ecdsa)
+      let ecdsa2 = new Ecdsa().fromObject(ecdsa)
       ecdsa2.signRandomK()
       ecdsa.sig.toString().should.not.equal(ecdsa2.sig.toString())
     })
@@ -512,7 +512,7 @@ describe('Ecdsa', function () {
     it('should verify a valid signature, and unverify an invalid signature', function () {
       let sig = Ecdsa.sign(ecdsa.hashBuf, ecdsa.keyPair)
       Ecdsa.verify(ecdsa.hashBuf, sig, ecdsa.keyPair.pubKey).should.equal(true)
-      let fakesig = Sig(sig.r.add(1), sig.s)
+      let fakesig = new Sig(sig.r.add(1), sig.s)
       Ecdsa.verify(ecdsa.hashBuf, fakesig, ecdsa.keyPair.pubKey).should.equal(false)
     })
 
@@ -532,7 +532,7 @@ describe('Ecdsa', function () {
         let sig = Ecdsa.sign(ecdsa.hashBuf, ecdsa.keyPair)
         let verified = yield Ecdsa.asyncVerify(ecdsa.hashBuf, sig, ecdsa.keyPair.pubKey)
         verified.should.equal(true)
-        let fakesig = Sig(sig.r.add(1), sig.s)
+        let fakesig = new Sig(sig.r.add(1), sig.s)
         verified = yield Ecdsa.asyncVerify(ecdsa.hashBuf, fakesig, ecdsa.keyPair.pubKey)
         verified.should.equal(false)
       }, this)
@@ -542,17 +542,17 @@ describe('Ecdsa', function () {
   describe('vectors', function () {
     vectors.valid.forEach(function (obj, i) {
       it('should validate valid vector ' + i, function () {
-        let ecdsa = Ecdsa().fromObject({
-          keyPair: KeyPair().fromPrivKey(PrivKey().fromBn(Bn().fromBuffer(new Buffer(obj.d, 'hex')))),
-          k: Bn().fromBuffer(new Buffer(obj.k, 'hex')),
+        let ecdsa = new Ecdsa().fromObject({
+          keyPair: new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(new Buffer(obj.d, 'hex')))),
+          k: new Bn().fromBuffer(new Buffer(obj.k, 'hex')),
           hashBuf: Hash.sha256(new Buffer(obj.message)),
-          sig: Sig().fromObject({
-            r: Bn(obj.signature.r),
-            s: Bn(obj.signature.s),
+          sig: new Sig().fromObject({
+            r: new Bn(obj.signature.r),
+            s: new Bn(obj.signature.s),
             recovery: obj.i
           })
         })
-        let ecdsa2 = Ecdsa().fromObject(ecdsa)
+        let ecdsa2 = new Ecdsa().fromObject(ecdsa)
         ecdsa2.k = undefined
         ecdsa2.sign()
         ecdsa2.calcrecovery()
@@ -565,9 +565,9 @@ describe('Ecdsa', function () {
 
     vectors.invalid.verifystr.forEach(function (obj, i) {
       it('should validate invalid.verifystr vector ' + i + ': ' + obj.description, function () {
-        let ecdsa = Ecdsa().fromObject({
-          keyPair: KeyPair().fromObject({pubKey: PubKey().fromObject({point: point.fromX(true, 1)})}),
-          sig: Sig(Bn(obj.signature.r), Bn(obj.signature.s)),
+        let ecdsa = new Ecdsa().fromObject({
+          keyPair: new KeyPair().fromObject({pubKey: new PubKey().fromObject({point: point.fromX(true, 1)})}),
+          sig: new Sig(new Bn(obj.signature.r), new Bn(obj.signature.s)),
           hashBuf: Hash.sha256(new Buffer(obj.message))
         })
         ecdsa.verifystr().should.equal(obj.exception)
@@ -577,9 +577,9 @@ describe('Ecdsa', function () {
     vectors.deterministicK.forEach(function (obj, i) {
       it('should validate deterministicK vector ' + i, function () {
         let hashBuf = Hash.sha256(new Buffer(obj.message))
-        let privKey = PrivKey().fromObject({bn: Bn().fromBuffer(new Buffer(obj.privkey, 'hex'))})
-        let ecdsa = Ecdsa().fromObject({
-          keyPair: KeyPair().fromObject({privKey: privKey}),
+        let privKey = new PrivKey().fromObject({bn: new Bn().fromBuffer(new Buffer(obj.privkey, 'hex'))})
+        let ecdsa = new Ecdsa().fromObject({
+          keyPair: new KeyPair().fromObject({privKey: privKey}),
           hashBuf: hashBuf
         })
         ecdsa.deterministicK(0).k.toString('hex').should.equal(obj.k_bad00)

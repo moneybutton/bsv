@@ -6,7 +6,7 @@ let should = require('chai').should()
 describe('Bip68', function () {
   it('should exist', function () {
     should.exist(Bip68)
-    should.exist(Bip68())
+    should.exist(new Bip68())
   })
 
   describe('@nSequence2height', function () {

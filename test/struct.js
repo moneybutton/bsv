@@ -9,28 +9,28 @@ describe('Struct', function () {
   it('should make a new struct', function () {
     let struct = new Struct()
     should.exist(struct)
-    struct = Struct()
+    struct = new Struct()
     should.exist(struct)
   })
 
   describe('#fromObject', function () {
     it('should set from an object', function () {
-      Struct().fromObject({test: 'test'}).test.should.equal('test')
-      Object.keys(Struct().fromObject({})).length.should.equal(0)
+      new Struct().fromObject({test: 'test'}).test.should.equal('test')
+      Object.keys(new Struct().fromObject({})).length.should.equal(0)
     })
   })
 
   describe('#fromBr', function () {
     it('should throw an error if arg is not a Br', function () {
       (function () {
-        Struct().fromBr({})
+        new Struct().fromBr({})
       }).should.throw('br must be a buffer reader')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
-        let br = Br()
-        Struct().fromBr(br)
+        let br = new Br()
+        new Struct().fromBr(br)
       }).should.throw('not implemented')
     })
   })
@@ -38,7 +38,7 @@ describe('Struct', function () {
   describe('#toBw', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toBw()
+        new Struct().toBw()
       }).should.throw('not implemented')
     })
   })
@@ -46,7 +46,7 @@ describe('Struct', function () {
   describe('#genFromBuffers', function () {
     it('should throw an error', function () {
       (function () {
-        Struct().genFromBuffers().next()
+        new Struct().genFromBuffers().next()
       }).should.throw('not implemented')
     })
   })
@@ -54,21 +54,21 @@ describe('Struct', function () {
   describe('#fromBuffer', function () {
     it('should throw an error if arg is not a buffer', function () {
       (function () {
-        Struct().fromBuffer({})
+        new Struct().fromBuffer({})
       }).should.throw('buf must be a buffer')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
         var buf = new Buffer([])
-        Struct().fromBuffer(buf)
+        new Struct().fromBuffer(buf)
       }).should.throw('not implemented')
     })
   })
 
   describe('#fromFastBuffer', function () {
     it('should call fromBuffer', function () {
-      let struct = Struct()
+      let struct = new Struct()
       struct.fromBuffer = sinon.spy()
       struct = Object.create(struct)
       let buf = new Buffer('00', 'hex')
@@ -77,7 +77,7 @@ describe('Struct', function () {
     })
 
     it('should not call fromBuffer if buf length is zero', function () {
-      let struct = Struct()
+      let struct = new Struct()
       struct.fromBuffer = sinon.spy()
       struct = Object.create(struct)
       let buf = new Buffer('', 'hex')
@@ -89,14 +89,14 @@ describe('Struct', function () {
   describe('#toBuffer', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toBuffer()
+        new Struct().toBuffer()
       }).should.throw('not implemented')
     })
   })
 
   describe('#toFastBuffer', function () {
     it('should call toBuffer', function () {
-      let struct = Struct()
+      let struct = new Struct()
       struct.toBuffer = sinon.spy()
       struct = Object.create(struct)
       struct.property = 'test'
@@ -106,7 +106,7 @@ describe('Struct', function () {
     })
 
     it('should return zero-length buffer if object has no keys', function () {
-      let struct = Struct()
+      let struct = new Struct()
       struct.toBuffer = sinon.spy()
       struct = Object.create(struct)
       Object.keys(struct).length.should.equal(0)
@@ -118,13 +118,13 @@ describe('Struct', function () {
   describe('#fromHex', function () {
     it('should throw an error for invalid hex string', function () {
       (function () {
-        Struct().fromHex('000')
+        new Struct().fromHex('000')
       }).should.throw('invalid hex string')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().fromHex('00')
+        new Struct().fromHex('00')
       }).should.throw('not implemented')
     })
   })
@@ -132,13 +132,13 @@ describe('Struct', function () {
   describe('#fromFastHex', function () {
     it('should throw an error for invalid hex string', function () {
       (function () {
-        Struct().fromFastHex('000')
+        new Struct().fromFastHex('000')
       }).should.throw('invalid hex string')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().fromFastHex('00')
+        new Struct().fromFastHex('00')
       }).should.throw('not implemented')
     })
   })
@@ -146,14 +146,14 @@ describe('Struct', function () {
   describe('#toHex', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toHex()
+        new Struct().toHex()
       }).should.throw('not implemented')
     })
   })
 
   describe('#toFastHex', function () {
     it('should return an empty string for blank data', function () {
-      let hex = Struct().toFastHex()
+      let hex = new Struct().toFastHex()
       ;(typeof hex === 'string').should.equal(true)
       hex.length.should.equal(0)
     })
@@ -162,13 +162,13 @@ describe('Struct', function () {
   describe('#fromString', function () {
     it('should throw an error for invalid string', function () {
       (function () {
-        Struct().fromString({})
+        new Struct().fromString({})
       }).should.throw('str must be a string')
     })
 
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().fromString('00')
+        new Struct().fromString('00')
       }).should.throw('not implemented')
     })
   })
@@ -176,7 +176,7 @@ describe('Struct', function () {
   describe('#toString', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toString()
+        new Struct().toString()
       }).should.throw('not implemented')
     })
   })
@@ -184,7 +184,7 @@ describe('Struct', function () {
   describe('#fromJson', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().fromJson()
+        new Struct().fromJson()
       }).should.throw('not implemented')
     })
   })
@@ -192,7 +192,7 @@ describe('Struct', function () {
   describe('#toJson', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct().toJson()
+        new Struct().toJson()
       }).should.throw('not implemented')
     })
   })

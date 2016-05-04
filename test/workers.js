@@ -10,7 +10,7 @@ let should = require('chai').should()
 
 describe('Workers', function () {
   it('should satisfy this basic API', function () {
-    let workers = Workers()
+    let workers = new Workers()
     workers = new Workers()
     should.exist(workers)
   })
@@ -18,7 +18,7 @@ describe('Workers', function () {
   describe('#asyncObjectMethod', function () {
     it('should compute this method in the workers', function () {
       return asink(function * () {
-        let bip32 = Bip32().fromRandom()
+        let bip32 = new Bip32().fromRandom()
         let workersResult = yield Workers.asyncObjectMethod(bip32, 'toString', [])
         let str = JSON.parse(workersResult.resbuf.toString())
         str[0].should.equal('x')
@@ -27,10 +27,10 @@ describe('Workers', function () {
 
     it('should compute this method with Fullnode object in args in the workers', function () {
       return asink(function * () {
-        let privKey = PrivKey().fromRandom()
-        let pubKey1 = PubKey().fromPrivKey(privKey)
-        let workersResult = yield Workers.asyncObjectMethod(PubKey(), 'fromPrivKey', [privKey])
-        let pubKey2 = PubKey().fromFastBuffer(workersResult.resbuf)
+        let privKey = new PrivKey().fromRandom()
+        let pubKey1 = new PubKey().fromPrivKey(privKey)
+        let workersResult = yield Workers.asyncObjectMethod(new PubKey(), 'fromPrivKey', [privKey])
+        let pubKey2 = new PubKey().fromFastBuffer(workersResult.resbuf)
         pubKey1.toString().should.equal(pubKey2.toString())
       }, this)
     })

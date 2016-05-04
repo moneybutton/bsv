@@ -9,20 +9,20 @@ let should = require('chai').should()
 describe('MsgReject', function () {
   it('should exist', function () {
     should.exist(MsgReject)
-    should.exist(MsgReject())
+    should.exist(new MsgReject())
   })
 
   describe('#fromReject', function () {
     it('should convert from a reject', function () {
-      let reject = Reject().fromObject({
-        typevi: VarInt().fromNumber(2),
+      let reject = new Reject().fromObject({
+        typevi: new VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: VarInt().fromNumber(2),
+        reasonvi: new VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })
-      let msgreject = MsgReject().fromReject(reject)
+      let msgreject = new MsgReject().fromReject(reject)
       Buffer.compare(msgreject.databuf, reject.toBuffer()).should.equal(0)
     })
   })
@@ -30,15 +30,15 @@ describe('MsgReject', function () {
   describe('#asyncFromReject', function () {
     it('should convert from a reject', function () {
       return asink(function * () {
-        let reject = Reject().fromObject({
-          typevi: VarInt().fromNumber(2),
+        let reject = new Reject().fromObject({
+          typevi: new VarInt().fromNumber(2),
           typestr: 'tx',
           codenum: 1,
-          reasonvi: VarInt().fromNumber(2),
+          reasonvi: new VarInt().fromNumber(2),
           reasonstr: 'hi',
           extrabuf: new Buffer(0)
         })
-        let msgreject = yield MsgReject().asyncFromReject(reject)
+        let msgreject = yield new MsgReject().asyncFromReject(reject)
         Buffer.compare(msgreject.databuf, reject.toBuffer()).should.equal(0)
       }, this)
     })
@@ -47,15 +47,15 @@ describe('MsgReject', function () {
   describe('#toReject', function () {
     it('should convert to a reject', function () {
       return asink(function * () {
-        let reject = Reject().fromObject({
-          typevi: VarInt().fromNumber(2),
+        let reject = new Reject().fromObject({
+          typevi: new VarInt().fromNumber(2),
           typestr: 'tx',
           codenum: 1,
-          reasonvi: VarInt().fromNumber(2),
+          reasonvi: new VarInt().fromNumber(2),
           reasonstr: 'hi',
           extrabuf: new Buffer(0)
         })
-        let reject2 = MsgReject().fromReject(reject).toReject()
+        let reject2 = new MsgReject().fromReject(reject).toReject()
         Buffer.compare(reject2.toBuffer(), reject.toBuffer()).should.equal(0)
       }, this)
     })
@@ -63,15 +63,15 @@ describe('MsgReject', function () {
 
   describe('#isValid', function () {
     it('should know this is a valid msgreject', function () {
-      let reject = Reject().fromObject({
-        typevi: VarInt().fromNumber(2),
+      let reject = new Reject().fromObject({
+        typevi: new VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: VarInt().fromNumber(2),
+        reasonvi: new VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })
-      let msgreject = MsgReject().fromReject(reject)
+      let msgreject = new MsgReject().fromReject(reject)
       msgreject.isValid().should.equal(true)
     })
   })

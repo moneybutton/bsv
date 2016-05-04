@@ -12,7 +12,7 @@ describe('MsgInv', function () {
 
   describe('#fromInvs', function () {
     it('should convert from invs', function () {
-      let inv = Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
+      let inv = new Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
       let msginv = MsgInv().fromInvs([inv])
       msginv.getCmd().should.equal('inv')
       msginv.databuf.length.should.equal(1 + 4 + 32)
@@ -21,7 +21,7 @@ describe('MsgInv', function () {
 
   describe('#toInvs', function () {
     it('should convert to invs', function () {
-      let inv = Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
+      let inv = new Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
       let msginv = MsgInv().fromInvs([inv])
       let invs2 = msginv.toInvs()
       invs2.length.should.equal(1)
@@ -31,7 +31,7 @@ describe('MsgInv', function () {
 
   describe('#isValid', function () {
     it('should know this is a valid msg invs', function () {
-      let inv = Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
+      let inv = new Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
       let msginv = MsgInv().fromInvs([inv])
       msginv.isValid().should.equal(true)
     })

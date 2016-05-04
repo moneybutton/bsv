@@ -7,16 +7,16 @@ let should = require('chai').should()
 describe('Reject', function () {
   it('should exist', function () {
     should.exist(Reject)
-    should.exist(Reject())
+    should.exist(new Reject())
   })
 
   describe('#toBuffer', function () {
     it('should convert to a buffer', function () {
-      let reject = Reject().fromObject({
-        typevi: VarInt().fromNumber(2),
+      let reject = new Reject().fromObject({
+        typevi: new VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: VarInt().fromNumber(2),
+        reasonvi: new VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })
@@ -26,15 +26,15 @@ describe('Reject', function () {
 
   describe('#fromBuffer', function () {
     it('should convert from a buffer', function () {
-      let reject = Reject().fromObject({
-        typevi: VarInt().fromNumber(2),
+      let reject = new Reject().fromObject({
+        typevi: new VarInt().fromNumber(2),
         typestr: 'tx',
         codenum: 1,
-        reasonvi: VarInt().fromNumber(2),
+        reasonvi: new VarInt().fromNumber(2),
         reasonstr: 'hi',
         extrabuf: new Buffer(0)
       })
-      let reject2 = Reject().fromBuffer(reject.toBuffer())
+      let reject2 = new Reject().fromBuffer(reject.toBuffer())
       reject.typestr.should.equal(reject2.typestr)
       reject.codenum.should.equal(reject2.codenum)
       reject.reasonstr.should.equal(reject2.reasonstr)

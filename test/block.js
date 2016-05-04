@@ -18,10 +18,10 @@ describe('Block', function () {
   let blocksize = 50
   let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
   let bhbuf = new Buffer(bhhex, 'hex')
-  let bh = BlockHeader().fromBuffer(bhbuf)
-  let txsvi = VarInt(1)
-  let txs = [Tx().fromBuffer(txbuf)]
-  let block = Block().fromObject({
+  let bh = new BlockHeader().fromBuffer(bhbuf)
+  let txsvi = new VarInt(1)
+  let txs = [new Tx().fromBuffer(txbuf)]
+  let block = new Block().fromObject({
     magicnum: magicnum,
     blocksize: blocksize,
     blockHeader: bh,
@@ -38,13 +38,13 @@ describe('Block', function () {
   it('should make a new block', function () {
     let block = new Block()
     should.exist(block)
-    block = Block()
+    block = new Block()
     should.exist(block)
   })
 
   describe('#fromObject', function () {
     it('should set these known values', function () {
-      let block = Block().fromObject({
+      let block = new Block().fromObject({
         magicnum: magicnum,
         blocksize: blocksize,
         blockHeader: bh,
@@ -61,7 +61,7 @@ describe('Block', function () {
 
   describe('#fromJson', function () {
     it('should set these known values', function () {
-      let block = Block().fromJson({
+      let block = new Block().fromJson({
         magicnum: magicnum,
         blocksize: blocksize,
         blockHeader: bh.toJson(),
@@ -89,44 +89,44 @@ describe('Block', function () {
 
   describe('#fromHex', function () {
     it('should make a block from this known hex', function () {
-      let block = Block().fromHex(blockhex)
+      let block = new Block().fromHex(blockhex)
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
 
   describe('#fromBuffer', function () {
     it('should make a block from this known buffer', function () {
-      let block = Block().fromBuffer(blockbuf)
+      let block = new Block().fromBuffer(blockbuf)
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
 
   describe('#fromBr', function () {
     it('should make a block from this known buffer', function () {
-      let block = Block().fromBr(Br(blockbuf))
+      let block = new Block().fromBr(new Br(blockbuf))
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
 
   describe('#toHex', function () {
     it('should recover a block from this known hex', function () {
-      let block = Block().fromHex(blockhex)
+      let block = new Block().fromHex(blockhex)
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
 
   describe('#toBuffer', function () {
     it('should recover a block from this known buffer', function () {
-      let block = Block().fromBuffer(blockbuf)
+      let block = new Block().fromBuffer(blockbuf)
       block.toBuffer().toString('hex').should.equal(blockhex)
     })
   })
 
   describe('#toBw', function () {
     it('should recover a block from this known buffer', function () {
-      let block = Block().fromBuffer(blockbuf)
+      let block = new Block().fromBuffer(blockbuf)
       block.toBw().toBuffer().toString('hex').should.equal(blockhex)
-      let bw = Bw()
+      let bw = new Bw()
       block.toBw(bw)
       bw.toBuffer().toString('hex').should.equal(blockhex)
     })
@@ -134,7 +134,7 @@ describe('Block', function () {
 
   describe('#hash', function () {
     it('should return the correct hash of the genesis block', function () {
-      let block = Block().fromBuffer(genesisbuf)
+      let block = new Block().fromBuffer(genesisbuf)
       let blockhash = new Buffer(Array.apply([], new Buffer(genesisidhex, 'hex')).reverse())
       block.hash().toString('hex').should.equal(blockhash.toString('hex'))
     })
@@ -143,21 +143,21 @@ describe('Block', function () {
   describe('#asyncHash', function () {
     it('should return the correct hash of the genesis block', function () {
       return asink(function * () {
-        let block = Block().fromBuffer(genesisbuf)
+        let block = new Block().fromBuffer(genesisbuf)
         let hash = yield block.asyncHash()
-        let genesishashhex = Br(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
+        let genesishashhex = new Br(new Buffer(genesisidhex, 'hex')).readReverse().toString('hex')
         hash.toString('hex').should.equal(genesishashhex)
       }, this)
     })
 
     it('should return the correct hash of block containing the largest tx', function () {
       return asink(function * () {
-        let block = Block().fromHex(largesttxblockvector.blockhex)
+        let block = new Block().fromHex(largesttxblockvector.blockhex)
         let buf = block.toBuffer()
         block = block.fromBuffer(buf)
         let hash = yield block.asyncHash()
         let blockidhex = largesttxblockvector.blockidhex
-        let blockhashBuf = Br(new Buffer(blockidhex, 'hex')).readReverse()
+        let blockhashBuf = new Br(new Buffer(blockidhex, 'hex')).readReverse()
         let blockhashhex = blockhashBuf.toString('hex')
         hash.toString('hex').should.equal(blockhashhex)
       }, this)
@@ -166,12 +166,12 @@ describe('Block', function () {
 
   describe('#id', function () {
     it('should return the correct id of the genesis block', function () {
-      let block = Block().fromBuffer(genesisbuf)
+      let block = new Block().fromBuffer(genesisbuf)
       block.id().toString('hex').should.equal(genesisidhex)
     })
 
     it('should return the correct id of block containing the largest tx', function () {
-      let block = Block().fromHex(largesttxblockvector.blockhex)
+      let block = new Block().fromHex(largesttxblockvector.blockhex)
       block.id().toString('hex').should.equal(largesttxblockvector.blockidhex)
     })
   })
@@ -179,7 +179,7 @@ describe('Block', function () {
   describe('#asyncId', function () {
     it('should return the correct id of the genesis block', function () {
       return asink(function * () {
-        let block = Block().fromBuffer(genesisbuf)
+        let block = new Block().fromBuffer(genesisbuf)
         let id = yield block.asyncId()
         id.toString('hex').should.equal(genesisidhex)
       }, this)
@@ -187,7 +187,7 @@ describe('Block', function () {
 
     it('should return the correct id of block containing the largest tx', function () {
       return asink(function * () {
-        let block = Block().fromHex(largesttxblockvector.blockhex)
+        let block = new Block().fromHex(largesttxblockvector.blockhex)
         let id = yield block.asyncId()
         id.toString('hex').should.equal(largesttxblockvector.blockidhex)
       }, this)
@@ -196,7 +196,7 @@ describe('Block', function () {
 
   describe('#verifyMerkleRoot', function () {
     it('should verify the merkle root of this known block with one tx (in addition to the coinbase tx)', function () {
-      let block = Block().fromHex(largesttxblockvector.blockhex)
+      let block = new Block().fromHex(largesttxblockvector.blockhex)
       block.verifyMerkleRoot().should.equal(0)
     })
   })

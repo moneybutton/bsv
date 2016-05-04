@@ -13,18 +13,18 @@ describe('Base58', function () {
   })
 
   it('should make an instance without "new"', function () {
-    let b58 = Base58()
+    let b58 = new Base58()
     should.exist(b58)
   })
 
   it('should allow this handy syntax', function () {
-    Base58(buf).toString().should.equal(enc)
-    Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    new Base58(buf).toString().should.equal(enc)
+    new Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
   })
 
   describe('#fromObject', function () {
     it('should set a blank buffer', function () {
-      Base58().fromObject({buf: new Buffer([])})
+      new Base58().fromObject({buf: new Buffer([])})
     })
   })
 
@@ -55,45 +55,45 @@ describe('Base58', function () {
 
   describe('#fromHex', function () {
     it('should set buffer', function () {
-      let b58 = Base58().fromHex(buf.toString('hex'))
+      let b58 = new Base58().fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#fromBuffer', function () {
     it('should not fail', function () {
-      should.exist(Base58().fromBuffer(buf))
+      should.exist(new Base58().fromBuffer(buf))
     })
 
     it('should set buffer', function () {
-      let b58 = Base58().fromBuffer(buf)
+      let b58 = new Base58().fromBuffer(buf)
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#fromString', function () {
     it('should convert this known string to a buffer', function () {
-      Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+      new Base58().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toHex', function () {
     it('should return the buffer in hex', function () {
-      let b58 = Base58(buf)
+      let b58 = new Base58(buf)
       b58.toHex().should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      let b58 = Base58(buf)
+      let b58 = new Base58(buf)
       b58.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      let b58 = Base58(buf)
+      let b58 = new Base58(buf)
       b58.toString().should.equal(enc)
     })
   })
