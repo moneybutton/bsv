@@ -23,7 +23,7 @@ describe('Address', function () {
     address = new Address(version, pubKeyHash)
     should.exist(address)
     new Address().constructor.should.equal(new Address().constructor)
-    Address.TestNet().constructor.should.equal(Address.TestNet().constructor)
+    new Address.TestNet().constructor.should.equal(new Address.TestNet().constructor)
   })
 
   describe('@isValid', function () {
