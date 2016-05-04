@@ -118,7 +118,7 @@ describe('Struct', function () {
   describe('#fromHex', function () {
     it('should throw an error for invalid hex string', function () {
       (function () {
-        Struct().fromHex('0')
+        Struct().fromHex('000')
       }).should.throw('invalid hex string')
     })
 
@@ -132,7 +132,7 @@ describe('Struct', function () {
   describe('#fromFastHex', function () {
     it('should throw an error for invalid hex string', function () {
       (function () {
-        Struct().fromFastHex('0')
+        Struct().fromFastHex('000')
       }).should.throw('invalid hex string')
     })
 
