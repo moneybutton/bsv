@@ -18,8 +18,8 @@ describe('BIP39', function () {
   })
 
   it('should have a wordlist of length 2048', function () {
-    require('../lib/bip39/en').length.should.equal(2048)
-    require('../lib/bip39/jp').length.should.equal(2048)
+    require('../lib/bip39-en').length.should.equal(2048)
+    require('../lib/bip39-jp').length.should.equal(2048)
   })
 
   it('should generate a mnemonic phrase that passes the check', function () {
