@@ -108,11 +108,11 @@
     "gulp-mocha": "2.2.0",
     "istanbul": "0.4.3",
     "karma": "0.13.22",
-    "karma-firefox-launcher": "0.1.7",
+    "karma-firefox-launcher": "1.0.0",
     "karma-mocha": "1.0.1",
     "mocha": "2.4.5",
     "sinon": "1.17.4",
-    "standard": "7.0.0",
+    "standard": "7.0.1",
     "uglifyify": "3.0.1"
   },
   "license": "MIT"
