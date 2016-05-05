@@ -32,16 +32,14 @@ apps that require fine-grained control over the basics, such as big numbers and
 points. However, it also means that you can hurt yourself if you misuse these
 primitives.
 
-7. It is always possible to create a new object without using "new".
+7. Use standard javascript conventions wherever possible so that other
+developers find the code easy to understand.
 
 8. Minimize the use of dependencies so that all code can be easily audited.
 
 9. All instance methods modify the state of the object and return the object,
 unless there is a good reason to do something different. To access the result
 of an instance method, you must access the object property(s) that it modifies.
-
-10. Use the features of ES2015 available in the latest long-term support
-releases of node.js (currently version 4).
 
 Fullnode is still being developed and does not yet support downloading the
 blockchain.
