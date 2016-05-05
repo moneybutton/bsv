@@ -57,6 +57,28 @@ describe('GetBlocks', function () {
     })
   })
 
+  describe('@fromHashes', function () {
+    it('should convert from a list of one hash', function () {
+      let buf = new Buffer(32)
+      buf.fill(0)
+      let hashes = [buf]
+      let getblocks = GetBlocks.fromHashes(hashes)
+      should.exist(getblocks)
+      getblocks.hashBufs.length.should.equal(0)
+      should.exist(getblocks.stopHashBuf)
+    })
+
+    it('should convert from a list of two hashes', function () {
+      let buf = new Buffer(32)
+      buf.fill(0)
+      let hashes = [buf, buf]
+      let getblocks = GetBlocks.fromHashes(hashes)
+      should.exist(getblocks)
+      getblocks.hashBufs.length.should.equal(1)
+      should.exist(getblocks.stopHashBuf)
+    })
+  })
+
   describe('#toHashes', function () {
     it('should give a list of hashes', function () {
       let buf = new Buffer(32)

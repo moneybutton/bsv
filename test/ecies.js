@@ -7,13 +7,7 @@ let Hash = require('../lib/hash')
 
 describe('#Ecies', function () {
   it('should make a new Ecies object', function () {
-    let ecies = new Ecies()
-    should.exist(ecies)
-  })
-
-  it('should make a new Ecies object when called without "new"', function () {
-    let ecies = new Ecies()
-    should.exist(ecies)
+    should.exist(Ecies)
   })
 
   let fromkey = new KeyPair().fromRandom()
