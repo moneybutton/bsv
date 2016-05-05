@@ -325,6 +325,22 @@ describe('Bip32', function () {
     })
   })
 
+  describe('#fromRandom', function () {
+    it('should not return the same one twice', function () {
+      let bip32a = new Bip32().fromRandom()
+      let bip32b = new Bip32().fromRandom()
+      bip32a.toString().should.not.equal(bip32b.toString())
+    })
+  })
+
+  describe('@fromRandom', function () {
+    it('should not return the same one twice', function () {
+      let bip32a = Bip32.fromRandom()
+      let bip32b = Bip32.fromRandom()
+      bip32a.toString().should.not.equal(bip32b.toString())
+    })
+  })
+
   describe('#fromSeed', function () {
     it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
       let hex = vector1master
@@ -337,6 +353,24 @@ describe('Bip32', function () {
     it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
       let hex = vector2master
       let bip32 = (new Bip32()).fromSeed(new Buffer(hex, 'hex'), 'mainnet')
+      should.exist(bip32)
+      bip32.toString().should.equal(vector2mPrivate)
+      bip32.toPublic().toString().should.equal(vector2mPublic)
+    })
+  })
+
+  describe('@fromSeed', function () {
+    it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
+      let hex = vector1master
+      let bip32 = Bip32.fromSeed(new Buffer(hex, 'hex'), 'mainnet')
+      should.exist(bip32)
+      bip32.toString().should.equal(vector1mPrivate)
+      bip32.toPublic().toString().should.equal(vector1mPublic)
+    })
+
+    it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
+      let hex = vector2master
+      let bip32 = Bip32.fromSeed(new Buffer(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector2mPrivate)
       bip32.toPublic().toString().should.equal(vector2mPublic)
@@ -358,6 +392,28 @@ describe('Bip32', function () {
       return asink(function * () {
         let hex = vector2master
         let bip32 = yield new Bip32().asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        should.exist(bip32)
+        bip32.toString().should.equal(vector2mPrivate)
+        bip32.toPublic().toString().should.equal(vector2mPublic)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromSeed', function () {
+    it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
+      return asink(function * () {
+        let hex = vector1master
+        let bip32 = yield Bip32.asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
+        should.exist(bip32)
+        bip32.toString().should.equal(vector1mPrivate)
+        bip32.toPublic().toString().should.equal(vector1mPublic)
+      }, this)
+    })
+
+    it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
+      return asink(function * () {
+        let hex = vector2master
+        let bip32 = yield Bip32.asyncFromSeed(new Buffer(hex, 'hex'), 'mainnet')
         should.exist(bip32)
         bip32.toString().should.equal(vector2mPrivate)
         bip32.toPublic().toString().should.equal(vector2mPublic)
