@@ -26,9 +26,9 @@ describe('OpCode', function () {
   })
 
   it('should convert to a number with this handy syntax', function () {
-    new OpCode('OP_0').toNumber().should.equal(0)
-    new OpCode('OP_16').toNumber().should.equal(96)
-    new OpCode('OP_NOP').toNumber().should.equal(97)
+    new OpCode().fromString('OP_0').toNumber().should.equal(0)
+    new OpCode().fromString('OP_16').toNumber().should.equal(96)
+    new OpCode().fromString('OP_NOP').toNumber().should.equal(97)
   })
 
   describe('#fromNumber', function () {
