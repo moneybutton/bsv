@@ -19,8 +19,6 @@ describe('Msg', function () {
   it('should satisfy this basic API', function () {
     let msg = new Msg()
     should.exist(msg)
-    msg = new Msg()
-    should.exist(msg)
     msg.magicnum.should.equal(Constants.Msg.magicnum)
   })
 

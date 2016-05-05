@@ -27,6 +27,21 @@ describe('MsgReject', function () {
     })
   })
 
+  describe('@fromReject', function () {
+    it('should convert from a reject', function () {
+      let reject = new Reject().fromObject({
+        typevi: new VarInt().fromNumber(2),
+        typestr: 'tx',
+        codenum: 1,
+        reasonvi: new VarInt().fromNumber(2),
+        reasonstr: 'hi',
+        extrabuf: new Buffer(0)
+      })
+      let msgreject = MsgReject.fromReject(reject)
+      Buffer.compare(msgreject.databuf, reject.toBuffer()).should.equal(0)
+    })
+  })
+
   describe('#asyncFromReject', function () {
     it('should convert from a reject', function () {
       return asink(function * () {
@@ -39,6 +54,23 @@ describe('MsgReject', function () {
           extrabuf: new Buffer(0)
         })
         let msgreject = yield new MsgReject().asyncFromReject(reject)
+        Buffer.compare(msgreject.databuf, reject.toBuffer()).should.equal(0)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromReject', function () {
+    it('should convert from a reject', function () {
+      return asink(function * () {
+        let reject = new Reject().fromObject({
+          typevi: new VarInt().fromNumber(2),
+          typestr: 'tx',
+          codenum: 1,
+          reasonvi: new VarInt().fromNumber(2),
+          reasonstr: 'hi',
+          extrabuf: new Buffer(0)
+        })
+        let msgreject = yield MsgReject.asyncFromReject(reject)
         Buffer.compare(msgreject.databuf, reject.toBuffer()).should.equal(0)
       }, this)
     })

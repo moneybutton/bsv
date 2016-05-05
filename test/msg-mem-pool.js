@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let MsgMemPool = require('../lib/msg-headers')
+let MsgMemPool = require('../lib/msg-mem-pool')
 let should = require('chai').should()
 
 describe('MsgMemPool', function () {

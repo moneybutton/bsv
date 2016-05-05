@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let MsgAlert = require('../lib/msg-addr')
+let MsgAlert = require('../lib/msg-alert')
 let should = require('chai').should()
 
 describe('MsgAlert', function () {

@@ -23,6 +23,13 @@ describe('MsgHeaders', function () {
     })
   })
 
+  describe('@fromBlockHeaders', function () {
+    it('should make a msg from blockHeaders', function () {
+      let msgheaders = new MsgHeaders().fromBlockHeaders([blockHeader])
+      msgheaders.databuf.length.should.greaterThan(0)
+    })
+  })
+
   describe('#asyncFromBlockHeaders', function () {
     it('should make a msg from blockHeaders', function () {
       return asink(function * () {

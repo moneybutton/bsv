@@ -23,10 +23,28 @@ describe('MsgPing', function () {
     })
   })
 
+  describe('@fromRandom', function () {
+    it('should find a msgping from random', function () {
+      let msgping = MsgPing.fromRandom()
+      msgping.getCmd().should.equal('ping')
+      msgping.databuf.length.should.equal(8)
+    })
+  })
+
   describe('#asyncFromRandom', function () {
     it('should find a msgping from random', function () {
       return asink(function * () {
         let msgping = yield new MsgPing().asyncFromRandom()
+        msgping.getCmd().should.equal('ping')
+        msgping.databuf.length.should.equal(8)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromRandom', function () {
+    it('should find a msgping from random', function () {
+      return asink(function * () {
+        let msgping = yield MsgPing.asyncFromRandom()
         msgping.getCmd().should.equal('ping')
         msgping.databuf.length.should.equal(8)
       }, this)

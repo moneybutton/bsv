@@ -22,11 +22,29 @@ describe('MsgTx', function () {
     })
   })
 
+  describe('@fromTx', function () {
+    it('should convert a tx into a msgtx', function () {
+      let tx = new Tx().fromHex(txhex)
+      let msgtx = MsgTx.fromTx(tx)
+      msgtx.isValid().should.equal(true)
+    })
+  })
+
   describe('#asyncFromTx', function () {
     it('should convert a tx into a msgtx', function () {
       return asink(function * () {
         let tx = new Tx().fromHex(txhex)
         let msgtx = yield new MsgTx().asyncFromTx(tx)
+        msgtx.isValid().should.equal(true)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromTx', function () {
+    it('should convert a tx into a msgtx', function () {
+      return asink(function * () {
+        let tx = new Tx().fromHex(txhex)
+        let msgtx = yield MsgTx.asyncFromTx(tx)
         msgtx.isValid().should.equal(true)
       }, this)
     })

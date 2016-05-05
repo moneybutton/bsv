@@ -24,6 +24,15 @@ describe('MsgPong', function () {
     })
   })
 
+  describe('@fromMsgPing', function () {
+    it('should find a msgpong from a msgping', function () {
+      let msgping = MsgPing.fromRandom()
+      let msgpong = MsgPong.fromMsgPing(msgping)
+      Buffer.compare(msgping.databuf, msgpong.databuf).should.equal(0)
+      msgpong.getCmd().should.equal('pong')
+    })
+  })
+
   describe('#isValid', function () {
     it('should know this is a valid pong', function () {
       let msgping = new MsgPing().fromRandom()

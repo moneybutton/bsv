@@ -13,12 +13,19 @@ describe('MsgGetBlocks', function () {
 
   it('should exist', function () {
     should.exist(MsgGetBlocks)
-    should.exist(MsgGetBlocks())
+    should.exist(new MsgGetBlocks())
   })
 
   describe('#fromGetBlocks', function () {
     it('should convert from getblocks', function () {
-      let msggetblocks = MsgGetBlocks().fromGetBlocks(getblocks)
+      let msggetblocks = new MsgGetBlocks().fromGetBlocks(getblocks)
+      msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
+    })
+  })
+
+  describe('@fromGetBlocks', function () {
+    it('should convert from getblocks', function () {
+      let msggetblocks = MsgGetBlocks.fromGetBlocks(getblocks)
       msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
     })
   })
@@ -26,7 +33,16 @@ describe('MsgGetBlocks', function () {
   describe('#asyncFromGetBlocks', function () {
     it('should convert from getblocks', function () {
       return asink(function * () {
-        let msggetblocks = yield MsgGetBlocks().asyncFromGetBlocks(getblocks)
+        let msggetblocks = yield new MsgGetBlocks().asyncFromGetBlocks(getblocks)
+        msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromGetBlocks', function () {
+    it('should convert from getblocks', function () {
+      return asink(function * () {
+        let msggetblocks = yield MsgGetBlocks.asyncFromGetBlocks(getblocks)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)
     })
@@ -34,7 +50,14 @@ describe('MsgGetBlocks', function () {
 
   describe('#fromHashes', function () {
     it('should convert from hashes', function () {
-      let msggetblocks = MsgGetBlocks().fromHashes(hashes)
+      let msggetblocks = new MsgGetBlocks().fromHashes(hashes)
+      msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
+    })
+  })
+
+  describe('@fromHashes', function () {
+    it('should convert from hashes', function () {
+      let msggetblocks = MsgGetBlocks.fromHashes(hashes)
       msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
     })
   })
@@ -42,7 +65,16 @@ describe('MsgGetBlocks', function () {
   describe('#asyncFromHashes', function () {
     it('should convert from hashes', function () {
       return asink(function * () {
-        let msggetblocks = yield MsgGetBlocks().asyncFromHashes(hashes)
+        let msggetblocks = yield new MsgGetBlocks().asyncFromHashes(hashes)
+        msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
+      }, this)
+    })
+  })
+
+  describe('@asyncFromHashes', function () {
+    it('should convert from hashes', function () {
+      return asink(function * () {
+        let msggetblocks = yield MsgGetBlocks.asyncFromHashes(hashes)
         msggetblocks.databuf.length.should.equal(4 + 1 + 0 + 32)
       }, this)
     })
@@ -50,7 +82,7 @@ describe('MsgGetBlocks', function () {
 
   describe('#toGetBlocks', function () {
     it('should return getblocks', function () {
-      let msggetblocks = MsgGetBlocks().fromHashes(hashes)
+      let msggetblocks = new MsgGetBlocks().fromHashes(hashes)
       let getblocks2 = msggetblocks.toGetBlocks()
       getblocks2.toHex().should.equal(getblocks2.toHex())
     })
@@ -58,7 +90,7 @@ describe('MsgGetBlocks', function () {
 
   describe('#toHashes', function () {
     it('should return getblocks', function () {
-      let msggetblocks = MsgGetBlocks().fromHashes(hashes)
+      let msggetblocks = new MsgGetBlocks().fromHashes(hashes)
       let hashes2 = msggetblocks.toHashes()
       hashes2.length.should.equal(1)
     })
@@ -66,7 +98,7 @@ describe('MsgGetBlocks', function () {
 
   describe('#isValid', function () {
     it('should know this is a valid getblocks msg', function () {
-      let msggetblocks = MsgGetBlocks().fromHashes(hashes)
+      let msggetblocks = new MsgGetBlocks().fromHashes(hashes)
       msggetblocks.isValid().should.equal(true)
     })
   })
