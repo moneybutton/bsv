@@ -20,7 +20,7 @@ describe('PrivKey', function () {
     should.exist(privKey)
 
     new PrivKey().constructor.should.equal(new PrivKey().constructor)
-    PrivKey.TestNet().constructor.should.equal(PrivKey.TestNet().constructor)
+    new PrivKey.TestNet().constructor.should.equal(new PrivKey.TestNet().constructor)
 
     let deps = {}
     PrivKey.inject(deps).should.equal(PrivKey.inject(deps))
@@ -39,7 +39,7 @@ describe('PrivKey', function () {
   })
 
   it('should create an uncompressed testnet private key', function () {
-    let privKey = PrivKey.TestNet(Bn.fromBuffer(buf), false)
+    let privKey = new PrivKey.TestNet(Bn.fromBuffer(buf), false)
     privKey.toString().should.equal(enctu)
   })
 
@@ -73,6 +73,15 @@ describe('PrivKey', function () {
   describe('#fromRandom', function () {
     it('should set bn gt 0 and lt n, and should be compressed', function () {
       let privKey = new PrivKey().fromRandom()
+      privKey.bn.gt(new Bn(0)).should.equal(true)
+      privKey.bn.lt(Point.getN()).should.equal(true)
+      privKey.compressed.should.equal(true)
+    })
+  })
+
+  describe('@fromRandom', function () {
+    it('should set bn gt 0 and lt n, and should be compressed', function () {
+      let privKey = PrivKey.fromRandom()
       privKey.bn.gt(new Bn(0)).should.equal(true)
       privKey.bn.lt(Point.getN()).should.equal(true)
       privKey.compressed.should.equal(true)
@@ -136,6 +145,13 @@ describe('PrivKey', function () {
     })
   })
 
+  describe('@fromBn', function () {
+    it('should create a privKey from a bignum', function () {
+      let privKey = PrivKey.fromBn(new Bn(5))
+      privKey.bn.toString().should.equal('5')
+    })
+  })
+
   describe('#validate', function () {
     it('should unvalidate these privKeys', function () {
       let privKey = new PrivKey()
@@ -162,9 +178,16 @@ describe('PrivKey', function () {
     })
   })
 
+  describe('@fromWIF', function () {
+    it('should parse this compressed testnet address correctly', function () {
+      let privKey = PrivKey.fromWIF(encmainnet)
+      privKey.toWIF().should.equal(encmainnet)
+    })
+  })
+
   describe('#toWIF', function () {
     it('should parse this compressed testnet address correctly', function () {
-      let privKey = PrivKey.TestNet()
+      let privKey = new PrivKey.TestNet()
       privKey.fromWIF(enctestnet)
       privKey.toWIF().should.equal(enctestnet)
     })
@@ -172,7 +195,7 @@ describe('PrivKey', function () {
 
   describe('#fromString', function () {
     it('should parse this uncompressed testnet address correctly', function () {
-      let privKey = PrivKey.TestNet()
+      let privKey = new PrivKey.TestNet()
       privKey.fromString(enctu)
       privKey.toWIF().should.equal(enctu)
     })
