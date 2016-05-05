@@ -55,6 +55,12 @@ describe('PubKey', function () {
     })
   })
 
+  describe('@fromPrivKey', function () {
+    it('should make a public key from a privKey', function () {
+      should.exist(PubKey.fromPrivKey(new PrivKey().fromRandom()))
+    })
+  })
+
   describe('#asyncFromPrivKey', function () {
     it('should result the same as fromPrivKey', function () {
       return asink(function * () {
@@ -70,6 +76,26 @@ describe('PubKey', function () {
         let privKey = new PrivKey().fromBn(new Bn(5))
         let pubKey1 = new PubKey().fromPrivKey(privKey)
         let pubKey2 = yield new PubKey().asyncFromPrivKey(privKey)
+        pubKey1.toString().should.equal(pubKey2.toString())
+      }, this)
+    })
+  })
+
+  describe('@asyncFromPrivKey', function () {
+    it('should result the same as fromPrivKey', function () {
+      return asink(function * () {
+        let privKey = new PrivKey().fromRandom()
+        let pubKey1 = PubKey.fromPrivKey(privKey)
+        let pubKey2 = yield PubKey.asyncFromPrivKey(privKey)
+        pubKey1.toString().should.equal(pubKey2.toString())
+      }, this)
+    })
+
+    it('should result the same as fromPrivKey', function () {
+      return asink(function * () {
+        let privKey = new PrivKey().fromBn(new Bn(5))
+        let pubKey1 = PubKey.fromPrivKey(privKey)
+        let pubKey2 = yield PubKey.asyncFromPrivKey(privKey)
         pubKey1.toString().should.equal(pubKey2.toString())
       }, this)
     })
@@ -118,6 +144,17 @@ describe('PubKey', function () {
     })
   })
 
+  describe('@asyncFromBuffer', function () {
+    it('should derive the same as fromBuffer', function () {
+      return asink(function * () {
+        let pubKey = PubKey.fromPrivKey(new PrivKey().fromRandom())
+        let pubKey1 = PubKey.fromBuffer(pubKey.toBuffer())
+        let pubKey2 = yield PubKey.asyncFromBuffer(pubKey.toBuffer())
+        pubKey1.toString().should.equal(pubKey2.toString())
+      }, this)
+    })
+  })
+
   describe('#fromFastBuffer', function () {
     it('should convert from this known fast buffer', function () {
       let pubKey = new PubKey().fromFastBuffer(new Buffer('01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'))
@@ -148,6 +185,26 @@ describe('PubKey', function () {
     })
   })
 
+  describe('@fromDer', function () {
+    it('should parse this uncompressed public key', function () {
+      let pk = PubKey.fromDer(new Buffer('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341', 'hex'))
+      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+    })
+
+    it('should parse this compressed public key', function () {
+      let pk = PubKey.fromDer(new Buffer('031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
+      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+    })
+
+    it('should throw an error on this invalid public key', function () {
+      ;(function () {
+        PubKey.fromDer(new Buffer('091ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
+      }).should.throw()
+    })
+  })
+
   describe('#fromString', function () {
     it('should parse this known valid public key', function () {
       let pk = new PubKey()
@@ -158,6 +215,16 @@ describe('PubKey', function () {
   })
 
   describe('#fromX', function () {
+    it('should create this known public key', function () {
+      let x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
+      let pk = new PubKey()
+      pk.fromX(true, x)
+      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+    })
+  })
+
+  describe('@fromX', function () {
     it('should create this known public key', function () {
       let x = Bn.fromBuffer(new Buffer('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
       let pk = new PubKey()
