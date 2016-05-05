@@ -71,9 +71,3 @@ it can be built with groc:
 npm install -g groc
 groc
 ```
-
-License
--------
-
-In order to support maximum interoperability with other software, Fullnode is
-MIT-licensed. See LICENSE.
