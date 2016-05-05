@@ -158,17 +158,17 @@ describe('TxIn', function () {
     })
   })
 
-  describe('#fromScripthashMultisigTxOut', function () {
+  describe('#fromScriptHashMultisigTxOut', function () {
     it('should convert from scripthash out', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScripthash(address.hashBuf))
+      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txin = new TxIn().fromScripthashMultisigTxOut(txHashBuf, txOutNum, txout, script)
+      let txin = new TxIn().fromScriptHashMultisigTxOut(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
   })

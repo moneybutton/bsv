@@ -91,8 +91,8 @@ describe('TxBuilder', function () {
     txb.setChangeAddress(changeaddr)
     txb.fromPubKeyHash(txHashBuf, txOutNum1, txout1, keyPair1.pubKey)
     txb.fromPubKeyHash(txHashBuf, txOutNum2, txout2, keyPair2.pubKey)
-    txb.fromScripthashMultisig(txHashBuf, txOutNum3, txout3, redeemScript3)
-    txb.fromScripthashMultisig(txHashBuf, txOutNum4, txout4, redeemScript4)
+    txb.fromScriptHashMultisig(txHashBuf, txOutNum3, txout3, redeemScript3)
+    txb.fromScriptHashMultisig(txHashBuf, txOutNum4, txout4, redeemScript4)
     txb.toAddress(new Bn(2e8), saddr1) // pubKeyHash address
     txb.toAddress(new Bn(1e8), saddr2) // p2sh address
     // total sending: 2e8 (plus fee)
@@ -226,7 +226,7 @@ describe('TxBuilder', function () {
     it('should add a scripthash address', function () {
       let hashBuf = new Buffer(20)
       hashBuf.fill(0)
-      let address = new Address().fromRedeemScript(new Script().fromScripthash(hashBuf))
+      let address = new Address().fromRedeemScript(new Script().fromScriptHash(hashBuf))
       let txb = new TxBuilder()
       txb.toAddress(new Bn(0), address)
       txb.txouts.length.should.equal(1)
@@ -324,18 +324,18 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#fromScripthashMultisig', function () {
+  describe('#fromScriptHashMultisig', function () {
     it('should add an input from a scripthash output', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScripthash(address.hashBuf))
+      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
       // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = new TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().fromScriptHashMultisig(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
 
@@ -344,12 +344,12 @@ describe('TxBuilder', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScripthash(address.hashBuf))
+      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
       // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = new TxBuilder().fromScripthashMultisig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().fromScriptHashMultisig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })

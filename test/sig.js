@@ -110,12 +110,38 @@ describe('Sig', function () {
     })
   })
 
+  describe('@fromCompact', function () {
+    it('should create a signature from a compressed signature', function () {
+      let blank = new Buffer(32)
+      blank.fill(0)
+      let compact = Buffer.concat([
+        new Buffer([0 + 27 + 4]),
+        blank,
+        blank
+      ])
+      let sig = Sig.fromCompact(compact)
+      sig.compressed.should.equal(true)
+      sig.r.cmp(0).should.equal(0)
+      sig.s.cmp(0).should.equal(0)
+    })
+  })
+
   describe('#fromDer', function () {
     let buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex')
 
     it('should parse this DER format signature', function () {
       let sig = new Sig()
       sig.fromDer(buf)
+      sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277')
+      sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2')
+    })
+  })
+
+  describe('@fromDer', function () {
+    let buf = new Buffer('3044022075fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e62770220729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2', 'hex')
+
+    it('should parse this DER format signature', function () {
+      let sig = Sig.fromDer(buf)
       sig.r.toBuffer({size: 32}).toString('hex').should.equal('75fc517e541bd54769c080b64397e32161c850f6c1b2b67a5c433affbb3e6277')
       sig.s.toBuffer({size: 32}).toString('hex').should.equal('729e85cc46ffab881065ec07694220e71d4df9b2b8c8fd12c3122cf3a5efbcf2')
     })
@@ -134,6 +160,23 @@ describe('Sig', function () {
       let hex = '3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501'
       let buf = new Buffer(hex, 'hex')
       let sig = new Sig().fromTxFormat(buf)
+      sig.toTxFormat().toString('hex').should.equal(hex)
+    })
+  })
+
+  describe('@fromTxFormat', function () {
+    it('should convert from this known tx-format buffer', function () {
+      let buf = new Buffer('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201', 'hex')
+      let sig = Sig.fromTxFormat(buf)
+      sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810')
+      sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130')
+      sig.nhashtype.should.equal(Sig.SIGHASH_ALL)
+    })
+
+    it('should parse this known signature and rebuild it', function () {
+      let hex = '3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501'
+      let buf = new Buffer(hex, 'hex')
+      let sig = Sig.fromTxFormat(buf)
       sig.toTxFormat().toString('hex').should.equal(hex)
     })
   })
@@ -219,7 +262,7 @@ describe('Sig', function () {
     it('should convert these known r and s values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s})
+      let sig = new Sig(r, s)
       sig.toHex().should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
 
@@ -234,13 +277,13 @@ describe('Sig', function () {
     it('should convert these known r and s values and guessed i values into signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s, recovery: 0})
+      let sig = Sig.fromObject({r: r, s: s, recovery: 0})
       sig.toHex().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 1})
+      sig = Sig.fromObject({r: r, s: s, recovery: 1})
       sig.toHex().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 2})
+      sig = Sig.fromObject({r: r, s: s, recovery: 2})
       sig.toHex().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 3})
+      sig = Sig.fromObject({r: r, s: s, recovery: 3})
       sig.toHex().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
   })
@@ -249,7 +292,7 @@ describe('Sig', function () {
     it('should convert these known r and s values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s})
+      let sig = Sig.fromObject({r: r, s: s})
       let der = sig.toBuffer()
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
@@ -266,13 +309,13 @@ describe('Sig', function () {
     it('should convert these known r and s values and guessed recovery values into signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s, recovery: 0})
+      let sig = Sig.fromObject({r: r, s: s, recovery: 0})
       sig.toBuffer().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 1})
+      sig = Sig.fromObject({r: r, s: s, recovery: 1})
       sig.toBuffer().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 2})
+      sig = Sig.fromObject({r: r, s: s, recovery: 2})
       sig.toBuffer().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 3})
+      sig = Sig.fromObject({r: r, s: s, recovery: 3})
       sig.toBuffer().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
   })
@@ -281,13 +324,13 @@ describe('Sig', function () {
     it('should convert these known r and s values and guessed i values into signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s, recovery: 0})
+      let sig = Sig.fromObject({r: r, s: s, recovery: 0})
       sig.toCompact().toString('hex').should.equal('1f8bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 1})
+      sig = Sig.fromObject({r: r, s: s, recovery: 1})
       sig.toCompact().toString('hex').should.equal('208bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 2})
+      sig = Sig.fromObject({r: r, s: s, recovery: 2})
       sig.toCompact().toString('hex').should.equal('218bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
-      sig = new Sig({r: r, s: s, recovery: 3})
+      sig = Sig.fromObject({r: r, s: s, recovery: 3})
       sig.toCompact().toString('hex').should.equal('228bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa0993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
   })
@@ -296,7 +339,7 @@ describe('Sig', function () {
     it('should convert these known r and s values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s})
+      let sig = Sig.fromObject({r: r, s: s})
       let der = sig.toDer()
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
@@ -317,7 +360,7 @@ describe('Sig', function () {
     it('should convert this signature in to hex DER', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let sig = new Sig({r: r, s: s})
+      let sig = Sig.fromObject({r: r, s: s})
       let hex = sig.toString()
       hex.should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
@@ -331,7 +374,7 @@ describe('Sig', function () {
     vectors.valid.forEach(function (vector) {
       it('should pass this vector', function () {
         let compact = vector.compact
-        let sig = new Sig().fromCompact(new Buffer(compact.hex, 'hex'))
+        let sig = Sig.fromCompact(new Buffer(compact.hex, 'hex'))
         sig.recovery.should.equal(compact.i)
         sig.compressed.should.equal(compact.compressed)
         sig.toCompact().toString('hex').should.equal(compact.hex)
@@ -341,7 +384,7 @@ describe('Sig', function () {
     vectors.invalid.compact.forEach(function (compact) {
       it('should pass this vector', function () {
         ;(function () {
-          new Sig().fromCompact(new Buffer(compact.hex, 'hex'))
+          Sig.fromCompact(new Buffer(compact.hex, 'hex'))
         }).should.throw()
       })
     })

@@ -81,7 +81,7 @@ describe('Ecdsa', function () {
       let ecdsa = new Ecdsa()
       ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
       ecdsa.hashBuf = hashBuf
-      ecdsa.sig = new Sig({r: r, s: s})
+      ecdsa.sig = Sig.fromObject({r: r, s: s})
 
       ecdsa.calcrecovery()
       ecdsa.sig.recovery.should.equal(1)
@@ -117,7 +117,7 @@ describe('Ecdsa', function () {
         let ecdsa = new Ecdsa()
         ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
         ecdsa.hashBuf = hashBuf
-        ecdsa.sig = new Sig({r: r, s: s})
+        ecdsa.sig = Sig.fromObject({r: r, s: s})
 
         yield ecdsa.asyncCalcrecovery()
         ecdsa.sig.recovery.should.equal(1)
@@ -154,7 +154,7 @@ describe('Ecdsa', function () {
       let ecdsa = new Ecdsa()
       ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
       ecdsa.hashBuf = hashBuf
-      ecdsa.sig = new Sig({r: r, s: s})
+      ecdsa.sig = Sig.fromObject({r: r, s: s})
 
       let sig1 = ecdsa.calcrecovery().sig
       let sig2 = Ecdsa.calcrecovery(ecdsa.sig, ecdsa.keyPair.pubKey, ecdsa.hashBuf)
@@ -181,7 +181,7 @@ describe('Ecdsa', function () {
         let ecdsa = new Ecdsa()
         ecdsa.keyPair = new KeyPair().fromPrivKey(new PrivKey().fromBn(new Bn().fromBuffer(Hash.sha256(new Buffer('test')))))
         ecdsa.hashBuf = hashBuf
-        ecdsa.sig = new Sig({r: r, s: s})
+        ecdsa.sig = Sig.fromObject({r: r, s: s})
 
         let sig1 = ecdsa.calcrecovery().sig
         let sig2 = yield Ecdsa.asyncCalcrecovery(ecdsa.sig, ecdsa.keyPair.pubKey, ecdsa.hashBuf)

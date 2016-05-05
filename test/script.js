@@ -211,11 +211,23 @@ describe('Script', function () {
       let str = '0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601'
       new Script().fromBitcoindString(str).toBitcoindString().should.equal(str)
     })
-  })
 
-  describe('#fromBitcoindString', function () {
     it('should convert to this known string', function () {
       new Script().fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL')
+    })
+  })
+
+  describe('@fromBitcoindString', function () {
+    it('should convert from this known string', function () {
+      Script.fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL')
+      Script.fromBitcoindString("'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL").toBitcoindString().should.equal('0x4b417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL')
+
+      let str = '0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601'
+      Script.fromBitcoindString(str).toBitcoindString().should.equal(str)
+    })
+
+    it('should convert to this known string', function () {
+      Script.fromBitcoindString('DEPTH 0 EQUAL').toBitcoindString().should.equal('DEPTH 0 EQUAL')
     })
   })
 
@@ -239,11 +251,27 @@ describe('Script', function () {
     })
   })
 
-  describe('#fromScripthash', function () {
+  describe('@fromPubKeyHash', function () {
+    it('should create pubKeyHash output script', function () {
+      let hashBuf = new Buffer(20)
+      hashBuf.fill(0)
+      Script.fromPubKeyHash(hashBuf).toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
+    })
+  })
+
+  describe('#fromScriptHash', function () {
     it('should create p2sh output script', function () {
       let hashBuf = new Buffer(20)
       hashBuf.fill(0)
-      new Script().fromScripthash(hashBuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
+      new Script().fromScriptHash(hashBuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
+    })
+  })
+
+  describe('@fromScriptHash', function () {
+    it('should create p2sh output script', function () {
+      let hashBuf = new Buffer(20)
+      hashBuf.fill(0)
+      Script.fromScriptHash(hashBuf).toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
     })
   })
 
@@ -292,6 +320,36 @@ describe('Script', function () {
       let pubKey1 = new PubKey().fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
       let pubKey2 = new PubKey().fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
       let script = new Script().fromPubKeys(2, [pubKey1, pubKey2], false)
+      script.toString().should.equal('OP_2 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 OP_2 OP_CHECKMULTISIG')
+    })
+  })
+
+  describe('@fromPubKeys', function () {
+    it('should generate this known script from a list of public keys', function () {
+      let privKey = PrivKey.fromBn(new Bn(5))
+      let pubKey = PubKey.fromPrivKey(privKey)
+      let script = Script.fromPubKeys(2, [pubKey, pubKey, pubKey])
+      script.toString().should.equal('OP_2 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 33 0x022f8bde4d1a07209355b4a7250a5c5128e88b84bddc619ab7cba8d569b240efe4 OP_3 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, sorted', function () {
+      let pubKey1 = PubKey.fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubKey2 = PubKey.fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script.fromPubKeys(2, [pubKey1, pubKey2])
+      script.toString().should.equal('OP_2 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 OP_2 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, sorted explicitly', function () {
+      let pubKey1 = PubKey.fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubKey2 = PubKey.fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script.fromPubKeys(2, [pubKey1, pubKey2], true)
+      script.toString().should.equal('OP_2 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 OP_2 OP_CHECKMULTISIG')
+    })
+
+    it('should generate this known script from a list of public keys, unsorted', function () {
+      let pubKey1 = PubKey.fromHex('02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0')
+      let pubKey2 = PubKey.fromHex('02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758')
+      let script = Script.fromPubKeys(2, [pubKey1, pubKey2], false)
       script.toString().should.equal('OP_2 33 0x02c525d65d18be8fb36ab50a21bee02ac9fdc2c176fa18791ac664ea4b95572ae0 33 0x02b937d54b550a3afdc2819772822d25869495f9e588b56a0205617d80514f0758 OP_2 OP_CHECKMULTISIG')
     })
   })
@@ -432,9 +490,24 @@ describe('Script', function () {
     })
   })
 
+  describe('@writeScript', function () {
+    it('should write these scripts', function () {
+      let script1 = Script.fromString('OP_CHECKMULTISIG')
+      let script2 = Script.fromString('OP_CHECKMULTISIG')
+      let script = script1.writeScript(script2)
+      script.toString().should.equal('OP_CHECKMULTISIG OP_CHECKMULTISIG')
+    })
+  })
+
   describe('#writeOpCode', function () {
     it('should write this op', function () {
       new Script().writeOpCode(OpCode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG')
+    })
+  })
+
+  describe('@writeOpCode', function () {
+    it('should write this op', function () {
+      Script.writeOpCode(OpCode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG')
     })
   })
 
@@ -453,6 +526,16 @@ describe('Script', function () {
       new Script().writeBn(new Bn(16)).toBuffer().toString('hex').should.equal('60')
       new Script().writeBn(new Bn(-1)).toBuffer().toString('hex').should.equal('4f')
       new Script().writeBn(new Bn(-2)).toBuffer().toString('hex').should.equal('0182')
+    })
+  })
+
+  describe('@writeBn', function () {
+    it('should write these numbers', function () {
+      Script.writeBn(new Bn(0)).toBuffer().toString('hex').should.equal('00')
+      Script.writeBn(new Bn(1)).toBuffer().toString('hex').should.equal('51')
+      Script.writeBn(new Bn(16)).toBuffer().toString('hex').should.equal('60')
+      Script.writeBn(new Bn(-1)).toBuffer().toString('hex').should.equal('4f')
+      Script.writeBn(new Bn(-2)).toBuffer().toString('hex').should.equal('0182')
     })
   })
 
@@ -481,6 +564,23 @@ describe('Script', function () {
     })
   })
 
+  describe('@writeBuffer', function () {
+    it('should write these push data', function () {
+      let buf = new Buffer(1)
+      buf.fill(0)
+      Script.writeBuffer(buf).toString().should.equal('1 0x00')
+      buf = new Buffer(255)
+      buf.fill(0)
+      Script.writeBuffer(buf).toString().should.equal('OP_PUSHDATA1 255 0x' + buf.toString('hex'))
+      buf = new Buffer(256)
+      buf.fill(0)
+      Script.writeBuffer(buf).toString().should.equal('OP_PUSHDATA2 256 0x' + buf.toString('hex'))
+      buf = new Buffer(Math.pow(2, 16))
+      buf.fill(0)
+      Script.writeBuffer(buf).toString().should.equal('OP_PUSHDATA4 ' + Math.pow(2, 16) + ' 0x' + buf.toString('hex'))
+    })
+  })
+
   describe('#setChunkBuffer', function () {
     it('should set this buffer', function () {
       let script = new Script().writeOpCode(OpCode.OP_CHECKMULTISIG)
@@ -493,6 +593,12 @@ describe('Script', function () {
   describe('#writeString', function () {
     it('should write both pushdata and non-pushdata chunks', function () {
       new Script().writeString('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG')
+    })
+  })
+
+  describe('@writeString', function () {
+    it('should write both pushdata and non-pushdata chunks', function () {
+      Script.writeString('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG')
     })
   })
 
