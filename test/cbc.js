@@ -49,19 +49,19 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(128 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      let buf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      let buf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       Buffer.compare(messageBuf, buf2).should.equal(0)
     })
 
@@ -71,19 +71,19 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(120 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      let buf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      let buf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       Buffer.compare(messageBuf, buf2).should.equal(0)
     })
 
@@ -93,19 +93,19 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(136 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      let buf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      let buf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       Buffer.compare(messageBuf, buf2).should.equal(0)
     })
 
@@ -115,13 +115,13 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(128 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = Aes
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      let buf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      let buf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       Buffer.compare(messageBuf, buf2).should.equal(0)
     })
   })
@@ -133,19 +133,19 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(128 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      messageBuf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      messageBuf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))
     })
 
@@ -155,19 +155,19 @@ describe('Cbc', function () {
       let messageBuf2 = new Buffer(120 / 8)
       messageBuf2.fill(0x10)
       let messageBuf = Buffer.concat([messageBuf1, messageBuf2])
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encrypt(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      messageBuf2 = Cbc.decrypt(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encrypt(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      messageBuf2 = Cbc.decrypt(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))
     })
   })
@@ -176,30 +176,30 @@ describe('Cbc', function () {
     it('should return this known value', function () {
       let messageBuf = new Buffer(128 / 8)
       messageBuf.fill(0)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let enc = Cbc.encryptblock(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      enc.toString('hex').should.equal(ivbuf.toString('hex'))
+      let enc = Cbc.encryptblock(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      enc.toString('hex').should.equal(ivBuf.toString('hex'))
     })
 
     it('should return this other known value', function () {
       let messageBuf = new Buffer(128 / 8)
       messageBuf.fill(0x10)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let enc = Cbc.encryptblock(messageBuf, ivbuf, blockcipher, cipherKeybuf)
+      let enc = Cbc.encryptblock(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
       enc.toString('hex').should.equal('00000000000000000000000000000000')
     })
   })
@@ -208,19 +208,19 @@ describe('Cbc', function () {
     it('should decrypt an encrypted block', function () {
       let messageBuf = new Buffer(128 / 8)
       messageBuf.fill(0)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBuf = Cbc.encryptblock(messageBuf, ivbuf, blockcipher, cipherKeybuf)
-      let buf = Cbc.decryptblock(encBuf, ivbuf, blockcipher, cipherKeybuf)
+      let encBuf = Cbc.encryptblock(messageBuf, ivBuf, blockcipher, cipherKeyBuf)
+      let buf = Cbc.decryptblock(encBuf, ivBuf, blockcipher, cipherKeyBuf)
       buf.toString('hex').should.equal(messageBuf.toString('hex'))
     })
   })
@@ -231,15 +231,15 @@ describe('Cbc', function () {
       messageBuf1.fill(0)
       let messageBuf2 = new Buffer(128 / 8)
       messageBuf2.fill(0x10)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBufs = Cbc.encryptblocks([messageBuf1, messageBuf2], ivbuf, blockcipher, cipherKeybuf)
+      let encBufs = Cbc.encryptblocks([messageBuf1, messageBuf2], ivBuf, blockcipher, cipherKeyBuf)
       encBufs[0].toString('hex').should.equal('10101010101010101010101010101010')
       encBufs[1].toString('hex').should.equal('00000000000000000000000000000000')
     })
@@ -251,19 +251,19 @@ describe('Cbc', function () {
       messageBuf1.fill(0)
       let messageBuf2 = new Buffer(128 / 8)
       messageBuf2.fill(0x10)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x10)
-      let cipherKeybuf = new Buffer(128 / 8)
-      cipherKeybuf.fill(0)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x10)
+      let cipherKeyBuf = new Buffer(128 / 8)
+      cipherKeyBuf.fill(0)
       let blockcipher = {}
-      blockcipher.encrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.encrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      blockcipher.decrypt = function (messageBuf, cipherKeybuf) {
+      blockcipher.decrypt = function (messageBuf, cipherKeyBuf) {
         return messageBuf
       }
-      let encBufs = Cbc.encryptblocks([messageBuf1, messageBuf2], ivbuf, blockcipher, cipherKeybuf)
-      let bufs = Cbc.decryptblocks(encBufs, ivbuf, blockcipher, cipherKeybuf)
+      let encBufs = Cbc.encryptblocks([messageBuf1, messageBuf2], ivBuf, blockcipher, cipherKeyBuf)
+      let bufs = Cbc.decryptblocks(encBufs, ivBuf, blockcipher, cipherKeyBuf)
       bufs[0].toString('hex').should.equal(messageBuf1.toString('hex'))
       bufs[1].toString('hex').should.equal(messageBuf2.toString('hex'))
     })

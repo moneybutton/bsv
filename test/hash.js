@@ -297,10 +297,10 @@ describe('Hash', function () {
 
     vectors.hmac.forEach(function (vector, i) {
       it('should pass standard hmac test vector ' + i, function () {
-        let keybuf = new Buffer(vector.key, 'hex')
+        let keyBuf = new Buffer(vector.key, 'hex')
         let databuf = new Buffer(vector.data, 'hex')
-        Hash.sha256Hmac(databuf, keybuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
-        Hash.sha512Hmac(databuf, keybuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
+        Hash.sha256Hmac(databuf, keyBuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
+        Hash.sha512Hmac(databuf, keyBuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
       })
     })
   })

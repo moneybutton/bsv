@@ -55,25 +55,25 @@ describe('Aes', function () {
     })
   })
 
-  describe('@buf2words', function () {
+  describe('@buf2Words', function () {
     it('should convert this 4 length buffer into an array', function () {
       let buf = new Buffer([0, 0, 0, 0])
-      let words = Aes.buf2words(buf)
+      let words = Aes.buf2Words(buf)
       words.length.should.equal(1)
     })
 
     it('should throw an error on this 5 length buffer', function () {
       let buf = new Buffer([0, 0, 0, 0, 0])
       ;(function () {
-        Aes.buf2words(buf)
+        Aes.buf2Words(buf)
       }).should.throw()
     })
   })
 
-  describe('@words2buf', function () {
+  describe('@words2Buf', function () {
     it('should convert this array into a buffer', function () {
       let a = [100, 0]
-      let buf = Aes.words2buf(a)
+      let buf = Aes.words2Buf(a)
       buf.length.should.equal(8)
     })
   })
@@ -81,12 +81,12 @@ describe('Aes', function () {
   describe('vectors', function () {
     vectors.forEach(function (vector, i) {
       it('should pass sjcl test vector ' + i, function () {
-        let keybuf = new Buffer(vector.key, 'hex')
+        let keyBuf = new Buffer(vector.key, 'hex')
         let ptbuf = new Buffer(vector.pt, 'hex')
-        let ctbuf = new Buffer(vector.ct, 'hex')
+        let ctBuf = new Buffer(vector.ct, 'hex')
 
-        Aes.encrypt(ptbuf, keybuf).toString('hex').should.equal(ctbuf.toString('hex'))
-        Aes.decrypt(ctbuf, keybuf).toString('hex').should.equal(ptbuf.toString('hex'))
+        Aes.encrypt(ptbuf, keyBuf).toString('hex').should.equal(ctBuf.toString('hex'))
+        Aes.decrypt(ctBuf, keyBuf).toString('hex').should.equal(ptbuf.toString('hex'))
       })
     })
   })

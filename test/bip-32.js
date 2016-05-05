@@ -313,9 +313,9 @@ describe('Bip32', function () {
       let bip322 = new Bip32().fromObject({
         version: bip32.version,
         depth: bip32.depth,
-        parentfingerprint: bip32.parentfingerprint,
-        childindex: bip32.childindex,
-        chaincode: bip32.chaincode,
+        parentFingerPrint: bip32.parentFingerPrint,
+        childIndex: bip32.childIndex,
+        chainCode: bip32.chainCode,
         privKey: bip32.privKey,
         pubKey: bip32.pubKey,
         hasPrivKey: bip32.hasPrivKey

@@ -16,9 +16,9 @@ describe('Ach (Aes+Cbc+Hmac)', function () {
       let data = new Buffer('this is my test data')
       let cipherKey = new Buffer(256 / 8)
       cipherKey.fill(0x70)
-      let ivbuf = new Buffer(128 / 8)
-      ivbuf.fill(0x07)
-      let encBuf = Ach.encrypt(data, cipherKey, ivbuf)
+      let ivBuf = new Buffer(128 / 8)
+      ivBuf.fill(0x07)
+      let encBuf = Ach.encrypt(data, cipherKey, ivBuf)
       let enchex = '5ca7fb171ef5001fdc26aca9ca806279200a8dd9bc3580b95d80335ed358627e07070707070707070707070707070707a1e5dd6b76089f0c055d718c9f597d22d727422cb1a28dd1a30aacb0cb008c1d'
       encBuf.toString('hex').should.equal(enchex)
     })
