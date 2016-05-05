@@ -58,6 +58,20 @@ describe('TxIn', function () {
     })
   })
 
+  describe('#fromProperties', function () {
+    it('should make a new txin', function () {
+      let txIn = new TxIn().fromProperties(txHashBuf, txOutNum, script, nSequence)
+      should.exist(txIn.scriptVi)
+    })
+  })
+
+  describe('@fromProperties', function () {
+    it('should make a new txin', function () {
+      let txIn = TxIn.fromProperties(txHashBuf, txOutNum, script, nSequence)
+      should.exist(txIn.scriptVi)
+    })
+  })
+
   describe('#setScript', function () {
     it('should calculate the varInt size correctly', function () {
       let txin2 = new TxIn(txin)
