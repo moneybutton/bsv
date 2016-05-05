@@ -11,7 +11,7 @@ let Sig = require('../lib/sig')
 let Tx = require('../lib/tx')
 let TxBuilder = require('../lib/tx-builder')
 let TxOut = require('../lib/tx-out')
-let TxOutmap = require('../lib/tx-out-map')
+let TxOutMap = require('../lib/tx-out-map')
 let TxVerifier = require('../lib/tx-verifier')
 let asink = require('asink')
 let should = require('chai').should()
@@ -74,10 +74,10 @@ describe('TxBuilder', function () {
     let address4 = new Address().fromRedeemScript(redeemScript4)
     let scriptout4 = address4.toScript()
 
-    let txout1 = new TxOut(new Bn(1e8), scriptout1)
-    let txout2 = new TxOut(new Bn(1e8), scriptout2)
-    let txout3 = new TxOut(new Bn(1e8), scriptout3)
-    let txout4 = new TxOut(new Bn(1e8), scriptout4)
+    let txout1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+    let txout2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+    let txout3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
+    let txout4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
     // total balance: 4e8
 
     let txHashBuf = new Buffer(32)
@@ -215,7 +215,7 @@ describe('TxBuilder', function () {
 
     it('should set tx and utxoutmap', function () {
       let tx = new Tx()
-      let utxoutmap = TxOutmap()
+      let utxoutmap = new TxOutMap()
       let txb = new TxBuilder().importPartiallySignedTx(tx, utxoutmap)
       should.exist(txb.tx)
       should.exist(txb.utxoutmap)
@@ -276,7 +276,7 @@ describe('TxBuilder', function () {
     it('should add an input from a script', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
@@ -288,7 +288,7 @@ describe('TxBuilder', function () {
     it('should add an input from a script and set nSequence', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
@@ -303,7 +303,7 @@ describe('TxBuilder', function () {
     it('should add an input from a pubKeyHash output', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
@@ -314,7 +314,7 @@ describe('TxBuilder', function () {
     it('should add an input from a pubKeyHash output and set nSequence', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
@@ -330,11 +330,10 @@ describe('TxBuilder', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
       let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
@@ -344,11 +343,10 @@ describe('TxBuilder', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
       let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)

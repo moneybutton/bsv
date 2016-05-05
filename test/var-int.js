@@ -16,14 +16,9 @@ describe('VarInt', function () {
     should.exist(varInt)
     varInt.buf.toString('hex').should.equal('00')
 
-    // various ways to use the constructor
-    new VarInt(new VarInt(0).toBuffer()).toNumber().should.equal(0)
-    new VarInt(0).toNumber().should.equal(0)
-    new VarInt(new Bn(0)).toNumber().should.equal(0)
-
     // varInts can have multiple buffer representations
-    new VarInt(0).toNumber().should.equal(new VarInt(new Buffer([0xFD, 0, 0])).toNumber())
-    new VarInt(0).toBuffer().toString('hex').should.not.equal(new VarInt().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
+    VarInt.fromNumber(0).toNumber().should.equal(new VarInt(new Buffer([0xFD, 0, 0])).toNumber())
+    VarInt.fromNumber(0).toBuffer().toString('hex').should.not.equal(new VarInt().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
   })
 
   describe('#fromObject', function () {
@@ -76,9 +71,23 @@ describe('VarInt', function () {
     })
   })
 
+  describe('@fromBn', function () {
+    it('should set a number', function () {
+      let varInt = VarInt.fromBn(new Bn(5))
+      varInt.toNumber().should.equal(5)
+    })
+  })
+
   describe('#fromNumber', function () {
     it('should set a number', function () {
       let varInt = new VarInt().fromNumber(5)
+      varInt.toNumber().should.equal(5)
+    })
+  })
+
+  describe('@fromNumber', function () {
+    it('should set a number', function () {
+      let varInt = VarInt.fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })
@@ -93,14 +102,14 @@ describe('VarInt', function () {
 
   describe('#toBn', function () {
     it('should return a buffer', function () {
-      let varInt = new VarInt(5)
+      let varInt = VarInt.fromNumber(5)
       varInt.toBn().toString().should.equal(new Bn(5).toString())
     })
   })
 
   describe('#toNumber', function () {
     it('should return a buffer', function () {
-      let varInt = new VarInt(5)
+      let varInt = VarInt.fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })

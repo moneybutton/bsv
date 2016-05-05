@@ -19,7 +19,7 @@ describe('Block', function () {
   let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
   let bhbuf = new Buffer(bhhex, 'hex')
   let bh = new BlockHeader().fromBuffer(bhbuf)
-  let txsvi = new VarInt(1)
+  let txsvi = VarInt.fromNumber(1)
   let txs = [new Tx().fromBuffer(txbuf)]
   let block = new Block().fromObject({
     magicnum: magicnum,

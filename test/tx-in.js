@@ -15,7 +15,7 @@ describe('TxIn', function () {
   txHashBuf.fill(0)
   let txOutNum = 0
   let script = new Script().fromString('OP_CHECKMULTISIG')
-  let scriptVi = new VarInt(script.toBuffer().length)
+  let scriptVi = VarInt.fromNumber(script.toBuffer().length)
   let nSequence = 0
   let txin = new TxIn().fromObject({
     txHashBuf: txHashBuf,
@@ -139,7 +139,7 @@ describe('TxIn', function () {
     it('should convert from pubKeyHash out', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = new TxOut(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
@@ -154,7 +154,7 @@ describe('TxIn', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
@@ -169,7 +169,7 @@ describe('TxIn', function () {
       let keyPair2 = KeyPair.fromRandom()
       let script = Script.fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = Address.fromRedeemScript(script)
-      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0

@@ -6,7 +6,7 @@ let Interp = require('../lib/interp')
 let Script = require('../lib/script')
 let Tx = require('../lib/tx')
 let TxOut = require('../lib/tx-out')
-let TxOutmap = require('../lib/tx-out-map')
+let TxOutMap = require('../lib/tx-out-map')
 let TxVerifier = require('../lib/tx-verifier')
 let asink = require('asink')
 let should = require('chai').should()
@@ -37,13 +37,13 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txoutmap = TxOutmap()
+        let txoutmap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
           txoutmap.add(txHashBuf, txOutNum, txout)
         })
@@ -59,13 +59,13 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txoutmap = TxOutmap()
+          let txoutmap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
             txoutmap.add(txHashBuf, txOutNum, txout)
           })
@@ -88,13 +88,13 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txoutmap = TxOutmap()
+        let txoutmap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
           txoutmap.add(txHashBuf, txOutNum, txout)
         })
@@ -111,13 +111,13 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txoutmap = TxOutmap()
+          let txoutmap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = new TxOut(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
             txoutmap.add(txHashBuf, txOutNum, txout)
           })

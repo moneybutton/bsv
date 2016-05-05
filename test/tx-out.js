@@ -1,16 +1,16 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
 let Bn = require('../lib/bn')
-let TxOut = require('../lib/tx-out')
-let Script = require('../lib/script')
-let VarInt = require('../lib/var-int')
 let Br = require('../lib/br')
+let Script = require('../lib/script')
+let TxOut = require('../lib/tx-out')
+let VarInt = require('../lib/var-int')
+let should = require('chai').should()
 
 describe('TxOut', function () {
   let valuebn = new Bn(5)
   let script = new Script().fromString('OP_CHECKMULTISIG')
-  let scriptVi = new VarInt(script.toBuffer().length)
+  let scriptVi = VarInt.fromNumber(script.toBuffer().length)
   let txout = new TxOut().fromObject({
     valuebn: valuebn,
     scriptVi: scriptVi,
@@ -20,13 +20,7 @@ describe('TxOut', function () {
   it('should make a new txout', function () {
     let txout = new TxOut()
     should.exist(txout)
-    txout = new TxOut()
-    should.exist(txout)
     new TxOut(valuebn, scriptVi, script).valuebn.toString().should.equal('5')
-  })
-
-  it('should calculate scriptVi correctly when making a new txout', function () {
-    new TxOut(valuebn, script).scriptVi.toNumber().should.equal(1)
   })
 
   describe('#fromObject', function () {
@@ -46,6 +40,24 @@ describe('TxOut', function () {
     it('should set the script size correctly', function () {
       let txout2 = new TxOut(txout)
       txout2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
+    })
+  })
+
+  describe('#fromProperties', function () {
+    it('should make a new txOut', function () {
+      let valuebn = Bn(0)
+      let script = Script.fromString('OP_RETURN')
+      let txOut = new TxOut().fromProperties(valuebn, script)
+      txOut.scriptVi.toNumber().should.equal(1)
+    })
+  })
+
+  describe('@fromProperties', function () {
+    it('should make a new txOut', function () {
+      let valuebn = Bn(0)
+      let script = Script.fromString('OP_RETURN')
+      let txOut = TxOut.fromProperties(valuebn, script)
+      txOut.scriptVi.toNumber().should.equal(1)
     })
   })
 

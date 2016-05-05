@@ -21,9 +21,9 @@ describe('Tx', function () {
   let txout = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
   let tx = new Tx().fromObject({
     version: 0,
-    txinsvi: new VarInt(1),
+    txInsVi: VarInt.fromNumber(1),
     txins: [txin],
-    txoutsvi: new VarInt(1),
+    txOutsVi: VarInt.fromNumber(1),
     txouts: [txout],
     nLockTime: 0
   })
@@ -44,9 +44,9 @@ describe('Tx', function () {
 
     // should set known defaults
     tx.version.should.equal(1)
-    tx.txinsvi.toNumber().should.equal(0)
+    tx.txInsVi.toNumber().should.equal(0)
     tx.txins.length.should.equal(0)
-    tx.txoutsvi.toNumber().should.equal(0)
+    tx.txOutsVi.toNumber().should.equal(0)
     tx.txouts.length.should.equal(0)
     tx.nLockTime.should.equal(0)
   })
@@ -56,9 +56,9 @@ describe('Tx', function () {
       let tx = new Tx()
       tx.initialize()
       tx.version.should.equal(1)
-      tx.txinsvi.toNumber().should.equal(0)
+      tx.txInsVi.toNumber().should.equal(0)
       tx.txins.length.should.equal(0)
-      tx.txoutsvi.toNumber().should.equal(0)
+      tx.txOutsVi.toNumber().should.equal(0)
       tx.txouts.length.should.equal(0)
       tx.nLockTime.should.equal(0)
     })
@@ -68,16 +68,16 @@ describe('Tx', function () {
     it('should set all the basic parameters', function () {
       let tx = new Tx().fromObject({
         version: 0,
-        txinsvi: new VarInt(1),
+        txInsVi: VarInt.fromNumber(1),
         txins: [txin],
-        txoutsvi: new VarInt(1),
+        txOutsVi: VarInt.fromNumber(1),
         txouts: [txout],
         nLockTime: 0
       })
       should.exist(tx.version)
-      should.exist(tx.txinsvi)
+      should.exist(tx.txInsVi)
       should.exist(tx.txins)
-      should.exist(tx.txoutsvi)
+      should.exist(tx.txOutsVi)
       should.exist(tx.txouts)
       should.exist(tx.nLockTime)
     })
@@ -87,16 +87,16 @@ describe('Tx', function () {
     it('should set all the basic parameters', function () {
       let tx = new Tx().fromJson({
         version: 0,
-        txinsvi: new VarInt(1).toJson(),
+        txInsVi: VarInt.fromNumber(1).toJson(),
         txins: [txin.toJson()],
-        txoutsvi: new VarInt(1).toJson(),
+        txOutsVi: VarInt.fromNumber(1).toJson(),
         txouts: [txout.toJson()],
         nLockTime: 0
       })
       should.exist(tx.version)
-      should.exist(tx.txinsvi)
+      should.exist(tx.txInsVi)
       should.exist(tx.txins)
-      should.exist(tx.txoutsvi)
+      should.exist(tx.txOutsVi)
       should.exist(tx.txouts)
       should.exist(tx.nLockTime)
     })
@@ -106,9 +106,9 @@ describe('Tx', function () {
     it('should recover all the basic parameters', function () {
       let json = tx.toJson()
       should.exist(json.version)
-      should.exist(json.txinsvi)
+      should.exist(json.txInsVi)
       should.exist(json.txins)
-      should.exist(json.txoutsvi)
+      should.exist(json.txOutsVi)
       should.exist(json.txouts)
       should.exist(json.nLockTime)
     })
@@ -166,7 +166,7 @@ describe('Tx', function () {
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       let tx = new Tx(tx2buf)
       tx.txouts.length = 1
-      tx.txoutsvi = new VarInt(1)
+      tx.txOutsVi = VarInt.fromNumber(1)
       tx.sighash(Sig.SIGHASH_SINGLE, 1, new Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
     })
   })
@@ -183,7 +183,7 @@ describe('Tx', function () {
       return asink(function * () {
         let tx = new Tx(tx2buf)
         tx.txouts.length = 1
-        tx.txoutsvi = new VarInt(1)
+        tx.txOutsVi = VarInt.fromNumber(1)
         let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, new Script())
         hashBuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
       }, this)
@@ -278,9 +278,9 @@ describe('Tx', function () {
     it('should add an input', function () {
       let txin = new TxIn()
       let tx = new Tx()
-      tx.txinsvi.toNumber().should.equal(0)
+      tx.txInsVi.toNumber().should.equal(0)
       tx.addTxIn(txin)
-      tx.txinsvi.toNumber().should.equal(1)
+      tx.txInsVi.toNumber().should.equal(1)
       tx.txins.length.should.equal(1)
     })
   })
@@ -289,9 +289,9 @@ describe('Tx', function () {
     it('should add an output', function () {
       let txout = new TxOut()
       let tx = new Tx()
-      tx.txoutsvi.toNumber().should.equal(0)
+      tx.txOutsVi.toNumber().should.equal(0)
       tx.addTxOut(txout)
-      tx.txoutsvi.toNumber().should.equal(1)
+      tx.txOutsVi.toNumber().should.equal(1)
       tx.txouts.length.should.equal(1)
     })
   })

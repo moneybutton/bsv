@@ -20,6 +20,16 @@ describe('WorkersResult', function () {
     })
   })
 
+  describe('@fromResult', function () {
+    it('should make a workersResult from a string', function () {
+      let result = 'test result'
+      let workersResult = WorkersResult.fromResult(result, 0)
+      cmp(workersResult.resbuf, new Buffer(JSON.stringify(result))).should.equal(true)
+      workersResult.isError.should.equal(false)
+      workersResult.id.should.equal(0)
+    })
+  })
+
   describe('#fromError', function () {
     it('should make a workersResult from an error', function () {
       let error = new Error('oh noes, error')

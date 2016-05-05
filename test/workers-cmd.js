@@ -39,11 +39,48 @@ describe('WorkersCmd', function () {
     })
   })
 
+  describe('@fromObjectMethod', function () {
+    it('should convert a bip32 into a workerscmd', function () {
+      let bip32 = new Bip32().fromRandom()
+      let args = []
+      let workersCmd = WorkersCmd.fromObjectMethod(bip32, 'toString', args, 0)
+      cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
+      workersCmd.args.length.should.equal(0)
+      workersCmd.id.should.equal(0)
+    })
+
+    it('should convert a bip32 into a workerscmd with complicated args', function () {
+      let bip32 = new Bip32().fromRandom()
+      let arg0 = true
+      let arg1 = new Buffer(5)
+      arg1.fill(0)
+      let arg2 = new Bip32().fromRandom()
+      let args = [arg0, arg1, arg2]
+      let workersCmd = WorkersCmd.fromObjectMethod(bip32, 'toString', args, 0)
+      cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
+      workersCmd.args.length.should.equal(3)
+      workersCmd.args[0].should.equal(arg0)
+      cmp(workersCmd.args[1], arg1).should.equal(true)
+      workersCmd.args[2].toString().should.equal(arg2.toString())
+      workersCmd.id.should.equal(0)
+    })
+  })
+
   describe('#fromClassMethod', function () {
     it('should convert Hash.sha1 into a workerscmd', function () {
       let buf = new Buffer([0, 1, 2, 3])
       let args = [buf]
       let workersCmd = new WorkersCmd().fromClassMethod('Hash', 'sha1', args, 0)
+      workersCmd.args[0].toString('hex').should.equal(buf.toString('hex'))
+      workersCmd.isobj.should.equal(false)
+    })
+  })
+
+  describe('@fromClassMethod', function () {
+    it('should convert Hash.sha1 into a workerscmd', function () {
+      let buf = new Buffer([0, 1, 2, 3])
+      let args = [buf]
+      let workersCmd = WorkersCmd.fromClassMethod('Hash', 'sha1', args, 0)
       workersCmd.args[0].toString('hex').should.equal(buf.toString('hex'))
       workersCmd.isobj.should.equal(false)
     })
