@@ -163,7 +163,7 @@ describe('TxIn', function () {
   })
 
   describe('#fromScriptHashMultiSigTxOut', function () {
-    it('should convert from scripthash out', function () {
+    it('should convert from scriptHash out', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
@@ -178,7 +178,7 @@ describe('TxIn', function () {
   })
 
   describe('@fromScriptHashMultiSigTxOut', function () {
-    it('should convert from scripthash out', function () {
+    it('should convert from scriptHash out', function () {
       let keyPair1 = KeyPair.fromRandom()
       let keyPair2 = KeyPair.fromRandom()
       let script = Script.fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])

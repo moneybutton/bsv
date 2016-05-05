@@ -33,7 +33,7 @@ describe('#Ecies', function () {
       messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))
     })
 
-    it('should decrypt that which was encrypted if fromkeyPair was randomly generated', function () {
+    it('should decrypt that which was encrypted if fromKeyPair was randomly generated', function () {
       let encBuf = Ecies.encrypt(messageBuf, tokey.pubKey)
       let messageBuf2 = Ecies.decrypt(encBuf, tokey.privKey)
       messageBuf2.toString('hex').should.equal(messageBuf.toString('hex'))

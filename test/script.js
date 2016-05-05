@@ -19,7 +19,7 @@ describe('Script', function () {
   })
 
   describe('#fromHex', function () {
-    it('should parse this hex string containing an OP code', function () {
+    it('should parse this hex string containIng an OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_0').toNumber()
       let script = new Script().fromHex(buf.toString('hex'))
@@ -29,7 +29,7 @@ describe('Script', function () {
   })
 
   describe('#fromBuffer', function () {
-    it('should parse this buffer containing an OP code', function () {
+    it('should parse this buffer containIng an OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_0').toNumber()
       let script = new Script().fromBuffer(buf)
@@ -37,7 +37,7 @@ describe('Script', function () {
       script.chunks[0].opCodeNum.should.equal(buf[0])
     })
 
-    it('should parse this buffer containing another OP code', function () {
+    it('should parse this buffer containIng another OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_CHECKMULTISIG').toNumber()
       let script = new Script().fromBuffer(buf)
@@ -45,14 +45,14 @@ describe('Script', function () {
       script.chunks[0].opCodeNum.should.equal(buf[0])
     })
 
-    it('should parse this buffer containing three bytes of data', function () {
+    it('should parse this buffer containIng three bytes of data', function () {
       let buf = new Buffer([3, 1, 2, 3])
       let script = new Script().fromBuffer(buf)
       script.chunks.length.should.equal(1)
       script.chunks[0].buf.toString('hex').should.equal('010203')
     })
 
-    it('should parse this buffer containing OP_PUSHDATA1 and three bytes of data', function () {
+    it('should parse this buffer containIng OP_PUSHDATA1 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA1').toNumber()
       buf.writeUInt8(3, 1)
@@ -61,7 +61,7 @@ describe('Script', function () {
       script.chunks[0].buf.toString('hex').should.equal('010203')
     })
 
-    it('should parse this buffer containing OP_PUSHDATA2 and three bytes of data', function () {
+    it('should parse this buffer containIng OP_PUSHDATA2 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA2').toNumber()
       buf.writeUInt16LE(3, 1)
@@ -70,7 +70,7 @@ describe('Script', function () {
       script.chunks[0].buf.toString('hex').should.equal('010203')
     })
 
-    it('should parse this buffer containing OP_PUSHDATA4 and three bytes of data', function () {
+    it('should parse this buffer containIng OP_PUSHDATA4 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA4').toNumber()
       buf.writeUInt16LE(3, 1)
@@ -94,7 +94,7 @@ describe('Script', function () {
   })
 
   describe('#toBuffer', function () {
-    it('should output this hex string containing an OP code', function () {
+    it('should output this hex string containIng an OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_0').toNumber()
       let script = new Script().fromHex(buf.toString('hex'))
@@ -105,7 +105,7 @@ describe('Script', function () {
   })
 
   describe('#toBuffer', function () {
-    it('should output this buffer containing an OP code', function () {
+    it('should output this buffer containIng an OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_0').toNumber()
       let script = new Script().fromBuffer(buf)
@@ -114,7 +114,7 @@ describe('Script', function () {
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
 
-    it('should output this buffer containing another OP code', function () {
+    it('should output this buffer containIng another OP code', function () {
       let buf = new Buffer(1)
       buf[0] = new OpCode().fromString('OP_CHECKMULTISIG').toNumber()
       let script = new Script().fromBuffer(buf)
@@ -123,7 +123,7 @@ describe('Script', function () {
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
 
-    it('should output this buffer containing three bytes of data', function () {
+    it('should output this buffer containIng three bytes of data', function () {
       let buf = new Buffer([3, 1, 2, 3])
       let script = new Script().fromBuffer(buf)
       script.chunks.length.should.equal(1)
@@ -131,7 +131,7 @@ describe('Script', function () {
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
 
-    it('should output this buffer containing OP_PUSHDATA1 and three bytes of data', function () {
+    it('should output this buffer containIng OP_PUSHDATA1 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA1').toNumber()
       buf.writeUInt8(3, 1)
@@ -141,7 +141,7 @@ describe('Script', function () {
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
 
-    it('should output this buffer containing OP_PUSHDATA2 and three bytes of data', function () {
+    it('should output this buffer containIng OP_PUSHDATA2 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA2').toNumber()
       buf.writeUInt16LE(3, 1)
@@ -151,7 +151,7 @@ describe('Script', function () {
       script.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })
 
-    it('should output this buffer containing OP_PUSHDATA4 and three bytes of data', function () {
+    it('should output this buffer containIng OP_PUSHDATA4 and three bytes of data', function () {
       let buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3])
       buf[0] = new OpCode().fromString('OP_PUSHDATA4').toNumber()
       buf.writeUInt16LE(3, 1)
@@ -410,11 +410,11 @@ describe('Script', function () {
   })
 
   describe('#isScripthashIn', function () {
-    it('should classify this known scripthashin', function () {
+    it('should classify this known scriptHashin', function () {
       new Script().writeString('20 0000000000000000000000000000000000000000').isScripthashIn().should.equal(true)
     })
 
-    it('should classify this known non-scripthashin', function () {
+    it('should classify this known non-scriptHashin', function () {
       new Script().writeString('20 0000000000000000000000000000000000000000 OP_CHECKSIG').isScripthashIn().should.equal(false)
     })
   })

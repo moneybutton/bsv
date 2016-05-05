@@ -19,14 +19,14 @@ describe('MsgHeaders', function () {
   describe('#fromBlockHeaders', function () {
     it('should make a msg from blockHeaders', function () {
       let msgheaders = new MsgHeaders().fromBlockHeaders([blockHeader])
-      msgheaders.databuf.length.should.greaterThan(0)
+      msgheaders.dataBuf.length.should.greaterThan(0)
     })
   })
 
   describe('@fromBlockHeaders', function () {
     it('should make a msg from blockHeaders', function () {
       let msgheaders = new MsgHeaders().fromBlockHeaders([blockHeader])
-      msgheaders.databuf.length.should.greaterThan(0)
+      msgheaders.dataBuf.length.should.greaterThan(0)
     })
   })
 
@@ -34,7 +34,7 @@ describe('MsgHeaders', function () {
     it('should make a msg from blockHeaders', function () {
       return asink(function * () {
         let msgheaders = yield new MsgHeaders().asyncFromBlockHeaders([blockHeader])
-        msgheaders.databuf.length.should.greaterThan(0)
+        msgheaders.dataBuf.length.should.greaterThan(0)
       }, this)
     })
   })

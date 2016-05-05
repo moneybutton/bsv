@@ -28,7 +28,7 @@ describe('GetBlocks', function () {
       let getblocks = new GetBlocks().fromHashes(hashes)
       let getblocksbuf = getblocks.toBuffer()
       let getblocks2 = new GetBlocks().fromBuffer(getblocksbuf)
-      should.exist(getblocks2.versionnum)
+      should.exist(getblocks2.versionNum)
       should.exist(getblocks2.hashBufsVi)
       should.exist(getblocks2.hashBufs)
       should.exist(getblocks2.stopHashBuf)

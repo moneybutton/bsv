@@ -9,10 +9,10 @@ describe('Hash', function () {
   let buf = new Buffer([0, 1, 2, 3, 253, 254, 255])
   let str = 'test string'
 
-  it('should have the blocksize for some hash functions', function () {
-    Hash.sha1.blocksize.should.equal(512)
-    Hash.sha256.blocksize.should.equal(512)
-    Hash.sha512.blocksize.should.equal(1024)
+  it('should have the blockSize for some hash functions', function () {
+    Hash.sha1.blockSize.should.equal(512)
+    Hash.sha256.blockSize.should.equal(512)
+    Hash.sha512.blockSize.should.equal(1024)
   })
 
   describe('@hmac', function () {
@@ -74,13 +74,13 @@ describe('Hash', function () {
     })
   })
 
-  describe('@asyncSha1hmac', function () {
+  describe('@asyncSha1Hmac', function () {
     it('should compute the same as sha1Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha1Hmacbuf1 = Hash.sha1Hmac(data, key)
-        let sha1Hmacbuf2 = yield Hash.asyncSha1hmac(data, key)
+        let sha1Hmacbuf2 = yield Hash.asyncSha1Hmac(data, key)
         sha1Hmacbuf1.toString('hex').should.equal(sha1Hmacbuf2.toString('hex'))
       }, this)
     })
@@ -134,60 +134,60 @@ describe('Hash', function () {
     })
   })
 
-  describe('@asyncSha256hmac', function () {
+  describe('@asyncSha256Hmac', function () {
     it('should compute the same as sha256Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha256Hmacbuf1 = Hash.sha256Hmac(data, key)
-        let sha256Hmacbuf2 = yield Hash.asyncSha256hmac(data, key)
+        let sha256Hmacbuf2 = yield Hash.asyncSha256Hmac(data, key)
         sha256Hmacbuf1.toString('hex').should.equal(sha256Hmacbuf2.toString('hex'))
       }, this)
     })
   })
 
-  describe('@sha256sha256', function () {
+  describe('@sha256Sha256', function () {
     it('should calculate the hash of this buffer correctly', function () {
-      let hash = Hash.sha256sha256(buf)
+      let hash = Hash.sha256Sha256(buf)
       hash.toString('hex').should.equal('be586c8b20dee549bdd66018c7a79e2b67bb88b7c7d428fa4c970976d2bec5ba')
     })
 
     it('should throw an error when the input is not a buffer', function () {
       (function () {
-        Hash.sha256sha256(str)
-      }).should.throw('sha256sha256 hash must be of a buffer')
+        Hash.sha256Sha256(str)
+      }).should.throw('sha256Sha256 hash must be of a buffer')
     })
   })
 
-  describe('@asyncSha256sha256', function () {
-    it('should compute the same as sha256sha256', function () {
+  describe('@asyncSha256Sha256', function () {
+    it('should compute the same as sha256Sha256', function () {
       return asink(function * () {
-        let sha256sha256buf1 = Hash.sha256sha256(buf)
-        let sha256sha256buf2 = yield Hash.asyncSha256sha256(buf)
-        sha256sha256buf1.toString('hex').should.equal(sha256sha256buf2.toString('hex'))
+        let sha256Sha256buf1 = Hash.sha256Sha256(buf)
+        let sha256Sha256buf2 = yield Hash.asyncSha256Sha256(buf)
+        sha256Sha256buf1.toString('hex').should.equal(sha256Sha256buf2.toString('hex'))
       }, this)
     })
   })
 
-  describe('@sha256ripemd160', function () {
+  describe('@sha256Ripemd160', function () {
     it('should calculate the hash of this buffer correctly', function () {
-      let hash = Hash.sha256ripemd160(buf)
+      let hash = Hash.sha256Ripemd160(buf)
       hash.toString('hex').should.equal('7322e2bd8535e476c092934e16a6169ca9b707ec')
     })
 
     it('should throw an error when the input is not a buffer', function () {
       (function () {
-        Hash.sha256ripemd160(str)
-      }).should.throw('sha256ripemd160 hash must be of a buffer')
+        Hash.sha256Ripemd160(str)
+      }).should.throw('sha256Ripemd160 hash must be of a buffer')
     })
   })
 
-  describe('@asyncSha256ripemd160', function () {
-    it('should compute the same as sha256sha256', function () {
+  describe('@asyncSha256Ripemd160', function () {
+    it('should compute the same as sha256Sha256', function () {
       return asink(function * () {
-        let sha256ripemd160buf1 = Hash.sha256ripemd160(buf)
-        let sha256ripemd160buf2 = yield Hash.asyncSha256ripemd160(buf)
-        sha256ripemd160buf1.toString('hex').should.equal(sha256ripemd160buf2.toString('hex'))
+        let sha256Ripemd160buf1 = Hash.sha256Ripemd160(buf)
+        let sha256Ripemd160buf2 = yield Hash.asyncSha256Ripemd160(buf)
+        sha256Ripemd160buf1.toString('hex').should.equal(sha256Ripemd160buf2.toString('hex'))
       }, this)
     })
   })
@@ -240,7 +240,7 @@ describe('Hash', function () {
 
   describe('@sha512Hmac', function () {
     it('should calculate this value where key size is the same as block size', function () {
-      let key = new Buffer(Hash.sha512.blocksize / 8)
+      let key = new Buffer(Hash.sha512.blockSize / 8)
       key.fill(0)
       let data = new Buffer([])
       // test vector calculated with node's createHmac
@@ -261,13 +261,13 @@ describe('Hash', function () {
     })
   })
 
-  describe('@asyncSha512hmac', function () {
+  describe('@asyncSha512Hmac', function () {
     it('should compute the same as sha512Hmac', function () {
       return asink(function * () {
         let data = new Buffer('Hi There')
         let key = new Buffer('0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b', 'hex')
         let sha512Hmacbuf1 = Hash.sha512Hmac(data, key)
-        let sha512Hmacbuf2 = yield Hash.asyncSha512hmac(data, key)
+        let sha512Hmacbuf2 = yield Hash.asyncSha512Hmac(data, key)
         sha512Hmacbuf1.toString('hex').should.equal(sha512Hmacbuf2.toString('hex'))
       }, this)
     })
@@ -298,9 +298,9 @@ describe('Hash', function () {
     vectors.hmac.forEach(function (vector, i) {
       it('should pass standard hmac test vector ' + i, function () {
         let keyBuf = new Buffer(vector.key, 'hex')
-        let databuf = new Buffer(vector.data, 'hex')
-        Hash.sha256Hmac(databuf, keyBuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
-        Hash.sha512Hmac(databuf, keyBuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
+        let dataBuf = new Buffer(vector.data, 'hex')
+        Hash.sha256Hmac(dataBuf, keyBuf).toString('hex').substr(0, vector.sha256hmac.length).should.equal(vector.sha256hmac)
+        Hash.sha512Hmac(dataBuf, keyBuf).toString('hex').substr(0, vector.sha512hmac.length).should.equal(vector.sha512hmac)
       })
     })
   })

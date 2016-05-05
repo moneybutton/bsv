@@ -9,29 +9,29 @@ describe('Bip68', function () {
     should.exist(new Bip68())
   })
 
-  describe('@nSequence2height', function () {
+  describe('@nSequence2Height', function () {
     it('should convert nSequence to height', function () {
-      Bip68.nSequence2height(0xffffffff).should.equal(0x0000ffff)
+      Bip68.nSequence2Height(0xffffffff).should.equal(0x0000ffff)
     })
   })
 
-  describe('@height2nSequence', function () {
+  describe('@height2NSequence', function () {
     it('should convert height to nSequence', function () {
-      Bip68.height2nSequence(0x0000ffff).should.equal(0x0000ffff)
+      Bip68.height2NSequence(0x0000ffff).should.equal(0x0000ffff)
     })
   })
 
-  describe('@nSequence2time', function () {
+  describe('@nSequence2Time', function () {
     it('should convert nSequence to time', function () {
-      Bip68.nSequence2time(0x0000000f).should.equal(0x0000000f << 9)
-      Bip68.nSequence2time(0x0fffffff).should.equal(0x0000ffff << 9)
+      Bip68.nSequence2Time(0x0000000f).should.equal(0x0000000f << 9)
+      Bip68.nSequence2Time(0x0fffffff).should.equal(0x0000ffff << 9)
     })
   })
 
-  describe('@time2nSequence', function () {
+  describe('@time2NSequence', function () {
     it('should convert time to nSequence', function () {
-      Bip68.time2nSequence(0x00000001 << 9).should.equal(0x00000001 | (1 << 22))
-      Bip68.time2nSequence(0x000000ff << 9).should.equal(0x000000ff | (1 << 22))
+      Bip68.time2NSequence(0x00000001 << 9).should.equal(0x00000001 | (1 << 22))
+      Bip68.time2NSequence(0x000000ff << 9).should.equal(0x000000ff | (1 << 22))
     })
   })
 

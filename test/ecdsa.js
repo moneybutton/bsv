@@ -371,16 +371,16 @@ describe('Ecdsa', function () {
     })
   })
 
-  describe('#verifystr', function () {
+  describe('#verifyStr', function () {
     it('should return an error if the hash is invalid', function () {
       let ecdsa = new Ecdsa()
-      ecdsa.verifystr().should.equal('hashBuf must be a 32 byte buffer')
+      ecdsa.verifyStr().should.equal('hashBuf must be a 32 byte buffer')
     })
 
     it('should return an error if the pubKey is invalid', function () {
       let ecdsa = new Ecdsa()
       ecdsa.hashBuf = Hash.sha256(new Buffer('test'))
-      ecdsa.verifystr().indexOf('Invalid pubKey').should.equal(0)
+      ecdsa.verifyStr().indexOf('Invalid pubKey').should.equal(0)
     })
 
     it('should return an error if r, s are invalid', function () {
@@ -393,14 +393,14 @@ describe('Ecdsa', function () {
       ecdsa.sig = new Sig()
       ecdsa.sig.r = new Bn(0)
       ecdsa.sig.s = new Bn(0)
-      ecdsa.verifystr().should.equal('r and s not in range')
+      ecdsa.verifyStr().should.equal('r and s not in range')
     })
 
     it('should return an error if the signature is incorrect', function () {
       ecdsa.sig = new Sig()
       ecdsa.sig.fromString('3046022100e9915e6236695f093a4128ac2a956c40ed971531de2f4f41ba05fac7e2bd019c02210094e6a4a769cc7f2a8ab3db696c7cd8d56bcdbfff860a8c81de4bc6a798b90827')
       ecdsa.sig.r = ecdsa.sig.r.add(new Bn(1))
-      ecdsa.verifystr().should.equal('Invalid signature')
+      ecdsa.verifyStr().should.equal('Invalid signature')
     })
   })
 
@@ -570,7 +570,7 @@ describe('Ecdsa', function () {
           sig: new Sig(new Bn(obj.signature.r), new Bn(obj.signature.s)),
           hashBuf: Hash.sha256(new Buffer(obj.message))
         })
-        ecdsa.verifystr().should.equal(obj.exception)
+        ecdsa.verifyStr().should.equal(obj.exception)
       })
     })
 

@@ -315,7 +315,7 @@ describe('Tx', function () {
         let txbuf = new Buffer(vector[0], 'hex')
         let scriptbuf = new Buffer(vector[1], 'hex')
         let subScript = new Script().fromBuffer(scriptbuf)
-        let nin = vector[2]
+        let nIn = vector[2]
         let nhashtype = vector[3]
         let sighashBuf = new Buffer(vector[4], 'hex')
         let tx = new Tx().fromBuffer(txbuf)
@@ -324,7 +324,7 @@ describe('Tx', function () {
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'))
 
         // sighash ought to be correct
-        tx.sighash(nhashtype, nin, subScript).toString('hex').should.equal(sighashBuf.toString('hex'))
+        tx.sighash(nhashtype, nIn, subScript).toString('hex').should.equal(sighashBuf.toString('hex'))
       })
     })
 

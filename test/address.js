@@ -182,7 +182,7 @@ describe('Address', function () {
   describe('#fromRedeemScriptHashBuf', function () {
     it('should make this address from a script', function () {
       let script = new Script().fromString('OP_CHECKMULTISIG')
-      let hashBuf = Hash.sha256ripemd160(script.toBuffer())
+      let hashBuf = Hash.sha256Ripemd160(script.toBuffer())
       let address = new Address().fromRedeemScriptHashBuf(hashBuf)
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
@@ -191,7 +191,7 @@ describe('Address', function () {
   describe('@fromRedeemScriptHashBuf', function () {
     it('should make this address from a script', function () {
       let script = new Script().fromString('OP_CHECKMULTISIG')
-      let hashBuf = Hash.sha256ripemd160(script.toBuffer())
+      let hashBuf = Hash.sha256Ripemd160(script.toBuffer())
       let address = Address.fromRedeemScriptHashBuf(hashBuf)
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
@@ -262,18 +262,18 @@ describe('Address', function () {
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
     })
 
-    it('should derive from this known address string mainnet scripthash', function () {
+    it('should derive from this known address string mainnet scriptHash', function () {
       let address = new Address()
       address.fromString(str)
-      address.version = Constants.MainNet.Address['scripthash']
+      address.version = Constants.MainNet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
     })
 
-    it('should derive from this known address string testnet scripthash', function () {
+    it('should derive from this known address string testnet scriptHash', function () {
       let address = new Address.TestNet()
       address.fromString('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
-      address.version = Constants.TestNet.Address['scripthash']
+      address.version = Constants.TestNet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
     })
@@ -329,9 +329,9 @@ describe('Address', function () {
       addr.type().should.equal('unknown')
     })
 
-    it('should give scripthash for this address', function () {
+    it('should give scriptHash for this address', function () {
       let addr = new Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
-      addr.type().should.equal('scripthash')
+      addr.type().should.equal('scriptHash')
     })
   })
 
@@ -359,14 +359,14 @@ describe('Address', function () {
       let script = addr.toScript()
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
 
-      addr.version = Constants.MainNet.Address['scripthash']
+      addr.version = Constants.MainNet.Address['scriptHash']
       script = addr.toScript()
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
 
       addr.version = 50
       ;(function () {
         script = addr.toScript()
-      }).should.throw('script must be either pubKeyHash or scripthash')
+      }).should.throw('script must be either pubKeyHash or scriptHash')
     })
   })
 

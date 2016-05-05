@@ -19,7 +19,7 @@ describe('MsgPing', function () {
     it('should find a msgping from random', function () {
       let msgping = new MsgPing().fromRandom()
       msgping.getCmd().should.equal('ping')
-      msgping.databuf.length.should.equal(8)
+      msgping.dataBuf.length.should.equal(8)
     })
   })
 
@@ -27,7 +27,7 @@ describe('MsgPing', function () {
     it('should find a msgping from random', function () {
       let msgping = MsgPing.fromRandom()
       msgping.getCmd().should.equal('ping')
-      msgping.databuf.length.should.equal(8)
+      msgping.dataBuf.length.should.equal(8)
     })
   })
 
@@ -36,7 +36,7 @@ describe('MsgPing', function () {
       return asink(function * () {
         let msgping = yield new MsgPing().asyncFromRandom()
         msgping.getCmd().should.equal('ping')
-        msgping.databuf.length.should.equal(8)
+        msgping.dataBuf.length.should.equal(8)
       }, this)
     })
   })
@@ -46,7 +46,7 @@ describe('MsgPing', function () {
       return asink(function * () {
         let msgping = yield MsgPing.asyncFromRandom()
         msgping.getCmd().should.equal('ping')
-        msgping.databuf.length.should.equal(8)
+        msgping.dataBuf.length.should.equal(8)
       }, this)
     })
   })

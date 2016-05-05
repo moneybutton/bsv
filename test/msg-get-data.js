@@ -15,7 +15,7 @@ describe('MsgGetData', function () {
       let inv = new Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
       let msginv = new MsgGetData().fromInvs([inv])
       msginv.getCmd().should.equal('getdata')
-      msginv.databuf.length.should.equal(1 + 4 + 32)
+      msginv.dataBuf.length.should.equal(1 + 4 + 32)
     })
   })
 

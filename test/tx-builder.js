@@ -223,7 +223,7 @@ describe('TxBuilder', function () {
   })
 
   describe('#outputToAddress', function () {
-    it('should add a scripthash address', function () {
+    it('should add a scriptHash address', function () {
       let hashBuf = new Buffer(20)
       hashBuf.fill(0)
       let address = new Address().fromRedeemScript(new Script().fromScriptHash(hashBuf))
@@ -325,7 +325,7 @@ describe('TxBuilder', function () {
   })
 
   describe('#inputFromScriptHashMultiSig', function () {
-    it('should add an input from a scripthash output', function () {
+    it('should add an input from a scriptHash output', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
@@ -338,7 +338,7 @@ describe('TxBuilder', function () {
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
 
-    it('should add an input from a scripthash output and set nSequence', function () {
+    it('should add an input from a scriptHash output and set nSequence', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])

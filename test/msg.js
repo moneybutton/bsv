@@ -19,7 +19,7 @@ describe('Msg', function () {
   it('should satisfy this basic API', function () {
     let msg = new Msg()
     should.exist(msg)
-    msg.magicnum.should.equal(Constants.Msg.magicnum)
+    msg.magicNum.should.equal(Constants.Msg.magicNum)
   })
 
   describe('#setCmd', function () {
@@ -58,7 +58,7 @@ describe('Msg', function () {
     it('should return known value', function () {
       let buf = new Buffer(0)
       let checksumbuf = Msg.checksum(buf)
-      Buffer.compare(checksumbuf, Hash.sha256sha256(buf).slice(0, 4)).should.equal(0)
+      Buffer.compare(checksumbuf, Hash.sha256Sha256(buf).slice(0, 4)).should.equal(0)
     })
   })
 
@@ -67,7 +67,7 @@ describe('Msg', function () {
       return asink(function * () {
         let buf = new Buffer(0)
         let checksumbuf = yield Msg.asyncChecksum(buf)
-        Buffer.compare(checksumbuf, Hash.sha256sha256(buf).slice(0, 4)).should.equal(0)
+        Buffer.compare(checksumbuf, Hash.sha256Sha256(buf).slice(0, 4)).should.equal(0)
         let checksumbuf2 = Msg.checksum(buf)
         Buffer.compare(checksumbuf, checksumbuf2).should.equal(0)
       }, this)
@@ -134,14 +134,14 @@ describe('Msg', function () {
       next.value.length.should.equal(0)
     })
 
-    it('should throw an error for invalid magicnum in strict mode', function () {
+    it('should throw an error for invalid magicNum in strict mode', function () {
       let msg = new Msg().fromBuffer(msgbuf)
-      msg.magicnum = 0
+      msg.magicNum = 0
       ;(function () {
         let msgassembler = new Msg().genFromBuffers({strict: true})
         msgassembler.next()
         msgassembler.next(msg.toBuffer())
-      }).should.throw('invalid magicnum')
+      }).should.throw('invalid magicNum')
     })
 
     it('should throw an error for message over max size in strict mode', function () {

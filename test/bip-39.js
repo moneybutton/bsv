@@ -104,7 +104,7 @@ describe('Bip39', function () {
         should.exist(bip39.mnemonic)
         should.exist(bip39.seed)
         let seed = bip39.seed
-        bip39.mnemonic2seed()
+        bip39.mnemonic2Seed()
         seed.toString('hex').should.equal(bip39.seed.toString('hex'))
       }, this)
     })
@@ -117,7 +117,7 @@ describe('Bip39', function () {
         should.exist(bip39.mnemonic)
         should.exist(bip39.seed)
         let seed = bip39.seed
-        bip39.mnemonic2seed()
+        bip39.mnemonic2Seed()
         seed.toString('hex').should.equal(bip39.seed.toString('hex'))
       }, this)
     })
@@ -159,20 +159,20 @@ describe('Bip39', function () {
     })
   })
 
-  describe('#entropy2mnemonic', function () {
+  describe('#entropy2Mnemonic', function () {
     it('should throw an error if you do not use enough entropy', function () {
       let buf = new Buffer(128 / 8 - 1)
       buf.fill(0)
       ;(function () {
-        new Bip39().entropy2mnemonic(buf)
+        new Bip39().entropy2Mnemonic(buf)
       }).should.throw('Entropy is less than 128 bits. It must be 128 bits or more.')
     })
 
     it('should work with or without the wordlist', function () {
       let buf = new Buffer(128 / 8)
       buf.fill(0)
-      let mnemonic1 = new Bip39().entropy2mnemonic(buf).mnemonic
-      let mnemonic2 = new Bip39.En().entropy2mnemonic(buf).mnemonic
+      let mnemonic1 = new Bip39().entropy2Mnemonic(buf).mnemonic
+      let mnemonic2 = new Bip39.En().entropy2Mnemonic(buf).mnemonic
       mnemonic1.should.equal(mnemonic2)
     })
   })
@@ -181,7 +181,7 @@ describe('Bip39', function () {
     it('should work with or without optional wordlist', function () {
       let buf = new Buffer(128 / 8)
       buf.fill(0)
-      let mnemonic = new Bip39().entropy2mnemonic(buf).mnemonic
+      let mnemonic = new Bip39().entropy2Mnemonic(buf).mnemonic
       new Bip39().fromString(mnemonic).check().should.equal(true)
       new Bip39.En().fromString(mnemonic).check().should.equal(true)
     })

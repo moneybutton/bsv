@@ -15,7 +15,7 @@ describe('MsgNotFound', function () {
       let inv = new Inv().fromBuffer(new Buffer('01000000' + '0'.repeat(64), 'hex'))
       let msginv = new MsgNotFound().fromInvs([inv])
       msginv.getCmd().should.equal('notfound')
-      msginv.databuf.length.should.equal(1 + 4 + 32)
+      msginv.dataBuf.length.should.equal(1 + 4 + 32)
     })
   })
 

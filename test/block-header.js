@@ -10,15 +10,15 @@ describe('BlockHeader', function () {
   let version = 1
   let prevBlockHashBuf = new Buffer(32)
   prevBlockHashBuf.fill(5)
-  let merklerootbuf = new Buffer(32)
-  merklerootbuf.fill(9)
+  let merkleRootBuf = new Buffer(32)
+  merkleRootBuf.fill(9)
   let time = 2
   let bits = 3
   let nonce = 4
   bh.fromObject({
     version: version,
     prevBlockHashBuf: prevBlockHashBuf,
-    merklerootbuf: merklerootbuf,
+    merkleRootBuf: merkleRootBuf,
     time: time,
     bits: bits,
     nonce: nonce
@@ -38,14 +38,14 @@ describe('BlockHeader', function () {
       bh.fromObject({
         version: version,
         prevBlockHashBuf: prevBlockHashBuf,
-        merklerootbuf: merklerootbuf,
+        merkleRootBuf: merkleRootBuf,
         time: time,
         bits: bits,
         nonce: nonce
       })
       should.exist(bh.version)
       should.exist(bh.prevBlockHashBuf)
-      should.exist(bh.merklerootbuf)
+      should.exist(bh.merkleRootBuf)
       should.exist(bh.time)
       should.exist(bh.bits)
       should.exist(bh.nonce)
@@ -57,14 +57,14 @@ describe('BlockHeader', function () {
       let bh = new BlockHeader().fromJson({
         version: version,
         prevBlockHashBuf: prevBlockHashBuf.toString('hex'),
-        merklerootbuf: merklerootbuf.toString('hex'),
+        merkleRootBuf: merkleRootBuf.toString('hex'),
         time: time,
         bits: bits,
         nonce: nonce
       })
       should.exist(bh.version)
       should.exist(bh.prevBlockHashBuf)
-      should.exist(bh.merklerootbuf)
+      should.exist(bh.merkleRootBuf)
       should.exist(bh.time)
       should.exist(bh.bits)
       should.exist(bh.nonce)
@@ -76,7 +76,7 @@ describe('BlockHeader', function () {
       let json = bh.toJson()
       should.exist(json.version)
       should.exist(json.prevBlockHashBuf)
-      should.exist(json.merklerootbuf)
+      should.exist(json.merkleRootBuf)
       should.exist(json.time)
       should.exist(json.bits)
       should.exist(json.nonce)
