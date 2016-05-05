@@ -70,6 +70,15 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromPubKeyHashBuf', function () {
+    it('should make an address from a hashBuf', function () {
+      let buf = new Buffer(20)
+      buf.fill(0)
+      let address = Address.fromPubKeyHashBuf(buf)
+      address.toString().should.equal('1111111111111111111114oLvT2')
+    })
+  })
+
   describe('#fromPubKey', function () {
     it('should make this address from a compressed pubKey', function () {
       let pubKey = new PubKey()
@@ -89,12 +98,40 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromPubKey', function () {
+    it('should make this address from a compressed pubKey', function () {
+      let pubKey = new PubKey()
+      pubKey.fromDer(new Buffer('0285e9737a74c30a873f74df05124f2aa6f53042c2fc0a130d6cbd7d16b944b004', 'hex'))
+      let address = Address.fromPubKey(pubKey)
+      address.toString().should.equal('19gH5uhqY6DKrtkU66PsZPUZdzTd11Y7ke')
+    })
+
+    it('should make this address from an uncompressed pubKey', function () {
+      let pubKey = new PubKey()
+      pubKey.fromDer(new Buffer('0285e9737a74c30a873f74df05124f2aa6f53042c2fc0a130d6cbd7d16b944b004', 'hex'))
+      pubKey.compressed = false
+      let address = Address.fromPubKey(pubKey, 'mainnet')
+      address.toString().should.equal('16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX')
+    })
+  })
+
   describe('#asyncFromPubKey', function () {
     it('should asynchronously convert pubKey to address same as fromPubKey', function () {
       return asink(function * () {
         let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
         let address1 = new Address().fromPubKey(pubKey)
         let address2 = yield new Address().asyncFromPubKey(pubKey)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
+  describe('@asyncFromPubKey', function () {
+    it('should asynchronously convert pubKey to address same as fromPubKey', function () {
+      return asink(function * () {
+        let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
+        let address1 = Address.fromPubKey(pubKey)
+        let address2 = yield Address.asyncFromPubKey(pubKey)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -110,6 +147,16 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromPrivKey', function () {
+    it('should make this address from a compressed pubKey using static method', function () {
+      let privKey = new PrivKey().fromRandom()
+      let pubKey = new PubKey().fromPrivKey(privKey)
+      let address = Address.fromPrivKey(privKey)
+      let address2 = Address.fromPubKey(pubKey)
+      address.toString().should.equal(address2.toString())
+    })
+  })
+
   describe('#asyncFromPrivKey', function () {
     it('should asynchronously convert privKey to address same as fromPrivKey', function () {
       return asink(function * () {
@@ -121,11 +168,31 @@ describe('Address', function () {
     })
   })
 
+  describe('@asyncFromPrivKey', function () {
+    it('should asynchronously convert privKey to address same as fromPrivKey', function () {
+      return asink(function * () {
+        let privKey = new PrivKey().fromRandom()
+        let address1 = Address.fromPrivKey(privKey)
+        let address2 = yield Address.asyncFromPrivKey(privKey)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
   describe('#fromRedeemScriptHashBuf', function () {
     it('should make this address from a script', function () {
       let script = new Script().fromString('OP_CHECKMULTISIG')
       let hashBuf = Hash.sha256ripemd160(script.toBuffer())
       let address = new Address().fromRedeemScriptHashBuf(hashBuf)
+      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
+    })
+  })
+
+  describe('@fromRedeemScriptHashBuf', function () {
+    it('should make this address from a script', function () {
+      let script = new Script().fromString('OP_CHECKMULTISIG')
+      let hashBuf = Hash.sha256ripemd160(script.toBuffer())
+      let address = Address.fromRedeemScriptHashBuf(hashBuf)
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
   })
@@ -144,12 +211,37 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromRedeemScript', function () {
+    it('should make this address from a script', function () {
+      let script = new Script().fromString('OP_CHECKMULTISIG')
+      let address = Address.fromRedeemScript(script)
+      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
+    })
+
+    it('should make this address from other script', function () {
+      let script = new Script().fromString('OP_CHECKSIG OP_HASH160')
+      let address = Address.fromRedeemScript(script)
+      address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7')
+    })
+  })
+
   describe('#asyncFromRedeemScript', function () {
     it('should derive the same as fromRedeemScript', function () {
       return asink(function * () {
         let script = new Script().fromString('OP_CHECKMULTISIG')
         let address1 = new Address().fromRedeemScript(script)
         let address2 = yield new Address().asyncFromRedeemScript(script)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
+  describe('@asyncFromRedeemScript', function () {
+    it('should derive the same as fromRedeemScript', function () {
+      return asink(function * () {
+        let script = new Script().fromString('OP_CHECKMULTISIG')
+        let address1 = Address.fromRedeemScript(script)
+        let address2 = yield Address.asyncFromRedeemScript(script)
         address1.toString().should.equal(address2.toString())
       }, this)
     })
@@ -187,11 +279,28 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromString', function () {
+    it('should derive from this known address string mainnet', function () {
+      let address = Address.fromString(str)
+      address.toBuffer().slice(1).toString('hex').should.equal(pubKeyHash.toString('hex'))
+    })
+  })
+
   describe('#asyncFromString', function () {
     it('should derive the same as fromString', function () {
       return asink(function * () {
         let address1 = new Address().fromString(str)
         let address2 = yield new Address().asyncFromString(str)
+        address1.toString().should.equal(address2.toString())
+      }, this)
+    })
+  })
+
+  describe('@asyncFromString', function () {
+    it('should derive the same as fromString', function () {
+      return asink(function * () {
+        let address1 = Address.fromString(str)
+        let address2 = yield Address.asyncFromString(str)
         address1.toString().should.equal(address2.toString())
       }, this)
     })

@@ -36,4 +36,20 @@ describe('Addr', function () {
       addr2.port.should.equal(addr.port)
     })
   })
+
+  describe('@fromBuffer', function () {
+    it('should convert from a buffer', function () {
+      let addr = Addr.fromObject({
+        time: 1000,
+        servicesbuf: new Buffer(8).fill(0),
+        ipaddrbuf: new Buffer(16).fill(0),
+        port: 8333
+      })
+      let addr2 = Addr.fromBuffer(addr.toBuffer())
+      addr2.time.should.equal(addr.time)
+      Buffer.compare(addr.servicesbuf, addr2.servicesbuf).should.equal(0)
+      Buffer.compare(addr.ipaddrbuf, addr2.ipaddrbuf).should.equal(0)
+      addr2.port.should.equal(addr.port)
+    })
+  })
 })
