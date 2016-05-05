@@ -33,16 +33,6 @@ describe('TxIn', function () {
     let txHashBuf = new Buffer(32)
     txHashBuf.fill(0)
     new TxIn(txHashBuf, 0).txHashBuf.length.should.equal(32)
-    ;(function () {
-      let txHashBuf2 = new Buffer(33)
-      txHashBuf2.fill(0)
-      let txin = new TxIn(txHashBuf2, 0)
-      should.not.exist(txin)
-    }).should.throw('txHashBuf must be 32 bytes')
-  })
-
-  it('should calculate scriptVi correctly when creating a new txin', function () {
-    new TxIn(txin.txHashBuf, txin.txOutNum, txin.script, txin.nSequence).scriptVi.toNumber().should.equal(1)
   })
 
   describe('#initialize', function () {
@@ -158,7 +148,7 @@ describe('TxIn', function () {
     })
   })
 
-  describe('#fromScriptHashMultisigTxOut', function () {
+  describe('#fromScriptHashMultiSigTxOut', function () {
     it('should convert from scripthash out', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
@@ -168,7 +158,22 @@ describe('TxIn', function () {
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txin = new TxIn().fromScriptHashMultisigTxOut(txHashBuf, txOutNum, txout, script)
+      let txin = new TxIn().fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txout, script)
+      Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+    })
+  })
+
+  describe('@fromScriptHashMultiSigTxOut', function () {
+    it('should convert from scripthash out', function () {
+      let keyPair1 = KeyPair.fromRandom()
+      let keyPair2 = KeyPair.fromRandom()
+      let script = Script.fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
+      let address = Address.fromRedeemScript(script)
+      let txout = new TxOut(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txHashBuf = new Buffer(32)
+      txHashBuf.fill(0)
+      let txOutNum = 0
+      let txin = TxIn.fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
   })

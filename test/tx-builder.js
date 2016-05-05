@@ -89,12 +89,12 @@ describe('TxBuilder', function () {
 
     txb.setFeePerKbNum(0.0001e8)
     txb.setChangeAddress(changeaddr)
-    txb.fromPubKeyHash(txHashBuf, txOutNum1, txout1, keyPair1.pubKey)
-    txb.fromPubKeyHash(txHashBuf, txOutNum2, txout2, keyPair2.pubKey)
-    txb.fromScriptHashMultisig(txHashBuf, txOutNum3, txout3, redeemScript3)
-    txb.fromScriptHashMultisig(txHashBuf, txOutNum4, txout4, redeemScript4)
-    txb.toAddress(new Bn(2e8), saddr1) // pubKeyHash address
-    txb.toAddress(new Bn(1e8), saddr2) // p2sh address
+    txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txout1, keyPair1.pubKey)
+    txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txout2, keyPair2.pubKey)
+    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum3, txout3, redeemScript3)
+    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum4, txout4, redeemScript4)
+    txb.outputToAddress(new Bn(2e8), saddr1) // pubKeyHash address
+    txb.outputToAddress(new Bn(1e8), saddr2) // p2sh address
     // total sending: 2e8 (plus fee)
     // txb.randomizeInputs()
     // txb.randomizeOutputs()
@@ -222,13 +222,13 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#toAddress', function () {
+  describe('#outputToAddress', function () {
     it('should add a scripthash address', function () {
       let hashBuf = new Buffer(20)
       hashBuf.fill(0)
       let address = new Address().fromRedeemScript(new Script().fromScriptHash(hashBuf))
       let txb = new TxBuilder()
-      txb.toAddress(new Bn(0), address)
+      txb.outputToAddress(new Bn(0), address)
       txb.txouts.length.should.equal(1)
     })
 
@@ -236,16 +236,16 @@ describe('TxBuilder', function () {
       let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
       let address = new Address().fromPubKey(pubKey)
       let txb = new TxBuilder()
-      txb.toAddress(new Bn(0), address)
+      txb.outputToAddress(new Bn(0), address)
       txb.txouts.length.should.equal(1)
     })
   })
 
-  describe('#toScript', function () {
+  describe('#outputToScript', function () {
     it('should add an OP_RETURN output', function () {
       let script = new Script().fromString('OP_RETURN')
       let txb = new TxBuilder()
-      txb.toScript(new Bn(0), script)
+      txb.outputToScript(new Bn(0), script)
       txb.txouts.length.should.equal(1)
     })
   })
@@ -272,7 +272,7 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#fromScript', function () {
+  describe('#inputFromScript', function () {
     it('should add an input from a script', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
@@ -281,7 +281,7 @@ describe('TxBuilder', function () {
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().fromScript(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txout, script)
       txbuilder.txins.length.should.equal(1)
     })
 
@@ -293,13 +293,13 @@ describe('TxBuilder', function () {
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().fromScript(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       txbuilder.txins.length.should.equal(1)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })
   })
 
-  describe('#fromPubKeyHash', function () {
+  describe('#inputFromPubKeyHash', function () {
     it('should add an input from a pubKeyHash output', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
@@ -307,7 +307,7 @@ describe('TxBuilder', function () {
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey)
+      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey)
       Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
     })
 
@@ -318,13 +318,13 @@ describe('TxBuilder', function () {
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().fromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })
   })
 
-  describe('#fromScriptHashMultisig', function () {
+  describe('#inputFromScriptHashMultiSig', function () {
     it('should add an input from a scripthash output', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
@@ -335,7 +335,7 @@ describe('TxBuilder', function () {
       txHashBuf.fill(0)
       let txOutNum = 0
       // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = new TxBuilder().fromScriptHashMultisig(txHashBuf, txOutNum, txout, script)
+      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
 
@@ -349,7 +349,7 @@ describe('TxBuilder', function () {
       txHashBuf.fill(0)
       let txOutNum = 0
       // let txin = new TxIn().fromTxOut(txHashBuf, txOutNum, txout, script)
-      let txbuilder = new TxBuilder().fromScriptHashMultisig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
       Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
       txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
     })
