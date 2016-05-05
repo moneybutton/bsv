@@ -21,12 +21,12 @@ describe('Bw', function () {
     })
   })
 
-  describe('#getLEngth', function () {
+  describe('#getLength', function () {
     it('should compute length correctly of two 2 byte buffers', function () {
       let buf1 = new Buffer('0000', 'hex')
       let buf2 = new Buffer('0000', 'hex')
       let bw = new Bw().write(buf1).write(buf2)
-      bw.getLEngth().should.equal(4)
+      bw.getLength().should.equal(4)
     })
   })
 
@@ -34,7 +34,7 @@ describe('Bw', function () {
     it('should concat these two bufs', function () {
       let buf1 = new Buffer([0])
       let buf2 = new Buffer([1])
-      let bw = new Bw({bufs: [buf1, buf2]})
+      let bw = new Bw().fromObject({bufs: [buf1, buf2]})
       bw.toBuffer().toString('hex').should.equal('0001')
     })
   })
@@ -176,7 +176,7 @@ describe('Bw', function () {
       let n = Math.pow(2, 53)
       n.should.equal(n + 1) // javascript number precision limit
       bw.writeVarIntNum(n)
-      let br = new Br({buf: bw.toBuffer()})
+      let br = new Br(bw.toBuffer())
       br.readVarIntBn().toNumber().should.equal(n)
     })
   })

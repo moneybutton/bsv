@@ -28,7 +28,7 @@ describe('Br', function () {
 
   describe('#eof', function () {
     it('should return true for a blank br', function () {
-      let br = new Br({buf: new Buffer([])})
+      let br = new Br(new Buffer([]))
       br.eof().should.equal(true)
     })
   })
@@ -36,7 +36,7 @@ describe('Br', function () {
   describe('#read', function () {
     it('should return the same buffer', function () {
       let buf = new Buffer([0])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.read().toString('hex').should.equal(buf.toString('hex'))
     })
 
@@ -59,7 +59,7 @@ describe('Br', function () {
   describe('#readReverse', function () {
     it('should reverse this [0, 1]', function () {
       let buf = new Buffer([0, 1])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readReverse().toString('hex').should.equal('0100')
     })
 
@@ -73,7 +73,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(1)
       buf.writeUInt8(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt8().should.equal(1)
     })
   })
@@ -82,7 +82,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(1)
       buf.writeInt8(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readInt8().should.equal(1)
       new Br(new Buffer('ff', 'hex')).readInt8().should.equal(-1)
     })
@@ -92,7 +92,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(2)
       buf.writeUInt16BE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt16BE().should.equal(1)
     })
   })
@@ -101,7 +101,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(2)
       buf.writeInt16BE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readInt16BE().should.equal(1)
       new Br(new Buffer('ffff', 'hex')).readInt16BE().should.equal(-1)
     })
@@ -111,7 +111,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(2)
       buf.writeUInt16LE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt16LE().should.equal(1)
     })
   })
@@ -120,7 +120,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(2)
       buf.writeInt16LE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readInt16LE().should.equal(1)
       new Br(new Buffer('ffff', 'hex')).readInt16LE().should.equal(-1)
     })
@@ -130,7 +130,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(4)
       buf.writeUInt32BE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt32BE().should.equal(1)
     })
   })
@@ -139,7 +139,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(4)
       buf.writeInt32BE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readInt32BE().should.equal(1)
       new Br(new Buffer('ffffffff', 'hex')).readInt32BE().should.equal(-1)
     })
@@ -149,7 +149,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(4)
       buf.writeUInt32LE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt32LE().should.equal(1)
     })
   })
@@ -158,7 +158,7 @@ describe('Br', function () {
     it('should return 1', function () {
       let buf = new Buffer(4)
       buf.writeInt32LE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readInt32LE().should.equal(1)
       new Br(new Buffer('ffffffff', 'hex')).readInt32LE().should.equal(-1)
     })
@@ -169,14 +169,14 @@ describe('Br', function () {
       let buf = new Buffer(8)
       buf.fill(0)
       buf.writeUInt32BE(1, 4)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64BEBn().toNumber().should.equal(1)
     })
 
     it('should return 2^64', function () {
       let buf = new Buffer(8)
       buf.fill(0xff)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64BEBn().toNumber().should.equal(Math.pow(2, 64))
     })
   })
@@ -186,7 +186,7 @@ describe('Br', function () {
       let buf = new Buffer(8)
       buf.fill(0)
       buf.writeUInt32LE(1, 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64LEBn().toNumber().should.equal(1)
     })
 
@@ -194,21 +194,21 @@ describe('Br', function () {
       let buf = new Buffer(8)
       buf.fill(0)
       buf.writeUInt32LE(Math.pow(2, 30), 0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64LEBn().toNumber().should.equal(Math.pow(2, 30))
     })
 
     it('should return 0', function () {
       let buf = new Buffer(8)
       buf.fill(0)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64LEBn().toNumber().should.equal(0)
     })
 
     it('should return 2^64', function () {
       let buf = new Buffer(8)
       buf.fill(0xff)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readUInt64LEBn().toNumber().should.equal(Math.pow(2, 64))
     })
   })
@@ -216,26 +216,26 @@ describe('Br', function () {
   describe('#readVarIntBuf', function () {
     it('should read a 1 byte varInt', function () {
       let buf = new Buffer([50])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBuf().length.should.equal(1)
     })
 
     it('should read a 3 byte varInt', function () {
       let buf = new Buffer([253, 253, 0])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBuf().length.should.equal(3)
     })
 
     it('should read a 5 byte varInt', function () {
       let buf = new Buffer([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBuf().length.should.equal(5)
     })
 
     it('should read a 9 byte varInt', function () {
       let buf = new Bw().writeVarIntBn(new Bn(Math.pow(2, 54).toString())).toBuffer()
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBuf().length.should.equal(9)
     })
   })
@@ -243,26 +243,26 @@ describe('Br', function () {
   describe('#readVarIntNum', function () {
     it('should read a 1 byte varInt', function () {
       let buf = new Buffer([50])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntNum().should.equal(50)
     })
 
     it('should read a 3 byte varInt', function () {
       let buf = new Buffer([253, 253, 0])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntNum().should.equal(253)
     })
 
     it('should read a 5 byte varInt', function () {
       let buf = new Buffer([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntNum().should.equal(50000)
     })
 
     it('should throw an error on a 9 byte varInt over the javascript uint precision limit', function () {
       let buf = new Bw().writeVarIntBn(new Bn(Math.pow(2, 54).toString())).toBuffer()
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       ;(function () {
         br.readVarIntNum()
       }).should.throw('number too large to retain precision - use readVarIntBn')
@@ -270,7 +270,7 @@ describe('Br', function () {
 
     it('should not throw an error on a 9 byte varInt not over the javascript uint precision limit', function () {
       let buf = new Bw().writeVarIntBn(new Bn(Math.pow(2, 53).toString())).toBuffer()
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       ;(function () {
         br.readVarIntNum()
       }).should.not.throw('number too large to retain precision - use readVarIntBn')
@@ -280,26 +280,26 @@ describe('Br', function () {
   describe('#readVarIntBn', function () {
     it('should read a 1 byte varInt', function () {
       let buf = new Buffer([50])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBn().toNumber().should.equal(50)
     })
 
     it('should read a 3 byte varInt', function () {
       let buf = new Buffer([253, 253, 0])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBn().toNumber().should.equal(253)
     })
 
     it('should read a 5 byte varInt', function () {
       let buf = new Buffer([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBn().toNumber().should.equal(50000)
     })
 
     it('should read a 9 byte varInt', function () {
       let buf = Buffer.concat([new Buffer([255]), new Buffer('ffffffffffffffff', 'hex')])
-      let br = new Br({buf: buf})
+      let br = new Br(buf)
       br.readVarIntBn().toNumber().should.equal(Math.pow(2, 64))
     })
   })
