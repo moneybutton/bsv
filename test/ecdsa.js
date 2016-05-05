@@ -8,7 +8,7 @@ let PrivKey = require('../lib/priv-key')
 let PubKey = require('../lib/pub-key')
 let Sig = require('../lib/sig')
 let asink = require('asink')
-let point = require('../lib/point')
+let Point = require('../lib/point')
 let should = require('chai').should()
 let vectors = require('./vectors/ecdsa')
 
@@ -23,7 +23,7 @@ describe('Ecdsa', function () {
   ecdsa.keyPair = new KeyPair()
   ecdsa.keyPair.privKey = new PrivKey().fromBn(new Bn().fromBuffer(new Buffer('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')))
   ecdsa.keyPair.pubKey = new PubKey().fromObject({
-    point: point(new Bn().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
+    point: new Point(new Bn().fromBuffer(new Buffer('ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2', 'hex')),
       new Bn().fromBuffer(new Buffer('4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380', 'hex')))
   })
 
@@ -566,7 +566,7 @@ describe('Ecdsa', function () {
     vectors.invalid.verifystr.forEach(function (obj, i) {
       it('should validate invalid.verifystr vector ' + i + ': ' + obj.description, function () {
         let ecdsa = new Ecdsa().fromObject({
-          keyPair: new KeyPair().fromObject({pubKey: new PubKey().fromObject({point: point.fromX(true, 1)})}),
+          keyPair: new KeyPair().fromObject({pubKey: new PubKey().fromObject({point: Point.fromX(true, 1)})}),
           sig: new Sig(new Bn(obj.signature.r), new Bn(obj.signature.s)),
           hashBuf: Hash.sha256(new Buffer(obj.message))
         })
