@@ -58,7 +58,7 @@ describe('PrivKey', function () {
     it('should input this address correctly', function () {
       let privKey = new PrivKey()
       privKey.fromJson(encmu)
-      privKey.toWIF().should.equal(encmu)
+      privKey.toWif().should.equal(encmu)
     })
   })
 
@@ -170,26 +170,26 @@ describe('PrivKey', function () {
     })
   })
 
-  describe('#fromWIF', function () {
+  describe('#fromWif', function () {
     it('should parse this compressed testnet address correctly', function () {
       let privKey = new PrivKey()
-      privKey.fromWIF(encmainnet)
-      privKey.toWIF().should.equal(encmainnet)
+      privKey.fromWif(encmainnet)
+      privKey.toWif().should.equal(encmainnet)
     })
   })
 
-  describe('@fromWIF', function () {
+  describe('@fromWif', function () {
     it('should parse this compressed testnet address correctly', function () {
-      let privKey = PrivKey.fromWIF(encmainnet)
-      privKey.toWIF().should.equal(encmainnet)
+      let privKey = PrivKey.fromWif(encmainnet)
+      privKey.toWif().should.equal(encmainnet)
     })
   })
 
-  describe('#toWIF', function () {
+  describe('#toWif', function () {
     it('should parse this compressed testnet address correctly', function () {
       let privKey = new PrivKey.TestNet()
-      privKey.fromWIF(enctestnet)
-      privKey.toWIF().should.equal(enctestnet)
+      privKey.fromWif(enctestnet)
+      privKey.toWif().should.equal(enctestnet)
     })
   })
 
@@ -197,7 +197,7 @@ describe('PrivKey', function () {
     it('should parse this uncompressed testnet address correctly', function () {
       let privKey = new PrivKey.TestNet()
       privKey.fromString(enctu)
-      privKey.toWIF().should.equal(enctu)
+      privKey.toWif().should.equal(enctu)
     })
   })
 
