@@ -80,7 +80,7 @@
     "url": "https://github.com/yoursnetwork/fullnode.git"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=6.1.0"
   },
   "dependencies": {
     "aes": "0.1.0",
