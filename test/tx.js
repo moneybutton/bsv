@@ -40,7 +40,7 @@ describe('Tx', function () {
     tx = new Tx()
     should.exist(tx)
 
-    new Tx(txbuf).toBuffer().toString('hex').should.equal(txhex)
+    Tx.fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
 
     // should set known defaults
     tx.version.should.equal(1)
@@ -164,7 +164,7 @@ describe('Tx', function () {
     })
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
-      let tx = new Tx(tx2buf)
+      let tx = Tx.fromBuffer(tx2buf)
       tx.txOuts.length = 1
       tx.txOutsVi = VarInt.fromNumber(1)
       tx.sighash(Sig.SIGHASH_SINGLE, 1, new Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
@@ -181,7 +181,7 @@ describe('Tx', function () {
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       return asink(function * () {
-        let tx = new Tx(tx2buf)
+        let tx = Tx.fromBuffer(tx2buf)
         tx.txOuts.length = 1
         tx.txOutsVi = VarInt.fromNumber(1)
         let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, new Script())
@@ -240,7 +240,7 @@ describe('Tx', function () {
 
   describe('#hash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
-      let tx = new Tx().fromBuffer(tx2buf)
+      let tx = Tx.fromBuffer(tx2buf)
       let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
       tx.hash().toString('hex').should.equal(txHashBuf.toString('hex'))
     })
@@ -249,7 +249,7 @@ describe('Tx', function () {
   describe('#asyncHash', function () {
     it('should correctly calculate the hash of this known transaction', function () {
       return asink(function * () {
-        let tx = new Tx().fromBuffer(tx2buf)
+        let tx = Tx.fromBuffer(tx2buf)
         let txHashBuf = new Buffer(Array.apply([], new Buffer(tx2idhex, 'hex')).reverse())
         let hashBuf = yield tx.asyncHash()
         hashBuf.toString('hex').should.equal(txHashBuf.toString('hex'))
@@ -259,7 +259,7 @@ describe('Tx', function () {
 
   describe('#id', function () {
     it('should correctly calculate the id of this known transaction', function () {
-      let tx = new Tx().fromBuffer(tx2buf)
+      let tx = Tx.fromBuffer(tx2buf)
       tx.id().toString('hex').should.equal(tx2idhex)
     })
   })
@@ -267,7 +267,7 @@ describe('Tx', function () {
   describe('#asyncId', function () {
     it('should correctly calculate the id of this known transaction', function () {
       return asink(function * () {
-        let tx = new Tx().fromBuffer(tx2buf)
+        let tx = Tx.fromBuffer(tx2buf)
         let idbuf = yield tx.id()
         idbuf.toString('hex').should.equal(tx2idhex)
       }, this)
@@ -300,7 +300,7 @@ describe('Tx', function () {
     it('should find the correct id of this (valid, on the blockchain) 1 mb transaction', function () {
       let txidhex = largesttxvector.txidhex
       let txhex = largesttxvector.txhex
-      let tx = new Tx().fromHex(txhex)
+      let tx = Tx.fromHex(txhex)
       let txid = tx.id()
       txid.toString('hex').should.equal(txidhex)
     })
@@ -318,7 +318,7 @@ describe('Tx', function () {
         let nIn = vector[2]
         let nHashType = vector[3]
         let sighashBuf = new Buffer(vector[4], 'hex')
-        let tx = new Tx().fromBuffer(txbuf)
+        let tx = Tx.fromBuffer(txbuf)
 
         // make sure transacion to/from buffer is isomorphic
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'))
@@ -336,7 +336,7 @@ describe('Tx', function () {
       it('should correctly serialized/deserialize tx_valid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
-        let tx = new Tx(txbuf)
+        let tx = Tx.fromBuffer(txbuf)
         tx.toBuffer().toString('hex').should.equal(txhex)
       })
       j++
@@ -350,7 +350,7 @@ describe('Tx', function () {
       it('should correctly serialized/deserialize tx_invalid test vector ' + j, function () {
         let txhex = vector[1]
         let txbuf = new Buffer(vector[1], 'hex')
-        let tx = new Tx(txbuf)
+        let tx = Tx.fromBuffer(txbuf)
         tx.toBuffer().toString('hex').should.equal(txhex)
       })
       j++

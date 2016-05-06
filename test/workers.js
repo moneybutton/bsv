@@ -11,7 +11,6 @@ let should = require('chai').should()
 describe('Workers', function () {
   it('should satisfy this basic API', function () {
     let workers = new Workers()
-    workers = new Workers()
     should.exist(workers)
   })
 
