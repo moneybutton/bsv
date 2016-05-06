@@ -272,13 +272,13 @@ describe('Ecdsa', function () {
     })
   })
 
-  describe('#asyncSig2pubKey', function () {
+  describe('#asyncSig2PubKey', function () {
     it('should calculate the correct public key', function () {
       return asink(function * () {
         ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
         ecdsa.sig.recovery = 0
-        let pubKey = yield ecdsa.asyncSig2pubKey()
+        let pubKey = yield ecdsa.asyncSig2PubKey()
         pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
       }, this)
     })
@@ -288,7 +288,7 @@ describe('Ecdsa', function () {
         ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
         ecdsa.sig.recovery = 0
-        let pubKey = yield ecdsa.asyncSig2pubKey()
+        let pubKey = yield ecdsa.asyncSig2PubKey()
         pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
       }, this)
     })
@@ -299,7 +299,7 @@ describe('Ecdsa', function () {
         ecdsa.sign()
         ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
         ecdsa.sig.recovery = 1
-        let pubKey = yield ecdsa.asyncSig2pubKey()
+        let pubKey = yield ecdsa.asyncSig2PubKey()
         pubKey.point.eq(ecdsa.keyPair.pubKey.point).should.equal(true)
       }, this)
     })
@@ -335,14 +335,14 @@ describe('Ecdsa', function () {
     })
   })
 
-  describe('@asyncSig2pubKey', function () {
+  describe('@asyncSig2PubKey', function () {
     it('should calculate the correct public key', function () {
       return asink(function * () {
         ecdsa.k = new Bn('114860389168127852803919605627759231199925249596762615988727970217268189974335', 10)
         ecdsa.sign()
         ecdsa.sig.recovery = 0
         let pubKey1 = ecdsa.sig2PubKey()
-        let pubKey2 = yield Ecdsa.asyncSig2pubKey(ecdsa.sig, ecdsa.hashBuf)
+        let pubKey2 = yield Ecdsa.asyncSig2PubKey(ecdsa.sig, ecdsa.hashBuf)
         pubKey1.toString().should.equal(pubKey2.toString())
       }, this)
     })
@@ -353,7 +353,7 @@ describe('Ecdsa', function () {
         ecdsa.sig = new Sig().fromString('3045022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f6650220278cf15b05ce47fb37d2233802899d94c774d5480bba9f0f2d996baa13370c43')
         ecdsa.sig.recovery = 0
         let pubKey1 = ecdsa.sig2PubKey()
-        let pubKey2 = yield Ecdsa.asyncSig2pubKey(ecdsa.sig, ecdsa.hashBuf)
+        let pubKey2 = yield Ecdsa.asyncSig2PubKey(ecdsa.sig, ecdsa.hashBuf)
         pubKey1.toString().should.equal(pubKey2.toString())
       }, this)
     })
@@ -365,7 +365,7 @@ describe('Ecdsa', function () {
         ecdsa.sig = new Sig().fromString('3046022100ec3cfe0e335791ad278b4ec8eac93d0347a97877bb1d54d35d189e225c15f665022100d8730ea4fa31b804c82ddcc7fd766269f33a079ea38e012c9238f2e2bcff34fe')
         ecdsa.sig.recovery = 1
         let pubKey1 = ecdsa.sig2PubKey()
-        let pubKey2 = yield Ecdsa.asyncSig2pubKey(ecdsa.sig, ecdsa.hashBuf)
+        let pubKey2 = yield Ecdsa.asyncSig2PubKey(ecdsa.sig, ecdsa.hashBuf)
         pubKey1.toString().should.equal(pubKey2.toString())
       }, this)
     })
