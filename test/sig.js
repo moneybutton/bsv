@@ -153,7 +153,7 @@ describe('Sig', function () {
       let sig = new Sig().fromTxFormat(buf)
       sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      sig.nhashtype.should.equal(Sig.SIGHASH_ALL)
+      sig.nHashType.should.equal(Sig.SIGHASH_ALL)
     })
 
     it('should parse this known signature and rebuild it', function () {
@@ -170,7 +170,7 @@ describe('Sig', function () {
       let sig = Sig.fromTxFormat(buf)
       sig.r.toString().should.equal('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       sig.s.toString().should.equal('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      sig.nhashtype.should.equal(Sig.SIGHASH_ALL)
+      sig.nHashType.should.equal(Sig.SIGHASH_ALL)
     })
 
     it('should parse this known signature and rebuild it', function () {
@@ -192,11 +192,11 @@ describe('Sig', function () {
     })
   })
 
-  describe('#parseDER', function () {
+  describe('#parseDer', function () {
     it('should parse this signature generated in node', function () {
       let sighex = '30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72'
       let sig = new Buffer(sighex, 'hex')
-      let parsed = Sig.parseDER(sig)
+      let parsed = Sig.parseDer(sig)
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(69)
       parsed.rlength.should.equal(33)
@@ -212,7 +212,7 @@ describe('Sig', function () {
     it('should parse this 69 byte signature', function () {
       let sighex = '3043021f59e4705959cc78acbfcf8bd0114e9cc1b389a4287fb33152b73a38c319b50302202f7428a27284c757e409bf41506183e9e49dfb54d5063796dfa0d403a4deccfa'
       let sig = new Buffer(sighex, 'hex')
-      let parsed = Sig.parseDER(sig)
+      let parsed = Sig.parseDer(sig)
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(67)
       parsed.rlength.should.equal(31)
@@ -228,7 +228,7 @@ describe('Sig', function () {
     it('should parse this 68 byte signature', function () {
       let sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a51'
       let sig = new Buffer(sighex, 'hex')
-      let parsed = Sig.parseDER(sig)
+      let parsed = Sig.parseDer(sig)
       parsed.header.should.equal(0x30)
       parsed.length.should.equal(66)
       parsed.rlength.should.equal(30)
@@ -242,11 +242,11 @@ describe('Sig', function () {
     })
   })
 
-  describe('@isTxDER', function () {
+  describe('@IsTxDer', function () {
     it('should know this is a DER signature', function () {
       let sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a5101'
       let sigbuf = new Buffer(sighex, 'hex')
-      Sig.isTxDER(sigbuf).should.equal(true)
+      Sig.IsTxDer(sigbuf).should.equal(true)
     })
 
     it('should know this is not a DER signature', function () {
@@ -254,7 +254,7 @@ describe('Sig', function () {
       let sighex = '3042021e17cfe77536c3fb0526bd1a72d7a8e0973f463add210be14063c8a9c37632022061bfa677f825ded82ba0863fb0c46ca1388dd3e647f6a93c038168b59d131a5101'
       let sigbuf = new Buffer(sighex, 'hex')
       sigbuf[0] = 0x31
-      Sig.isTxDER(sigbuf).should.equal(false)
+      Sig.IsTxDer(sigbuf).should.equal(false)
     })
   })
 
@@ -266,11 +266,11 @@ describe('Sig', function () {
       sig.toHex().should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
 
-    it('should convert these known r, s, nhashtype values into a known signature', function () {
+    it('should convert these known r, s, nHashType values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let nhashtype = Sig.SIGHASH_ALL
-      let sig = new Sig(r, s, nhashtype)
+      let nHashType = Sig.SIGHASH_ALL
+      let sig = new Sig(r, s, nHashType)
       sig.toHex().should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201')
     })
 
@@ -297,11 +297,11 @@ describe('Sig', function () {
       der.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e72')
     })
 
-    it('should convert these known r, s, nhashtype values into a known signature', function () {
+    it('should convert these known r, s, nHashType values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let nhashtype = Sig.SIGHASH_ALL
-      let sig = new Sig(r, s, nhashtype)
+      let nHashType = Sig.SIGHASH_ALL
+      let sig = new Sig(r, s, nHashType)
       let buf = sig.toBuffer()
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201')
     })
@@ -346,11 +346,11 @@ describe('Sig', function () {
   })
 
   describe('#toTxFormat', function () {
-    it('should convert these known r, s, nhashtype values into a known signature', function () {
+    it('should convert these known r, s, nHashType values into a known signature', function () {
       let r = new Bn('63173831029936981022572627018246571655303050627048489594159321588908385378810')
       let s = new Bn('4331694221846364448463828256391194279133231453999942381442030409253074198130')
-      let nhashtype = Sig.SIGHASH_ALL
-      let sig = new Sig(r, s, nhashtype)
+      let nHashType = Sig.SIGHASH_ALL
+      let sig = new Sig(r, s, nHashType)
       let buf = sig.toTxFormat()
       buf.toString('hex').should.equal('30450221008bab1f0a2ff2f9cb8992173d8ad73c229d31ea8e10b0f4d4ae1a0d8ed76021fa02200993a6ec81755b9111762fc2cf8e3ede73047515622792110867d12654275e7201')
     })

@@ -56,7 +56,7 @@ describe('TxBuilder', function () {
     let saddr1 = addr1
     let saddr2 = new Address().fromRedeemScript(new Script().fromString('OP_RETURN')) // fake, unredeemable p2sh address
 
-    // txouts that we are spending
+    // txOuts that we are spending
 
     // pubKeyHash out
     let scriptout1 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
@@ -74,10 +74,10 @@ describe('TxBuilder', function () {
     let address4 = new Address().fromRedeemScript(redeemScript4)
     let scriptout4 = address4.toScript()
 
-    let txout1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
-    let txout2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
-    let txout3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
-    let txout4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
+    let txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+    let txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+    let txOut3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
+    let txOut4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
     // total balance: 4e8
 
     let txHashBuf = new Buffer(32)
@@ -89,10 +89,10 @@ describe('TxBuilder', function () {
 
     txb.setFeePerKbNum(0.0001e8)
     txb.setChangeAddress(changeaddr)
-    txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txout1, keyPair1.pubKey)
-    txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txout2, keyPair2.pubKey)
-    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum3, txout3, redeemScript3)
-    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum4, txout4, redeemScript4)
+    txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1, keyPair1.pubKey)
+    txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2, keyPair2.pubKey)
+    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum3, txOut3, redeemScript3)
+    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum4, txOut4, redeemScript4)
     txb.outputToAddress(new Bn(2e8), saddr1) // pubKeyHash address
     txb.outputToAddress(new Bn(1e8), saddr2) // p2sh address
     // total sending: 2e8 (plus fee)
@@ -110,10 +110,10 @@ describe('TxBuilder', function () {
       saddr1,
       saddr2,
       changeaddr,
-      txout1,
-      txout2,
-      txout3,
-      txout4
+      txOut1,
+      txOut2,
+      txOut3,
+      txOut4
     }
   }
 
@@ -129,11 +129,11 @@ describe('TxBuilder', function () {
       let txb = obj.txb
       let json = txb.toJson()
       should.exist(json.tx)
-      should.exist(json.txins)
-      should.exist(json.txins[0])
-      should.exist(json.txouts)
-      should.exist(json.utxoutmap)
-      should.exist(json.txouts[0])
+      should.exist(json.txIns)
+      should.exist(json.txIns[0])
+      should.exist(json.txOuts)
+      should.exist(json.uTxOutMap)
+      should.exist(json.txOuts[0])
       should.exist(json.changeScript)
       should.exist(json.feePerKbNum)
     })
@@ -147,9 +147,9 @@ describe('TxBuilder', function () {
       let txb2 = new TxBuilder().fromJson(json)
       let json2 = txb2.toJson()
       json2.tx.should.equal(json.tx)
-      json2.txins[0].should.equal(json.txins[0])
-      json2.txouts[0].should.equal(json.txouts[0])
-      JSON.stringify(json2.utxoutmap).should.equal(JSON.stringify(json.utxoutmap))
+      json2.txIns[0].should.equal(json.txIns[0])
+      json2.txOuts[0].should.equal(json.txOuts[0])
+      JSON.stringify(json2.uTxOutMap).should.equal(JSON.stringify(json.uTxOutMap))
       json2.changeScript.should.equal(json.changeScript)
       json2.feePerKbNum.should.equal(json.feePerKbNum)
     })
@@ -213,12 +213,12 @@ describe('TxBuilder', function () {
       should.exist(txb.tx)
     })
 
-    it('should set tx and utxoutmap', function () {
+    it('should set tx and uTxOutMap', function () {
       let tx = new Tx()
-      let utxoutmap = new TxOutMap()
-      let txb = new TxBuilder().importPartiallySignedTx(tx, utxoutmap)
+      let uTxOutMap = new TxOutMap()
+      let txb = new TxBuilder().importPartiallySignedTx(tx, uTxOutMap)
       should.exist(txb.tx)
-      should.exist(txb.utxoutmap)
+      should.exist(txb.uTxOutMap)
     })
   })
 
@@ -229,7 +229,7 @@ describe('TxBuilder', function () {
       let address = new Address().fromRedeemScript(new Script().fromScriptHash(hashBuf))
       let txb = new TxBuilder()
       txb.outputToAddress(new Bn(0), address)
-      txb.txouts.length.should.equal(1)
+      txb.txOuts.length.should.equal(1)
     })
 
     it('should add a pubKeyHash address', function () {
@@ -237,7 +237,7 @@ describe('TxBuilder', function () {
       let address = new Address().fromPubKey(pubKey)
       let txb = new TxBuilder()
       txb.outputToAddress(new Bn(0), address)
-      txb.txouts.length.should.equal(1)
+      txb.txOuts.length.should.equal(1)
     })
   })
 
@@ -246,7 +246,7 @@ describe('TxBuilder', function () {
       let script = new Script().fromString('OP_RETURN')
       let txb = new TxBuilder()
       txb.outputToScript(new Bn(0), script)
-      txb.txouts.length.should.equal(1)
+      txb.txOuts.length.should.equal(1)
     })
   })
 
@@ -276,26 +276,26 @@ describe('TxBuilder', function () {
     it('should add an input from a script', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txout, script)
-      txbuilder.txins.length.should.equal(1)
+      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txOut, script)
+      txbuilder.txIns.length.should.equal(1)
     })
 
     it('should add an input from a script and set nSequence', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let script = new Script().fromString('OP_RETURN')
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
-      txbuilder.txins.length.should.equal(1)
-      txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromScript(txHashBuf, txOutNum, txOut, script, 0xf0f0f0f0)
+      txbuilder.txIns.length.should.equal(1)
+      txbuilder.txIns[0].nSequence.should.equal(0xf0f0f0f0)
     })
   })
 
@@ -303,24 +303,24 @@ describe('TxBuilder', function () {
     it('should add an input from a pubKeyHash output', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey)
-      Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
+      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txOut, keyPair.pubKey)
+      Buffer.compare(txbuilder.txIns[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
     })
 
     it('should add an input from a pubKeyHash output and set nSequence', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txout, keyPair.pubKey, 0xf0f0f0f0)
-      Buffer.compare(txbuilder.txins[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
-      txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromPubKeyHash(txHashBuf, txOutNum, txOut, keyPair.pubKey, 0xf0f0f0f0)
+      Buffer.compare(txbuilder.txIns[0].script.chunks[1].buf, keyPair.pubKey.toBuffer()).should.equal(0)
+      txbuilder.txIns[0].nSequence.should.equal(0xf0f0f0f0)
     })
   })
 
@@ -330,12 +330,12 @@ describe('TxBuilder', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script)
-      Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txOut, script)
+      Buffer.compare(txbuilder.txIns[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
 
     it('should add an input from a scriptHash output and set nSequence', function () {
@@ -343,34 +343,34 @@ describe('TxBuilder', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txout, script, 0xf0f0f0f0)
-      Buffer.compare(txbuilder.txins[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
-      txbuilder.txins[0].nSequence.should.equal(0xf0f0f0f0)
+      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(txHashBuf, txOutNum, txOut, script, 0xf0f0f0f0)
+      Buffer.compare(txbuilder.txIns[0].script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      txbuilder.txIns[0].nSequence.should.equal(0xf0f0f0f0)
     })
   })
 
   describe('#getSig', function () {
-    let txb, keyPair1, txout1
+    let txb, keyPair1, txOut1
 
     before(function () {
       let obj = prepareAndBuildTxBuilder()
       txb = obj.txb
       keyPair1 = obj.keyPair1
-      txout1 = obj.txout1
+      txOut1 = obj.txOut1
     })
 
     it('should sign and verify synchronously', function () {
-      let sig = txb.getSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txout1)
+      let sig = txb.getSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txOut1)
       ;(sig instanceof Sig).should.equal(true)
     })
   })
 
   describe('#sign', function () {
-    let txb, keyPair1, keyPair2, saddr1, changeaddr, txout1
+    let txb, keyPair1, keyPair2, saddr1, changeaddr, txOut1
 
     before(function () {
       let obj = prepareAndBuildTxBuilder()
@@ -379,7 +379,7 @@ describe('TxBuilder', function () {
       keyPair2 = obj.keyPair2
       saddr1 = obj.saddr1
       changeaddr = obj.changeaddr
-      txout1 = obj.txout1
+      txOut1 = obj.txOut1
     })
 
     it('should sign and verify synchronously', function () {
@@ -387,7 +387,7 @@ describe('TxBuilder', function () {
       txb.sign(1, keyPair2)
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
 
       txb.sign(2, keyPair1) // 2-of-2 needs 2 sigs
       txb.sign(2, keyPair2) // 2-of-2 needs 2 sigs
@@ -395,46 +395,46 @@ describe('TxBuilder', function () {
       txb.sign(3, keyPair1) // 2-of-3 needs 2 sigs
       txb.sign(3, keyPair2) // 2-of-3 needs 2 sigs
 
-      txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashBuf.toString('hex'))
-      txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
-      txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
-      txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
-      txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
-      txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashBuf.toString('hex'))
+      txb.tx.txOuts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashBuf.toString('hex'))
+      txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
+      txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[2].valueBn.eq(1e8 - 0.0001e8).should.equal(true)
+      txb.tx.txOuts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
     })
 
-    it('should pass in txout', function () {
-      txb.txoutmap = sinon.spy()
-      txb.utxoutmap = {
+    it('should pass in txOut', function () {
+      txb.txOutmap = sinon.spy()
+      txb.uTxOutMap = {
         get: sinon.spy()
       }
-      txb.sign(0, keyPair1, txout1)
-      txb.utxoutmap.get.calledOnce.should.equal(false)
+      txb.sign(0, keyPair1, txOut1)
+      txb.uTxOutMap.get.calledOnce.should.equal(false)
     })
   })
 
   describe('#asyncGetSig', function () {
-    let txb, keyPair1, txout1
+    let txb, keyPair1, txOut1
 
     before(function () {
       let obj = prepareAndBuildTxBuilder()
       txb = obj.txb
       keyPair1 = obj.keyPair1
-      txout1 = obj.txout1
+      txOut1 = obj.txOut1
     })
 
     it('should sign and verify synchronously', function () {
       return asink(function * () {
-        let sig = yield txb.asyncGetSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txout1)
+        let sig = yield txb.asyncGetSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txOut1)
         ;(sig instanceof Sig).should.equal(true)
       }, this)
     })
   })
 
   describe('#asyncSign', function () {
-    let txb, keyPair1, keyPair2, saddr1, changeaddr, txout1
+    let txb, keyPair1, keyPair2, saddr1, changeaddr, txOut1
 
     before(function () {
       let obj = prepareAndBuildTxBuilder()
@@ -443,7 +443,7 @@ describe('TxBuilder', function () {
       keyPair2 = obj.keyPair2
       saddr1 = obj.saddr1
       changeaddr = obj.changeaddr
-      txout1 = obj.txout1
+      txOut1 = obj.txOut1
     })
 
     it('should sign and verify asynchronously', function () {
@@ -453,7 +453,7 @@ describe('TxBuilder', function () {
         yield txb.asyncSign(1, keyPair2)
 
         // transaction not fully signed yet, so should be invalid
-        TxVerifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
+        TxVerifier.verify(txb.tx, txb.uTxOutMap, Interp.SCRIPT_VERIFY_P2SH).should.equal(false)
 
         yield txb.asyncSign(2, keyPair1) // 2-of-2 needs 2 sigs
         yield txb.asyncSign(2, keyPair2) // 2-of-2 needs 2 sigs
@@ -461,25 +461,25 @@ describe('TxBuilder', function () {
         yield txb.asyncSign(3, keyPair1) // 2-of-3 needs 2 sigs
         yield txb.asyncSign(3, keyPair2) // 2-of-3 needs 2 sigs
 
-        txb.tx.txouts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashBuf.toString('hex'))
-        txb.tx.txouts[0].valuebn.eq(2e8).should.equal(true)
-        txb.tx.txouts[1].valuebn.eq(1e8).should.equal(true)
-        txb.tx.txouts[2].valuebn.gt(546).should.equal(true)
-        txb.tx.txouts[2].valuebn.eq(1e8 - 0.0001e8).should.equal(true)
-        txb.tx.txouts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashBuf.toString('hex'))
+        txb.tx.txOuts[0].script.chunks[2].buf.toString('hex').should.equal(saddr1.hashBuf.toString('hex'))
+        txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
+        txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
+        txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
+        txb.tx.txOuts[2].valueBn.eq(1e8 - 0.0001e8).should.equal(true)
+        txb.tx.txOuts[2].script.chunks[2].buf.toString('hex').should.equal(changeaddr.hashBuf.toString('hex'))
 
-        TxVerifier.verify(txb.tx, txb.utxoutmap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
+        TxVerifier.verify(txb.tx, txb.uTxOutMap, Interp.SCRIPT_VERIFY_P2SH).should.equal(true)
       }, this)
     })
 
-    it('should pass in txout', function () {
+    it('should pass in txOut', function () {
       return asink(function * () {
-        txb.txoutmap = sinon.spy()
-        txb.utxoutmap = {
+        txb.txOutmap = sinon.spy()
+        txb.uTxOutMap = {
           get: sinon.spy()
         }
-        yield txb.asyncSign(0, keyPair1, txout1)
-        txb.utxoutmap.get.calledOnce.should.equal(false)
+        yield txb.asyncSign(0, keyPair1, txOut1)
+        txb.uTxOutMap.get.calledOnce.should.equal(false)
       }, this)
     })
   })

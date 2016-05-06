@@ -17,7 +17,7 @@ describe('TxIn', function () {
   let script = new Script().fromString('OP_CHECKMULTISIG')
   let scriptVi = VarInt.fromNumber(script.toBuffer().length)
   let nSequence = 0
-  let txin = new TxIn().fromObject({
+  let txIn = new TxIn().fromObject({
     txHashBuf: txHashBuf,
     txOutNum: txOutNum,
     scriptVi: scriptVi,
@@ -25,11 +25,11 @@ describe('TxIn', function () {
     nSequence: nSequence
   })
 
-  it('should make a new txin', function () {
-    let txin = new TxIn()
-    should.exist(txin)
-    txin = new TxIn()
-    should.exist(txin)
+  it('should make a new txIn', function () {
+    let txIn = new TxIn()
+    should.exist(txIn)
+    txIn = new TxIn()
+    should.exist(txIn)
     let txHashBuf = new Buffer(32)
     txHashBuf.fill(0)
     new TxIn(txHashBuf, 0).txHashBuf.length.should.equal(32)
@@ -43,30 +43,30 @@ describe('TxIn', function () {
 
   describe('#fromObject', function () {
     it('should set these vars', function () {
-      let txin = new TxIn().fromObject({
+      let txIn = new TxIn().fromObject({
         txHashBuf: txHashBuf,
         txOutNum: txOutNum,
         scriptVi: scriptVi,
         script: script,
         nSequence: nSequence
       })
-      should.exist(txin.txHashBuf)
-      should.exist(txin.txOutNum)
-      should.exist(txin.scriptVi)
-      should.exist(txin.script)
-      should.exist(txin.nSequence)
+      should.exist(txIn.txHashBuf)
+      should.exist(txIn.txOutNum)
+      should.exist(txIn.scriptVi)
+      should.exist(txIn.script)
+      should.exist(txIn.nSequence)
     })
   })
 
   describe('#fromProperties', function () {
-    it('should make a new txin', function () {
+    it('should make a new txIn', function () {
       let txIn = new TxIn().fromProperties(txHashBuf, txOutNum, script, nSequence)
       should.exist(txIn.scriptVi)
     })
   })
 
   describe('@fromProperties', function () {
-    it('should make a new txin', function () {
+    it('should make a new txIn', function () {
       let txIn = TxIn.fromProperties(txHashBuf, txOutNum, script, nSequence)
       should.exist(txIn.scriptVi)
     })
@@ -74,25 +74,25 @@ describe('TxIn', function () {
 
   describe('#setScript', function () {
     it('should calculate the varInt size correctly', function () {
-      let txin2 = new TxIn(txin)
-      txin2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
+      let txIn2 = new TxIn(txIn)
+      txIn2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
     })
   })
 
   describe('#fromJson', function () {
     it('should set these vars', function () {
-      let txin2 = new TxIn().fromJson(txin.toJson())
-      should.exist(txin2.txHashBuf)
-      should.exist(txin2.txOutNum)
-      should.exist(txin2.scriptVi)
-      should.exist(txin2.script)
-      should.exist(txin2.nSequence)
+      let txIn2 = new TxIn().fromJson(txIn.toJson())
+      should.exist(txIn2.txHashBuf)
+      should.exist(txIn2.txOutNum)
+      should.exist(txIn2.scriptVi)
+      should.exist(txIn2.script)
+      should.exist(txIn2.nSequence)
     })
   })
 
   describe('#toJson', function () {
     it('should set these vars', function () {
-      let json = txin.toJson()
+      let json = txIn.toJson()
       should.exist(json.txHashBuf)
       should.exist(json.txOutNum)
       should.exist(json.scriptVi)
@@ -104,9 +104,9 @@ describe('TxIn', function () {
   describe('#fromHex', function () {
     it('should convert this known buffer', function () {
       let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let txin = new TxIn().fromHex(hex)
-      txin.scriptVi.toNumber().should.equal(1)
-      txin.script.toString().should.equal('OP_CHECKMULTISIG')
+      let txIn = new TxIn().fromHex(hex)
+      txIn.scriptVi.toNumber().should.equal(1)
+      txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
   })
 
@@ -114,9 +114,9 @@ describe('TxIn', function () {
     it('should convert this known buffer', function () {
       let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
       let buf = new Buffer(hex, 'hex')
-      let txin = new TxIn().fromBuffer(buf)
-      txin.scriptVi.toNumber().should.equal(1)
-      txin.script.toString().should.equal('OP_CHECKMULTISIG')
+      let txIn = new TxIn().fromBuffer(buf)
+      txIn.scriptVi.toNumber().should.equal(1)
+      txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
   })
 
@@ -125,27 +125,27 @@ describe('TxIn', function () {
       let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
       let buf = new Buffer(hex, 'hex')
       let br = new Br(buf)
-      let txin = new TxIn().fromBr(br)
-      txin.scriptVi.toNumber().should.equal(1)
-      txin.script.toString().should.equal('OP_CHECKMULTISIG')
+      let txIn = new TxIn().fromBr(br)
+      txIn.scriptVi.toNumber().should.equal(1)
+      txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
   })
 
   describe('#toHex', function () {
     it('should convert this known hex', function () {
-      txin.toHex().should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn.toHex().should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
   })
 
   describe('#toBuffer', function () {
     it('should convert this known buffer', function () {
-      txin.toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn.toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
   })
 
   describe('#toBw', function () {
     it('should convert this known buffer', function () {
-      txin.toBw().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn.toBw().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
     })
   })
 
@@ -153,12 +153,12 @@ describe('TxIn', function () {
     it('should convert from pubKeyHash out', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txin = new TxIn().fromPubKeyHashTxOut(txHashBuf, txOutNum, txout, keyPair.pubKey)
-      should.exist(txin)
+      let txIn = new TxIn().fromPubKeyHashTxOut(txHashBuf, txOutNum, txOut, keyPair.pubKey)
+      should.exist(txIn)
     })
   })
 
@@ -168,12 +168,12 @@ describe('TxIn', function () {
       let keyPair2 = new KeyPair().fromRandom()
       let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = new Address().fromRedeemScript(script)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txin = new TxIn().fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txout, script)
-      Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      let txIn = new TxIn().fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txOut, script)
+      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
   })
 
@@ -183,12 +183,12 @@ describe('TxIn', function () {
       let keyPair2 = KeyPair.fromRandom()
       let script = Script.fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = Address.fromRedeemScript(script)
-      let txout = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
+      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
       let txHashBuf = new Buffer(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txin = TxIn.fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txout, script)
-      Buffer.compare(txin.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      let txIn = TxIn.fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txOut, script)
+      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(0)
     })
   })
 })

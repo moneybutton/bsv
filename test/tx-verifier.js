@@ -37,19 +37,19 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txoutmap = new TxOutMap()
+        let txOutmap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-          txoutmap.add(txHashBuf, txOutNum, txout)
+          txOutmap.add(txHashBuf, txOutNum, txOut)
         })
 
         let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
-        let verified = TxVerifier.verify(tx, txoutmap, flags)
+        let verified = TxVerifier.verify(tx, txOutmap, flags)
         verified.should.equal(true)
       })
 
@@ -59,19 +59,19 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txoutmap = new TxOutMap()
+          let txOutmap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-            txoutmap.add(txHashBuf, txOutNum, txout)
+            txOutmap.add(txHashBuf, txOutNum, txOut)
           })
 
           let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
-          let verified = yield TxVerifier.asyncVerify(tx, txoutmap, flags)
+          let verified = yield TxVerifier.asyncVerify(tx, txOutmap, flags)
           verified.should.equal(true)
         }, this)
       })
@@ -88,20 +88,20 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txoutmap = new TxOutMap()
+        let txOutmap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
             txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
           }
-          let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
+          let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-          txoutmap.add(txHashBuf, txOutNum, txout)
+          txOutmap.add(txHashBuf, txOutNum, txOut)
         })
 
         let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
-        let verified = TxVerifier.verify(tx, txoutmap, flags)
+        let verified = TxVerifier.verify(tx, txOutmap, flags)
         verified.should.equal(false)
       })
 
@@ -111,20 +111,20 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txoutmap = new TxOutMap()
+          let txOutmap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
               txOutNum = 0xffffffff // bitcoind casts -1 to an unsigned int
             }
-            let txout = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
+            let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-            txoutmap.add(txHashBuf, txOutNum, txout)
+            txOutmap.add(txHashBuf, txOutNum, txOut)
           })
 
           let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
-          let verified = yield TxVerifier.asyncVerify(tx, txoutmap, flags)
+          let verified = yield TxVerifier.asyncVerify(tx, txOutmap, flags)
           verified.should.equal(false)
         }, this)
       })

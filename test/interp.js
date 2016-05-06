@@ -139,7 +139,7 @@ describe('Interp', function () {
 
       let sig = spendtx.sign(keyPair, Sig.SIGHASH_ALL, 0, scriptPubKey)
       let scriptSig = new Script().writeBuffer(sig.toTxFormat())
-      spendtx.txins[0].setScript(scriptSig)
+      spendtx.txIns[0].setScript(scriptSig)
 
       let interp = new Interp()
       let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0)

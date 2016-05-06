@@ -17,14 +17,14 @@ let vectorsTxInvalid = require('./vectors/bitcoind/tx_invalid')
 let largesttxvector = require('./vectors/largesttx')
 
 describe('Tx', function () {
-  let txin = new TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
-  let txout = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
+  let txIn = new TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
+  let txOut = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
   let tx = new Tx().fromObject({
     version: 0,
     txInsVi: VarInt.fromNumber(1),
-    txins: [txin],
+    txIns: [txIn],
     txOutsVi: VarInt.fromNumber(1),
-    txouts: [txout],
+    txOuts: [txOut],
     nLockTime: 0
   })
   let txhex = '000000000100000000000000000000000000000000000000000000000000000000000000000000000001ae0000000001050000000000000001ae00000000'
@@ -45,9 +45,9 @@ describe('Tx', function () {
     // should set known defaults
     tx.version.should.equal(1)
     tx.txInsVi.toNumber().should.equal(0)
-    tx.txins.length.should.equal(0)
+    tx.txIns.length.should.equal(0)
     tx.txOutsVi.toNumber().should.equal(0)
-    tx.txouts.length.should.equal(0)
+    tx.txOuts.length.should.equal(0)
     tx.nLockTime.should.equal(0)
   })
 
@@ -57,9 +57,9 @@ describe('Tx', function () {
       tx.initialize()
       tx.version.should.equal(1)
       tx.txInsVi.toNumber().should.equal(0)
-      tx.txins.length.should.equal(0)
+      tx.txIns.length.should.equal(0)
       tx.txOutsVi.toNumber().should.equal(0)
-      tx.txouts.length.should.equal(0)
+      tx.txOuts.length.should.equal(0)
       tx.nLockTime.should.equal(0)
     })
   })
@@ -69,16 +69,16 @@ describe('Tx', function () {
       let tx = new Tx().fromObject({
         version: 0,
         txInsVi: VarInt.fromNumber(1),
-        txins: [txin],
+        txIns: [txIn],
         txOutsVi: VarInt.fromNumber(1),
-        txouts: [txout],
+        txOuts: [txOut],
         nLockTime: 0
       })
       should.exist(tx.version)
       should.exist(tx.txInsVi)
-      should.exist(tx.txins)
+      should.exist(tx.txIns)
       should.exist(tx.txOutsVi)
-      should.exist(tx.txouts)
+      should.exist(tx.txOuts)
       should.exist(tx.nLockTime)
     })
   })
@@ -88,16 +88,16 @@ describe('Tx', function () {
       let tx = new Tx().fromJson({
         version: 0,
         txInsVi: VarInt.fromNumber(1).toJson(),
-        txins: [txin.toJson()],
+        txIns: [txIn.toJson()],
         txOutsVi: VarInt.fromNumber(1).toJson(),
-        txouts: [txout.toJson()],
+        txOuts: [txOut.toJson()],
         nLockTime: 0
       })
       should.exist(tx.version)
       should.exist(tx.txInsVi)
-      should.exist(tx.txins)
+      should.exist(tx.txIns)
       should.exist(tx.txOutsVi)
-      should.exist(tx.txouts)
+      should.exist(tx.txOuts)
       should.exist(tx.nLockTime)
     })
   })
@@ -107,9 +107,9 @@ describe('Tx', function () {
       let json = tx.toJson()
       should.exist(json.version)
       should.exist(json.txInsVi)
-      should.exist(json.txins)
+      should.exist(json.txIns)
       should.exist(json.txOutsVi)
-      should.exist(json.txouts)
+      should.exist(json.txOuts)
       should.exist(json.nLockTime)
     })
   })
@@ -165,7 +165,7 @@ describe('Tx', function () {
 
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       let tx = new Tx(tx2buf)
-      tx.txouts.length = 1
+      tx.txOuts.length = 1
       tx.txOutsVi = VarInt.fromNumber(1)
       tx.sighash(Sig.SIGHASH_SINGLE, 1, new Script()).toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
     })
@@ -182,7 +182,7 @@ describe('Tx', function () {
     it('should return 1 for the SIGHASH_SINGLE bug', function () {
       return asink(function * () {
         let tx = new Tx(tx2buf)
-        tx.txouts.length = 1
+        tx.txOuts.length = 1
         tx.txOutsVi = VarInt.fromNumber(1)
         let hashBuf = yield tx.asyncSighash(Sig.SIGHASH_SINGLE, 1, new Script())
         hashBuf.toString('hex').should.equal('0000000000000000000000000000000000000000000000000000000000000001')
@@ -276,23 +276,23 @@ describe('Tx', function () {
 
   describe('#addTxIn', function () {
     it('should add an input', function () {
-      let txin = new TxIn()
+      let txIn = new TxIn()
       let tx = new Tx()
       tx.txInsVi.toNumber().should.equal(0)
-      tx.addTxIn(txin)
+      tx.addTxIn(txIn)
       tx.txInsVi.toNumber().should.equal(1)
-      tx.txins.length.should.equal(1)
+      tx.txIns.length.should.equal(1)
     })
   })
 
   describe('#addTxOut', function () {
     it('should add an output', function () {
-      let txout = new TxOut()
+      let txOut = new TxOut()
       let tx = new Tx()
       tx.txOutsVi.toNumber().should.equal(0)
-      tx.addTxOut(txout)
+      tx.addTxOut(txOut)
       tx.txOutsVi.toNumber().should.equal(1)
-      tx.txouts.length.should.equal(1)
+      tx.txOuts.length.should.equal(1)
     })
   })
 
@@ -316,7 +316,7 @@ describe('Tx', function () {
         let scriptbuf = new Buffer(vector[1], 'hex')
         let subScript = new Script().fromBuffer(scriptbuf)
         let nIn = vector[2]
-        let nhashtype = vector[3]
+        let nHashType = vector[3]
         let sighashBuf = new Buffer(vector[4], 'hex')
         let tx = new Tx().fromBuffer(txbuf)
 
@@ -324,7 +324,7 @@ describe('Tx', function () {
         tx.toBuffer().toString('hex').should.equal(txbuf.toString('hex'))
 
         // sighash ought to be correct
-        tx.sighash(nhashtype, nIn, subScript).toString('hex').should.equal(sighashBuf.toString('hex'))
+        tx.sighash(nHashType, nIn, subScript).toString('hex').should.equal(sighashBuf.toString('hex'))
       })
     })
 

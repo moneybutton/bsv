@@ -8,118 +8,118 @@ let VarInt = require('../lib/var-int')
 let should = require('chai').should()
 
 describe('TxOut', function () {
-  let valuebn = new Bn(5)
+  let valueBn = new Bn(5)
   let script = new Script().fromString('OP_CHECKMULTISIG')
   let scriptVi = VarInt.fromNumber(script.toBuffer().length)
-  let txout = new TxOut().fromObject({
-    valuebn: valuebn,
+  let txOut = new TxOut().fromObject({
+    valueBn: valueBn,
     scriptVi: scriptVi,
     script: script
   })
 
-  it('should make a new txout', function () {
-    let txout = new TxOut()
-    should.exist(txout)
-    new TxOut(valuebn, scriptVi, script).valuebn.toString().should.equal('5')
+  it('should make a new txOut', function () {
+    let txOut = new TxOut()
+    should.exist(txOut)
+    new TxOut(valueBn, scriptVi, script).valueBn.toString().should.equal('5')
   })
 
   describe('#fromObject', function () {
     it('should set this object', function () {
-      let txout = new TxOut().fromObject({
-        valuebn: valuebn,
+      let txOut = new TxOut().fromObject({
+        valueBn: valueBn,
         scriptVi: scriptVi,
         script: script
       })
-      should.exist(txout.valuebn)
-      should.exist(txout.scriptVi)
-      should.exist(txout.script)
+      should.exist(txOut.valueBn)
+      should.exist(txOut.scriptVi)
+      should.exist(txOut.script)
     })
   })
 
   describe('#setScript', function () {
     it('should set the script size correctly', function () {
-      let txout2 = new TxOut(txout)
-      txout2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
+      let txOut2 = new TxOut(txOut)
+      txOut2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
     })
   })
 
   describe('#fromProperties', function () {
     it('should make a new txOut', function () {
-      let valuebn = Bn(0)
+      let valueBn = Bn(0)
       let script = Script.fromString('OP_RETURN')
-      let txOut = new TxOut().fromProperties(valuebn, script)
+      let txOut = new TxOut().fromProperties(valueBn, script)
       txOut.scriptVi.toNumber().should.equal(1)
     })
   })
 
   describe('@fromProperties', function () {
     it('should make a new txOut', function () {
-      let valuebn = Bn(0)
+      let valueBn = Bn(0)
       let script = Script.fromString('OP_RETURN')
-      let txOut = TxOut.fromProperties(valuebn, script)
+      let txOut = TxOut.fromProperties(valueBn, script)
       txOut.scriptVi.toNumber().should.equal(1)
     })
   })
 
   describe('#fromJson', function () {
     it('should set from this json', function () {
-      let txout = new TxOut().fromJson({
-        valuebn: valuebn.toJson(),
+      let txOut = new TxOut().fromJson({
+        valueBn: valueBn.toJson(),
         scriptVi: scriptVi.toJson(),
         script: script.toJson()
       })
-      should.exist(txout.valuebn)
-      should.exist(txout.scriptVi)
-      should.exist(txout.script)
+      should.exist(txOut.valueBn)
+      should.exist(txOut.scriptVi)
+      should.exist(txOut.script)
     })
   })
 
   describe('#toJson', function () {
     it('should return this json', function () {
-      let txout = new TxOut().fromJson({
-        valuebn: valuebn.toJson(),
+      let txOut = new TxOut().fromJson({
+        valueBn: valueBn.toJson(),
         scriptVi: scriptVi.toJson(),
         script: script.toJson()
       })
-      let json = txout.toJson()
-      should.exist(json.valuebn)
+      let json = txOut.toJson()
+      should.exist(json.valueBn)
       should.exist(json.scriptVi)
       should.exist(json.script)
     })
   })
 
   describe('#fromHex', function () {
-    it('should make this txin from this known hex', function () {
-      let txout = new TxOut().fromHex('050000000000000001ae')
-      txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
+    it('should make this txIn from this known hex', function () {
+      let txOut = new TxOut().fromHex('050000000000000001ae')
+      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
   })
 
   describe('#fromBuffer', function () {
-    it('should make this txin from this known buffer', function () {
-      let txout = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
-      txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
+    it('should make this txIn from this known buffer', function () {
+      let txOut = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
+      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
   })
 
   describe('#fromBr', function () {
-    it('should make this txin from this known buffer', function () {
-      let txout = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
+    it('should make this txIn from this known buffer', function () {
+      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
+      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
   })
 
   describe('#toBuffer', function () {
     it('should output this known buffer', function () {
-      let txout = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txout.toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
+      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
   })
 
   describe('#toBw', function () {
     it('should output this known buffer', function () {
-      let txout = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txout.toBw().toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
+      txOut.toBw().toBuffer().toString('hex').should.equal('050000000000000001ae')
     })
   })
 })

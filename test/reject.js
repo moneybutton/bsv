@@ -13,12 +13,12 @@ describe('Reject', function () {
   describe('#toBuffer', function () {
     it('should convert to a buffer', function () {
       let reject = new Reject().fromObject({
-        typevi: new VarInt().fromNumber(2),
-        typestr: 'tx',
-        codenum: 1,
-        reasonvi: new VarInt().fromNumber(2),
-        reasonstr: 'hi',
-        extrabuf: new Buffer(0)
+        typeVi: new VarInt().fromNumber(2),
+        typeStr: 'tx',
+        codeNum: 1,
+        reasonVi: new VarInt().fromNumber(2),
+        reasonStr: 'hi',
+        extraBuf: new Buffer(0)
       })
       Buffer.isBuffer(reject.toBuffer()).should.equal(true)
     })
@@ -27,18 +27,18 @@ describe('Reject', function () {
   describe('#fromBuffer', function () {
     it('should convert from a buffer', function () {
       let reject = new Reject().fromObject({
-        typevi: new VarInt().fromNumber(2),
-        typestr: 'tx',
-        codenum: 1,
-        reasonvi: new VarInt().fromNumber(2),
-        reasonstr: 'hi',
-        extrabuf: new Buffer(0)
+        typeVi: new VarInt().fromNumber(2),
+        typeStr: 'tx',
+        codeNum: 1,
+        reasonVi: new VarInt().fromNumber(2),
+        reasonStr: 'hi',
+        extraBuf: new Buffer(0)
       })
       let reject2 = new Reject().fromBuffer(reject.toBuffer())
-      reject.typestr.should.equal(reject2.typestr)
-      reject.codenum.should.equal(reject2.codenum)
-      reject.reasonstr.should.equal(reject2.reasonstr)
-      Buffer.compare(reject.extrabuf, reject2.extrabuf).should.equal(0)
+      reject.typeStr.should.equal(reject2.typeStr)
+      reject.codeNum.should.equal(reject2.codeNum)
+      reject.reasonStr.should.equal(reject2.reasonStr)
+      Buffer.compare(reject.extraBuf, reject2.extraBuf).should.equal(0)
     })
   })
 })
