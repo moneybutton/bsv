@@ -11,8 +11,8 @@ describe('MsgPong', function () {
     should.exist(msgping)
     msgping = new MsgPong()
     should.exist(msgping)
-    should.exist(MsgPong.MainNet)
-    should.exist(MsgPong.TestNet)
+    should.exist(MsgPong.Mainnet)
+    should.exist(MsgPong.Testnet)
   })
 
   describe('#fromMsgPing', function () {

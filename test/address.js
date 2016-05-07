@@ -23,7 +23,7 @@ describe('Address', function () {
     address = new Address(version, pubKeyHash)
     should.exist(address)
     new Address().constructor.should.equal(new Address().constructor)
-    new Address.TestNet().constructor.should.equal(new Address.TestNet().constructor)
+    new Address.Testnet().constructor.should.equal(new Address.Testnet().constructor)
   })
 
   describe('@isValid', function () {
@@ -255,9 +255,9 @@ describe('Address', function () {
     })
 
     it('should derive from this known address string testnet', function () {
-      let address = new Address.TestNet()
+      let address = new Address.Testnet()
       address.fromString('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
-      address.version = Constants.TestNet.Address['pubKeyHash']
+      address.version = Constants.Testnet.Address['pubKeyHash']
       address.fromString(address.toString())
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
     })
@@ -265,15 +265,15 @@ describe('Address', function () {
     it('should derive from this known address string mainnet scriptHash', function () {
       let address = new Address()
       address.fromString(str)
-      address.version = Constants.MainNet.Address['scriptHash']
+      address.version = Constants.Mainnet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
     })
 
     it('should derive from this known address string testnet scriptHash', function () {
-      let address = new Address.TestNet()
+      let address = new Address.Testnet()
       address.fromString('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
-      address.version = Constants.TestNet.Address['scriptHash']
+      address.version = Constants.Testnet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
     })
@@ -359,7 +359,7 @@ describe('Address', function () {
       let script = addr.toScript()
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
 
-      addr.version = Constants.MainNet.Address['scriptHash']
+      addr.version = Constants.Mainnet.Address['scriptHash']
       script = addr.toScript()
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
 

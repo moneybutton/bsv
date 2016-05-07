@@ -20,7 +20,7 @@ describe('PrivKey', function () {
     should.exist(privKey)
 
     new PrivKey().constructor.should.equal(new PrivKey().constructor)
-    new PrivKey.TestNet().constructor.should.equal(new PrivKey.TestNet().constructor)
+    new PrivKey.Testnet().constructor.should.equal(new PrivKey.Testnet().constructor)
 
     let deps = {}
     PrivKey.inject(deps).should.equal(PrivKey.inject(deps))
@@ -39,7 +39,7 @@ describe('PrivKey', function () {
   })
 
   it('should create an uncompressed testnet private key', function () {
-    let privKey = new PrivKey.TestNet(Bn.fromBuffer(buf), false)
+    let privKey = new PrivKey.Testnet(Bn.fromBuffer(buf), false)
     privKey.toString().should.equal(enctu)
   })
 
@@ -187,7 +187,7 @@ describe('PrivKey', function () {
 
   describe('#toWif', function () {
     it('should parse this compressed testnet address correctly', function () {
-      let privKey = new PrivKey.TestNet()
+      let privKey = new PrivKey.Testnet()
       privKey.fromWif(enctestnet)
       privKey.toWif().should.equal(enctestnet)
     })
@@ -195,7 +195,7 @@ describe('PrivKey', function () {
 
   describe('#fromString', function () {
     it('should parse this uncompressed testnet address correctly', function () {
-      let privKey = new PrivKey.TestNet()
+      let privKey = new PrivKey.Testnet()
       privKey.fromString(enctu)
       privKey.toWif().should.equal(enctu)
     })

@@ -14,10 +14,10 @@ describe('KeyPair', function () {
     key = new KeyPair()
     should.exist(key)
 
-    KeyPair.MainNet.should.equal(KeyPair.MainNet)
-    KeyPair.TestNet.should.equal(KeyPair.TestNet)
-    new KeyPair.MainNet().fromRandom().privKey.constructor.should.equal(PrivKey.MainNet)
-    new KeyPair.TestNet().fromRandom().privKey.constructor.should.equal(PrivKey.TestNet)
+    KeyPair.Mainnet.should.equal(KeyPair.Mainnet)
+    KeyPair.Testnet.should.equal(KeyPair.Testnet)
+    new KeyPair.Mainnet().fromRandom().privKey.constructor.should.equal(PrivKey.Mainnet)
+    new KeyPair.Testnet().fromRandom().privKey.constructor.should.equal(PrivKey.Testnet)
   })
 
   it('should make a key with a priv and pub', function () {

@@ -11,8 +11,8 @@ describe('MsgPing', function () {
     should.exist(msgping)
     msgping = new MsgPing()
     should.exist(msgping)
-    should.exist(MsgPing.MainNet)
-    should.exist(MsgPing.TestNet)
+    should.exist(MsgPing.Mainnet)
+    should.exist(MsgPing.Testnet)
   })
 
   describe('#fromRandom', function () {

@@ -292,17 +292,17 @@ describe('Bip32', function () {
 
   describe('testnet', function () {
     it('should initialize a new Bip32 correctly from a random Bip32', function () {
-      let b1 = new Bip32.TestNet()
+      let b1 = new Bip32.Testnet()
       b1.fromRandom()
-      ;(b1.privKey instanceof PrivKey.TestNet).should.equal(true)
-      let b2 = new Bip32.TestNet().fromString(b1.toPublic().toString())
+      ;(b1.privKey instanceof PrivKey.Testnet).should.equal(true)
+      let b2 = new Bip32.Testnet().fromString(b1.toPublic().toString())
       b2.toPublic().toString().should.equal(b1.toPublic().toString())
     })
 
     it('should generate valid ext pub key for testnet', function () {
-      let b = new Bip32.TestNet()
+      let b = new Bip32.Testnet()
       b.fromRandom()
-      ;(b.privKey instanceof PrivKey.TestNet).should.equal(true)
+      ;(b.privKey instanceof PrivKey.Testnet).should.equal(true)
       b.toPublic().toString().substring(0, 4).should.equal('tpub')
     })
   })
@@ -493,7 +493,7 @@ describe('Bip32', function () {
   describe('#toString', function () {
     let bip32 = new Bip32()
     bip32.fromRandom()
-    let tip32 = new Bip32.TestNet()
+    let tip32 = new Bip32.Testnet()
     tip32.fromRandom()
 
     it('should return an xprv string', function () {
@@ -506,7 +506,7 @@ describe('Bip32', function () {
 
     it('should return a tprv string', function () {
       tip32.toString().slice(0, 4).should.equal('tprv')
-      ;(tip32.privKey instanceof PrivKey.TestNet).should.equal(true)
+      ;(tip32.privKey instanceof PrivKey.Testnet).should.equal(true)
     })
 
     it('should return a tpub string', function () {

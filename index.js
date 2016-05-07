@@ -5,8 +5,8 @@
   *
   * index.js is an example of how to build a bundle with Fullnode. This bundle
   * includes the entire library, which uses the default configuration (which is
-  * the same as MainNet) and can be overridden. It also includes MainNet and
-  * TestNet configuration which are accessible even if you override the
+  * the same as Mainnet) and can be overridden. It also includes Mainnet and
+  * Testnet configuration which are accessible even if you override the
   * defaults. It is not necessary to  use Fullnode this way, since you probably
   * do not use every component, and therefore do not need to include every
   * component into your project. You can simply directly require the elements
@@ -111,17 +111,17 @@ Fullnode.deps.hashjs = require('hash.js')
 Fullnode.deps.injecter = require('injecter')
 Fullnode.deps.pbkdf2compat = require('pbkdf2-compat')
 
-// MainNet classes for your convenience (in case default is not what you want).
-let MainNet = {}
+// Mainnet classes for your convenience (in case default is not what you want).
+let Mainnet = {}
 Object.keys(Fullnode).forEach(function (key) {
-  MainNet[key] = Fullnode[key].MainNet ? Fullnode[key].MainNet : Fullnode[key]
+  Mainnet[key] = Fullnode[key].Mainnet ? Fullnode[key].Mainnet : Fullnode[key]
 })
 
-// TestNet classes for your convenience (in case default is not what you want).
-let TestNet = {}
+// Testnet classes for your convenience (in case default is not what you want).
+let Testnet = {}
 Object.keys(Fullnode).forEach(function (key) {
-  TestNet[key] = Fullnode[key].TestNet ? Fullnode[key].TestNet : Fullnode[key]
+  Testnet[key] = Fullnode[key].Testnet ? Fullnode[key].Testnet : Fullnode[key]
 })
 
-Fullnode.MainNet = MainNet
-Fullnode.TestNet = TestNet
+Fullnode.Mainnet = Mainnet
+Fullnode.Testnet = Testnet

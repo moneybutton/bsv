@@ -7,9 +7,9 @@ let vectors = require('./vectors/kdf')
 
 describe('Kdf', function () {
   it('should satisfy this basic API', function () {
-    Kdf.TestNet.should.equal(Kdf.TestNet)
-    Kdf.MainNet.should.equal(Kdf.MainNet)
-    Kdf.MainNet.should.not.equal(Kdf.TestNet)
+    Kdf.Testnet.should.equal(Kdf.Testnet)
+    Kdf.Mainnet.should.equal(Kdf.Mainnet)
+    Kdf.Mainnet.should.not.equal(Kdf.Testnet)
   })
 
   describe('@Pbkdf2', function () {
