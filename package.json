@@ -67,12 +67,11 @@
     }
   ],
   "keywords": [
+    "bitcoin",
     "blockchain",
     "bip32",
     "bip39",
-    "bip70",
-    "stealth",
-    "merge",
+    "bip68",
     "multisig"
   ],
   "repository": {
