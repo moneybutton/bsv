@@ -89,7 +89,7 @@
     "babel-preset-react": "6.5.0",
     "babelify": "7.3.0",
     "bn.js": "4.11.3",
-    "browserify": "13.0.0",
+    "browserify": "13.0.1",
     "bs58": "3.0.0",
     "elliptic": "6.2.3",
     "envify": "3.4.0",

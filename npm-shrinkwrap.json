@@ -579,9 +579,9 @@
       "resolved": "https://registry.npmjs.org/browser-resolve/-/browser-resolve-1.11.1.tgz"
     },
     "browserify": {
-      "version": "13.0.0",
-      "from": "browserify@13.0.0",
-      "resolved": "https://registry.npmjs.org/browserify/-/browserify-13.0.0.tgz",
+      "version": "13.0.1",
+      "from": "browserify@13.0.1",
+      "resolved": "https://registry.npmjs.org/browserify/-/browserify-13.0.1.tgz",
       "dependencies": {
         "glob": {
           "version": "5.0.15",
@@ -2801,9 +2801,9 @@
       "resolved": "https://registry.npmjs.org/private/-/private-0.1.6.tgz"
     },
     "process": {
-      "version": "0.11.2",
+      "version": "0.11.3",
       "from": "process@>=0.11.0 <0.12.0",
-      "resolved": "https://registry.npmjs.org/process/-/process-0.11.2.tgz"
+      "resolved": "https://registry.npmjs.org/process/-/process-0.11.3.tgz"
     },
     "process-nextick-args": {
       "version": "1.0.7",
