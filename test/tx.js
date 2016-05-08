@@ -20,7 +20,7 @@ describe('Tx', function () {
   let txIn = new TxIn().fromBuffer(new Buffer('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000', 'hex'))
   let txOut = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
   let tx = new Tx().fromObject({
-    version: 0,
+    versionBytesNum: 0,
     txInsVi: VarInt.fromNumber(1),
     txIns: [txIn],
     txOutsVi: VarInt.fromNumber(1),
@@ -43,7 +43,7 @@ describe('Tx', function () {
     Tx.fromBuffer(txbuf).toBuffer().toString('hex').should.equal(txhex)
 
     // should set known defaults
-    tx.version.should.equal(1)
+    tx.versionBytesNum.should.equal(1)
     tx.txInsVi.toNumber().should.equal(0)
     tx.txIns.length.should.equal(0)
     tx.txOutsVi.toNumber().should.equal(0)
@@ -55,7 +55,7 @@ describe('Tx', function () {
     it('should set these known defaults', function () {
       let tx = new Tx()
       tx.initialize()
-      tx.version.should.equal(1)
+      tx.versionBytesNum.should.equal(1)
       tx.txInsVi.toNumber().should.equal(0)
       tx.txIns.length.should.equal(0)
       tx.txOutsVi.toNumber().should.equal(0)
@@ -67,14 +67,14 @@ describe('Tx', function () {
   describe('#fromObject', function () {
     it('should set all the basic parameters', function () {
       let tx = new Tx().fromObject({
-        version: 0,
+        versionBytesNum: 0,
         txInsVi: VarInt.fromNumber(1),
         txIns: [txIn],
         txOutsVi: VarInt.fromNumber(1),
         txOuts: [txOut],
         nLockTime: 0
       })
-      should.exist(tx.version)
+      should.exist(tx.versionBytesNum)
       should.exist(tx.txInsVi)
       should.exist(tx.txIns)
       should.exist(tx.txOutsVi)
@@ -86,14 +86,14 @@ describe('Tx', function () {
   describe('#fromJson', function () {
     it('should set all the basic parameters', function () {
       let tx = new Tx().fromJson({
-        version: 0,
+        versionBytesNum: 0,
         txInsVi: VarInt.fromNumber(1).toJson(),
         txIns: [txIn.toJson()],
         txOutsVi: VarInt.fromNumber(1).toJson(),
         txOuts: [txOut.toJson()],
         nLockTime: 0
       })
-      should.exist(tx.version)
+      should.exist(tx.versionBytesNum)
       should.exist(tx.txInsVi)
       should.exist(tx.txIns)
       should.exist(tx.txOutsVi)
@@ -105,7 +105,7 @@ describe('Tx', function () {
   describe('#toJson', function () {
     it('should recover all the basic parameters', function () {
       let json = tx.toJson()
-      should.exist(json.version)
+      should.exist(json.versionBytesNum)
       should.exist(json.txInsVi)
       should.exist(json.txIns)
       should.exist(json.txOutsVi)

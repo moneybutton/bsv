@@ -311,7 +311,7 @@ describe('Bip32', function () {
     it('should set this bip32', function () {
       let bip32 = new Bip32().fromString(vector1mPrivate)
       let bip322 = new Bip32().fromObject({
-        version: bip32.version,
+        versionBytesNum: bip32.versionBytesNum,
         depth: bip32.depth,
         parentFingerPrint: bip32.parentFingerPrint,
         childIndex: bip32.childIndex,

@@ -197,12 +197,12 @@ describe('TxBuilder', function () {
   })
 
   describe('#setVersion', function () {
-    it('should set the version', function () {
+    it('should set the versionBytesNum', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
       txb.setVersion(2)
       txb.build()
-      txb.tx.version.should.equal(2)
+      txb.tx.versionBytesNum.should.equal(2)
     })
   })
 

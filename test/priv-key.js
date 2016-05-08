@@ -124,10 +124,10 @@ describe('PrivKey', function () {
       }).should.throw('LEngth of privKey buffer must be 33 (uncompressed pubKey) or 34 (compressed pubKey)')
     })
 
-    it('should throw an error if buffer has wrong version byte', function () {
+    it('should throw an error if buffer has wrong versionByteNum byte', function () {
       (function () {
         new PrivKey().fromBuffer(new Buffer('90000000000000000000000000000000000000000000000000000000000000000501', 'hex'))
-      }).should.throw('Invalid version byte')
+      }).should.throw('Invalid versionByteNum byte')
     })
   })
 

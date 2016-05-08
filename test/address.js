@@ -11,7 +11,7 @@ let should = require('chai').should()
 
 describe('Address', function () {
   let pubKeyHash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex')
-  let version = 0
+  let versionByteNum = 0
   let buf = Buffer.concat([new Buffer([0]), pubKeyHash])
   let str = '16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r'
 
@@ -20,7 +20,7 @@ describe('Address', function () {
     should.exist(address)
     address = new Address()
     should.exist(address)
-    address = new Address(version, pubKeyHash)
+    address = new Address(versionByteNum, pubKeyHash)
     should.exist(address)
     new Address().constructor.should.equal(new Address().constructor)
     new Address.Testnet().constructor.should.equal(new Address.Testnet().constructor)
@@ -57,7 +57,7 @@ describe('Address', function () {
         let buf2 = new Buffer(buf)
         buf2[0] = 50
         new Address().fromBuffer(buf2)
-      }).should.throw('invalid version byte')
+      }).should.throw('invalid versionByteNum byte')
     })
   })
 
@@ -257,7 +257,7 @@ describe('Address', function () {
     it('should derive from this known address string testnet', function () {
       let address = new Address.Testnet()
       address.fromString('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
-      address.version = Constants.Testnet.Address['pubKeyHash']
+      address.versionByteNum = Constants.Testnet.Address['pubKeyHash']
       address.fromString(address.toString())
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
     })
@@ -265,7 +265,7 @@ describe('Address', function () {
     it('should derive from this known address string mainnet scriptHash', function () {
       let address = new Address()
       address.fromString(str)
-      address.version = Constants.Mainnet.Address['scriptHash']
+      address.versionByteNum = Constants.Mainnet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
     })
@@ -273,7 +273,7 @@ describe('Address', function () {
     it('should derive from this known address string testnet scriptHash', function () {
       let address = new Address.Testnet()
       address.fromString('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
-      address.version = Constants.Testnet.Address['scriptHash']
+      address.versionByteNum = Constants.Testnet.Address['scriptHash']
       address.fromString(address.toString())
       address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
     })
@@ -313,10 +313,10 @@ describe('Address', function () {
       address.isValid().should.equal(true)
     })
 
-    it('should describe this address with unknown version as invalid', function () {
+    it('should describe this address with unknown versionByteNum as invalid', function () {
       let address = new Address()
       address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
-      address.version = 1
+      address.versionByteNum = 1
       address.isValid().should.equal(false)
     })
   })
@@ -325,7 +325,7 @@ describe('Address', function () {
     it('should give pubKeyHash for this address', function () {
       let addr = new Address().fromString(str)
       addr.type().should.equal('pubKeyHash')
-      addr.version = 1
+      addr.versionByteNum = 1
       addr.type().should.equal('unknown')
     })
 
@@ -359,11 +359,11 @@ describe('Address', function () {
       let script = addr.toScript()
       script.toString().should.equal('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG')
 
-      addr.version = Constants.Mainnet.Address['scriptHash']
+      addr.versionByteNum = Constants.Mainnet.Address['scriptHash']
       script = addr.toScript()
       script.toString().should.equal('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL')
 
-      addr.version = 50
+      addr.versionByteNum = 50
       ;(function () {
         script = addr.toScript()
       }).should.throw('script must be either pubKeyHash or scriptHash')
@@ -395,16 +395,16 @@ describe('Address', function () {
       should.exist(address.validate())
     })
 
-    it('should throw an error on this invalid version', function () {
+    it('should throw an error on this invalid versionByteNum', function () {
       let address = new Address()
       address.fromString(str)
-      address.version = 1
+      address.versionByteNum = 1
       ;(function () {
         address.validate()
-      }).should.throw('invalid version')
+      }).should.throw('invalid versionByteNum')
     })
 
-    it('should throw an error on this invalid version', function () {
+    it('should throw an error on this invalid versionByteNum', function () {
       let address = new Address()
       address.fromString(str)
       address.hashBuf = Buffer.concat([address.hashBuf, new Buffer([0])])

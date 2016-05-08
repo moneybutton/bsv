@@ -7,7 +7,7 @@ let should = require('chai').should()
 
 describe('BlockHeader', function () {
   let bh = new BlockHeader()
-  let version = 1
+  let versionBytesNum = 1
   let prevBlockHashBuf = new Buffer(32)
   prevBlockHashBuf.fill(5)
   let merkleRootBuf = new Buffer(32)
@@ -16,7 +16,7 @@ describe('BlockHeader', function () {
   let bits = 3
   let nonce = 4
   bh.fromObject({
-    version: version,
+    versionBytesNum: versionBytesNum,
     prevBlockHashBuf: prevBlockHashBuf,
     merkleRootBuf: merkleRootBuf,
     time: time,
@@ -36,14 +36,14 @@ describe('BlockHeader', function () {
   describe('#fromObject', function () {
     it('should set all the variables', function () {
       bh.fromObject({
-        version: version,
+        versionBytesNum: versionBytesNum,
         prevBlockHashBuf: prevBlockHashBuf,
         merkleRootBuf: merkleRootBuf,
         time: time,
         bits: bits,
         nonce: nonce
       })
-      should.exist(bh.version)
+      should.exist(bh.versionBytesNum)
       should.exist(bh.prevBlockHashBuf)
       should.exist(bh.merkleRootBuf)
       should.exist(bh.time)
@@ -55,14 +55,14 @@ describe('BlockHeader', function () {
   describe('#fromJson', function () {
     it('should set all the variables', function () {
       let bh = new BlockHeader().fromJson({
-        version: version,
+        versionBytesNum: versionBytesNum,
         prevBlockHashBuf: prevBlockHashBuf.toString('hex'),
         merkleRootBuf: merkleRootBuf.toString('hex'),
         time: time,
         bits: bits,
         nonce: nonce
       })
-      should.exist(bh.version)
+      should.exist(bh.versionBytesNum)
       should.exist(bh.prevBlockHashBuf)
       should.exist(bh.merkleRootBuf)
       should.exist(bh.time)
@@ -74,7 +74,7 @@ describe('BlockHeader', function () {
   describe('#toJson', function () {
     it('should set all the variables', function () {
       let json = bh.toJson()
-      should.exist(json.version)
+      should.exist(json.versionBytesNum)
       should.exist(json.prevBlockHashBuf)
       should.exist(json.merkleRootBuf)
       should.exist(json.time)
