@@ -10,7 +10,7 @@ describe('MsgGetAddr', function () {
   })
 
   describe('#isValid', function () {
-    it('should know this is a valid mempool msg', function () {
+    it('should know this is a valid getaddr msg', function () {
       new MsgGetAddr().isValid().should.equal(true)
     })
   })
