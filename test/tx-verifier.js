@@ -37,7 +37,7 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txOutmap = new TxOutMap()
+        let txOutMap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
@@ -45,11 +45,11 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-          txOutmap.add(txHashBuf, txOutNum, txOut)
+          txOutMap.add(txHashBuf, txOutNum, txOut)
         })
 
         let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
-        let verified = TxVerifier.verify(tx, txOutmap, flags)
+        let verified = TxVerifier.verify(tx, txOutMap, flags)
         verified.should.equal(true)
       })
 
@@ -59,7 +59,7 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txOutmap = new TxOutMap()
+          let txOutMap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
@@ -67,11 +67,11 @@ describe('TxVerifier', function () {
             }
             let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-            txOutmap.add(txHashBuf, txOutNum, txOut)
+            txOutMap.add(txHashBuf, txOutNum, txOut)
           })
 
           let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
-          let verified = yield TxVerifier.asyncVerify(tx, txOutmap, flags)
+          let verified = yield TxVerifier.asyncVerify(tx, txOutMap, flags)
           verified.should.equal(true)
         }, this)
       })
@@ -88,7 +88,7 @@ describe('TxVerifier', function () {
         let txhex = vector[1]
         let flags = Interp.getFlags(vector[2])
 
-        let txOutmap = new TxOutMap()
+        let txOutMap = new TxOutMap()
         inputs.forEach(function (input) {
           let txOutNum = input[1]
           if (txOutNum === -1) {
@@ -96,12 +96,12 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
           let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-          txOutmap.add(txHashBuf, txOutNum, txOut)
+          txOutMap.add(txHashBuf, txOutNum, txOut)
         })
 
         let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
-        let verified = TxVerifier.verify(tx, txOutmap, flags)
+        let verified = TxVerifier.verify(tx, txOutMap, flags)
         verified.should.equal(false)
       })
 
@@ -111,7 +111,7 @@ describe('TxVerifier', function () {
           let txhex = vector[1]
           let flags = Interp.getFlags(vector[2])
 
-          let txOutmap = new TxOutMap()
+          let txOutMap = new TxOutMap()
           inputs.forEach(function (input) {
             let txOutNum = input[1]
             if (txOutNum === -1) {
@@ -119,12 +119,12 @@ describe('TxVerifier', function () {
             }
             let txOut = TxOut.fromProperties(new Bn(0), new Script().fromBitcoindString(input[2]))
             let txHashBuf = new Br(new Buffer(input[0], 'hex')).readReverse()
-            txOutmap.add(txHashBuf, txOutNum, txOut)
+            txOutMap.add(txHashBuf, txOutNum, txOut)
           })
 
           let tx = new Tx().fromBuffer(new Buffer(txhex, 'hex'))
 
-          let verified = yield TxVerifier.asyncVerify(tx, txOutmap, flags)
+          let verified = yield TxVerifier.asyncVerify(tx, txOutMap, flags)
           verified.should.equal(false)
         }, this)
       })

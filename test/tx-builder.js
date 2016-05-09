@@ -406,7 +406,7 @@ describe('TxBuilder', function () {
     })
 
     it('should pass in txOut', function () {
-      txb.txOutmap = sinon.spy()
+      txb.txOutMap = sinon.spy()
       txb.uTxOutMap = {
         get: sinon.spy()
       }
@@ -474,7 +474,7 @@ describe('TxBuilder', function () {
 
     it('should pass in txOut', function () {
       return asink(function * () {
-        txb.txOutmap = sinon.spy()
+        txb.txOutMap = sinon.spy()
         txb.uTxOutMap = {
           get: sinon.spy()
         }
