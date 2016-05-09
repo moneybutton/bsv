@@ -99,7 +99,7 @@ describe('Interp', function () {
     })
   })
 
-  describe('#getFailureExplanation', function () {
+  describe('#getDebugObject', function () {
     it('should get a failure explanation object', function () {
       let scriptSig = Script.fromBitcoindString('0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01')
       let scriptPubKey = Script.fromBitcoindString('0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
@@ -118,15 +118,15 @@ describe('Interp', function () {
 
       let interp = new Interp()
       interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-      let failureExplanation = interp.getFailureExplanation()
-      should.exist(failureExplanation.errStr)
-      should.exist(failureExplanation.scriptStr)
-      should.exist(failureExplanation.pc)
-      should.exist(failureExplanation.opCodeStr)
+      let debugObject = interp.getDebugObject()
+      should.exist(debugObject.errStr)
+      should.exist(debugObject.scriptStr)
+      should.exist(debugObject.pc)
+      should.exist(debugObject.opCodeStr)
     })
   })
 
-  describe('#getFailureExplanationString', function () {
+  describe('#getDebugString', function () {
     it('should get a failure explanation object', function () {
       let scriptSig = Script.fromBitcoindString('0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01')
       let scriptPubKey = Script.fromBitcoindString('0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
@@ -145,8 +145,8 @@ describe('Interp', function () {
 
       let interp = new Interp()
       interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-      let failureExplanationString = interp.getFailureExplanationString()
-      failureExplanationString.should.equal('{"errStr":"","scriptStr":"65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG","pc":1,"opCodeStr":"OP_CHECKSIG"}')
+      let debugString = interp.getDebugString()
+      debugString.should.equal('{\n  "errStr": "",\n  "scriptStr": "65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG",\n  "pc": 1,\n  "opCodeStr": "OP_CHECKSIG"\n}')
     })
   })
 
