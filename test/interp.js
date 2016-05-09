@@ -146,7 +146,7 @@ describe('Interp', function () {
       let interp = new Interp()
       interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
       let debugString = interp.getDebugString()
-      debugString.should.equal('{\n  "errStr": "",\n  "scriptStr": "65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG",\n  "pc": 1,\n  "opCodeStr": "OP_CHECKSIG"\n}')
+      debugString.should.equal('{\n  "errStr": "",\n  "scriptStr": "65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG",\n  "pc": 1,\n  "stack": [\n    "01"\n  ],\n  "altStack": [],\n  "opCodeStr": "OP_CHECKSIG"\n}')
     })
   })
 
