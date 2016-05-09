@@ -1,9 +1,9 @@
 {
   "name": "yours-bitcoin",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "description": "Javascript implementation of Bitcoin.",
   "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
-  "homepage": "https://github.com/yoursnetwork/fullnode",
+  "homepage": "https://github.com/yoursnetwork/yours-bitcoin",
   "main": "index.js",
   "scripts": {
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
@@ -76,7 +76,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yoursnetwork/fullnode.git"
+    "url": "https://github.com/yoursnetwork/yours-bitcoin.git"
   },
   "engines": {
     "node": ">=6.1.0"
