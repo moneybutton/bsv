@@ -24,7 +24,7 @@ describe('Workers', function () {
       }, this)
     })
 
-    it('should compute this method with YoursBitcoin object in args in the workers', function () {
+    it('should compute this method with Yours Bitcoin object in args in the workers', function () {
       return asink(function * () {
         let privKey = new PrivKey().fromRandom()
         let pubKey1 = new PubKey().fromPrivKey(privKey)

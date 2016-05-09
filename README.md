@@ -1,7 +1,7 @@
-YoursBitcoin
-============
+Yours Bitcoin
+=============
 
-YoursBitcoin is a javascript implementation of bitcoin intended to satisfy
+Yours Bitcoin is a javascript implementation of bitcoin intended to satisfy
 certain goals:
 
 1. Bring the blockchain to web browsers and node.js in a decentralized,
@@ -23,7 +23,7 @@ fromString, toJSON, fromJSON, toBuffer, fromBuffer, toHex, fromHex methods.
 5. All standard features of the blockchain are implemented (or will be) and
 saved in lib/. All BIPs are correctly implemented and, where appropriate, saved
 as bip-xx.js in lib/ (since that is their standard name). In order to allow
-rapid development, YoursBitcoin includes non-standard and experimental
+rapid development, Yours Bitcoin includes non-standard and experimental
 features.  Any non-standard features (such as colored coins or stealth
 addresses) are labeled as such in index.js as well as in comments.
 
@@ -41,7 +41,7 @@ developers find the code easy to understand.
 unless there is a good reason to do something different. To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
-YoursBitcoin is still being developed and does not yet support downloading the
+Yours Bitcoin is still being developed and does not yet support downloading the
 blockchain.
 
 Environment Variables
@@ -61,9 +61,9 @@ YOURS_BITCOIN_NETWORK=testnet ./bin/yours-bitcoin.js
 Documentation
 -------------
 
-While YoursBitcoin is under heavy development, the API changes frequently, and the
-documentation is not kept up-to-date. However there is some documentation, and
-it can be built with groc:
+While Yours Bitcoin is under heavy development, the API changes frequently, and
+the documentation is not kept up-to-date. However there is some documentation,
+and it can be built with groc:
 
 ```
 npm install -g groc

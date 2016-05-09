@@ -7,7 +7,7 @@
   * bundle includes the entire library, which uses the default configuration
   * (which is the same as Mainnet) and can be overridden. It also includes
   * Mainnet and Testnet configuration which are accessible even if you override
-  * the defaults. It is not necessary to  use YoursBitcoin this way, since you
+  * the defaults. It is not necessary to  use Yours Bitcoin this way, since you
   * probably do not use every component, and therefore do not need to include
   * every component into your project. You can simply directly require the
   * elements of the library you need, and, if your project is browser-based,
@@ -28,7 +28,7 @@ global.YoursBitcoin = YoursBitcoin
 // which this file is loaded inside a web worker. This will cause problems if
 // any code relies on the non-existence of window inside a web worker, but
 // there is probably not much code like that that would need to work with
-// YoursBitcoin.
+// Yours Bitcoin.
 if (!global.window && typeof self !== 'undefined') {
   global.window = self
 }
