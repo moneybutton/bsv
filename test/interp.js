@@ -99,6 +99,57 @@ describe('Interp', function () {
     })
   })
 
+  describe('#getFailureExplanation', function () {
+    it('should get a failure explanation object', function () {
+      let scriptSig = Script.fromBitcoindString('0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01')
+      let scriptPubKey = Script.fromBitcoindString('0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
+      let flags = Interp.SCRIPT_VERIFY_P2SH | Interp.SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY | Interp.SCRIPT_VERIFY_CHECKSEQUENCEVERIFY
+
+      let hashBuf = new Buffer(32)
+      hashBuf.fill(0)
+      let credtx = new Tx()
+      credtx.addTxIn(hashBuf, 0xffffffff, new Script().writeString('OP_0 OP_0'), 0xffffffff)
+      credtx.addTxOut(new Bn(0), scriptPubKey)
+
+      let idbuf = credtx.hash()
+      let spendtx = new Tx()
+      spendtx.addTxIn(idbuf, 0, new Script(), 0xffffffff)
+      spendtx.addTxOut(new Bn(0), new Script())
+
+      let interp = new Interp()
+      interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
+      let failureExplanation = interp.getFailureExplanation()
+      should.exist(failureExplanation.errStr)
+      should.exist(failureExplanation.script)
+      should.exist(failureExplanation.pc)
+      should.exist(failureExplanation.opCode)
+    })
+  })
+
+  describe('#getFailureExplanationString', function () {
+    it('should get a failure explanation object', function () {
+      let scriptSig = Script.fromBitcoindString('0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01')
+      let scriptPubKey = Script.fromBitcoindString('0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG')
+      let flags = Interp.SCRIPT_VERIFY_P2SH | Interp.SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY | Interp.SCRIPT_VERIFY_CHECKSEQUENCEVERIFY
+
+      let hashBuf = new Buffer(32)
+      hashBuf.fill(0)
+      let credtx = new Tx()
+      credtx.addTxIn(hashBuf, 0xffffffff, new Script().writeString('OP_0 OP_0'), 0xffffffff)
+      credtx.addTxOut(new Bn(0), scriptPubKey)
+
+      let idbuf = credtx.hash()
+      let spendtx = new Tx()
+      spendtx.addTxIn(idbuf, 0, new Script(), 0xffffffff)
+      spendtx.addTxOut(new Bn(0), new Script())
+
+      let interp = new Interp()
+      interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
+      let failureExplanationString = interp.getFailureExplanationString()
+      failureExplanationString.should.equal('{"errStr":"","script":"65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG","pc":1,"opCode":"OP_CHECKSIG"}')
+    })
+  })
+
   describe('#verify', function () {
     it('should verify or unverify these trivial scripts from script_valid.json', function () {
       let verified
