@@ -1,8 +1,8 @@
-Fullnode
-========
+YoursBitcoin
+============
 
-Fullnode is a javascript implementation of bitcoin intended to satisfy certain
-goals:
+YoursBitcoin is a javascript implementation of bitcoin intended to satisfy
+certain goals:
 
 1. Bring the blockchain to web browsers and node.js in a decentralized,
 trust-minimized manner, without the required use of a third-party API.
@@ -22,10 +22,10 @@ fromString, toJSON, fromJSON, toBuffer, fromBuffer, toHex, fromHex methods.
 
 5. All standard features of the blockchain are implemented (or will be) and
 saved in lib/. All BIPs are correctly implemented and, where appropriate, saved
-as bipxx.js in lib/ (since that is their standard name). In order to allow
-rapid development, Fullnode includes non-standard and experimental features.
-Any non-standard features (such as colored coins or stealth addresses) are
-labeled as such in index.js as well as in comments.
+as bip-xx.js in lib/ (since that is their standard name). In order to allow
+rapid development, YoursBitcoin includes non-standard and experimental
+features.  Any non-standard features (such as colored coins or stealth
+addresses) are labeled as such in index.js as well as in comments.
 
 6. Expose everything, including dependencies. This makes it possible to develop
 apps that require fine-grained control over the basics, such as big numbers and
@@ -41,27 +41,27 @@ developers find the code easy to understand.
 unless there is a good reason to do something different. To access the result
 of an instance method, you must access the object property(s) that it modifies.
 
-Fullnode is still being developed and does not yet support downloading the
+YoursBitcoin is still being developed and does not yet support downloading the
 blockchain.
 
 Environment Variables
 ---------------------
-- `FULLNODE_JS_BASE_URL` - Default "/".
-- `FULLNODE_JS_BUNDLE_FILE` - Default "fullnode.js"
-- `FULLNODE_JS_WORKER_FILE` - Default "fullnode-worker.js"
-- `FULLNODE_JS_BUNDLE_MIN_FILE` - Default "fullnode-min.js"
-- `FULLNODE_JS_WORKER_MIN_FILE` - Default "fullnode-worker-min.js"
-- `FULLNODE_NETWORK` - Default "mainnet"
+- `YOURS_BITCOIN_JS_BASE_URL` - Default "/".
+- `YOURS_BITCOIN_JS_BUNDLE_FILE` - Default "yours-bitcoin.js"
+- `YOURS_BITCOIN_JS_WORKER_FILE` - Default "yours-bitcoin-worker.js"
+- `YOURS_BITCOIN_JS_BUNDLE_MIN_FILE` - Default "yours-bitcoin-min.js"
+- `YOURS_BITCOIN_JS_WORKER_MIN_FILE` - Default "yours-bitcoin-worker-min.js"
+- `YOURS_BITCOIN_NETWORK` - Default "mainnet"
 
 You can change the network to run the CLI in testnet mode:
 ```
-FULLNODE_NETWORK=testnet ./bin/fullnode.js
+YOURS_BITCOIN_NETWORK=testnet ./bin/yours-bitcoin.js
 ```
 
 Documentation
 -------------
 
-While Fullnode is under heavy development, the API changes frequently, and the
+While YoursBitcoin is under heavy development, the API changes frequently, and the
 documentation is not kept up-to-date. However there is some documentation, and
 it can be built with groc:
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict'
 let repl = require('repl')
-let Fullnode = require('../')
+let YoursBitcoin = require('../')
 // Make all Fullnode classes globally available.
-Object.assign(global, Fullnode, {Fullnode: Fullnode})
+Object.assign(global, YoursBitcoin, {YoursBitcoin: YoursBitcoin})
 repl.start({
-  prompt: 'fullnode> ',
+  prompt: 'yours-bitcoin> ',
   useGlobal: true,
   ignoreUndefined: true
 })

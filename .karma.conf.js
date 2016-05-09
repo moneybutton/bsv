@@ -15,8 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'fullnode.js', watched: true, included: true, served: true},
-      {pattern: 'fullnode-worker.js', watched: true, included: false, served: true},
+      {pattern: 'yours-bitcoin.js', watched: true, included: true, served: true},
+      {pattern: 'yours-bitcoin-worker.js', watched: true, included: false, served: true},
       'tests.js'
     ],
 

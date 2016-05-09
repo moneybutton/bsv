@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
 let should = require('chai').should()
-let Fullnode = require('../')
+let YoursBitcoin = require('../')
 
-describe('fullnode', function () {
+describe('yours-bitcoin', function () {
   it('should pass this sanity check on loading the main package', function () {
-    should.exist(Fullnode)
+    should.exist(YoursBitcoin)
   })
 })

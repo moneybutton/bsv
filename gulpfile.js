@@ -15,10 +15,10 @@ gulp.task('build-bundle', function () {
   return new Promise(function (resolve, reject) {
     browserify({debug: false})
       // The babel polyfill is include once in the main bundle, and no where
-      // else. You must include the main bundle in any HTML that uses Fullnode,
-      // since the pollyfill must be required exactly once. If you build things
-      // yourself with babel, you will need to be sure to include the polyfill
-      // exactly once yourself.
+      // else. You must include the main bundle in any HTML that uses
+      // YoursBitcoin, since the pollyfill must be required exactly once. If
+      // you build things yourself with babel, you will need to be sure to
+      // include the polyfill exactly once yourself.
       .add(require.resolve('babel-polyfill'))
       .transform(envify)
       .transform(babelify.configure({presets: ['es2015']}))
@@ -26,7 +26,7 @@ gulp.task('build-bundle', function () {
       .bundle()
       .on('error', reject)
       .on('end', resolve)
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.YOURS_BITCOIN_JS_BUNDLE_FILE)))
   })
 })
 
@@ -39,7 +39,7 @@ gulp.task('build-worker', ['build-bundle'], function () {
       .bundle()
       .on('error', reject)
       .on('end', resolve)
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.YOURS_BITCOIN_JS_WORKER_FILE)))
   })
 })
 
@@ -54,7 +54,7 @@ gulp.task('build-bundle-min', ['build-worker'], function () {
       .bundle()
       .on('error', reject)
       .on('end', resolve)
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_BUNDLE_MIN_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.YOURS_BITCOIN_JS_BUNDLE_MIN_FILE)))
   })
 })
 
@@ -68,7 +68,7 @@ gulp.task('build-worker-min', ['build-bundle-min'], function () {
       .bundle()
       .on('error', reject)
       .on('end', resolve)
-      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.FULLNODE_JS_WORKER_MIN_FILE)))
+      .pipe(fs.createWriteStream(path.join(__dirname, 'build', process.env.YOURS_BITCOIN_JS_WORKER_MIN_FILE)))
   })
 })
 
@@ -103,7 +103,7 @@ gulp.task('test-node', function () {
 
 gulp.task('build-karma-url', function () {
   // karma serves static files, including js files, from /base/
-  process.env.FULLNODE_JS_BASE_URL = '/base/'
+  process.env.YOURS_BITCOIN_JS_BASE_URL = '/base/'
 })
 
 gulp.task('build-karma', ['build-karma-url', 'build-tests'])
