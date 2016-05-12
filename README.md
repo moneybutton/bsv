@@ -69,3 +69,14 @@ and it can be built with groc:
 npm install -g groc
 groc
 ```
+
+Database Proposal
+-----------------
+```
+block-[blockHashBuf]:[height][blockBuf]
+height-[height][blockHashBuf]:[workSum]
+work-[workSum][blockHashBuf]:
+tx-[txHashBuf]:[txBuf]
+address-[addressBuf]:[satoshiDiffBn, height, blockHashBuf, txHashBuf] (removed on reorg)
+chain-[height]:[blockHashBuf] (removed on reorg)
+```
