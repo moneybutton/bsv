@@ -99,16 +99,18 @@ describe('WorkersCmd', function () {
       let arg0 = true
       let arg1 = new Buffer(5)
       arg1.fill(0)
-      let arg2 = new Bip32().fromRandom()
-      let args = [arg0, arg1, arg2]
+      let arg2
+      let arg3 = new Bip32().fromRandom()
+      let args = [arg0, arg1, arg2, arg3]
       let workersCmd = new WorkersCmd().fromObjectMethod(bip32, 'toString', args, 0)
       let buf = workersCmd.toBuffer(new Bw())
       workersCmd = new WorkersCmd().fromBuffer(buf, {Bip32})
       cmp(workersCmd.objbuf, bip32.toFastBuffer()).should.equal(true)
-      workersCmd.args.length.should.equal(3)
+      workersCmd.args.length.should.equal(4)
       workersCmd.args[0].should.equal(arg0)
       cmp(workersCmd.args[1], arg1).should.equal(true)
-      workersCmd.args[2].toString().should.equal(arg2.toString())
+      ;(workersCmd.args[2] === undefined).should.equal(true)
+      workersCmd.args[3].toString().should.equal(arg3.toString())
       workersCmd.id.should.equal(0)
     })
   })
