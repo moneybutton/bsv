@@ -1,6 +1,6 @@
 {
   "name": "yours-bitcoin",
-  "version": "0.14.5",
+  "version": "0.14.6",
   "description": "Javascript implementation of Bitcoin.",
   "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
   "homepage": "https://github.com/yoursnetwork/yours-bitcoin",
