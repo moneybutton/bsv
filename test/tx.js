@@ -51,10 +51,9 @@ describe('Tx', function () {
     tx.nLockTime.should.equal(0)
   })
 
-  describe('#initialize', function () {
+  describe('#constructor', function () {
     it('should set these known defaults', function () {
       let tx = new Tx()
-      tx.initialize()
       tx.versionBytesNum.should.equal(1)
       tx.txInsVi.toNumber().should.equal(0)
       tx.txIns.length.should.equal(0)
