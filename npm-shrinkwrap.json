@@ -1879,9 +1879,8 @@
       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
     },
     "injecter": {
-      "version": "1.0.0",
-      "from": "injecter@1.0.0",
-      "resolved": "https://registry.npmjs.org/injecter/-/injecter-1.0.0.tgz"
+      "version": "1.0.2",
+      "from": "injecter@1.0.2"
     },
     "inline-source-map": {
       "version": "0.6.2",

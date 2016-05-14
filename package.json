@@ -98,7 +98,7 @@
     "gulp-karma": "0.0.5",
     "gulp-mocha": "2.2.0",
     "hash.js": "1.0.3",
-    "injecter": "1.0.0",
+    "injecter": "1.0.2",
     "pbkdf2-compat": "4.0.0",
     "randombytes": "2.0.3",
     "uglifyify": "3.0.1"
