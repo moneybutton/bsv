@@ -21,7 +21,7 @@ describe('Interp', function () {
     interp.nOpCount.should.equal(0)
     interp.ifStack.length.should.equal(0)
     interp.errStr.should.equal('')
-    interp.flags.should.equal(0)
+    interp.flags.should.equal(Interp.defaultFlags)
     interp = new Interp()
     ;(interp instanceof Interp).should.equal(true)
     interp.stack.length.should.equal(0)
@@ -31,7 +31,7 @@ describe('Interp', function () {
     interp.nOpCount.should.equal(0)
     interp.ifStack.length.should.equal(0)
     interp.errStr.should.equal('')
-    interp.flags.should.equal(0)
+    interp.flags.should.equal(Interp.defaultFlags)
   })
 
   describe('#fromJson', function () {
