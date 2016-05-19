@@ -57,16 +57,18 @@ describe('PrivKey', function () {
   describe('#fromJson', function () {
     it('should input this address correctly', function () {
       let privKey = new PrivKey()
-      privKey.fromJson(encmu)
-      privKey.toWif().should.equal(encmu)
+      privKey.fromString(encmu)
+      let privKey2 = new PrivKey()
+      privKey2.fromJson(privKey.toHex())
+      privKey2.toWif().should.equal(encmu)
     })
   })
 
   describe('#toString', function () {
     it('should output this address correctly', function () {
       let privKey = new PrivKey()
-      privKey.fromJson(encmu)
-      privKey.toJson().should.equal(encmu)
+      privKey.fromString(encmu)
+      privKey.toString().should.equal(encmu)
     })
   })
 

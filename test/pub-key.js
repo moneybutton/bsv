@@ -35,7 +35,7 @@ describe('PubKey', function () {
   describe('#fromJson', function () {
     it('should input this public key', function () {
       let pk = new PubKey()
-      pk.fromJson('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+      pk.fromJson('00041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
       pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
       pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
     })
@@ -44,7 +44,13 @@ describe('PubKey', function () {
   describe('#toJson', function () {
     it('should output this pubKey', function () {
       let pk = new PubKey()
-      let hex = '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
+      let hex = '01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
+      pk.fromJson(hex).toJson().should.equal(hex)
+    })
+
+    it('should output this uncompressed pubKey', function () {
+      let pk = new PubKey()
+      let hex = '00041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       pk.fromJson(hex).toJson().should.equal(hex)
     })
   })

@@ -47,8 +47,8 @@ describe('Point', function () {
     it('should print G to JSON', function () {
       let G = Point.getG()
       let json = G.toJson()
-      json.isOdd.should.equal(G.x.isOdd())
       json.x.should.equal(G.x.toString())
+      json.y.should.equal(G.y.toString())
     })
   })
 
