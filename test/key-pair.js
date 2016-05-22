@@ -95,6 +95,17 @@ describe('KeyPair', function () {
     })
   })
 
+  describe('#toPublic', function () {
+    it('should set the private key to undefined', function () {
+      let keyPair = new KeyPair().fromRandom()
+      let publicKeyPair = keyPair.toPublic()
+
+      should.exist(publicKeyPair)
+      should.exist(publicKeyPair.pubKey)
+      should.not.exist(publicKeyPair.privKey)
+    })
+  })
+
   describe('#fromPrivKey', function () {
     it('should make a new key from a privKey', function () {
       should.exist(new KeyPair().fromPrivKey(new PrivKey().fromRandom()).pubKey)
