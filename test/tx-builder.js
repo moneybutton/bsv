@@ -123,11 +123,11 @@ describe('TxBuilder', function () {
     return obj
   }
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should convert this txb to JSON', function () {
       let obj = prepareAndBuildTxBuilder()
       let txb = obj.txb
-      let json = txb.toJson()
+      let json = txb.toJSON()
       should.exist(json.tx)
       should.exist(json.txIns)
       should.exist(json.txIns[0])
@@ -139,13 +139,13 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should convert to/from json isomorphically', function () {
       let obj = prepareAndBuildTxBuilder()
       let txb = obj.txb
-      let json = txb.toJson()
-      let txb2 = new TxBuilder().fromJson(json)
-      let json2 = txb2.toJson()
+      let json = txb.toJSON()
+      let txb2 = new TxBuilder().fromJSON(json)
+      let json2 = txb2.toJSON()
       json2.tx.should.equal(json.tx)
       json2.txIns[0].should.equal(json.txIns[0])
       json2.txOuts[0].should.equal(json.txOuts[0])

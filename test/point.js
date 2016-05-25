@@ -43,25 +43,25 @@ describe('Point', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should print G to JSON', function () {
       let G = Point.getG()
-      let json = G.toJson()
+      let json = G.toJSON()
       json.x.should.equal(G.x.toString())
       json.y.should.equal(G.y.toString())
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should recover G', function () {
-      new Point().fromJson(Point.getG().toJson()).eq(Point.getG()).should.equal(true)
+      new Point().fromJSON(Point.getG().toJSON()).eq(Point.getG()).should.equal(true)
     })
   })
 
   describe('#toString', function () {
     it('should convert G to a string', function () {
       let G = Point.getG()
-      G.toString().should.equal(JSON.stringify(G.toJson()))
+      G.toString().should.equal(JSON.stringify(G.toJSON()))
     })
   })
 

@@ -32,22 +32,22 @@ describe('TxOutMap', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('convert to json', function () {
       let txOutMap = new TxOutMap().add(txHashBuf, 0, txOut)
         .add(txHashBuf, 1, txOut)
         .add(txHashBuf, 2, txOut)
-      let json = txOutMap.toJson()
+      let json = txOutMap.toJSON()
       Object.keys(json).length.should.equal(3)
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('convert to/from json roundtrip', function () {
       let txOutMap = new TxOutMap().add(txHashBuf, 0, txOut)
         .add(txHashBuf, 1, txOut)
         .add(txHashBuf, 2, txOut)
-      let txOutMap2 = new TxOutMap().fromJson(txOutMap.toJson())
+      let txOutMap2 = new TxOutMap().fromJSON(txOutMap.toJSON())
       txOutMap2.get(txHashBuf, 0).toHex().should.equal(txOutMap.get(txHashBuf, 0).toHex())
       txOutMap2.get(txHashBuf, 1).toHex().should.equal(txOutMap.get(txHashBuf, 1).toHex())
       txOutMap2.get(txHashBuf, 2).toHex().should.equal(txOutMap.get(txHashBuf, 2).toHex())

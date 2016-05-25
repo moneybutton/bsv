@@ -34,11 +34,11 @@ describe('Interp', function () {
     interp.flags.should.equal(Interp.defaultFlags)
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should convert a json to an interp', function () {
       let interp = new Interp().fromObject({script: new Script(), stack: ['00'], altStack: ['00']})
-      let json = interp.toJson()
-      let interp2 = new Interp().fromJson(json)
+      let json = interp.toJSON()
+      let interp2 = new Interp().fromJSON(json)
       should.exist(interp2.script)
       should.exist(interp2.stack[0])
       should.exist(interp2.altStack[0])
@@ -65,10 +65,10 @@ describe('Interp', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should convert an interp to json', function () {
       let interp = new Interp().fromObject({script: new Script()})
-      let json = interp.toJson()
+      let json = interp.toJSON()
       should.exist(json.script)
       should.not.exist(json.tx)
     })

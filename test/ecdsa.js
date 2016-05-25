@@ -33,18 +33,18 @@ describe('Ecdsa', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should return json', function () {
-      let json = ecdsa.toJson()
+      let json = ecdsa.toJSON()
       should.exist(json.keyPair)
       should.exist(json.hashBuf)
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should convert from json', function () {
-      let json = ecdsa.toJson()
-      let ecdsa2 = new Ecdsa().fromJson(json)
+      let json = ecdsa.toJSON()
+      let ecdsa2 = new Ecdsa().fromJSON(json)
       should.exist(ecdsa2.keyPair)
       should.exist(ecdsa2.hashBuf)
     })

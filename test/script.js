@@ -231,15 +231,15 @@ describe('Script', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should parse this known script', function () {
-      new Script().fromJson('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
+      new Script().fromJSON('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toString().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should output this known script', function () {
-      new Script().fromString('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toJson().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
+      new Script().fromString('OP_0 OP_PUSHDATA4 3 0x010203 OP_0').toJSON().should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
     })
   })
 

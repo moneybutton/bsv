@@ -82,14 +82,14 @@ describe('Tx', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set all the basic parameters', function () {
-      let tx = new Tx().fromJson({
+      let tx = new Tx().fromJSON({
         versionBytesNum: 0,
-        txInsVi: VarInt.fromNumber(1).toJson(),
-        txIns: [txIn.toJson()],
-        txOutsVi: VarInt.fromNumber(1).toJson(),
-        txOuts: [txOut.toJson()],
+        txInsVi: VarInt.fromNumber(1).toJSON(),
+        txIns: [txIn.toJSON()],
+        txOutsVi: VarInt.fromNumber(1).toJSON(),
+        txOuts: [txOut.toJSON()],
         nLockTime: 0
       })
       should.exist(tx.versionBytesNum)
@@ -101,9 +101,9 @@ describe('Tx', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should recover all the basic parameters', function () {
-      let json = tx.toJson()
+      let json = tx.toJSON()
       should.exist(json.versionBytesNum)
       should.exist(json.txInsVi)
       should.exist(json.txIns)

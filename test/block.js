@@ -59,14 +59,14 @@ describe('Block', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set these known values', function () {
-      let block = new Block().fromJson({
+      let block = new Block().fromJSON({
         magicNum: magicNum,
         blockSize: blockSize,
-        blockHeader: bh.toJson(),
-        txsVi: txsVi.toJson(),
-        txs: [txs[0].toJson()]
+        blockHeader: bh.toJSON(),
+        txsVi: txsVi.toJSON(),
+        txs: [txs[0].toJSON()]
       })
       should.exist(block.magicNum)
       should.exist(block.blockSize)
@@ -76,9 +76,9 @@ describe('Block', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should recover these known values', function () {
-      let json = block.toJson()
+      let json = block.toJSON()
       should.exist(json.magicNum)
       should.exist(json.blockSize)
       should.exist(json.blockHeader)

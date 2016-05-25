@@ -54,12 +54,12 @@ describe('PrivKey', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should input this address correctly', function () {
       let privKey = new PrivKey()
       privKey.fromString(encmu)
       let privKey2 = new PrivKey()
-      privKey2.fromJson(privKey.toHex())
+      privKey2.fromJSON(privKey.toHex())
       privKey2.toWif().should.equal(encmu)
     })
   })

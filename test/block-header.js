@@ -52,9 +52,9 @@ describe('BlockHeader', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set all the variables', function () {
-      let bh = new BlockHeader().fromJson({
+      let bh = new BlockHeader().fromJSON({
         versionBytesNum: versionBytesNum,
         prevBlockHashBuf: prevBlockHashBuf.toString('hex'),
         merkleRootBuf: merkleRootBuf.toString('hex'),
@@ -71,9 +71,9 @@ describe('BlockHeader', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should set all the variables', function () {
-      let json = bh.toJson()
+      let json = bh.toJSON()
       should.exist(json.versionBytesNum)
       should.exist(json.prevBlockHashBuf)
       should.exist(json.merkleRootBuf)

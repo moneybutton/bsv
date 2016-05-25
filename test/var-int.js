@@ -31,19 +31,19 @@ describe('VarInt', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set a buffer', function () {
       let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt().fromJson(buf.toString('hex'))
+      let varInt = new VarInt().fromJSON(buf.toString('hex'))
       varInt.toNumber().should.equal(5)
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should return a buffer', function () {
       let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt().fromJson(buf.toString('hex'))
-      varInt.toJson().should.equal('05')
+      let varInt = new VarInt().fromJSON(buf.toString('hex'))
+      varInt.toJSON().should.equal('05')
     })
   })
 

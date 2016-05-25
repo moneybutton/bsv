@@ -398,50 +398,50 @@ describe('Struct', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        new Struct().fromJson()
+        new Struct().fromJSON()
       }).should.throw('not implemented')
     })
   })
 
-  describe('@fromJson', function () {
+  describe('@fromJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct.fromJson()
+        Struct.fromJSON()
       }).should.throw('not implemented')
     })
   })
 
-  describe('#asyncFromJson', function () {
+  describe('#asyncFromJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        new Struct().asyncFromJson()
+        new Struct().asyncFromJSON()
       }).should.throw('not implemented')
     })
   })
 
-  describe('@asyncFromJson', function () {
+  describe('@asyncFromJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        Struct.asyncFromJson()
+        Struct.asyncFromJSON()
       }).should.throw('not implemented')
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        new Struct().toJson()
+        new Struct().toJSON()
       }).should.throw('not implemented')
     })
   })
 
-  describe('#asyncToJson', function () {
+  describe('#asyncToJSON', function () {
     it('should throw a not implemented error', function () {
       (function () {
-        new Struct().asyncToJson()
+        new Struct().asyncToJSON()
       }).should.throw('not implemented')
     })
   })

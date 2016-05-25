@@ -13,7 +13,7 @@ describe('Msg', function () {
   let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
   let msgbuf = new Buffer(msghex, 'hex')
   let msg = new Msg().fromHex(msghex)
-  let msgjson = msg.toJson()
+  let msgjson = msg.toJSON()
   let msgjsonstr = JSON.stringify(msgjson)
 
   it('should satisfy this basic API', function () {
@@ -185,15 +185,15 @@ describe('Msg', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should parse this known json msg', function () {
-      new Msg().fromJson(msgjson).toHex().should.equal(msghex)
+      new Msg().fromJSON(msgjson).toHex().should.equal(msghex)
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should create this known message', function () {
-      JSON.stringify(new Msg().fromHex(msghex).toJson()).should.equal(msgjsonstr)
+      JSON.stringify(new Msg().fromHex(msghex).toJSON()).should.equal(msgjsonstr)
     })
   })
 

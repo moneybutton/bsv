@@ -79,9 +79,9 @@ describe('TxIn', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set these vars', function () {
-      let txIn2 = new TxIn().fromJson(txIn.toJson())
+      let txIn2 = new TxIn().fromJSON(txIn.toJSON())
       should.exist(txIn2.txHashBuf)
       should.exist(txIn2.txOutNum)
       should.exist(txIn2.scriptVi)
@@ -90,9 +90,9 @@ describe('TxIn', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should set these vars', function () {
-      let json = txIn.toJson()
+      let json = txIn.toJSON()
       should.exist(json.txHashBuf)
       should.exist(json.txOutNum)
       should.exist(json.scriptVi)

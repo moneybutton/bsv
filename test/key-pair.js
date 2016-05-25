@@ -29,27 +29,27 @@ describe('KeyPair', function () {
     should.exist(key.pubKey)
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should make a keyPair from this json', function () {
       let privKey = new PrivKey().fromRandom()
       let pubKey = new PubKey().fromPrivKey(privKey)
-      let keyPair = new KeyPair().fromJson({
-        privKey: privKey.toJson(),
-        pubKey: pubKey.toJson()
+      let keyPair = new KeyPair().fromJSON({
+        privKey: privKey.toJSON(),
+        pubKey: pubKey.toJSON()
       })
       keyPair.privKey.toString().should.equal(privKey.toString())
       keyPair.pubKey.toString().should.equal(pubKey.toString())
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should make json from this keyPair', function () {
-      let json = new KeyPair().fromRandom().toJson()
+      let json = new KeyPair().fromRandom().toJSON()
       should.exist(json.privKey)
       should.exist(json.pubKey)
-      let keyPair = new KeyPair().fromJson(json)
-      keyPair.toJson().privKey.toString().should.equal(json.privKey.toString())
-      keyPair.toJson().pubKey.toString().should.equal(json.pubKey.toString())
+      let keyPair = new KeyPair().fromJSON(json)
+      keyPair.toJSON().privKey.toString().should.equal(json.privKey.toString())
+      keyPair.toJSON().pubKey.toString().should.equal(json.pubKey.toString())
     })
   })
 

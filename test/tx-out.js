@@ -61,12 +61,12 @@ describe('TxOut', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should set from this json', function () {
-      let txOut = new TxOut().fromJson({
-        valueBn: valueBn.toJson(),
-        scriptVi: scriptVi.toJson(),
-        script: script.toJson()
+      let txOut = new TxOut().fromJSON({
+        valueBn: valueBn.toJSON(),
+        scriptVi: scriptVi.toJSON(),
+        script: script.toJSON()
       })
       should.exist(txOut.valueBn)
       should.exist(txOut.scriptVi)
@@ -74,14 +74,14 @@ describe('TxOut', function () {
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should return this json', function () {
-      let txOut = new TxOut().fromJson({
-        valueBn: valueBn.toJson(),
-        scriptVi: scriptVi.toJson(),
-        script: script.toJson()
+      let txOut = new TxOut().fromJSON({
+        valueBn: valueBn.toJSON(),
+        scriptVi: scriptVi.toJSON(),
+        script: script.toJSON()
       })
-      let json = txOut.toJson()
+      let json = txOut.toJSON()
       should.exist(json.valueBn)
       should.exist(json.scriptVi)
       should.exist(json.script)

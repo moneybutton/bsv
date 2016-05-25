@@ -283,16 +283,16 @@ describe('Bn', function () {
     })
   })
 
-  describe('#fromJson', function () {
+  describe('#fromJSON', function () {
     it('should make Bn from a string', function () {
-      new Bn().fromJson('5').toString().should.equal('5')
+      new Bn().fromJSON('5').toString().should.equal('5')
     })
   })
 
-  describe('#toJson', function () {
+  describe('#toJSON', function () {
     it('should make string from a Bn', function () {
-      new Bn(5).toJson().should.equal('5')
-      new Bn().fromJson('5').toJson().should.equal('5')
+      new Bn(5).toJSON().should.equal('5')
+      new Bn().fromJSON('5').toJSON().should.equal('5')
     })
   })
 
