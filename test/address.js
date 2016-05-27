@@ -351,6 +351,29 @@ describe('Address', function () {
     })
   })
 
+  describe('#toJSON', function () {
+    it('should convert an address to json', function () {
+      let addrbuf = new Buffer(21)
+      addrbuf.fill(0)
+      let address = new Address().fromBuffer(addrbuf)
+      let json = address.toJSON()
+      should.exist(json.hashBuf)
+      json.versionByteNum.should.equal(0)
+    })
+  })
+
+  describe('#fromJSON', function () {
+    it('should convert a json to an address', function () {
+      let addrbuf = new Buffer(21)
+      addrbuf.fill(0)
+      let address = new Address().fromBuffer(addrbuf)
+      let json = address.toJSON()
+      let address2 = new Address().fromJSON(json)
+      should.exist(address2.hashBuf)
+      address2.versionByteNum.should.equal(0)
+    })
+  })
+
   describe('#toScript', function () {
     it('should convert this address into known scripts', function () {
       let addrbuf = new Buffer(21)
