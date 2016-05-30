@@ -431,10 +431,15 @@ describe('Struct', function () {
   })
 
   describe('#toJSON', function () {
-    it('should throw a not implemented error', function () {
-      (function () {
-        new Struct().toJSON()
-      }).should.throw('not implemented')
+    it('should convert an object into a json string', function () {
+      let obj = new Struct()
+      obj.arr = [1, 2, 3, 4]
+      obj.anotherObj = new Struct()
+
+      let json = obj.toJSON()
+
+      should.exist(json.arr)
+      should.exist(json.anotherObj)
     })
   })
 
