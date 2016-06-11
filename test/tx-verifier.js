@@ -12,6 +12,8 @@ let asink = require('asink')
 let should = require('chai').should()
 let txInvalid = require('./vectors/bitcoind/tx_invalid')
 let txValid = require('./vectors/bitcoind/tx_valid')
+let coolestTxVector = require('./vectors/coolest-tx-ever-sent.json')
+let sighashSingleVector = require('./vectors/sighash-single-bug.json')
 
 describe('TxVerifier', function () {
   it('should make a new txverifier', function () {
@@ -81,6 +83,42 @@ describe('TxVerifier', function () {
   })
 
   describe('vectors', function () {
+    it('should validate the coolest transaction ever', function () {
+      // This test vector was given to me by JJ of bcoin. It is a transaction
+      // with code seperators in the input. It also uses what used to be
+      // OP_NOP2 but is now OP_CHECKLOCKTIMEVERIFY, so the
+      // OP_CHECKLOCKTIMEVERIFY flag cannot be enabled to verify this tx.
+      let flags = 0
+      let tx = Tx.fromHex(coolestTxVector.tx)
+      let intx0 = Tx.fromHex(coolestTxVector.intx0)
+      let intx1 = Tx.fromHex(coolestTxVector.intx1)
+      let txOutMap = new TxOutMap()
+      txOutMap.addTx(intx0)
+      txOutMap.addTx(intx1)
+      let txVerifier = new TxVerifier(tx, txOutMap)
+      let str = txVerifier.verifyStr(flags)
+      str.should.equal(false)
+    })
+
+    it('should validate this sighash single test vector', function () {
+      // This test vector was given to me by JJ of bcoin. It is a transaction
+      // on testnet, not mainnet. It highlights the famous "sighash single bug"
+      // which is where sighash single returns a transaction hash of all 00s in
+      // the case where there are more inputs than outputs. Peter Todd has
+      // written about the sighash single bug here:
+      // https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-November/006878.html
+      let flags = 0
+      let tx = Tx.fromHex(sighashSingleVector.tx)
+      let intx0 = Tx.fromHex(sighashSingleVector.intx0)
+      let intx1 = Tx.fromHex(sighashSingleVector.intx1)
+      let txOutMap = new TxOutMap()
+      txOutMap.addTx(intx0)
+      txOutMap.addTx(intx1)
+      let txVerifier = new TxVerifier(tx, txOutMap)
+      let str = txVerifier.verifyStr(flags)
+      str.should.equal(false)
+    })
+
     let c = 0
     txValid.forEach(function (vector, i) {
       if (vector.length === 1) {
