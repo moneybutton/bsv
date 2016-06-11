@@ -12,8 +12,8 @@ let asink = require('asink')
 let should = require('chai').should()
 let txInvalid = require('./vectors/bitcoind/tx_invalid')
 let txValid = require('./vectors/bitcoind/tx_valid')
-let coolestTxVector = require('./vectors/coolest-tx-ever-sent.json')
-let sighashSingleVector = require('./vectors/sighash-single-bug.json')
+let coolestTxVector = require('./vectors/coolest-tx-ever-sent')
+let sighashSingleVector = require('./vectors/sighash-single-bug')
 
 describe('TxVerifier', function () {
   it('should make a new txverifier', function () {
