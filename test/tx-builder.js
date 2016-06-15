@@ -250,6 +250,66 @@ describe('TxBuilder', function () {
     })
   })
 
+  describe('#build', function () {
+    function prepareTxBuilder () {
+      let txb = new TxBuilder()
+
+      // make change address
+      let privKey = new PrivKey().fromBn(new Bn(1))
+      let keyPair = new KeyPair().fromPrivKey(privKey)
+      let changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from
+      let privKey1 = new PrivKey().fromBn(new Bn(2))
+      let keyPair1 = new KeyPair().fromPrivKey(privKey1)
+      let addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+      let privKey2 = new PrivKey().fromBn(new Bn(3))
+      let keyPair2 = new KeyPair().fromPrivKey(privKey2)
+      let addr2 = new Address().fromPubKey(keyPair2.pubKey)
+
+      let privKey3 = new PrivKey().fromBn(new Bn(4))
+      let keyPair3 = new KeyPair().fromPrivKey(privKey3)
+      let addr3 = new Address().fromPubKey(keyPair3.pubKey)
+
+      let txOut1 = TxOut.fromProperties(new Bn(1e8), addr1.toScript())
+      let txOut2 = TxOut.fromProperties(new Bn(1e8), addr2.toScript())
+      let txOut3 = TxOut.fromProperties(new Bn(1e8), addr3.toScript())
+      // total balance: 3e8
+
+      let txHashBuf = new Buffer(32)
+      txHashBuf.fill(0)
+      let txOutNum1 = 0
+      let txOutNum2 = 1
+      let txOutNum3 = 2
+
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1, keyPair1.pubKey)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2, keyPair2.pubKey)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum3, txOut3, keyPair3.pubKey)
+      txb.outputToAddress(new Bn(1e8), addr1)
+
+      return txb
+    }
+
+    it('should build a tx where all inputs are NOT required', function () {
+      let txb = prepareTxBuilder()
+
+      txb.build()
+
+      txb.tx.txIns.length.should.equal(2)
+    })
+
+    it('should build a tx where all inputs are required', function () {
+      let txb = prepareTxBuilder()
+
+      txb.build(true)
+
+      txb.tx.txIns.length.should.equal(3)
+    })
+  })
+
   describe('@allSigsPresent', function () {
     it('should know all sigs are or are not present these scripts', function () {
       let script
