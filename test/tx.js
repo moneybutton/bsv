@@ -10,6 +10,7 @@ let TxOut = require('../lib/tx-out')
 let VarInt = require('../lib/var-int')
 let asink = require('asink')
 let should = require('chai').should()
+let sinon = require('sinon')
 
 let vectorsSighash = require('./vectors/bitcoind/sighash')
 let vectorsTxValid = require('./vectors/bitcoind/tx_valid')
@@ -60,6 +61,26 @@ describe('Tx', function () {
       tx.txOutsVi.toNumber().should.equal(0)
       tx.txOuts.length.should.equal(0)
       tx.nLockTime.should.equal(0)
+    })
+  })
+
+  describe('#clone', function () {
+    it('should clone a tx', function () {
+      let tx1 = Tx.fromHex(tx2hex)
+      let tx2 = tx1.clone()
+      tx2.should.not.equal(tx1)
+      tx2.toHex().should.equal(tx1.toHex())
+    })
+  })
+
+  describe('#cloneByBuffer', function () {
+    it('should clone a tx by buffer', function () {
+      let tx1 = Tx.fromHex(tx2hex)
+      tx1.toJSON = sinon.spy()
+      let tx2 = tx1.cloneByBuffer()
+      tx1.toJSON.calledOnce.should.equal(false)
+      tx2.should.not.equal(tx1)
+      tx2.toHex().should.equal(tx1.toHex())
     })
   })
 

@@ -450,4 +450,98 @@ describe('Struct', function () {
       }).should.throw('not implemented')
     })
   })
+
+  describe('#clone', function () {
+    it('should call cloneByJSON', function () {
+      let struct = new Struct()
+      struct.cloneByJSON = sinon.spy()
+      struct.clone()
+      struct.cloneByJSON.calledOnce.should.equal(true)
+    })
+  })
+
+  describe('#cloneByBuffer', function () {
+    it('should call toBuffer', function () {
+      class Struct2 extends Struct {
+        toBuffer () {
+          return {}
+        }
+        fromBuffer (obj) {
+          return this
+        }
+      }
+      let struct = new Struct2()
+      struct.toBuffer = sinon.spy()
+      struct.cloneByBuffer()
+      struct.toBuffer.calledOnce.should.equal(true)
+    })
+  })
+
+  describe('#cloneByFastBuffer', function () {
+    it('should call toFastBuffer', function () {
+      class Struct2 extends Struct {
+        toFastBuffer () {
+          return {}
+        }
+        fromFastBuffer (obj) {
+          return this
+        }
+      }
+      let struct = new Struct2()
+      struct.toFastBuffer = sinon.spy()
+      struct.cloneByFastBuffer()
+      struct.toFastBuffer.calledOnce.should.equal(true)
+    })
+  })
+
+  describe('#cloneByHex', function () {
+    it('should call toHex', function () {
+      class Struct2 extends Struct {
+        toHex () {
+          return {}
+        }
+        fromHex (obj) {
+          return this
+        }
+      }
+      let struct = new Struct2()
+      struct.toHex = sinon.spy()
+      struct.cloneByHex()
+      struct.toHex.calledOnce.should.equal(true)
+    })
+  })
+
+  describe('#cloneByString', function () {
+    it('should call toString', function () {
+      class Struct2 extends Struct {
+        toString () {
+          return {}
+        }
+        fromString (obj) {
+          return this
+        }
+      }
+      let struct = new Struct2()
+      struct.toString = sinon.spy()
+      struct.cloneByString()
+      struct.toString.calledOnce.should.equal(true)
+    })
+  })
+
+  describe('#cloneByJSON', function () {
+    it('should call toJSON', function () {
+      class Struct2 extends Struct {
+        toJSON () {
+          return {}
+        }
+        fromJSON (obj) {
+          return this
+        }
+      }
+      let struct = new Struct2()
+      struct.toJSON = sinon.spy()
+      struct.cloneByJSON()
+      struct.toJSON.calledOnce.should.equal(true)
+    })
+  })
 })
