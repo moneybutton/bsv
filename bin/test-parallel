@@ -1,3 +1,19 @@
 #!/bin/bash
-ntests=`ls test | wc -l`
-ls test | sort -R | awk '{printf("test/%s\n", $1)}' | tee >(head -n "$(( $ntests / 4 * 1))" | tail -n "$(( $ntests / 4))" | xargs echo mocha -R progress) >(head -n "$(( $ntests / 4 * 2))" | tail -n "$(( $ntests / 4))" | xargs echo mocha -R progress) >(head -n "$(( $ntests / 4 * 3))" | tail -n "$(( $ntests / 4))" | xargs echo mocha -R progress) >(head -n "$(( $ntests / 4 * 4 + ( $ntests % 4 ) ))" | tail -n "$(( $ntests / 4 + ( $ntests % 4) ))" | xargs echo mocha -R progress) > /dev/null | parallel
+
+# This test runner passes a list of every 4th test file into 4 simultaneous
+# mocha processes so it can use 4 cores efficiently. This should run no faster
+# than 4 times faster than series. In practice, it runs about twice as fast on
+# a 4 core machine. You must execute this from the project root directory. You
+# must have "parallel" installed for this to work. On Ubuntu: "apt-get install
+# parallel".
+
+echo "Executing mocha tests in 4 processes."
+
+ls test/*.js \
+| tee \
+>(sed -n "p;n;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;p;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;p;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;n;p;" | xargs echo mocha -R progress) \
+> /dev/null \
+| parallel
