@@ -7,13 +7,15 @@
 # must have "parallel" installed for this to work. On Ubuntu: "apt-get install
 # parallel".
 
-echo "Executing mocha tests in 4 processes."
+echo "Executing mocha tests in 6 processes."
 
 ls test/*.js \
 | tee \
->(sed -n "p;n;n;n;" | xargs echo mocha -R progress) \
->(sed -n "n;p;n;n;" | xargs echo mocha -R progress) \
->(sed -n "n;n;p;n;" | xargs echo mocha -R progress) \
->(sed -n "n;n;n;p;" | xargs echo mocha -R progress) \
+>(sed -n "p;n;n;n;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;p;n;n;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;p;n;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;n;p;n;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;n;n;p;n;" | xargs echo mocha -R progress) \
+>(sed -n "n;n;n;n;n;p;" | xargs echo mocha -R progress) \
 > /dev/null \
 | parallel
