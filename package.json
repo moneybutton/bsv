@@ -6,8 +6,9 @@
   "homepage": "https://github.com/yoursnetwork/yours-bitcoin",
   "main": "index.js",
   "scripts": {
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive --reporter=dot",
-    "test-node": "./node_modules/.bin/standard && ./node_modules/.bin/gulp test-node",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive -R progress",
+    "test-node-parallel": "./node_modules/.bin/standard && ./bin/test-parallel",
+    "test-node": "./node_modules/.bin/standard && ./node_modules/.bin/mocha --recursive -R progress",
     "test-browser": "./node_modules/.bin/gulp test-karma",
     "test": "npm run test-node && npm run test-browser",
     "build": "./node_modules/.bin/gulp build"

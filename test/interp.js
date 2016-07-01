@@ -7,8 +7,6 @@ let Script = require('../lib/script')
 let Bn = require('../lib/bn')
 let KeyPair = require('../lib/key-pair')
 let Sig = require('../lib/sig')
-let scriptValid = require('./vectors/bitcoind/script_valid')
-let scriptInvalid = require('./vectors/bitcoind/script_invalid')
 
 describe('Interp', function () {
   it('should make a new interp', function () {
@@ -215,66 +213,6 @@ describe('Interp', function () {
       let interp = new Interp()
       let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, 0)
       verified.should.equal(true)
-    })
-  })
-
-  describe('vectors', function () {
-    let c
-
-    c = 0
-    scriptValid.forEach(function (vector, i) {
-      if (vector.length === 1) {
-        return
-      }
-      c++
-      it('should verify scriptValid vector ' + c, function () {
-        let scriptSig = new Script().fromBitcoindString(vector[0])
-        let scriptPubKey = new Script().fromBitcoindString(vector[1])
-        let flags = Interp.getFlags(vector[2])
-
-        let hashBuf = new Buffer(32)
-        hashBuf.fill(0)
-        let credtx = new Tx()
-        credtx.addTxIn(hashBuf, 0xffffffff, new Script().writeString('OP_0 OP_0'), 0xffffffff)
-        credtx.addTxOut(new Bn(0), scriptPubKey)
-
-        let idbuf = credtx.hash()
-        let spendtx = new Tx()
-        spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
-        spendtx.addTxOut(new Bn(0), new Script())
-
-        let interp = new Interp()
-        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-        verified.should.equal(true)
-      })
-    })
-
-    c = 0
-    scriptInvalid.forEach(function (vector, i) {
-      if (vector.length === 1) {
-        return
-      }
-      c++
-      it('should unverify scriptInvalid vector ' + c, function () {
-        let scriptSig = new Script().fromBitcoindString(vector[0])
-        let scriptPubKey = new Script().fromBitcoindString(vector[1])
-        let flags = Interp.getFlags(vector[2])
-
-        let hashBuf = new Buffer(32)
-        hashBuf.fill(0)
-        let credtx = new Tx()
-        credtx.addTxIn(hashBuf, 0xffffffff, new Script().writeString('OP_0 OP_0'), 0xffffffff)
-        credtx.addTxOut(new Bn(0), scriptPubKey)
-
-        let idbuf = credtx.hash()
-        let spendtx = new Tx()
-        spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
-        spendtx.addTxOut(new Bn(0), new Script())
-
-        let interp = new Interp()
-        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-        verified.should.equal(false)
-      })
     })
   })
 })
