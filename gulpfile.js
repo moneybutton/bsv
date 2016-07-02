@@ -1,6 +1,6 @@
 'use strict'
 let gulp = require('gulp')
-let karma = require('gulp-karma')
+let KarmaServer = require('karma').Server
 let mocha = require('gulp-mocha')
 let path = require('path')
 let fs = require('fs')
@@ -108,18 +108,14 @@ gulp.task('build-karma-url', function () {
 
 gulp.task('build-karma', ['build-karma-url', 'build-tests'])
 
-gulp.task('test-karma', ['build-karma'], function () {
-  return gulp.src([])
-    .pipe(karma({
-      configFile: '.karma.conf.js',
-      action: 'run'
-    }))
-    .on('error', function (err) {
-      throw err
-    })
-    .on('end', function () {
-      process.exit()
-    })
+gulp.task('test-karma', ['build-karma'], function (done) {
+  return new KarmaServer({
+    configFile: path.join(__dirname, '/.karma.conf.js'),
+    singleRun: true
+  }, function () {
+    process.exit()
+    done()
+  }).start()
 })
 
 gulp.task('test-browser', ['build-karma', 'test-karma'])
