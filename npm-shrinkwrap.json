@@ -1,6 +1,6 @@
 {
   "name": "yours-bitcoin",
-  "version": "0.14.13",
+  "version": "0.14.14",
   "dependencies": {
     "abbrev": {
       "version": "1.0.9",
