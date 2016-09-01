@@ -132,4 +132,43 @@ describe('ECIES', function() {
     }).should.throw('Invalid checksum');
   });
 
+  it('decrypting uncompressed keys', function() {
+    var secret = 'test';
+
+    // test uncompressed
+    var alicePrivateKey = new bitcore.PrivateKey.fromObject({
+      bn: '1fa76f9c799ca3a51e2c7c901d3ba8e24f6d870beccf8df56faf30120b38f360',
+      compressed: false,
+      network: 'livenet'
+    });
+    var alicePublicKey = new bitcore.PublicKey.fromPrivateKey(alicePrivateKey); // alicePrivateKey.publicKey
+    alicePrivateKey.compressed.should.equal(false);
+
+    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey);
+    var encrypted = cypher1.encrypt(secret);
+
+    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey);
+    var decrypted = cypher2.decrypt(encrypted);
+    secret.should.equal(decrypted.toString());
+  });
+  
+  it('decrypting compressed keys', function() {
+    var secret = 'test';
+
+    // test compressed
+    var alicePrivateKey = new bitcore.PrivateKey.fromObject({
+      bn: '1fa76f9c799ca3a51e2c7c901d3ba8e24f6d870beccf8df56faf30120b38f360',
+      compressed: true,
+      network: 'livenet'
+    });
+    var alicePublicKey = new bitcore.PublicKey.fromPrivateKey(alicePrivateKey); // alicePrivateKey.publicKey
+    alicePrivateKey.compressed.should.equal(true);
+
+    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey);
+    var encrypted = cypher1.encrypt(secret);
+
+    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey);
+    var decrypted = cypher2.decrypt(encrypted);
+    secret.should.equal(decrypted.toString());
+  });
 });
