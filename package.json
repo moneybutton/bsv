@@ -42,7 +42,7 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "bitcore-lib-cash": "git+https://github.com/bitpay/bitcore-lib-cash.git#adfe9e40d321ffcc6e905ede1051a56a8f265f24",
+    "bitcore-lib-cash": "git+https://github.com/moneybutton/bitcore-lib-cash.git#76c1e3afbf97d11f25bad20e26f7d78a37241cfc",
     "unorm": "^1.3.3"
   }
 }
