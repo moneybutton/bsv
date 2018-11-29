@@ -6,14 +6,14 @@ Bitcore Library
 [![Build Status](https://img.shields.io/travis/bitpay/bitcore-lib-cash.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-lib-cash)
 [![Coverage Status](https://coveralls.io/repos/github/bitpay/bitcore-lib-cash/badge.svg)](https://coveralls.io/github/bitpay/bitcore-lib-cash)
 
-A pure and powerful JavaScript Bitcoin *Cash* library.
+A pure and powerful JavaScript Bitcoin *SV* library.
 
 ## Principles
 
-Bitcoin Cash is an other powerful  peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services.
+Bitcoin SV is an other powerful  peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services.
 
 
-## Bitcoin Cash changes
+## Bitcoin SV changes
 
 Bitcoin cash uses a different `sighash` for transaction signatures. The implementation in bitcore-cash has been tested agains the original bitcoin-cash test vectors (see sighash.json in `/test`). `bitcoin-cash` modifications in script evaluation has not been implemented yet.
 
@@ -27,7 +27,7 @@ npm install bitcore-lib-cash
 ```
 
 
-Adding Bitcore Cash to your app's `package.json`:
+Adding Bitcore SV to your app's `package.json`:
 
 ``` json
   "dependencies": {
