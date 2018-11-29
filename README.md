@@ -1,11 +1,6 @@
 Bitcore Library
 =======
 
-
-[![NPM Package](https://img.shields.io/npm/v/bitcore-lib-cash.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-lib-cash)
-[![Build Status](https://img.shields.io/travis/bitpay/bitcore-lib-cash.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-lib-cash)
-[![Coverage Status](https://coveralls.io/repos/github/bitpay/bitcore-lib-cash/badge.svg)](https://coveralls.io/github/bitpay/bitcore-lib-cash)
-
 A pure and powerful JavaScript Bitcoin *SV* library.
 
 ## Principles
@@ -15,15 +10,15 @@ Bitcoin SV is an other powerful  peer-to-peer platform for the next generation o
 
 ## Bitcoin SV changes
 
-Bitcoin cash uses a different `sighash` for transaction signatures. The implementation in bitcore-cash has been tested agains the original bitcoin-cash test vectors (see sighash.json in `/test`). `bitcoin-cash` modifications in script evaluation has not been implemented yet.
+Bitcoin sv uses a different `sighash` for transaction signatures. The implementation in bitcore-sv has been tested agains the original bitcoin-sv test vectors (see sighash.json in `/test`). `bitcoin-sv` modifications in script evaluation has not been implemented yet.
 
-An usage example of bitcore-lib-cash can be seen at https://github.com/bitpay/copay-recovery
+An usage example of bsv can be seen at https://github.com/bitpay/copay-recovery
 
 
 ## Get Started
 
 ```
-npm install bitcore-lib-cash
+npm install bsv
 ```
 
 
@@ -31,7 +26,7 @@ Adding Bitcore SV to your app's `package.json`:
 
 ``` json
   "dependencies": {
-         "bitcore-lib-cash": "=0.18.0",
+         "bsv": "=0.18.0",
           ...
           }
 ```
@@ -66,7 +61,7 @@ If you find a security issue, please email security@bitpay.com.
 
 ## Contributing
 
-Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/bitpay/bitcore-lib-cash/blob/master/CONTRIBUTING.md) file.
+Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/bitpay/bsv/blob/master/CONTRIBUTING.md) file.
 
 ## Building the Browser Bundle
 
@@ -78,7 +73,7 @@ gulp browser
 
 This will generate files named `bitcore-lib.js` and `bitcore-lib.min.js`.
 
-You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers. To get them, checkout a release commit (for example, https://github.com/bitpay/bitcore-lib-cash/commit/e33b6e3ba6a1e5830a079e02d949fce69ea33546 for v0.12.6).
+You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers. To get them, checkout a release commit (for example, https://github.com/bitpay/bsv/commit/e33b6e3ba6a1e5830a079e02d949fce69ea33546 for v0.12.6).
 
 To verify signatures, use the following PGP keys:
 - @gabegattis: https://pgp.mit.edu/pks/lookup?op=get&search=0x441430987182732C `F3EA 8E28 29B4 EC93 88CB  B0AA 4414 3098 7182 732C`
@@ -88,7 +83,7 @@ To verify signatures, use the following PGP keys:
 ## Development & Tests
 
 ```sh
-git clone https://github.com/bitpay/bitcore-lib-cash
+git clone https://github.com/bitpay/bsv
 cd bitcore-lib
 npm install
 ```
