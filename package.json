@@ -1,6 +1,6 @@
 {
   "name": "bsv",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "description": "A pure and powerful JavaScript Bitcoin SV library.",
   "author": "BitPay <dev@bitpay.com>",
   "main": "index.js",
