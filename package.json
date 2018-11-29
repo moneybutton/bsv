@@ -1,7 +1,7 @@
 {
-  "name": "bitcore-lib-cash",
+  "name": "bsv",
   "version": "0.18.1",
-  "description": "A pure and powerful JavaScript Bitcoin Cash library.",
+  "description": "A pure and powerful JavaScript Bitcoin SV library.",
   "author": "BitPay <dev@bitpay.com>",
   "main": "index.js",
   "scripts": {
