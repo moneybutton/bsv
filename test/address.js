@@ -18,7 +18,7 @@ var invalidbase58 = require('./data/bitcoind/base58_keys_invalid.json');
 describe('Address', function() {
 
   var pubkeyhash = new Buffer('3c3fa3d4adcaf8f52d5b1843975e122548269937', 'hex');
-  var buf = Buffer.concat([new Buffer([28]), pubkeyhash]);
+  var buf = Buffer.concat([new Buffer([0]), pubkeyhash]);
   var str = 'bitcoincash:qq7rlg754h903afdtvvy8967zgj5sf5exueg36nyc7';
 
   it('can\'t build without data', function() {
@@ -66,18 +66,26 @@ describe('Address', function() {
     });
   });
 
+  describe('generic tests', function () {
+    it('should pass these tests', function () {
+      let str = '13k3vneZ3yvZnc9dNWYH2RJRFsagTfAERv';
+      var address = Address.fromString(str)
+      address.toLegacyAddress().should.equal(str)
+    })
+  })
+
   describe('Cashaddr', function() {
 
     //from https://github.com/Bitcoin-UAHF/spec/blob/master/cashaddr.md#examples-of-address-translation
     //
     //
     var t = [
-      ['CTH8H8Zj6DSnXFBKQeDG28ogAS92iS16Bp', 'bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a'],
-      ['Cazk5ZxnJGY1iYqqTefvo7ZtwLYx3YzjgY', 'bitcoincash:qr95sy3j9xwd2ap32xkykttr4cvcu7as4y0qverfuy'],
-      ['CGZpaFRaJYHqohPJ8BKYvKmxffV2dcmmN9', 'bitcoincash:qqq3728yw0y47sqn6l2na30mcw6zm78dzqre909m2r'],
-      ['HHLN6S9BcP1JLSrMhgD5qe57iVEMFMLCBT', 'bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq'],
-      ['HR3ytsYEpS6XXkWskgfkccqLVPeGdXQ1S8', 'bitcoincash:pr95sy3j9xwd2ap32xkykttr4cvcu7as4yc93ky28e'],
-      ['H6d4PZ12phrMcu4LRDKNjq3QDiaMDz3fUd', 'bitcoincash:pqq3728yw0y47sqn6l2na30mcw6zm78dzq5ucqzc37'],
+      ['1BpEi6DfDAUFd7GtittLSdBeYJvcoaVggu', 'bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a'],
+      ['1KXrWXciRDZUpQwQmuM1DbwsKDLYAYsVLR', 'bitcoincash:qr95sy3j9xwd2ap32xkykttr4cvcu7as4y0qverfuy'],
+      ['16w1D5WRVKJuZUsSRzdLp9w3YGcgoxDXb', 'bitcoincash:qqq3728yw0y47sqn6l2na30mcw6zm78dzqre909m2r'],
+      ['3CWFddi6m4ndiGyKqzYvsFYagqDLPVMTzC', 'bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq'],
+      ['3LDsS579y7sruadqu11beEJoTjdFiFCdX4', 'bitcoincash:pr95sy3j9xwd2ap32xkykttr4cvcu7as4yc93ky28e'],
+      ['31nwvkZwyPdgzjBJZXfDmSWsC4ZLKpYyUw', 'bitcoincash:pqq3728yw0y47sqn6l2na30mcw6zm78dzq5ucqzc37'],
     ];
     var i;
 
@@ -152,20 +160,20 @@ describe('Address', function() {
 
   // livenet valid
   var PKHLivenet = [
-    'CMPeBN1BZDzaqU5DF66X5QykLcS1voucT9',
+    '15vkcKf7gB23wLAnZLmbVuMiiVDc1Nm4a2',
     'bitcoincash:qp3awknl3dz8ezu3rmapff3phnzz95kansf0r3rs4x',
-    'CTHVPhghRAmiLHajoKYTGRyiU8RomQmAfZ',
-    'CaSvYEmgxVRYiAauWzW1XP4SHkyTiS78yy',
-    '    CaSvYEmgxVRYiAauWzW1XP4SHkyTiS78yy   \t\n'
+    '1BpbpfLdY7oBS9gK7aDXgvMgr1DPvNhEB2',
+    '1Jz2yCRd5ST1p2gUqFB5wsSQfdm3jaFfg7',
+    '    1Jz2yCRd5ST1p2gUqFB5wsSQfdm3jaFfg7   \t\n'
   ];
 
   // livenet p2sh
   var P2SHLivenet = [
     'bitcoincash:pqv60krfqv3k3lglrcnwtee6ftgwgaykpccr8hujjz',
-    'H8kzbJ9Mw46WdAxC8SAFadHn1oNqp6jEsu',
-    'HCGvZEM8pNyAFBfRrz9Eo4N4eGJPuFahd9',
-    'HVZezVtqnDwoTZTZ997fZUUGZMetDFUDLf',
-    '\tHVZezVtqnDwoTZTZ997fZUUGZMetDFUDLf \n \r'
+    '33vt8ViH5jsr115AGkW6cEmEz9MpvJSwDk',
+    '37Sp6Rv3y4kVd1nQ1JV5pfqXccHNyZm1x3',
+    '3QjYXhTkvuj8qPaXHTTWb5wjXhdsLAAWVy',
+    '\t3QjYXhTkvuj8qPaXHTTWb5wjXhdsLAAWVy \n \r'
   ];
 
   // testnet p2sh
@@ -178,18 +186,18 @@ describe('Address', function() {
 
   //livenet bad checksums
   var badChecksums = [
-    'C5vkcKf7gB23wLAnZLmbVuMiiVDc3nq4a2',
-    'CA6ut1tWnUq1SEQLMr4ttDh24wcbj4w2TT',
-    'CBpbpfLdY7oBS9gK7aDXgvMgr1DpvNH3B2',
-    'CJz2yCRd5ST1p2gUqFB5wsSQfdmEJaffg7'
+    '15vkcKf7gB23wLAnZLmbVuMiiVDc3nq4a2',
+    '1A6ut1tWnUq1SEQLMr4ttDh24wcbj4w2TT',
+    '1BpbpfLdY7oBS9gK7aDXgvMgr1DpvNH3B2',
+    '1Jz2yCRd5ST1p2gUqFB5wsSQfdmEJaffg7'
   ];
 
   //livenet non-base58
   var nonBase58 = [
-    'C5vkcKf7g#23wLAnZLmb$uMiiVDc3nq4a2',
-    'CA601ttWnUq1SEQLMr4ttDh24wcbj4w2TT',
-    'CBpbpfLdY7oBS9gK7aIXgvMgr1DpvNH3B2',
-    'CJz2yCRdOST1p2gUqFB5wsSQfdmEJaffg7'
+    '15vkcKf7g#23wLAnZLmb$uMiiVDc3nq4a2',
+    '1A601ttWnUq1SEQLMr4ttDh24wcbj4w2TT',
+    '1BpbpfLdY7oBS9gK7aIXgvMgr1DpvNH3B2',
+    '1Jz2yCRdOST1p2gUqFB5wsSQfdmEJaffg7'
   ];
 
   //testnet valid
@@ -208,12 +216,12 @@ describe('Address', function() {
     });
 
     it('isValid returns true on a valid livenet address', function() {
-      Address.isValid('HC1hAdrx7APHg1DkE4bVLsZhY1SE5Dik1r', 'livenet').should.equal(true);
+      Address.isValid('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo', 'livenet').should.equal(true);
     });
 
     it('isValid returns false on network mismatch', function() {
-      Address.isValid('HC1hAdrx7APHg1DkE4bVLsZhY1SE5Dik1r', 'testnet').should.equal(false);
-      Address.isValid('HC1hAdrx7APHg1DkE4bVLsZhY1SE5Dik1r', 'regtest').should.equal(false);
+      Address.isValid('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo', 'testnet').should.equal(false);
+      Address.isValid('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo', 'regtest').should.equal(false);
     });
 
     it('isValid returns true on network match on cashaddr', function() {
