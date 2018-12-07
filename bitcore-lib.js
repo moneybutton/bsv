@@ -209,6 +209,7 @@ Address._transformBuffer = function(buffer, network, type) {
   }
 
   if (!bufferVersion.network || (networkObj && networkObj !== bufferVersion.network)) {
+    console.log(bufferVersion)
     throw new TypeError('Address has mismatched network type.');
   }
 
@@ -690,11 +691,11 @@ Address.prototype.toCashAddress = function(stripPrefix) {
 };
 
 /**
- * Will return a string representation of the address (defaults to CashAddr format)
+ * Will return a string representation of the address (defaults to legacy format)
  *
  * @returns {string} address
  */
-Address.prototype.toString = Address.prototype.toCashAddress;
+Address.prototype.toString = Address.prototype.toLegacyAddress;
 
 /***
  * Retrieves the the length in bits of the encoded hash from its bit
@@ -5015,9 +5016,9 @@ var liveNetwork = {
   name: 'livenet',
   alias: 'mainnet',
   prefix: 'bitcoincash',
-  pubkeyhash: 28,
+  pubkeyhash: 0x00,
   privatekey: 0x80,
-  scripthash: 40,
+  scripthash: 0x05,
   xpubkey: 0x0488b21e,
   xprivkey: 0x0488ade4,
   networkMagic: networkMagic.livenet,
@@ -8223,8 +8224,6 @@ Script.fromASM = function(str) {
         opcodenum = Opcode.OP_PUSHDATA2;
       } else if (len < Math.pow(2, 32)) {
         opcodenum = Opcode.OP_PUSHDATA4;
-      } else {
-        throw new Error('You can\'t push that much data');
       }
       script.chunks.push({
         buf: buf,
@@ -8232,15 +8231,6 @@ Script.fromASM = function(str) {
         opcodenum: opcodenum
       });
       i = i + 1;
-    } else if (opcodenum === Opcode.OP_PUSHDATA1 ||
-      opcodenum === Opcode.OP_PUSHDATA2 ||
-      opcodenum === Opcode.OP_PUSHDATA4) {
-      script.chunks.push({
-        buf: Buffer.from(tokens[i + 2], 'hex'),
-        len: parseInt(tokens[i + 1]),
-        opcodenum: opcodenum
-      });
-      i = i + 3;
     } else {
       script.chunks.push({
         opcodenum: opcodenum
@@ -8338,9 +8328,9 @@ Script.prototype._chunkToString = function(chunk, type) {
     }
   } else {
     // data chunk
-    if (!asm && opcodenum === Opcode.OP_PUSHDATA1 ||
+    if (!asm && (opcodenum === Opcode.OP_PUSHDATA1 ||
       opcodenum === Opcode.OP_PUSHDATA2 ||
-      opcodenum === Opcode.OP_PUSHDATA4) {
+      opcodenum === Opcode.OP_PUSHDATA4)) {
       str = str + ' ' + Opcode(opcodenum).toString();
     }
     if (chunk.len > 0) {
@@ -28257,7 +28247,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.0",
-      "/Users/ryan/dev/bitcore-lib-cash"
+      "/Users/ryan/dev/bsv"
     ]
   ],
   "_from": "elliptic@6.4.0",
@@ -28283,7 +28273,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz",
   "_spec": "6.4.0",
-  "_where": "/Users/ryan/dev/bitcore-lib-cash",
+  "_where": "/Users/ryan/dev/bsv",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -55047,10 +55037,10 @@ exports.createContext = Script.createContext = function (context) {
 
 },{"indexof":152}],217:[function(require,module,exports){
 module.exports={
-  "name": "bitcore-lib-cash",
-  "version": "0.18.1",
-  "description": "A pure and powerful JavaScript Bitcoin Cash library.",
-  "author": "BitPay <dev@bitpay.com>",
+  "name": "bsv",
+  "version": "0.20.0",
+  "description": "A pure and powerful JavaScript Bitcoin SV library.",
+  "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
   "scripts": {
     "lint": "gulp lint",
@@ -55076,7 +55066,7 @@ module.exports={
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitpay/bitcore-lib/tree/cash"
+    "url": "https://github.com/moneybutton/bsv"
   },
   "browser": {
     "request": "browser-request"

@@ -68,7 +68,7 @@ describe('Address', function() {
 
   describe('generic tests', function () {
     it('should pass these tests', function () {
-      let str = '13k3vneZ3yvZnc9dNWYH2RJRFsagTfAERv';
+      var str = '13k3vneZ3yvZnc9dNWYH2RJRFsagTfAERv';
       var address = Address.fromString(str)
       address.toLegacyAddress().should.equal(str)
     })
