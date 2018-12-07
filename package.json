@@ -1,6 +1,6 @@
 {
   "name": "bsv-mnemonic",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "BIP39 Mnemonics implemented for bsv (Bitcoin SV).",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
