@@ -1,6 +1,6 @@
 {
   "name": "bsv-mnemonic",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "BIP39 Mnemonics implemented for bsv (Bitcoin SV).",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bitpay/bitcore-mnemonic.git"
+    "url": "https://github.com/moneybutton/bsv-mnemonic.git"
   },
   "keywords": [
     "bitcoin",
