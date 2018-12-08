@@ -42,15 +42,15 @@ To get community assistance and ask for help with implementation questions, plea
 
 ## Examples
 
-* [Generate a random address](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#generate-a-random-address)
-* [Generate a address from a SHA256 hash](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#generate-a-address-from-a-sha256-hash)
-* [Import an address via WIF](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#import-an-address-via-wif)
-* [Create a Transaction](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#create-a-transaction)
-* [Sign a Bitcoin message](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#sign-a-bitcoin-message)
-* [Verify a Bitcoin message](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#verify-a-bitcoin-message)
-* [Create an OP RETURN transaction](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#create-an-op-return-transaction)
-* [Create a 2-of-3 multisig P2SH address](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#create-a-2-of-3-multisig-p2sh-address)
-* [Spend from a 2-of-2 multisig P2SH address](https://github.com/bitpay/bitcore-lib-cash/blob/master/docs/examples.md#spend-from-a-2-of-2-multisig-p2sh-address)
+* [Generate a random address](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#generate-a-random-address)
+* [Generate a address from a SHA256 hash](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#generate-a-address-from-a-sha256-hash)
+* [Import an address via WIF](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#import-an-address-via-wif)
+* [Create a Transaction](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#create-a-transaction)
+* [Sign a Bitcoin message](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#sign-a-bitcoin-message)
+* [Verify a Bitcoin message](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#verify-a-bitcoin-message)
+* [Create an OP RETURN transaction](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#create-an-op-return-transaction)
+* [Create a 2-of-3 multisig P2SH address](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#create-a-2-of-3-multisig-p2sh-address)
+* [Spend from a 2-of-2 multisig P2SH address](https://github.com/moneybutton/bsv/blob/master/docs/examples.md#spend-from-a-2-of-2-multisig-p2sh-address)
 
 
 ## Security
@@ -61,7 +61,7 @@ If you find a security issue, please email security@bitpay.com.
 
 ## Contributing
 
-Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/bitpay/bsv/blob/master/CONTRIBUTING.md) file.
+Please send pull requests for bug fixes, code optimization, and ideas for improvement. For more information on how to contribute, please refer to our [CONTRIBUTING](https://github.com/moneybutton/bsv/blob/master/CONTRIBUTING.md) file.
 
 ## Building the Browser Bundle
 
@@ -73,7 +73,7 @@ gulp browser
 
 This will generate files named `bitcore-lib.js` and `bitcore-lib.min.js`.
 
-You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers. To get them, checkout a release commit (for example, https://github.com/bitpay/bsv/commit/e33b6e3ba6a1e5830a079e02d949fce69ea33546 for v0.12.6).
+You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers. To get them, checkout a release commit (for example, https://github.com/moneybutton/bsv/commit/e33b6e3ba6a1e5830a079e02d949fce69ea33546 for v0.12.6).
 
 To verify signatures, use the following PGP keys:
 - @gabegattis: https://pgp.mit.edu/pks/lookup?op=get&search=0x441430987182732C `F3EA 8E28 29B4 EC93 88CB  B0AA 4414 3098 7182 732C`
@@ -83,8 +83,8 @@ To verify signatures, use the following PGP keys:
 ## Development & Tests
 
 ```sh
-git clone https://github.com/bitpay/bsv
-cd bitcore-lib
+git clone https://github.com/moneybutton/bsv
+cd bsv
 npm install
 ```
 
