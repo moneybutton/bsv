@@ -29,6 +29,7 @@ describe('Transaction', function() {
       var tx = new Transaction();
       tx.to('1DpLHif3FBFnckw7Fj653VCr5wYQa3Fiow', 10000);
       tx.to('1ArnPQhtRU3voDbLcTRRzBuJtiCPHnKuN', 123445);
+      tx.to('1111111111111111111114oLvT2', 123445);
     } catch (err) {
       errors++;
     }
