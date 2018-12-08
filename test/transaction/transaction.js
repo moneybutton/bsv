@@ -23,6 +23,18 @@ var transactionVector = require('../data/tx_creation');
 
 describe('Transaction', function() {
 
+  it('should be able to add two outputs with short addresses', function () {
+    var errors = 0;
+    try {
+      var tx = new Transaction();
+      tx.to('1DpLHif3FBFnckw7Fj653VCr5wYQa3Fiow', 10000);
+      tx.to('1ArnPQhtRU3voDbLcTRRzBuJtiCPHnKuN', 123445);
+    } catch (err) {
+      errors++;
+    }
+    errors.should.equal(0);
+  })
+
   it('should serialize and deserialize correctly a given transaction', function() {
     var transaction = new Transaction(tx_1_hex);
     transaction.uncheckedSerialize().should.equal(tx_1_hex);
