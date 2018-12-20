@@ -13,20 +13,16 @@ See [the main bitcore repo](https://github.com/bitpay/bitcore) for more informat
 ## Getting Started
 
 ```sh
-npm install bitcore-message
-```
-
-```sh
-bower install bitcore-message
+npm install bsv-message
 ```
 
 To sign a message:
 
 ```javascript
-var bitcore = require('bitcore-lib');
-var Message = require('bitcore-message');
+var bsv = require('bsv');
+var Message = require('bsv-message');
 
-var privateKey = bitcore.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4');
+var privateKey = bsv.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4');
 var signature = Message('hello, world').sign(privateKey);
 ```
 

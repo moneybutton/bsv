@@ -1,8 +1,8 @@
 {
-  "name": "bitcore-message",
+  "name": "bsv-message",
   "version": "1.0.3",
-  "description": "Bitcoin Messages for Bitcore",
-  "author": "BitPay <dev@bitpay.com>",
+  "description": "Bitcoin Messages for BSV",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "lint": "gulp lint",
@@ -23,7 +23,7 @@
     "url": "https://github.com/bitpay/bitcore-message.git"
   },
   "dependencies": {
-    "bitcore-lib": "^0.13.7"
+    "bsv": "^0.20.3"
   },
   "devDependencies": {
     "bitcore-build": "bitpay/bitcore-build",
