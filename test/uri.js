@@ -72,7 +72,7 @@ describe('URI', function() {
     var uri;
 
     try {
-      uri = URI.parse('badprefix:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF');
+      uri = URI.parse('badcashAddrPrefix:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF');
     } catch (e) {
         expect(e.message).to.equal('Invalid bitcoin URI');
     }
