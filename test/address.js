@@ -121,7 +121,7 @@ describe('Address', function() {
     for (i = 0; i < t.length; i++) {
       var legacyaddr3 = t[i][0];
       var cashaddr3 = t[i][1].split(':')[1];
-      it('should convert no prefix addresses ' + cashaddr3, function() {
+      it('should convert no cashAddrPrefix addresses ' + cashaddr3, function() {
         var a = new Address(cashaddr3);
         a.toObject().network.should.equal('livenet');
         a.toLegacyAddress().should.equal(legacyaddr3);
@@ -134,17 +134,17 @@ describe('Address', function() {
     });
 
 
-    it('should be able to convert a testnet address to a cashaddr without prefix', function() {
+    it('should be able to convert a testnet address to a cashaddr without cashAddrPrefix', function() {
       var a = new Address('mysKEM9kN86Nkcqwb4gw7RqtDyc552LQoq');
       a.toCashAddress(false).should.equal('bchtest:qry5cr6h2qe25pzwwfrz8m653fh2tf6nusj9dl0ujc');
     });
 
-    it('should be able to convert a testnet address to a cashaddr with prefix', function() {
+    it('should be able to convert a testnet address to a cashaddr with cashAddrPrefix', function() {
       var a = new Address('mysKEM9kN86Nkcqwb4gw7RqtDyc552LQoq');
       a.toCashAddress().should.equal('bchtest:qry5cr6h2qe25pzwwfrz8m653fh2tf6nusj9dl0ujc');
     });
 
-    it('should fail convert no prefix addresses bad checksum ', function() {
+    it('should fail convert no cashAddrPrefix addresses bad checksum ', function() {
       (function() {
         var a = new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx7');
       }).should.throw('Invalid checksum');

@@ -110,24 +110,24 @@ describe('Networks', function() {
     expect(networks.get('livenet').name).to.equal('livenet');
   });
 
-  it('should have bchtest prefix', function() {
-    expect(networks.get('testnet').prefix).to.equal('bchtest');
+  it('should have bchtest cashAddrPrefix', function() {
+    expect(networks.get('testnet').cashAddrPrefix).to.equal('bchtest');
   });
 
-  it('should have bchreg prefix', function() {
-    expect(networks.get('regtest').prefix).to.equal('bchreg');
+  it('should have bchreg cashAddrPrefix', function() {
+    expect(networks.get('regtest').cashAddrPrefix).to.equal('bchreg');
   });
 
-  it('should have bchreg prefix after enableRegtest is called', function() {
+  it('should have bchreg cashAddrPrefix after enableRegtest is called', function() {
     var network = networks.get('testnet');
     networks.enableRegtest();
-    expect(network.prefix).to.equal('bchreg');
+    expect(network.cashAddrPrefix).to.equal('bchreg');
   });
 
-  it('should have bchtest prefix after disableRegtest is called', function() {
+  it('should have bchtest cashAddrPrefix after disableRegtest is called', function() {
     var network = networks.get('testnet');
     networks.disableRegtest();
-    expect(network.prefix).to.equal('bchtest');
+    expect(network.cashAddrPrefix).to.equal('bchtest');
   });
 
 
