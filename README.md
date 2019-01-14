@@ -1,5 +1,5 @@
-Bitcore Library
-=======
+bsvjs
+=====
 
 A pure and powerful JavaScript Bitcoin *SV* library.
 
