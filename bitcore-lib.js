@@ -5029,6 +5029,7 @@ var liveNetwork = {
 // network magic, port, cashAddrPrefix, and dnsSeeds are overloaded by enableRegtest
 var testNetwork = {
   name: 'testnet',
+  prefix: TESTNET.PREFIX,
   cashAddrPrefix: TESTNET.CASHADDRPREFIX,
   pubkeyhash: 0x6f,
   privatekey: 0xef,
@@ -5040,6 +5041,7 @@ var testNetwork = {
 
 var regtestNetwork = {
   name: 'regtest',
+  prefix: REGTEST.PREFIX,
   cashAddrPrefix: REGTEST.CASHADDRPREFIX,
   pubkeyhash: 0x6f,
   privatekey: 0xef,
@@ -55060,7 +55062,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":151}],217:[function(require,module,exports){
 module.exports={
   "name": "bsv",
-  "version": "0.20.3",
+  "version": "0.20.4",
   "description": "A pure and powerful JavaScript Bitcoin SV library.",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
@@ -55068,8 +55070,10 @@ module.exports={
     "lint": "gulp lint",
     "test": "gulp test",
     "coverage": "gulp coverage",
-    "build": "gulp"
+    "build": "gulp",
+    "wpbuild":"webpack index.js --output-library bsv -o bsv.min.js"
   },
+  "unpkg": "bsv.min.js",
   "keywords": [
     "bitcoin",
     "transaction",
