@@ -14,8 +14,9 @@ Bitcoin sv uses a different `sighash` for transaction signatures. The implementa
 
 An usage example of bsv can be seen at https://github.com/bitpay/copay-recovery
 
-
 ## Get Started
+
+**In node.js**
 
 ```
 npm install bsv
@@ -29,6 +30,12 @@ Adding Bitcore SV to your app's `package.json`:
          "bsv": "=0.18.0",
           ...
           }
+```
+
+**In browser**
+
+```html
+<script src='https://unpkg.com/bsv'></script>
 ```
 
 ## Documentation
@@ -65,6 +72,8 @@ Please send pull requests for bug fixes, code optimization, and ideas for improv
 
 ## Building the Browser Bundle
 
+**Build with Gulp**
+
 To build a bitcore-lib full bundle for the browser:
 
 ```sh
@@ -79,6 +88,13 @@ To verify signatures, use the following PGP keys:
 - @gabegattis: https://pgp.mit.edu/pks/lookup?op=get&search=0x441430987182732C `F3EA 8E28 29B4 EC93 88CB  B0AA 4414 3098 7182 732C`
 - @matiu: https://pgp.mit.edu/pks/lookup?op=get&search=0x9EDE6DE4DE531FAC `25CE ED88 A1B1 0CD1 12CD  4121 9EDE 6DE4 DE53 1FAC`
 
+**Build with Webpack**
+
+~~~
+npm run wpbuild
+~~~
+
+This will generate file named `bsv.min.js`.
 
 ## Development & Tests
 
