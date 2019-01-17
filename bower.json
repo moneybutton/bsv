@@ -1,6 +1,6 @@
 {
-  "name": "bitcore-lib",
-  "main": "./bitcore-lib.min.js",
+  "name": "bsv",
+  "main": "./bsv.min.js",
   "version": "0.16.3",
   "homepage": "http://bitcore.io",
   "authors": ["BitPay, Inc."],
