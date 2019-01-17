@@ -1,5 +1,5 @@
-bsvjs
-=====
+bsv
+===
 
 A pure and powerful JavaScript Bitcoin *SV* library.
 
