@@ -8,8 +8,8 @@
     "lint": "gulp lint",
     "test": "gulp test",
     "coverage": "gulp coverage",
-    "build": "gulp",
-    "wpbuild": "webpack index.js --output-library bsv -o bsv.min.js"
+    "gulpbuild": "gulp",
+    "build": "webpack index.js --output-library bsv -o bsv.min.js"
   },
   "unpkg": "bsv.min.js",
   "keywords": [
