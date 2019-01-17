@@ -9,7 +9,7 @@
     "test": "gulp test",
     "coverage": "gulp coverage",
     "build": "gulp",
-    "wpbuild":"webpack index.js --output-library bsv -o bsv.min.js"
+    "wpbuild": "webpack index.js --output-library bsv -o bsv.min.js"
   },
   "unpkg": "bsv.min.js",
   "keywords": [
@@ -41,7 +41,8 @@
     "buffer-compare": "=1.1.1",
     "elliptic": "6.4.1",
     "inherits": "2.0.3",
-    "lodash": "=4.17.11"
+    "lodash": "=4.17.11",
+    "webpack": "^4.28.4"
   },
   "devDependencies": {
     "bitcore-build": "https://github.com/bitpay/bitcore-build.git#d4e8b2b2f1e2c065c3a807dcb6a6250f61d67ab3",
@@ -49,7 +50,8 @@
     "chai": "1.10.0",
     "gulp": "^3.8.10",
     "phantomjs-prebuilt": "^2.1.16",
-    "sinon": "^1.13.0"
+    "sinon": "^1.13.0",
+    "webpack-cli": "^3.2.1"
   },
   "license": "MIT"
 }
