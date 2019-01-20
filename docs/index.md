@@ -1,4 +1,4 @@
-# Bitcore Cash v0.20.0
+# bsv v0.21.0
 
 ## Principles
 

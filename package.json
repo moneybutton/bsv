@@ -1,14 +1,11 @@
 {
   "name": "bsv",
-  "version": "0.20.4",
+  "version": "0.21.0",
   "description": "A pure and powerful JavaScript Bitcoin SV library.",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
   "scripts": {
-    "lint": "gulp lint",
-    "test": "gulp test",
-    "coverage": "gulp coverage",
-    "gulpbuild": "gulp",
+    "test": "mocha",
     "build": "webpack index.js --output-library bsv -o bsv.min.js"
   },
   "unpkg": "bsv.min.js",
@@ -45,11 +42,8 @@
     "webpack": "^4.28.4"
   },
   "devDependencies": {
-    "bitcore-build": "https://github.com/bitpay/bitcore-build.git#d4e8b2b2f1e2c065c3a807dcb6a6250f61d67ab3",
     "brfs": "2.0.1",
     "chai": "1.10.0",
-    "gulp": "^3.8.10",
-    "phantomjs-prebuilt": "^2.1.16",
     "sinon": "^1.13.0",
     "webpack-cli": "^3.2.1"
   },
