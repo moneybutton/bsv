@@ -196,6 +196,7 @@ describe('Transaction', function() {
       it('case ' + index, function() {
         var i = 0;
         var transaction = new Transaction();
+        transaction.feePerKb(100000);
         while (i < vector.length) {
           var command = vector[i];
           var args = vector[i + 1];
@@ -324,7 +325,8 @@ describe('Transaction', function() {
         .from(simpleUtxoWith1000000Satoshis)
         .to(toAddress, 500000)
         .change(changeAddress)
-        .sign(privateKey);
+        .sign(privateKey)
+        .feePerKb(100000);
 
       transaction.outputs.length.should.equal(2);
       transaction.outputs[1].satoshis.should.equal(400000);
@@ -927,7 +929,8 @@ describe('Transaction', function() {
     it('returns correct values for simple transaction', function() {
       var transaction = new Transaction()
         .from(simpleUtxoWith1BTC)
-        .to(toAddress, 40000000);
+        .to(toAddress, 40000000)
+        .feePerKb(100000);
       transaction.inputAmount.should.equal(100000000);
       transaction.outputAmount.should.equal(40000000);
     });
@@ -935,13 +938,15 @@ describe('Transaction', function() {
       var transaction = new Transaction()
         .from(simpleUtxoWith1BTC)
         .change(changeAddress)
-        .to(toAddress, 1000);
+        .to(toAddress, 1000)
+        .feePerKb(100000);
       transaction.inputAmount.should.equal(100000000);
       transaction.outputAmount.should.equal(99900000);
     });
     it('returns correct values for coinjoin transaction', function() {
       // see livenet tx c16467eea05f1f30d50ed6dbc06a38539d9bb15110e4b7dc6653046a3678a718
-      var transaction = new Transaction(txCoinJoinHex);
+      var transaction = new Transaction(txCoinJoinHex)
+        .feePerKb(100000);
       transaction.outputAmount.should.equal(4191290961);
       expect(function() {
         var ia = transaction.inputAmount;
@@ -1028,7 +1033,8 @@ describe('Transaction', function() {
           address: toAddress,
           satoshis: half
         }])
-        .change(changeAddress);
+        .change(changeAddress)
+        .feePerKb(100000);
       tx.clearOutputs();
       tx.outputs.length.should.equal(1);
       tx.to(toAddress, tenth);
