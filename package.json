@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "prepublish": "yarn build",
     "build": "webpack index.js --output-library bsv -o bsv.min.js"
   },
   "unpkg": "bsv.min.js",
