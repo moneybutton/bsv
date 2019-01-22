@@ -39,6 +39,7 @@
     "elliptic": "6.4.1",
     "inherits": "2.0.3",
     "lodash": "=4.17.11",
+    "mocha": "^5.2.0",
     "webpack": "^4.28.4"
   },
   "devDependencies": {
