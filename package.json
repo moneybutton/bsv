@@ -1,6 +1,6 @@
 {
   "name": "bsv-mnemonic",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "description": "BIP39 Mnemonics implemented for bsv (Bitcoin SV).",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
@@ -43,9 +43,9 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1",
     "bsv": "0.21.7",
-    "unorm": "^1.3.3"
+    "unorm": "^1.3.3",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
   }
 }
