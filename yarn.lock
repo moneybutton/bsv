@@ -1126,10 +1126,10 @@ bs58@=4.0.1:
   dependencies:
     base-x "^3.0.2"
 
-bsv@0.21.7:
-  version "0.21.7"
-  resolved "https://registry.yarnpkg.com/bsv/-/bsv-0.21.7.tgz#0fbd8f89f477037f69b314eb88deac883ff7fc37"
-  integrity sha512-HGvmxZZp6xjOkRnR0PVhicxXEAfY8DI03uPfUVE1dUvQODAeya2s9ksn99T/8RnK3TSOHPpG9A+3vpD3976RMQ==
+bsv@0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/bsv/-/bsv-0.22.0.tgz#5acd0564acdd421c546d2e4b2bd08f65617309ce"
+  integrity sha512-QJ44wg+vGfO1ea9cWGcXY8xAAZpzWBqEdouaAWA1JGRGgxc3Zmd4o6dv/zZIfXRA29BBHGUw0BtuE1b/QpQUJg==
   dependencies:
     bn.js "=4.11.8"
     bs58 "=4.0.1"
