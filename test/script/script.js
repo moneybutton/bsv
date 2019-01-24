@@ -809,11 +809,41 @@ describe('Script', function() {
       s.toString().should.equal('OP_RETURN 9 0xbacacafe0102030405');
       s.isDataOut().should.equal(true);
     });
+    it('should create script from array of some data', function() {
+      var data = new Buffer('bacacafe0102030405', 'hex');
+      var s = Script.buildDataOut([data, data]);
+      should.exist(s);
+      s.toString().should.equal('OP_RETURN 9 0xbacacafe0102030405 9 0xbacacafe0102030405');
+      s.isDataOut().should.equal(true);
+    });
+    it('should create script from array of some datas', function() {
+      var data1 = Buffer.from('moneybutton.com');
+      var data2 = Buffer.from('hello'.repeat(100));
+      var s = Script.buildDataOut([data1, data2]);
+      should.exist(s);
+      s.toString().should.equal('OP_RETURN 15 0x6d6f6e6579627574746f6e2e636f6d OP_PUSHDATA2 500 0x68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f');
+      s.isDataOut().should.equal(true);
+    });
+    it('should create script from array of lots of data', function() {
+      var data1 = Buffer.from('moneybutton.com');
+      var data2 = Buffer.from('00'.repeat(90000), 'hex');
+      var s = Script.buildDataOut([data1, data2]);
+      should.exist(s);
+      s.toString().should.equal('OP_RETURN 15 0x6d6f6e6579627574746f6e2e636f6d OP_PUSHDATA4 90000 0x' + '00'.repeat(90000));
+      s.isDataOut().should.equal(true);
+    });
     it('should create script from string', function() {
       var data = 'hello world!!!';
       var s = Script.buildDataOut(data);
       should.exist(s);
       s.toString().should.equal('OP_RETURN 14 0x68656c6c6f20776f726c64212121');
+      s.isDataOut().should.equal(true);
+    });
+    it('should create script from an array of strings', function() {
+      var data = 'hello world!!!';
+      var s = Script.buildDataOut([data, data]);
+      should.exist(s);
+      s.toString().should.equal('OP_RETURN 14 0x68656c6c6f20776f726c64212121 14 0x68656c6c6f20776f726c64212121');
       s.isDataOut().should.equal(true);
     });
     it('should create script from a hex string', function() {
@@ -822,7 +852,21 @@ describe('Script', function() {
       should.exist(s);
       s.toString().should.equal('OP_RETURN 8 0xabcdef0123456789');
       s.isDataOut().should.equal(true);
-     });
+    });
+    it('should create script from an array of a hex string', function() {
+       var hexString = 'abcdef0123456789';
+       var s = Script.buildDataOut([hexString], 'hex');
+       should.exist(s);
+       s.toString().should.equal('OP_RETURN 8 0xabcdef0123456789');
+       s.isDataOut().should.equal(true);
+    });
+    it('should create script from an array of hex strings', function() {
+      var hexString = 'abcdef0123456789';
+      var s = Script.buildDataOut([hexString, hexString], 'hex');
+      should.exist(s);
+      s.toString().should.equal('OP_RETURN 8 0xabcdef0123456789 8 0xabcdef0123456789');
+      s.isDataOut().should.equal(true);
+    });
   });
   describe('#buildScriptHashOut', function() {
     it('should create script from another script', function() {
