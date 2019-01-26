@@ -1,12 +1,12 @@
 {
   "name": "bsv",
   "version": "0.22.0",
-  "description": "A pure and powerful JavaScript Bitcoin SV library.",
+  "description": "A pure and powerful JavaScript Bitcoin SV (BSV) library.",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "mocha",
+    "test": "standard && mocha",
     "prepublish": "yarn build",
     "build": "webpack index.js --output-library bsv -o bsv.min.js"
   },

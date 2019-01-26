@@ -31,7 +31,6 @@ async.series([
     }
 
     var c = 0
-    var bn
 
     function readUInt64LEBN () {
       if (c >= buffers.length) {
@@ -39,11 +38,9 @@ async.series([
       }
       var buf = buffers[c]
       var br = new bitcore.encoding.BufferReader(buf)
-      bn = br.readUInt64LEBN()
+      br.readUInt64LEBN()
       c++
     }
-
-    var reversed
 
     function readReverse () {
       if (c >= hashBuffers.length) {
@@ -51,7 +48,7 @@ async.series([
       }
       var buf = hashBuffers[c]
       var br = new bitcore.encoding.BufferReader(buf)
-      reversed = br.readReverse()
+      br.readReverse()
       c++
     }
 
@@ -72,24 +69,20 @@ async.series([
       .run()
   },
   function (next) {
-    var block1
-    var block2
-    var block3
-
     function bitcoreTest () {
-      block1 = bitcore.Block.fromString(blockData)
+      bitcore.Block.fromString(blockData)
     }
 
     function bitcoinJSTest () {
-      block2 = bitcoinjs.Block.fromHex(blockData)
+      bitcoinjs.Block.fromHex(blockData)
     }
 
-    var parser = new bcoin.protocol.parser()
+    var parser = new bcoin.protocol.parser() //eslint-disable-line
 
     function bcoinTest () {
       var raw = bcoin.utils.toArray(blockData, 'hex')
       var data = parser.parseBlock(raw)
-      block3 = new bcoin.block(data, 'block')
+      new bcoin.block(data, 'block') //eslint-disable-line
     }
 
     var blockDataMessage = '0000000000000000' + blockData // add mock leading magic and size
@@ -114,6 +107,6 @@ async.series([
       })
       .run()
   }
-], function (err) {
+], function (err) { //eslint-disable-line
   console.log('Finished')
 })

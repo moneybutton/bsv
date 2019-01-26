@@ -1,9 +1,7 @@
 'use strict'
 /* jshint unused: false */
 
-var should = require('chai').should()
-var expect = require('chai').expect
-var _ = require('lodash')
+require('chai').should()
 
 var bitcore = require('../../..')
 var Transaction = bitcore.Transaction
@@ -11,7 +9,6 @@ var PrivateKey = bitcore.PrivateKey
 var Address = bitcore.Address
 var Script = bitcore.Script
 var Networks = bitcore.Networks
-var Signature = bitcore.crypto.Signature
 
 describe('PublicKeyHashInput', function () {
   var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')
