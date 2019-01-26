@@ -3,8 +3,6 @@
 /* jshint unused: false */
 /* jshint latedef: false */
 var should = require('chai').should()
-var expect = require('chai').expect
-var _ = require('lodash')
 
 var bitcore = require('../..')
 var BN = bitcore.crypto.BN
@@ -12,8 +10,6 @@ var BufferWriter = bitcore.encoding.BufferWriter
 var BufferReader = bitcore.encoding.BufferReader
 var Output = bitcore.Transaction.Output
 var Script = bitcore.Script
-
-var errors = bitcore.errors
 
 describe('Output', function () {
   var output = new Output({
@@ -23,7 +19,7 @@ describe('Output', function () {
 
   it('throws error with unrecognized argument', function () {
     (function () {
-      var out = new Output(12345)
+      new Output(12345) //eslint-disable-line
     }.should.throw(TypeError))
   })
 
@@ -46,7 +42,7 @@ describe('Output', function () {
   describe('will error if output is not a positive integer', function () {
     it('-100', function () {
       (function () {
-        var newOutput = new Output({
+        new Output({ //eslint-disable-line
           satoshis: -100,
           script: Script.empty()
         })
@@ -55,7 +51,7 @@ describe('Output', function () {
 
     it('1.1', function () {
       (function () {
-        var newOutput = new Output({
+        new Output({ //eslint-disable-line
           satoshis: 1.1,
           script: Script.empty()
         })
@@ -64,7 +60,7 @@ describe('Output', function () {
 
     it('NaN', function () {
       (function () {
-        var newOutput = new Output({
+        new Output({ //eslint-disable-line
           satoshis: NaN,
           script: Script.empty()
         })
@@ -73,7 +69,7 @@ describe('Output', function () {
 
     it('Infinity', function () {
       (function () {
-        var newOutput = new Output({
+        new Output({ //eslint-disable-line
           satoshis: Infinity,
           script: Script.empty()
         })

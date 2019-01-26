@@ -724,14 +724,14 @@ describe('Script', function () {
       u.toString().should.equal('OP_2 33 0x022df8750480ad5b26950b25c7ba79d3e37d75f640f8e5d9bcd5b150a0f85014da 33 0x03e3818b65bcc73a7d64064106a859cc1a5a728c4345ff0b641209fba0d90de6e9 33 0x021f2f6e1e50cb6a953935c3601284925decd3fd21bc445712576873fb8c6ebc18 OP_3 OP_CHECKMULTISIG')
       s.isMultisigOut().should.equal(true)
     })
-    var test_mn = function (m, n) {
+    var testMn = function (m, n) {
       var pubkeys = pubKeyHexes.slice(0, n).map(PublicKey)
       var s = Script.buildMultisigOut(pubkeys, m)
       s.isMultisigOut().should.equal(true)
     }
     for (var n = 1; n < 6; n++) {
       for (var m = 1; m <= n; m++) {
-        it('should create ' + m + '-of-' + n, test_mn.bind(null, m, n))
+        it('should create ' + m + '-of-' + n, testMn.bind(null, m, n))
       }
     }
   })
@@ -861,7 +861,7 @@ describe('Script', function () {
     })
 
     it('inherits network property from other script', function () {
-      var s1 = new Script.fromAddress(new Address('1FSMWkjVPAxzUNjbxT52p3mVKC971rfW3S'))
+      var s1 = Script.fromAddress(new Address('1FSMWkjVPAxzUNjbxT52p3mVKC971rfW3S'))
       var s2 = Script.buildScriptHashOut(s1)
       should.exist(s1._network)
       s1._network.should.equal(s2._network)

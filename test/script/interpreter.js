@@ -206,11 +206,6 @@ describe('Interpreter', function () {
     return flags
   }
 
-  var testToFromString = function (script) {
-    var s = script.toString()
-    Script.fromString(s).toString().should.equal(s)
-  }
-
   var testFixture = function (vector, expected, extraData) {
     var scriptSig = Script.fromBitcoindString(vector[0])
     var scriptPubkey = Script.fromBitcoindString(vector[1])
@@ -266,7 +261,7 @@ describe('Interpreter', function () {
         }
 
         var fullScriptString = vector[0] + ' ' + vector[1]
-        var expected = vector[3] == 'OK'
+        var expected = vector[3] === 'OK'
         var descstr = vector[4]
         var comment = descstr ? (' (' + descstr + ')') : ''
         var txt = 'should ' + vector[3] + ' script_tests ' +
@@ -278,7 +273,7 @@ describe('Interpreter', function () {
     testAllFixtures(scriptTests)
   })
   describe('bitcoind transaction evaluation fixtures', function () {
-    var test_txs = function (set, expected) {
+    var testTxs = function (set, expected) {
       var c = 0
       set.forEach(function (vector) {
         if (vector.length === 1) {
@@ -327,7 +322,7 @@ describe('Interpreter', function () {
         })
       })
     }
-    test_txs(txValid, true)
-    test_txs(txInvalid, false)
+    testTxs(txValid, true)
+    testTxs(txInvalid, false)
   })
 })

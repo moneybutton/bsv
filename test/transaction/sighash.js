@@ -3,7 +3,7 @@
 var buffer = require('buffer')
 
 var chai = require('chai')
-var should = chai.should()
+chai.should()
 var bitcore = require('../../')
 var Script = bitcore.Script
 var BN = bitcore.crypto.BN
@@ -11,7 +11,7 @@ var Transaction = bitcore.Transaction
 var Signature = bitcore.crypto.Signature
 var sighash = Transaction.sighash
 
-var vectors_sighash = require('../data/sighash.json')
+var vectorsSighash = require('../data/sighash.json')
 
 describe('sighash', function () {
   it('should be able to compute sighash for a coinbase tx', function () {
@@ -46,7 +46,7 @@ describe('sighash', function () {
   })
 
   var zeroBN = BN.Zero
-  vectors_sighash.forEach(function (vector, i) {
+  vectorsSighash.forEach(function (vector, i) {
     if (i === 0 || !vector[4]) {
       // First element is just a row describing the next ones
       return

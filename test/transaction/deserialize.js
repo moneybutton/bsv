@@ -2,13 +2,13 @@
 
 var Transaction = require('../../lib/transaction')
 
-var vectors_valid = require('../data/bitcoind/tx_valid.json')
-var vectors_invalid = require('../data/bitcoind/tx_invalid.json')
+var vectorsValid = require('../data/bitcoind/tx_valid.json')
+var vectorsInvalid = require('../data/bitcoind/tx_invalid.json')
 
 describe('Transaction deserialization', function () {
   describe('valid transaction test case', function () {
     var index = 0
-    vectors_valid.forEach(function (vector) {
+    vectorsValid.forEach(function (vector) {
       it('vector #' + index, function () {
         if (vector.length > 1) {
           var hexa = vector[1]
@@ -20,7 +20,7 @@ describe('Transaction deserialization', function () {
   })
   describe('invalid transaction test case', function () {
     var index = 0
-    vectors_invalid.forEach(function (vector) {
+    vectorsInvalid.forEach(function (vector) {
       it('invalid vector #' + index, function () {
         if (vector.length > 1) {
           var hexa = vector[1]

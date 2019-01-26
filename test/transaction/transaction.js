@@ -15,7 +15,6 @@ var Output = bitcore.Transaction.Output
 var PrivateKey = bitcore.PrivateKey
 var Script = bitcore.Script
 var Address = bitcore.Address
-var Networks = bitcore.Networks
 var Opcode = bitcore.Opcode
 var errors = bitcore.errors
 
@@ -36,8 +35,8 @@ describe('Transaction', function () {
   })
 
   it('should serialize and deserialize correctly a given transaction', function () {
-    var transaction = new Transaction(tx_1_hex)
-    transaction.uncheckedSerialize().should.equal(tx_1_hex)
+    var transaction = new Transaction(tx1hex)
+    transaction.uncheckedSerialize().should.equal(tx1hex)
   })
 
   it('should parse the version as a signed integer', function () {
@@ -76,7 +75,7 @@ describe('Transaction', function () {
 
   it('will not accept NaN as an amount', function () {
     (function () {
-      var stringTx = new Transaction().to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', NaN)
+      new Transaction().to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', NaN) //eslint-disable-line
     }).should.throw('Amount is expected to be a positive integer')
   })
 
@@ -162,29 +161,29 @@ describe('Transaction', function () {
   })
 
   it('constructor returns a shallow copy of another transaction', function () {
-    var transaction = new Transaction(tx_1_hex)
+    var transaction = new Transaction(tx1hex)
     var copy = new Transaction(transaction)
     copy.uncheckedSerialize().should.equal(transaction.uncheckedSerialize())
   })
 
   it('should display correctly in console', function () {
-    var transaction = new Transaction(tx_1_hex)
-    transaction.inspect().should.equal('<Transaction: ' + tx_1_hex + '>')
+    var transaction = new Transaction(tx1hex)
+    transaction.inspect().should.equal('<Transaction: ' + tx1hex + '>')
   })
 
   it('standard hash of transaction should be decoded correctly', function () {
-    var transaction = new Transaction(tx_1_hex)
-    transaction.id.should.equal(tx_1_id)
+    var transaction = new Transaction(tx1hex)
+    transaction.id.should.equal(tx1id)
   })
 
   it('serializes an empty transaction', function () {
     var transaction = new Transaction()
-    transaction.uncheckedSerialize().should.equal(tx_empty_hex)
+    transaction.uncheckedSerialize().should.equal(txEmptyHex)
   })
 
   it('serializes and deserializes correctly', function () {
-    var transaction = new Transaction(tx_1_hex)
-    transaction.uncheckedSerialize().should.equal(tx_1_hex)
+    var transaction = new Transaction(tx1hex)
+    transaction.uncheckedSerialize().should.equal(tx1hex)
   })
 
   describe('transaction creation test vector', function () {
@@ -292,13 +291,13 @@ describe('Transaction', function () {
         transaction.isFullySigned().should.equal(true)
       })
       it('fails when Inputs are not subclassed and isFullySigned is called', function () {
-        var tx = new Transaction(tx_1_hex)
+        var tx = new Transaction(tx1hex)
         expect(function () {
           return tx.isFullySigned()
         }).to.throw(errors.Transaction.UnableToVerifySignature)
       })
       it('fails when Inputs are not subclassed and verifySignature is called', function () {
-        var tx = new Transaction(tx_1_hex)
+        var tx = new Transaction(tx1hex)
         expect(function () {
           return tx.isValidSignature({
             inputIndex: 0
@@ -306,7 +305,7 @@ describe('Transaction', function () {
         }).to.throw(errors.Transaction.UnableToVerifySignature)
       })
       it('passes result of input.isValidSignature', function () {
-        var tx = new Transaction(tx_1_hex)
+        var tx = new Transaction(tx1hex)
         tx.from(simpleUtxoWith1BTC)
         tx.inputs[0].isValidSignature = sinon.stub().returns(true)
         var sig = {
@@ -876,9 +875,9 @@ describe('Transaction', function () {
       var transaction = new Transaction()
         .from(simpleUtxoWith1BTC)
         .lockUntilDate(date)
-      var serialized_tx = transaction.uncheckedSerialize()
-      var copy = new Transaction(serialized_tx)
-      serialized_tx.should.equal(copy.uncheckedSerialize())
+      var serializedTx = transaction.uncheckedSerialize()
+      var copy = new Transaction(serializedTx)
+      serializedTx.should.equal(copy.uncheckedSerialize())
       copy.inputs[0].sequenceNumber
         .should.equal(Transaction.Input.DEFAULT_LOCKTIME_SEQNUMBER)
     })
@@ -886,9 +885,9 @@ describe('Transaction', function () {
       var transaction = new Transaction()
         .from(simpleUtxoWith1BTC)
         .lockUntilBlockHeight(blockHeight)
-      var serialized_tx = transaction.uncheckedSerialize()
-      var copy = new Transaction(serialized_tx)
-      serialized_tx.should.equal(copy.uncheckedSerialize())
+      var serializedTx = transaction.uncheckedSerialize()
+      var copy = new Transaction(serializedTx)
+      serializedTx.should.equal(copy.uncheckedSerialize())
       copy.inputs[0].sequenceNumber
         .should.equal(Transaction.Input.DEFAULT_LOCKTIME_SEQNUMBER)
     })
@@ -908,11 +907,11 @@ describe('Transaction', function () {
   })
 
   it('will error if object hash does not match transaction hash', function () {
-    var tx = new Transaction(tx_1_hex)
+    var tx = new Transaction(tx1hex)
     var txObj = tx.toObject()
     txObj.hash = 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458';
     (function () {
-      var tx2 = new Transaction(txObj)
+      new Transaction(txObj) //eslint-disable-line
     }).should.throw('Hash in object does not match transaction hash')
   })
 
@@ -940,7 +939,7 @@ describe('Transaction', function () {
         .feePerKb(100000)
       transaction.outputAmount.should.equal(4191290961)
       expect(function () {
-        var ia = transaction.inputAmount
+        var ia = transaction.inputAmount //eslint-disable-line
       }).to.throw('No previous output information')
     })
   })
@@ -1003,7 +1002,7 @@ describe('Transaction', function () {
 
     it('shuffle without change', function () {
       var tx = new Transaction(transaction.toObject()).to(toAddress, half)
-      expect(tx.getChangeOutput()).to.be.null
+      expect(tx.getChangeOutput()).to.be.null //eslint-disable-line
       expect(function () {
         tx.shuffleOutputs()
       }).to.not.throw(errors.Transaction.InvalidSorting)
@@ -1105,7 +1104,7 @@ describe('Transaction', function () {
         it(inputSet.description, function () {
           var tx = new Transaction()
           inputSet.inputs = inputSet.inputs.map(function (input) {
-            var input = new Input({
+            input = new Input({
               prevTxId: input.txId,
               outputIndex: input.vout,
               script: new Script(),
@@ -1140,11 +1139,11 @@ describe('Transaction', function () {
   })
 })
 
-var tx_empty_hex = '01000000000000000000'
+var txEmptyHex = '01000000000000000000'
 
 /* jshint maxlen: 1000 */
-var tx_1_hex = '01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006a473044022013fa3089327b50263029265572ae1b022a91d10ac80eb4f32f291c914533670b02200d8a5ed5f62634a7e1a0dc9188a3cc460a986267ae4d58faf50c79105431327501210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff0150690f00000000001976a9147821c0a3768aa9d1a37e16cf76002aef5373f1a888ac00000000'
-var tx_1_id = '779a3e5b3c2c452c85333d8521f804c1a52800e60f4b7c3bbe36f4bab350b72c'
+var tx1hex = '01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006a473044022013fa3089327b50263029265572ae1b022a91d10ac80eb4f32f291c914533670b02200d8a5ed5f62634a7e1a0dc9188a3cc460a986267ae4d58faf50c79105431327501210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff0150690f00000000001976a9147821c0a3768aa9d1a37e16cf76002aef5373f1a888ac00000000'
+var tx1id = '779a3e5b3c2c452c85333d8521f804c1a52800e60f4b7c3bbe36f4bab350b72c'
 
 var tx2hex = '0100000001e07d8090f4d4e6fcba6a2819e805805517eb19e669e9d2f856b41d4277953d640000000091004730440220248bc60bb309dd0215fbde830b6371e3fdc55685d11daa9a3c43828892e26ce202205f10cd4011f3a43657260a211f6c4d1fa81b6b6bdd6577263ed097cc22f4e5b50147522102fa38420cec94843ba963684b771ba3ca7ce1728dc2c7e7cade0bf298324d6b942103f948a83c20b2e7228ca9f3b71a96c2f079d9c32164cd07f08fbfdb483427d2ee52aeffffffff01180fe200000000001976a914ccee7ce8e8b91ec0bc23e1cfb6324461429e6b0488ac00000000'
 

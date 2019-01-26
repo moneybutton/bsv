@@ -1,7 +1,7 @@
 'use strict'
 /* jshint unused: false */
 
-var should = require('chai').should()
+require('chai').should()
 var expect = require('chai').expect
 
 var bitcore = require('../..')
