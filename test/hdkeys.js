@@ -21,13 +21,13 @@ var HDPublicKey = bitcore.HDPublicKey
 
 describe('HDKeys building with static methods', function () {
   var classes = [HDPublicKey, HDPrivateKey]
-  var clazz, index
+  var Clazz, index
 
-  _.each(classes, function (clazz) {
+  _.each(classes, function (Clazz) {
     var expectStaticMethodFail = function (staticMethod, argument, message) {
-      expect(clazz[staticMethod].bind(null, argument)).to.throw(message)
+      expect(Clazz[staticMethod].bind(null, argument)).to.throw(message)
     }
-    it(clazz.name + ' fromJSON checks that a valid JSON is provided', function () {
+    it(Clazz.name + ' fromJSON checks that a valid JSON is provided', function () {
       var errorMessage = 'Invalid Argument: No valid argument was provided'
       var method = 'fromObject'
       expectStaticMethodFail(method, undefined, errorMessage)
@@ -35,14 +35,14 @@ describe('HDKeys building with static methods', function () {
       expectStaticMethodFail(method, 'invalid JSON', errorMessage)
       expectStaticMethodFail(method, '{\'singlequotes\': true}', errorMessage)
     })
-    it(clazz.name + ' fromString checks that a string is provided', function () {
+    it(Clazz.name + ' fromString checks that a string is provided', function () {
       var errorMessage = 'No valid string was provided'
       var method = 'fromString'
       expectStaticMethodFail(method, undefined, errorMessage)
       expectStaticMethodFail(method, null, errorMessage)
       expectStaticMethodFail(method, {}, errorMessage)
     })
-    it(clazz.name + ' fromObject checks that an object is provided', function () {
+    it(Clazz.name + ' fromObject checks that an object is provided', function () {
       var errorMessage = 'No valid argument was provided'
       var method = 'fromObject'
       expectStaticMethodFail(method, undefined, errorMessage)
