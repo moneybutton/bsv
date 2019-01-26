@@ -5,7 +5,7 @@ var should = chai.should()
 
 var Mnemonic = require('..')
 var errors = require('bsv').errors
-var bip39_vectors = require('./data/fixtures.json')
+var bip39vectors = require('./data/fixtures.json')
 
 describe('Mnemonic', function () {
   this.timeout(30000)
@@ -163,7 +163,7 @@ describe('Mnemonic', function () {
 
     it('Mnemonic.fromSeed should fail with invalid wordlist', function () {
       (function () {
-        return Mnemonic.fromSeed(new Buffer(1))
+        return Mnemonic.fromSeed(Buffer.alloc(1))
       }).should.throw(errors.InvalidArgument)
     })
 
@@ -175,29 +175,29 @@ describe('Mnemonic', function () {
 
     it('Constructor should fail with invalid seed', function () {
       (function () {
-        return new Mnemonic(new Buffer(1))
+        return new Mnemonic(Buffer.alloc(1))
       }).should.throw(errors.InvalidEntropy)
     })
 
     // To add new vectors for different languages:
     // 1. Add and implement the wordlist so it appears in Mnemonic.Words
     // 2. Add the vectors and make sure the key is lowercase of the key for Mnemonic.Words
-    var vector_wordlists = {}
+    var vectorwordlists = {}
 
     for (var key in Mnemonic.Words) {
       if (Mnemonic.Words.hasOwnProperty(key)) {
-        vector_wordlists[key.toLowerCase()] = Mnemonic.Words[key]
+        vectorwordlists[key.toLowerCase()] = Mnemonic.Words[key]
       }
     }
 
-    var test_vector = function (v, lang) {
+    var testvector = function (v, lang) {
       it('should pass test vector for ' + lang + ' #' + v, function () {
-        var wordlist = vector_wordlists[lang]
-        var vector = bip39_vectors[lang][v]
+        var wordlist = vectorwordlists[lang]
+        var vector = bip39vectors[lang][v]
         var code = vector[1]
         var mnemonic = vector[2]
         var seed = vector[3]
-        var mnemonic1 = Mnemonic.fromSeed(new Buffer(code, 'hex'), wordlist).phrase
+        var mnemonic1 = Mnemonic.fromSeed(Buffer.from(code, 'hex'), wordlist).phrase
         mnemonic1.should.equal(mnemonic)
 
         var m = new Mnemonic(mnemonic)
@@ -208,10 +208,10 @@ describe('Mnemonic', function () {
       })
     }
 
-    for (var key in bip39_vectors) {
-      if (bip39_vectors.hasOwnProperty(key)) {
-        for (var v = 0; v < bip39_vectors[key].length; v++) {
-          test_vector(v, key)
+    for (let key in bip39vectors) {
+      if (bip39vectors.hasOwnProperty(key)) {
+        for (var v = 0; v < bip39vectors[key].length; v++) {
+          testvector(v, key)
         }
       }
     }
