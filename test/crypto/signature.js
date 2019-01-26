@@ -47,7 +47,7 @@ describe('Signature', function () {
 
   describe('#fromCompact', function () {
     it('should create a signature from a compressed signature', function () {
-      var blank = new Buffer(32)
+      var blank = Buffer.alloc(32)
       blank.fill(0)
       var compressed = Buffer.concat([
         Buffer.from([0 + 27 + 4]),

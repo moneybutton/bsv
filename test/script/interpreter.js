@@ -220,7 +220,7 @@ describe('Interpreter', function () {
       inputAmount = extraData[0] * 1e8
     }
 
-    var hashbuf = new Buffer(32)
+    var hashbuf = Buffer.alloc(32)
     hashbuf.fill(0)
     var credtx = new Transaction()
     credtx.uncheckedAddInput(new Transaction.Input({

@@ -43,7 +43,7 @@ describe('buffer utils', function () {
       }).to.throw(errors.InvalidArgumentType)
     })
     it('works correctly for a small buffer', function () {
-      var buffer = BufferUtil.fill(new Buffer(10), 6)
+      var buffer = BufferUtil.fill(Buffer.alloc(10), 6)
       for (var i = 0; i < 10; i++) {
         buffer[i].should.equal(6)
       }
@@ -55,7 +55,7 @@ describe('buffer utils', function () {
       expect(BufferUtil.isBuffer(1)).to.equal(false)
     })
     it('has no false negative', function () {
-      expect(BufferUtil.isBuffer(new Buffer(0))).to.equal(true)
+      expect(BufferUtil.isBuffer(Buffer.alloc(0))).to.equal(true)
     })
   })
 

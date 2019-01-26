@@ -12,7 +12,7 @@ describe('Hash', function () {
     it('calculates the hash of this buffer correctly', function () {
       var hash = Hash.sha1(buf)
       hash.toString('hex').should.equal('de69b8a4a5604d0486e6420db81e39eb464a17b2')
-      hash = Hash.sha1(new Buffer(0))
+      hash = Hash.sha1(Buffer.alloc(0))
       hash.toString('hex').should.equal('da39a3ee5e6b4b0d3255bfef95601890afd80709')
     })
 
