@@ -63,14 +63,14 @@ describe('Script', function () {
     })
 
     it('should parse this buffer containing three bytes of data', function () {
-      var buf = new Buffer([3, 1, 2, 3])
+      var buf = Buffer.from([3, 1, 2, 3])
       var script = Script.fromBuffer(buf)
       script.chunks.length.should.equal(1)
       script.chunks[0].buf.toString('hex').should.equal('010203')
     })
 
     it('should parse this buffer containing OP_PUSHDATA1 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA1
       buf.writeUInt8(3, 1)
       var script = Script.fromBuffer(buf)
@@ -79,7 +79,7 @@ describe('Script', function () {
     })
 
     it('should parse this buffer containing OP_PUSHDATA2 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA2
       buf.writeUInt16LE(3, 1)
       var script = Script.fromBuffer(buf)
@@ -88,7 +88,7 @@ describe('Script', function () {
     })
 
     it('should parse this buffer containing OP_PUSHDATA4 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 0, 0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA4
       buf.writeUInt16LE(3, 1)
       var script = Script.fromBuffer(buf)
@@ -97,7 +97,7 @@ describe('Script', function () {
     })
 
     it('should parse this buffer an OP code, data, and another OP code', function () {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
+      var buf = Buffer.from([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
       buf[0] = Opcode.OP_0
       buf[1] = Opcode.OP_PUSHDATA4
       buf.writeUInt16LE(3, 2)
@@ -130,7 +130,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer containing three bytes of data', function () {
-      var buf = new Buffer([3, 1, 2, 3])
+      var buf = Buffer.from([3, 1, 2, 3])
       var script = Script.fromBuffer(buf)
       script.chunks.length.should.equal(1)
       script.chunks[0].buf.toString('hex').should.equal('010203')
@@ -138,7 +138,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer containing OP_PUSHDATA1 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA1
       buf.writeUInt8(3, 1)
       var script = Script.fromBuffer(buf)
@@ -148,7 +148,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer containing OP_PUSHDATA2 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA2
       buf.writeUInt16LE(3, 1)
       var script = Script.fromBuffer(buf)
@@ -158,7 +158,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer containing OP_PUSHDATA4 and three bytes of data', function () {
-      var buf = new Buffer([0, 0, 0, 0, 0, 1, 2, 3])
+      var buf = Buffer.from([0, 0, 0, 0, 0, 1, 2, 3])
       buf[0] = Opcode.OP_PUSHDATA4
       buf.writeUInt16LE(3, 1)
       var script = Script.fromBuffer(buf)
@@ -168,7 +168,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer an OP code, data, and another OP code', function () {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
+      var buf = Buffer.from([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
       buf[0] = Opcode.OP_0
       buf[1] = Opcode.OP_PUSHDATA4
       buf.writeUInt16LE(3, 2)
@@ -241,7 +241,7 @@ describe('Script', function () {
     })
 
     it('should output this buffer an OP code, data, and another OP code', function () {
-      var buf = new Buffer([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
+      var buf = Buffer.from([0, 0, 0, 0, 0, 0, 1, 2, 3, 0])
       buf[0] = Opcode.OP_0
       buf[1] = Opcode.OP_PUSHDATA4
       buf.writeUInt16LE(3, 2)
@@ -274,7 +274,7 @@ describe('Script', function () {
 
   describe('toHex', function () {
     it('should return an hexa string "03010203" as expected from [3, 1, 2, 3]', function () {
-      var buf = new Buffer([3, 1, 2, 3])
+      var buf = Buffer.from([3, 1, 2, 3])
       var script = Script.fromBuffer(buf)
       script.toHex().should.equal('03010203')
     })
@@ -336,7 +336,7 @@ describe('Script', function () {
     it('correctly identify scriptSig as a public key in', function () {
       // from txid: 5c85ed63469aa9971b5d01063dbb8bcdafd412b2f51a3d24abf2e310c028bbf8
       // and input index: 5
-      var scriptBuffer = new Buffer('483045022050eb59c79435c051f45003d9f82865c8e4df5699d7722e77113ef8cadbd92109022100d4ab233e070070eb8e0e62e3d2d2eb9474a5bf135c9eda32755acb0875a6c20601', 'hex')
+      var scriptBuffer = Buffer.from('483045022050eb59c79435c051f45003d9f82865c8e4df5699d7722e77113ef8cadbd92109022100d4ab233e070070eb8e0e62e3d2d2eb9474a5bf135c9eda32755acb0875a6c20601', 'hex')
       var script = bitcore.Script.fromBuffer(scriptBuffer)
       script.isPublicKeyIn().should.equal(true)
     })
@@ -663,7 +663,7 @@ describe('Script', function () {
     })
 
     it('should work for no data OP_RETURN', function () {
-      Script().add(Opcode.OP_RETURN).add(new Buffer('')).toString().should.equal('OP_RETURN')
+      Script().add(Opcode.OP_RETURN).add(Buffer.from('')).toString().should.equal('OP_RETURN')
     })
     it('works with objects', function () {
       Script().add({
@@ -779,21 +779,21 @@ describe('Script', function () {
       s.isDataOut().should.equal(true)
     })
     it('should create script from empty data', function () {
-      var data = new Buffer('')
+      var data = Buffer.from('')
       var s = Script.buildDataOut(data)
       should.exist(s)
       s.toString().should.equal('OP_RETURN')
       s.isDataOut().should.equal(true)
     })
     it('should create script from some data', function () {
-      var data = new Buffer('bacacafe0102030405', 'hex')
+      var data = Buffer.from('bacacafe0102030405', 'hex')
       var s = Script.buildDataOut(data)
       should.exist(s)
       s.toString().should.equal('OP_RETURN 9 0xbacacafe0102030405')
       s.isDataOut().should.equal(true)
     })
     it('should create script from array of some data', function () {
-      var data = new Buffer('bacacafe0102030405', 'hex')
+      var data = Buffer.from('bacacafe0102030405', 'hex')
       var s = Script.buildDataOut([data, data])
       should.exist(s)
       s.toString().should.equal('OP_RETURN 9 0xbacacafe0102030405 9 0xbacacafe0102030405')
@@ -912,7 +912,7 @@ describe('Script', function () {
       Script().add(1000).checkMinimalPush(0).should.equal(true)
       Script().add(0xffffffff).checkMinimalPush(0).should.equal(true)
       Script().add(0xffffffffffffffff).checkMinimalPush(0).should.equal(true)
-      Script().add(new Buffer([0])).checkMinimalPush(0).should.equal(true)
+      Script().add(Buffer.from([0])).checkMinimalPush(0).should.equal(true)
 
       var buf = new Buffer(75)
       buf.fill(1)
@@ -932,7 +932,7 @@ describe('Script', function () {
     it('works with this testnet transaction', function () {
       // testnet block: 00000000a36400fc06440512354515964bc36ecb0020bd0b0fd48ae201965f54
       // txhash: e362e21ff1d2ef78379d401d89b42ce3e0ce3e245f74b1f4cb624a8baa5d53ad (output 0);
-      var script = Script.fromBuffer(new Buffer('6a', 'hex'))
+      var script = Script.fromBuffer(Buffer.from('6a', 'hex'))
       var dataout = script.isDataOut()
       dataout.should.equal(true)
       var data = script.getData()
@@ -949,7 +949,7 @@ describe('Script', function () {
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.true()
     })
     it('for a standard opreturn output', function () {
-      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), new Buffer([255]))).to.be.true()
+      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.be.true()
     })
     it('fails if content is not recognized', function () {
       expect(function () {
@@ -1038,10 +1038,10 @@ describe('Script', function () {
       Script('OP_TRUE OP_TRUE').equals(Script('OP_TRUE OP_FALSE')).should.equal(false)
     })
     it('returns false for different data', function () {
-      Script().add(new Buffer('a')).equals(Script('OP_TRUE')).should.equal(false)
+      Script().add(Buffer.from('a')).equals(Script('OP_TRUE')).should.equal(false)
     })
     it('returns false for different data', function () {
-      Script().add(new Buffer('a')).equals(Script().add(new Buffer('b'))).should.equal(false)
+      Script().add(Buffer.from('a')).equals(Script().add(Buffer.from('b'))).should.equal(false)
     })
   })
 

@@ -37,14 +37,14 @@ describe('BufferReader', function () {
 
   describe('#eof', function () {
     it('should return true for a blank br', function () {
-      var br = new BufferReader(new Buffer([]))
+      var br = new BufferReader(Buffer.from([]))
       br.finished().should.equal(true)
     })
   })
 
   describe('read', function () {
     it('should return the same buffer', function () {
-      var buf = new Buffer([0])
+      var buf = Buffer.from([0])
       var br = new BufferReader(buf)
       br.readAll().toString('hex').should.equal(buf.toString('hex'))
     })
@@ -72,7 +72,7 @@ describe('BufferReader', function () {
 
   describe('readVarLengthBuffer', function () {
     it('returns correct buffer', function () {
-      var buf = new Buffer('73010000003766404f00000000b305434f00000000f203' +
+      var buf = Buffer.from('73010000003766404f00000000b305434f00000000f203' +
         '0000f1030000001027000048ee00000064000000004653656520626974636f696' +
         'e2e6f72672f666562323020696620796f7520686176652074726f75626c652063' +
         '6f6e6e656374696e6720616674657220323020466562727561727900473045022' +
@@ -91,7 +91,7 @@ describe('BufferReader', function () {
         '6b684bde2b3f573060d5b70c3a46723326e4e8a4f1')
     })
     it('fails on length too big', function () {
-      var buf = new Buffer('0a00', 'hex')
+      var buf = Buffer.from('0a00', 'hex')
       var br = new BufferReader(buf)
       br.readVarLengthBuffer.bind(br).should.throw('Invalid length while reading varlength buffer')
     })
@@ -170,7 +170,7 @@ describe('BufferReader', function () {
 
     it('should return 10BTC', function () {
       var tenbtc = 10 * 1e8
-      var tenbtcBuffer = new Buffer('00ca9a3b00000000', 'hex')
+      var tenbtcBuffer = Buffer.from('00ca9a3b00000000', 'hex')
       var br = new BufferReader(tenbtcBuffer)
       br.readUInt64LEBN().toNumber().should.equal(tenbtc)
     })
@@ -185,28 +185,28 @@ describe('BufferReader', function () {
 
     it('should return 2^32 + 1', function () {
       var num = Math.pow(2, 32) + 1
-      var numBuffer = new Buffer('0100000001000000', 'hex')
+      var numBuffer = Buffer.from('0100000001000000', 'hex')
       var br = new BufferReader(numBuffer)
       br.readUInt64LEBN().toNumber().should.equal(num)
     })
 
     it('should return max number of satoshis', function () {
       var maxSatoshis = 21000000 * 1e8
-      var maxSatoshisBuffer = new Buffer('0040075af0750700', 'hex')
+      var maxSatoshisBuffer = Buffer.from('0040075af0750700', 'hex')
       var br = new BufferReader(maxSatoshisBuffer)
       br.readUInt64LEBN().toNumber().should.equal(maxSatoshis)
     })
 
     it('should return 2^53 - 1', function () {
       var maxSafe = Math.pow(2, 53) - 1
-      var maxSafeBuffer = new Buffer('ffffffffffff1f00', 'hex')
+      var maxSafeBuffer = Buffer.from('ffffffffffff1f00', 'hex')
       var br = new BufferReader(maxSafeBuffer)
       br.readUInt64LEBN().toNumber().should.equal(maxSafe)
     })
 
     it('should return 2^53', function () {
       var bn = new BN('20000000000000', 16)
-      var bnBuffer = new Buffer('0000000000002000', 'hex')
+      var bnBuffer = Buffer.from('0000000000002000', 'hex')
       var br = new BufferReader(bnBuffer)
       var readbn = br.readUInt64LEBN()
       readbn.cmp(bn).should.equal(0)
@@ -229,19 +229,19 @@ describe('BufferReader', function () {
 
   describe('#readVarintBuf', function () {
     it('should read a 1 byte varint', function () {
-      var buf = new Buffer([50])
+      var buf = Buffer.from([50])
       var br = new BufferReader(buf)
       br.readVarintBuf().length.should.equal(1)
     })
 
     it('should read a 3 byte varint', function () {
-      var buf = new Buffer([253, 253, 0])
+      var buf = Buffer.from([253, 253, 0])
       var br = new BufferReader(buf)
       br.readVarintBuf().length.should.equal(3)
     })
 
     it('should read a 5 byte varint', function () {
-      var buf = new Buffer([254, 0, 0, 0, 0])
+      var buf = Buffer.from([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
       var br = new BufferReader(buf)
       br.readVarintBuf().length.should.equal(5)
@@ -256,19 +256,19 @@ describe('BufferReader', function () {
 
   describe('#readVarintNum', function () {
     it('should read a 1 byte varint', function () {
-      var buf = new Buffer([50])
+      var buf = Buffer.from([50])
       var br = new BufferReader(buf)
       br.readVarintNum().should.equal(50)
     })
 
     it('should read a 3 byte varint', function () {
-      var buf = new Buffer([253, 253, 0])
+      var buf = Buffer.from([253, 253, 0])
       var br = new BufferReader(buf)
       br.readVarintNum().should.equal(253)
     })
 
     it('should read a 5 byte varint', function () {
-      var buf = new Buffer([254, 0, 0, 0, 0])
+      var buf = Buffer.from([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
       var br = new BufferReader(buf)
       br.readVarintNum().should.equal(50000)
@@ -293,26 +293,26 @@ describe('BufferReader', function () {
 
   describe('#readVarintBN', function () {
     it('should read a 1 byte varint', function () {
-      var buf = new Buffer([50])
+      var buf = Buffer.from([50])
       var br = new BufferReader(buf)
       br.readVarintBN().toNumber().should.equal(50)
     })
 
     it('should read a 3 byte varint', function () {
-      var buf = new Buffer([253, 253, 0])
+      var buf = Buffer.from([253, 253, 0])
       var br = new BufferReader(buf)
       br.readVarintBN().toNumber().should.equal(253)
     })
 
     it('should read a 5 byte varint', function () {
-      var buf = new Buffer([254, 0, 0, 0, 0])
+      var buf = Buffer.from([254, 0, 0, 0, 0])
       buf.writeUInt32LE(50000, 1)
       var br = new BufferReader(buf)
       br.readVarintBN().toNumber().should.equal(50000)
     })
 
     it('should read a 9 byte varint', function () {
-      var buf = Buffer.concat([new Buffer([255]), new Buffer('ffffffffffffffff', 'hex')])
+      var buf = Buffer.concat([Buffer.from([255]), Buffer.from('ffffffffffffffff', 'hex')])
       var br = new BufferReader(buf)
       br.readVarintBN().toNumber().should.equal(Math.pow(2, 64))
     })
@@ -320,7 +320,7 @@ describe('BufferReader', function () {
 
   describe('#reverse', function () {
     it('should reverse this [0, 1]', function () {
-      var buf = new Buffer([0, 1])
+      var buf = Buffer.from([0, 1])
       var br = new BufferReader(buf)
       br.reverse().readAll().toString('hex').should.equal('0100')
     })

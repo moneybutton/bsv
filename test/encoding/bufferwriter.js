@@ -14,8 +14,8 @@ describe('BufferWriter', function () {
 
   describe('#set', function () {
     it('set bufs', function () {
-      var buf1 = new Buffer([0])
-      var buf2 = new Buffer([1])
+      var buf1 = Buffer.from([0])
+      var buf2 = Buffer.from([1])
       var bw = new BufferWriter().set({bufs: [buf1, buf2]})
       bw.concat().toString('hex').should.equal('0001')
     })
@@ -23,8 +23,8 @@ describe('BufferWriter', function () {
 
   describe('#toBuffer', function () {
     it('should concat these two bufs', function () {
-      var buf1 = new Buffer([0])
-      var buf2 = new Buffer([1])
+      var buf1 = Buffer.from([0])
+      var buf2 = Buffer.from([1])
       var bw = new BufferWriter({bufs: [buf1, buf2]})
       bw.toBuffer().toString('hex').should.equal('0001')
     })
@@ -32,8 +32,8 @@ describe('BufferWriter', function () {
 
   describe('#concat', function () {
     it('should concat these two bufs', function () {
-      var buf1 = new Buffer([0])
-      var buf2 = new Buffer([1])
+      var buf1 = Buffer.from([0])
+      var buf2 = Buffer.from([1])
       var bw = new BufferWriter({bufs: [buf1, buf2]})
       bw.concat().toString('hex').should.equal('0001')
     })
@@ -41,7 +41,7 @@ describe('BufferWriter', function () {
 
   describe('#write', function () {
     it('should write a buffer', function () {
-      var buf = new Buffer([0])
+      var buf = Buffer.from([0])
       var bw = new BufferWriter()
       bw.write(buf)
       bw.concat().toString('hex').should.equal('00')

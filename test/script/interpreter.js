@@ -30,10 +30,10 @@ Script.fromBitcoindString = function (str) {
     var tbuf
     if (token[0] === '0' && token[1] === 'x') {
       var hex = token.slice(2)
-      bw.write(new Buffer(hex, 'hex'))
+      bw.write(Buffer.from(hex, 'hex'))
     } else if (token[0] === '\'') {
       var tstr = token.slice(1, token.length - 1)
-      var cbuf = new Buffer(tstr)
+      var cbuf = Buffer.from(tstr)
       tbuf = Script().add(cbuf).toBuffer()
       bw.write(tbuf)
     } else if (typeof Opcode['OP_' + token] !== 'undefined') {
@@ -75,7 +75,7 @@ describe('Interpreter', function () {
       Interpreter.castToBool(new BN(0).toSM({
         endian: 'little'
       })).should.equal(false)
-      Interpreter.castToBool(new Buffer('0080', 'hex')).should.equal(false) // negative 0
+      Interpreter.castToBool(Buffer.from('0080', 'hex')).should.equal(false) // negative 0
       Interpreter.castToBool(new BN(1).toSM({
         endian: 'little'
       })).should.equal(true)
@@ -83,7 +83,7 @@ describe('Interpreter', function () {
         endian: 'little'
       })).should.equal(true)
 
-      var buf = new Buffer('00', 'hex')
+      var buf = Buffer.from('00', 'hex')
       var bool = BN.fromSM(buf, {
         endian: 'little'
       }).cmp(BN.Zero) !== 0

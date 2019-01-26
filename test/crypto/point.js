@@ -37,7 +37,7 @@ describe('Point', function () {
       var p = Point(valid.x, valid.y)
       var a = p.getX().toBuffer({size: 32})
       a.length.should.equal(32)
-      a.should.deep.equal(new Buffer(valid.x, 'hex'))
+      a.should.deep.equal(Buffer.from(valid.x, 'hex'))
     })
   })
 
@@ -51,7 +51,7 @@ describe('Point', function () {
       var p = Point(valid.x, valid.y)
       var a = p.getY().toBuffer({size: 32})
       a.length.should.equal(32)
-      a.should.deep.equal(new Buffer(valid.y, 'hex'))
+      a.should.deep.equal(Buffer.from(valid.y, 'hex'))
     })
   })
 
