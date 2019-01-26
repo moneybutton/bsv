@@ -12,8 +12,8 @@ var Opcode = bitcore.Opcode
 var _ = require('lodash')
 
 var scriptTests = require('../data/bitcoind/script_tests')
-var tx_valid = require('../data/bitcoind/tx_valid')
-var tx_invalid = require('../data/bitcoind/tx_invalid')
+var txValid = require('../data/bitcoind/tx_valid')
+var txInvalid = require('../data/bitcoind/tx_invalid')
 
 // the script string format used in bitcoind data tests
 Script.fromBitcoindString = function (str) {
@@ -327,7 +327,7 @@ describe('Interpreter', function () {
         })
       })
     }
-    test_txs(tx_valid, true)
-    test_txs(tx_invalid, false)
+    test_txs(txValid, true)
+    test_txs(txInvalid, false)
   })
 })
