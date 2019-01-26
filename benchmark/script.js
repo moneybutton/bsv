@@ -80,5 +80,5 @@ async.series([
       .run()
   }
 ], function (err) {
-  console.log('Finished')
+  console.log('Finished', err)
 })
