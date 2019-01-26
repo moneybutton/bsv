@@ -1,6 +1,6 @@
 'use strict'
 
-var chai = chai || require('chai')
+var chai = require('chai')
 var bitcore = require('..')
 var expect = chai.expect
 var Networks = bitcore.Networks
@@ -8,8 +8,6 @@ var should = chai.should()
 var URI = bitcore.URI
 
 describe('URI', function () {
-  /* jshint maxstatements: 30 */
-
   // TODO: Split this and explain tests
   it('parses uri strings correctly (test vector)', function () {
     var uri
@@ -69,10 +67,8 @@ describe('URI', function () {
   })
 
   it('Should return error if try to use an invalid bitcoin URI', function () {
-    var uri
-
     try {
-      uri = URI.parse('badcashAddrPrefix:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
+      URI.parse('badcashAddrPrefix:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
     } catch (e) {
       expect(e.message).to.equal('Invalid bitcoin URI')
     }

@@ -142,7 +142,7 @@ describe('PrivateKey', function () {
 
     it('should not be able to instantiate private key WIF because of network mismatch', function () {
       expect(function () {
-        var a = new PrivateKey(wifNamecoin, 'testnet')
+        new PrivateKey(wifNamecoin, 'testnet') //eslint-disable-line
       }).to.throw('Invalid network')
     })
 
@@ -237,7 +237,7 @@ describe('PrivateKey', function () {
       var privateKey = new PrivateKey()
       /* jshint unused: false */
       var publicKey = privateKey.publicKey
-      return privateKey.publicKey
+      return publicKey
     }).to.not.throw()
   })
 

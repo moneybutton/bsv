@@ -186,7 +186,7 @@ describe('HDPrivate key interface', function () {
     try {
       var buffers = privKey._buffers
       buffers.checksum = BufferUtil.integerAsBuffer(0)
-      var privateKey = new HDPrivateKey(buffers)
+      new HDPrivateKey(buffers) //eslint-disable-line
     } catch (e) {
       error = e
     }

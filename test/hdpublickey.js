@@ -3,14 +3,13 @@
 /* jshint unused: false */
 var _ = require('lodash')
 var assert = require('assert')
-var should = require('chai').should()
+require('chai').should()
 var expect = require('chai').expect
 var bitcore = require('..')
 var buffer = require('buffer')
 var errors = bitcore.errors
 var hdErrors = bitcore.errors.HDPublicKey
 var BufferUtil = bitcore.util.buffer
-var HDPrivateKey = bitcore.HDPrivateKey
 var HDPublicKey = bitcore.HDPublicKey
 var Base58Check = bitcore.encoding.Base58Check
 var Networks = bitcore.Networks
@@ -19,7 +18,7 @@ var xprivkey = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVv
 var xpubkey = 'xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8'
 var xpubkeyTestnet = 'tpubD6NzVbkrYhZ4WZaiWHz59q5EQ61bd6dUYfU4ggRWAtNAyyYRNWT6ktJ7UHJEXURvTfTfskFQmK7Ff4FRkiRN5wQH8nkGAb6aKB4Yyeqsw5m'
 var json = '{"network":"livenet","depth":0,"fingerPrint":876747070,"parentFingerPrint":0,"childIndex":0,"chainCode":"873dff81c02f525623fd1fe5167eac3a55a049de3d314bb42ee227ffed37d508","publicKey":"0339a36013301597daef41fbe593a02cc513d0b55527ec2df1050e2e8ff49c85c2","checksum":-1421395167,"xpubkey":"xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8"}'
-var derived_0_1_200000 = 'xpub6BqyndF6rkBNTV6LXwiY8Pco8aqctqq7tGEUdA8fmGDTnDJphn2fmxr3eM8Lm3m8TrNUsLbEjHvpa3adBU18YpEx4tp2Zp6nqax3mQkudhX'
+var derived01200000 = 'xpub6BqyndF6rkBNTV6LXwiY8Pco8aqctqq7tGEUdA8fmGDTnDJphn2fmxr3eM8Lm3m8TrNUsLbEjHvpa3adBU18YpEx4tp2Zp6nqax3mQkudhX'
 
 describe('HDPublicKey interface', function () {
   var expectFail = function (func, errorType) {
@@ -186,8 +185,8 @@ describe('HDPublicKey interface', function () {
       var pubkey = new HDPublicKey(xpubkey)
       var derived1 = pubkey.derive(0).derive(1).derive(200000)
       var derived2 = pubkey.derive('m/0/1/200000')
-      derived1.xpubkey.should.equal(derived_0_1_200000)
-      derived2.xpubkey.should.equal(derived_0_1_200000)
+      derived1.xpubkey.should.equal(derived01200000)
+      derived2.xpubkey.should.equal(derived01200000)
     })
 
     it('allows special parameters m, M', function () {
