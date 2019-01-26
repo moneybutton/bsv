@@ -8,8 +8,8 @@ var Signature = bitcore.crypto.Signature
 var JSUtil = bitcore.util.js
 var Interpreter = bitcore.Script.Interpreter
 
-var sig_canonical = require('../data/bitcoind/sig_canonical')
-var sig_noncanonical = require('../data/bitcoind/sig_noncanonical')
+var sigCanonical = require('../data/bitcoind/sig_canonical')
+var sigNonCanonical = require('../data/bitcoind/sig_noncanonical')
 
 describe('Signature', function () {
   it('should make a blank signature', function () {
@@ -185,7 +185,7 @@ describe('Signature', function () {
 
     it('should parse this signature from script_valid.json', function () {
       var sighex = '304502203e4516da7253cf068effec6b95c41221c0cf3a8e6ccb8cbf1725b562e9afde2c022100ab1e3da73d67e32045a20e0b999e049978ea8d6ee5480d485fcf2ce0d03b2ef051'
-      var sig = Buffer(sighex, 'hex')
+      var sig = Buffer.from(sighex, 'hex')
       var parsed = Signature.parseDER(sig, false)
       should.exist(parsed)
     })
@@ -233,7 +233,7 @@ describe('Signature', function () {
     })
 
     describe('bitcoind fixtures', function () {
-      var test_sigs = function (set, expected) {
+      var testSigs = function (set, expected) {
         var i = 0
         set.forEach(function (vector) {
           if (!JSUtil.isHexa(vector)) {
@@ -251,8 +251,8 @@ describe('Signature', function () {
           i++
         })
       }
-      test_sigs(sig_canonical, true)
-      test_sigs(sig_noncanonical, false)
+      testSigs(sigCanonical, true)
+      testSigs(sigNonCanonical, false)
     })
   })
   describe('#hasLowS', function () {

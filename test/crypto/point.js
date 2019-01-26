@@ -11,11 +11,6 @@ describe('Point', function () {
     y: '4836ab292c105a711ed10fcfd30999c31ff7c02456147747e03e739ad527c380'
   }
 
-  var invalidPair = {
-    x: 'ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2',
-    y: '0000000000000000000000000000000000000000000000000000000000000000'
-  }
-
   it('should create a point', function () {
     var p = Point(valid.x, valid.y)
     should.exist(p)
@@ -119,7 +114,7 @@ describe('Point', function () {
       var x = 'ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2'
       var y = '0000000000000000000000000000000000000000000000000000000000000000';
       (function () {
-        var p = Point(x, y)
+        Point(x, y)
       }).should.throw('Invalid y value for curve.')
     })
 
@@ -127,7 +122,7 @@ describe('Point', function () {
       var x = 'ac242d242d23be966085a2b2b893d989f824e06c9ad0395a8a52f055ba39abb2'
       var y = '00000000000000000000000000000000000000000000000000000000000000FF';
       (function () {
-        var p = Point(x, y)
+        Point(x, y)
       }).should.throw('Invalid y value for curve.')
     })
 
@@ -139,7 +134,7 @@ describe('Point', function () {
 
       (function () {
         // set the point
-        var p = Point(x, y)
+        Point(x, y)
       }).should.throw('Point does not lie on the curve')
     })
 
@@ -148,7 +143,7 @@ describe('Point', function () {
 
       (function () {
         // set the point
-        var p = Point.fromX(false, x)
+        Point.fromX(false, x)
       }).should.throw('Invalid X')
     })
   })

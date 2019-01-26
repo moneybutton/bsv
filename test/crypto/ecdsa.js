@@ -60,7 +60,7 @@ describe('ECDSA', function () {
   describe('#fromString', function () {
     it('round trip with fromString', function () {
       var str = ecdsa.toString()
-      var ecdsa2 = new ECDSA.fromString(str)
+      var ecdsa2 = ECDSA.fromString(str)
       should.exist(ecdsa2.hashbuf)
       should.exist(ecdsa2.privkey)
     })

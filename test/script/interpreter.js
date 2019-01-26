@@ -11,7 +11,7 @@ var BufferWriter = bitcore.encoding.BufferWriter
 var Opcode = bitcore.Opcode
 var _ = require('lodash')
 
-var script_tests = require('../data/bitcoind/script_tests')
+var scriptTests = require('../data/bitcoind/script_tests')
 var tx_valid = require('../data/bitcoind/tx_valid')
 var tx_invalid = require('../data/bitcoind/tx_invalid')
 
@@ -275,7 +275,7 @@ describe('Interpreter', function () {
         it(txt, function () { testFixture(vector, expected, extraData) })
       })
     }
-    testAllFixtures(script_tests)
+    testAllFixtures(scriptTests)
   })
   describe('bitcoind transaction evaluation fixtures', function () {
     var test_txs = function (set, expected) {
