@@ -139,7 +139,7 @@ describe('HDPrivate key interface', function () {
   })
 
   it('returns InvalidLength if data of invalid length is given to getSerializedError', function () {
-    var b58s = Base58Check.encode(new buffer.Buffer('onestring'))
+    var b58s = Base58Check.encode(buffer.Buffer.from('onestring'))
     expect(
       HDPrivateKey.getSerializedError(b58s) instanceof hdErrors.InvalidLength
     ).to.equal(true)
