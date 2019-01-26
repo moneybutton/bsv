@@ -88,8 +88,8 @@ describe('Address', function () {
     var i
 
     for (i = 0; i < t.length; i++) {
-      var legacyaddr = t[i][0]
-      var cashaddr = t[i][1]
+      let legacyaddr = t[i][0]
+      let cashaddr = t[i][1]
       it('should convert ' + legacyaddr, function () {
         var a = new Address(legacyaddr)
         a.toCashAddress().should.equal(cashaddr)
@@ -97,8 +97,8 @@ describe('Address', function () {
     }
 
     for (i = 0; i < t.length; i++) {
-      var legacyaddr = t[i][0]
-      var cashaddr = t[i][1]
+      let legacyaddr = t[i][0]
+      let cashaddr = t[i][1]
       it('should convert ' + cashaddr, function () {
         var a = new Address(cashaddr)
         a.toLegacyAddress().should.equal(legacyaddr)
@@ -106,8 +106,8 @@ describe('Address', function () {
     }
 
     for (i = 0; i < t.length; i++) {
-      var legacyaddr2 = t[i][0]
-      var cashaddr2 = t[i][1].toUpperCase()
+      let legacyaddr2 = t[i][0]
+      let cashaddr2 = t[i][1].toUpperCase()
       it('should convert UPPERCASE addresses ' + cashaddr2, function () {
         var a = new Address(cashaddr2)
         a.toLegacyAddress().should.equal(legacyaddr2)
@@ -115,8 +115,8 @@ describe('Address', function () {
     }
 
     for (i = 0; i < t.length; i++) {
-      var legacyaddr3 = t[i][0]
-      var cashaddr3 = t[i][1].split(':')[1]
+      let legacyaddr3 = t[i][0]
+      let cashaddr3 = t[i][1].split(':')[1]
       it('should convert no cashAddrPrefix addresses ' + cashaddr3, function () {
         var a = new Address(cashaddr3)
         a.toObject().network.should.equal('livenet')
@@ -141,13 +141,13 @@ describe('Address', function () {
 
     it('should fail convert no cashAddrPrefix addresses bad checksum ', function () {
       (function () {
-        var a = new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx7')
+        new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx7') //eslint-disable-line
       }).should.throw('Invalid checksum')
     })
 
     it('should fail convert a mixed case addresses ', function () {
       (function () {
-        var a = new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6A')
+        new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6A') //eslint-disable-line
       }).should.throw('Invalid Argument: Mixed case')
     })
   })
@@ -377,13 +377,13 @@ describe('Address', function () {
 
     it('should error because of incorrect format for pubkey hash', function () {
       (function () {
-        return new Address.fromPublicKeyHash('notahash')
+        return new Address.fromPublicKeyHash('notahash') //eslint-disable-line
       }).should.throw('Address supplied is not a buffer.')
     })
 
     it('should error because of incorrect format for script hash', function () {
       (function () {
-        return new Address.fromScriptHash('notascript')
+        return new Address.fromScriptHash('notascript') //eslint-disable-line
       }).should.throw('Address supplied is not a buffer.')
     })
 
