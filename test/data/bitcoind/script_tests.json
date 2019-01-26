@@ -1187,7 +1187,7 @@
 ["1","RESERVED", "P2SH,STRICTENC", "BAD_OPCODE", "OP_RESERVED is reserved"],
 ["1","RESERVED1", "P2SH,STRICTENC", "BAD_OPCODE", "OP_RESERVED1 is reserved"],
 ["1","RESERVED2", "P2SH,STRICTENC", "BAD_OPCODE", "OP_RESERVED2 is reserved"],
-["1","0xba", "P2SH,STRICTENC", "BAD_OPCODE", "0xba == FIRST_UNDEFINED_OP_VALUE"],
+["1","0xba", "P2SH,STRICTENC", "BAD_OPCODE", "0xba === FIRST_UNDEFINED_OP_VALUE"],
 
 ["2147483648", "1ADD 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
 ["2147483648", "NEGATE 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],

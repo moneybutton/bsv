@@ -266,7 +266,7 @@ describe('Interpreter', function () {
         }
 
         var fullScriptString = vector[0] + ' ' + vector[1]
-        var expected = vector[3] == 'OK'
+        var expected = vector[3] === 'OK'
         var descstr = vector[4]
         var comment = descstr ? (' (' + descstr + ')') : ''
         var txt = 'should ' + vector[3] + ' script_tests ' +
