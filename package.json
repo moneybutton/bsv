@@ -5,10 +5,8 @@
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
   "scripts": {
-    "lint": "gulp lint",
-    "test": "gulp test",
-    "coverage": "gulp coverage",
-    "gulpbuild": "gulp",
+    "lint": "standard",
+    "test": "standard && mocha",
     "build": "webpack index.js --output-library bsv -o bsv-mnemonic.min.js"
   },
   "contributors": [
@@ -44,8 +42,17 @@
   },
   "dependencies": {
     "bsv": "0.22.0",
+    "standard": "11.0.1",
     "unorm": "^1.3.3",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
+  },
+  "standard": {
+    "globals": [
+      "afterEach",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   }
 }
