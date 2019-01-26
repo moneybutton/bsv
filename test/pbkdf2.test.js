@@ -1,7 +1,7 @@
 'use strict'
 
 var chai = require('chai')
-var should = chai.should()
+chai.should()
 
 var pbkdf2 = require('../lib/pbkdf2')
 
