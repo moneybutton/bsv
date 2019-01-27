@@ -1,0 +1,45 @@
+{
+  "name": "bitcore-ecies",
+  "version": "1.0.3",
+  "description": "ECIES implemented for Bitcore.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "coverage": "gulp coverage",
+    "build": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitpay/bitcore-ecies.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "bitcore",
+    "ecies",
+    "crypto",
+    "cryptography",
+    "encryption"
+  ],
+  "author": "BitPay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitpay/bitcore-ecies/issues"
+  },
+  "homepage": "https://github.com/bitpay/bitcore-ecies",
+  "devDependencies": {
+    "assert": "^1.1.2",
+    "bitcore-build": "git://github.com/bitpay/bitcore-build.git",
+    "brfs": "^1.2.0",
+    "browserify": "^8.1.0",
+    "chai": "~1.10.0",
+    "gulp": "^3.8.10"
+  },
+  "dependencies": {
+    "aes": "^0.1.0",
+    "bitcore-lib": "^0.14.0"
+  }
+}

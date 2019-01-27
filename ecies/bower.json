@@ -1,0 +1,28 @@
+{
+  "name": "bitcore-ecies",
+  "main": "./bitcore-ecies.min.js",
+  "version": "1.0.3",
+  "homepage": "https://github.com/bitpay/bitcore-ecies",
+  "authors": [
+    "BitPay"
+  ],
+  "description": "ECIES implemented for Bitcore.",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "bitcoin",
+    "bitcore",
+    "btc",
+    "satoshi",
+    "ecies"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
