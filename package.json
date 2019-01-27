@@ -8,9 +8,9 @@
     "lint": "standard",
     "test": "standard && mocha",
     "build-bsv": "webpack index.js --output-library bsv -o bsv.min.js",
-    "build-ecies": "webpack index.js --output-library bsvEcies -o bsv-ecies.min.js",
-    "build-message": "webpack index.js --output-library bsvMessage -o bsv-message.min.js",
-    "build-mnemonic": "webpack index.js --output-library bsvMnemonic -o bsv-mnemonic.min.js",
+    "build-ecies": "webpack ecies/index.js --config webpack.subproject.config.js --output-library bsvEcies -o bsv-ecies.min.js",
+    "build-message": "webpack message/index.js --config webpack.subproject.config.js --output-library bsvMessage -o bsv-message.min.js",
+    "build-mnemonic": "webpack mnemonic/index.js --config webpack.subproject.config.js --output-library bsvMnemonic -o bsv-mnemonic.min.js",
     "build": "yarn build-bsv && yarn build-ecies && yarn build-message && yarn build-mnemonic"
   },
   "unpkg": "bsv.min.js",
