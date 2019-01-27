@@ -4,10 +4,10 @@ var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();
 
-var bitcore = require('bsv');
+var bitcore = require('../../');
 var Address = bitcore.Address;
 var Signature = bitcore.crypto.Signature;
-var Message = require('../');
+var Message = require('../../lib/message');
 
 describe('Message', function() {
 

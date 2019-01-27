@@ -3,7 +3,7 @@
 var chai = require('chai')
 chai.should()
 
-var pbkdf2 = require('../lib/pbkdf2')
+var pbkdf2 = require('../../lib/mnemonic/pbkdf2')
 
 describe('pbkdf2', function () {
   this.timeout(10000)

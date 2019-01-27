@@ -1,9 +1,9 @@
 'use strict';
 
-var ECIES = require('../');
+var ECIES = require('../../lib/ecies');
 
 var should = require('chai').should();
-var bitcore = require('bitcore-lib');
+var bitcore = require('../../');
 var PrivateKey = bitcore.PrivateKey;
 
 
