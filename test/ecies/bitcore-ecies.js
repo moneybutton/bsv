@@ -1,6 +1,6 @@
 'use strict'
 
-var ECIES = require('../../lib/ecies')
+var ECIES = require('../../lib/ecies/bitcore-ecies')
 
 var should = require('chai').should()
 var bitcore = require('../../')
@@ -9,7 +9,7 @@ var PrivateKey = bitcore.PrivateKey
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
 
-describe('ECIES', function () {
+describe('Bitcore ECIES', function () {
   it('constructor', function () {
     (typeof ECIES).should.equal('function')
   })
@@ -24,10 +24,12 @@ describe('ECIES', function () {
     (ecies instanceof ECIES).should.equal(true)
   })
 
-  it('use ephemeral privateKey if privateKey is not set', function () {
+  it('privateKey fails with no argument', function () {
     var ecies = ECIES()
-    var ephemeralKey = ecies._privateKey;
-    (ephemeralKey instanceof bitcore.PrivateKey).should.equal(true)
+    var fail = function () {
+      ecies.privateKey()
+    }
+    fail.should.throw('no private key provided')
   })
 
   it('chainable function', function () {
@@ -47,13 +49,13 @@ describe('ECIES', function () {
     .publicKey(aliceKey.publicKey)
 
   var message = 'attack at dawn'
-  var encrypted = 'QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap56+ajq0hzmnaQJXwUMZ/DUNgEx9i2TIhCA1mpBFIfxWZy+sH6H+sqqfX3sPHsGu0ug=='
-  var encBuf = Buffer.from(encrypted, 'base64')
+  var encrypted = '0339e504d6492b082da96e11e8f039796b06cd4855c101e2492a6f10f3e056a9e712c732611c6917ab5c57a1926973bc44a1586e94a783f81d05ce72518d9b0a80e2e13c7ff7d1306583f9cc7a48def5b37fbf2d5f294f128472a6e9c78dede5f5'
+  var encBuf = Buffer.from(encrypted, 'hex')
 
   it('correctly encrypts a message', function () {
     var ciphertext = alice.encrypt(message)
     Buffer.isBuffer(ciphertext).should.equal(true)
-    ciphertext.toString('base64').should.equal(encrypted)
+    ciphertext.toString('hex').should.equal(encrypted)
   })
 
   it('correctly decrypts a message', function () {
