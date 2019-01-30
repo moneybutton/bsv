@@ -396,4 +396,12 @@ describe('PublicKey', function () {
       }).should.throw('Point cannot be equal to Infinity')
     })
   })
+  describe('#ID-based Encryption', function () {
+    it('IBE Public Key Derive', function () {
+      var id = 'some id'
+      var father = PublicKey.fromString('023a68408157fe631b0f5a0664a45060b57f263fb5757fc03fb3aac7d3b563b781')
+      var child = PublicKey.fromString('02f69742c739c23db5e7bbcdfc11df1776a40955f31ed89576e549d5c6a7fe8835')
+      father.childKey(id).toString().should.equal(child.toString())
+    })
+  })
 })

@@ -435,4 +435,17 @@ describe('PrivateKey', function () {
     var privkey = new PrivateKey('92VYMmwFLXRwXn5688edGxYYgMFsc3fUXYhGp17WocQhU6zG1kd')
     privkey.publicKey.toAddress().toString().should.equal('moiAvLUw16qgrwhFGo1eDnXHC2wPMYiv7Y')
   })
+  describe('#ID-based Encryption', function () {
+    it('IBE Private Key Derive', function () {
+      var id = 'some id'
+      var father = PrivateKey.fromString('2aa6840a005a2e207a79a731c14b95739e17b17d358c9be1c03f30b847f5ea5a')
+      var child = PrivateKey.fromString('a162b225e32c522a7f0af19482490363d197639cf2aa45359fa4074a87e579d4')
+      father.childKey(id).toString().should.equal(child.toString())
+    })
+    it('IBE Private/Public Key Pairing', function () {
+      var id = 'some id'
+      var masterKey = PrivateKey.fromString('2aa6840a005a2e207a79a731c14b95739e17b17d358c9be1c03f30b847f5ea5a')
+      masterKey.childKey(id).publicKey.toString().should.equal(masterKey.publicKey.childKey(id).toString())
+    })
+  })
 })
