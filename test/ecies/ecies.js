@@ -1,6 +1,6 @@
 'use strict'
 
-var ECIES = require('../../lib/ecies')
+var ECIES = require('../../lib/electrum-ecies')
 
 var should = require('chai').should()
 var bsv = require('../../')
