@@ -8,6 +8,7 @@ var PrivateKey = bsv.PrivateKey
 
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
+console.log(bobKey.toPublicKey())
 
 describe('ECIES', function () {
   it('constructor', function () {
@@ -36,6 +37,17 @@ describe('ECIES', function () {
       .publicKey(bobKey.publicKey);
 
     (ecies instanceof ECIES).should.equal(true)
+  })
+
+  it('should do this test vector correctly', function () {
+    let message = 'this is my test message'
+
+    // alice to bob
+    let encMessageAliceToBob = 'QklFMQKf0FLHNEuhLpQxawcZP9EQF4RWaFGoLfN4aOKpeC1vUhGSk7z1KF6IMfyk5roEMKrb6iepVZyjSkmm+jf6H552tbmiGMDwswm3zmO4t5NS7ZX18YIG/C2ev2zhHK/uf7s='
+    let alice = ECIES()
+      .privateKey(aliceKey)
+      .publicKey(bobKey.publicKey)
+    alice.encrypt(message).toString('base64').should.equal(encMessageAliceToBob)
   })
 
   var alice = ECIES()
