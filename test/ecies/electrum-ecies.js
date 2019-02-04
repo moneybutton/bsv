@@ -43,7 +43,7 @@ describe('ECIES', function () {
     let message = 'this is my test message'
 
     // alice to bob
-    let encMessageAliceToBob = 'QklFMQKf0FLHNEuhLpQxawcZP9EQF4RWaFGoLfN4aOKpeC1vUhGSk7z1KF6IMfyk5roEMKrb6iepVZyjSkmm+jf6H552tbmiGMDwswm3zmO4t5NS7ZX18YIG/C2ev2zhHK/uf7s='
+    let encMessageAliceToBob = 'QklFMQLpjR0N2k865eYbMfgficwhn3PUvP/u778nZWCwHXi0yVdfqPyYT+HVwPWLQCOyShcf0ZFtSYWVj1RQMkqnhwAjd03WkdRpJkaV/7xh2FO0ELNgV1nl/x/qbLZjDhYFVLY='
     let alice = ECIES()
       .privateKey(aliceKey)
       .publicKey(bobKey.publicKey)
