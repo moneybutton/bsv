@@ -8,7 +8,6 @@ var PrivateKey = bsv.PrivateKey
 
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
-console.log(bobKey.toPublicKey())
 
 describe('ECIES', function () {
   it('constructor', function () {
@@ -39,15 +38,18 @@ describe('ECIES', function () {
     (ecies instanceof ECIES).should.equal(true)
   })
 
-  it('should do this test vector correctly', function () {
-    let message = 'this is my test message'
+  it('should do these test vectors correctly', function () {
+    let message = Buffer.from('this is my test message')
 
-    // alice to bob
-    let encMessageAliceToBob = 'QklFMQLpjR0N2k865eYbMfgficwhn3PUvP/u778nZWCwHXi0yVdfqPyYT+HVwPWLQCOyShcf0ZFtSYWVj1RQMkqnhwAjd03WkdRpJkaV/7xh2FO0ELNgV1nl/x/qbLZjDhYFVLY='
     let alice = ECIES()
       .privateKey(aliceKey)
       .publicKey(bobKey.publicKey)
-    alice.encrypt(message).toString('base64').should.equal(encMessageAliceToBob)
+    alice.decrypt(Buffer.from('QklFMQOGFyMXLo9Qv047K3BYJhmnJgt58EC8skYP/R2QU/U0yXXHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbiaH4FsxKIOOvzolIFVAS0FplUmib2HnlAM1yP/iiPsU=', 'base64')).toString().should.equal(message.toString())
+
+    let bob = ECIES()
+      .privateKey(bobKey)
+      .publicKey(aliceKey.publicKey)
+    bob.decrypt(Buffer.from('QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap53XHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbvZJHgyAzxA6SoujduvJXv+A9ri3po9veilrmc8p6dwo=', 'base64')).toString().should.equal(message.toString())
   })
 
   var alice = ECIES()
