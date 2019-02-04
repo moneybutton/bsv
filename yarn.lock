@@ -209,10 +209,10 @@ acorn@^6.0.2:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.0.5.tgz#81730c0815f3f3b34d8efa95cb7430965f4d887a"
   integrity sha512-i33Zgp3XWtmZBMNvCr4azvOFeWVw1Rk6p3hfi3LUDvIFraOMywb1kAtrbi+med14m4Xfpqm3zRZMT+c0FNE7kg==
 
-aes@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/aes/-/aes-0.1.0.tgz#75ca7ceb78e536d43eef10649ffaa1cb2ac7509d"
-  integrity sha1-dcp863jlNtQ+7xBkn/qhyyrHUJ0=
+aes-js@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/aes-js/-/aes-js-3.1.2.tgz#db9aabde85d5caabbfc0d4f2a4446960f627146a"
+  integrity sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
