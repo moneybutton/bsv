@@ -200,6 +200,10 @@ describe('Interpreter', function () {
       flags = flags | Interpreter.SCRIPT_ENABLE_MONOLITH_OPCODES
     }
 
+    if (flagstr.indexOf('MAGNETIC') !== -1) {
+      flags = flags | Interpreter.SCRIPT_ENABLE_MAGNETIC_OPCODES
+    }
+
     if (flagstr.indexOf('MINIMALIF') !== -1) {
       flags = flags | Interpreter.SCRIPT_VERIFY_MINIMALIF
     }
@@ -244,7 +248,7 @@ describe('Interpreter', function () {
 
     var interp = new Interpreter()
     var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags, new BN(inputAmount))
-    verified.should.equal(expected)
+    verified.should.equal(expected, interp.errstr)
   }
   describe('bitcoind script evaluation fixtures', function () {
     var testAllFixtures = function (set) {
