@@ -145,6 +145,21 @@ describe('Interpreter', function () {
     })
   })
 
+  describe('#script debugger', function () {
+    it('debugger should fire while executing script', function () {
+      var si = Interpreter()
+      let debugCount = 0
+      si.callbackDebug = function (step) {
+        debugCount += 1
+      }
+      // si.callbackDebug = debugScript
+      si.verify(Script('OP_1 OP_2 OP_ADD'), Script('OP_3 OP_EQUAL'))
+      si.errstr.should.equal('')
+      // two scripts. first one has 3 instructions. second one has 2 instructions
+      debugCount.should.equal(3 + 2)
+    })
+  })
+
   var getFlags = function getFlags (flagstr) {
     var flags = 0
     if (flagstr.indexOf('NONE') !== -1) {
@@ -250,6 +265,293 @@ describe('Interpreter', function () {
     var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags, new BN(inputAmount))
     verified.should.equal(expected, interp.errstr)
   }
+
+  const CheckMul = function (a, b, expected) {
+    // Negative values for multiplication
+    CheckBinaryOpMagnetic(a, b, Opcode.OP_MUL, expected)
+    CheckBinaryOpMagnetic(a, NegativeValtype(b), Opcode.OP_MUL, NegativeValtype(expected))
+    CheckBinaryOpMagnetic(NegativeValtype(a), b, Opcode.OP_MUL, NegativeValtype(expected))
+    CheckBinaryOpMagnetic(NegativeValtype(a), NegativeValtype(b), Opcode.OP_MUL, expected)
+
+    // Commutativity
+    CheckBinaryOpMagnetic(b, a, Opcode.OP_MUL, expected)
+    CheckBinaryOpMagnetic(b, NegativeValtype(a), Opcode.OP_MUL, NegativeValtype(expected))
+    CheckBinaryOpMagnetic(NegativeValtype(b), a, Opcode.OP_MUL, NegativeValtype(expected))
+    CheckBinaryOpMagnetic(NegativeValtype(b), NegativeValtype(a), Opcode.OP_MUL, expected)
+
+    // Multiplication identities
+    CheckBinaryOpMagnetic(a, [0x01], Opcode.OP_MUL, a)
+    CheckBinaryOpMagnetic(a, [0x81], Opcode.OP_MUL, NegativeValtype(a))
+    CheckBinaryOpMagnetic(a, [], Opcode.OP_MUL, [])
+
+    CheckBinaryOpMagnetic([0x01], b, Opcode.OP_MUL, b)
+    CheckBinaryOpMagnetic([0x81], b, Opcode.OP_MUL, NegativeValtype(b))
+    CheckBinaryOpMagnetic([], b, Opcode.OP_MUL, [])
+  }
+
+  const CheckBinaryOpMagnetic = function (a, b, op, expected) {
+    const interp = evaluateScript(a, b, op)
+    const result = [...interp.stack.pop()]
+    result.should.to.deep.equal(expected)
+  }
+
+  const NegativeValtype = function (v) {
+    let copy = v.slice()
+    if (copy.length) {
+      copy[copy.length - 1] ^= 0x80
+    }
+    // TODO: expose minimally encode as public method?
+    return Interpreter._minimallyEncode(copy)
+  }
+
+  const evaluateScript = function (arraySig, arrayPubKey, op) {
+    const interp = new Interpreter()
+    interp.callbackDebug = debugScript
+    interp.script = new Script().add(Buffer.from(arraySig)).add(Buffer.from(arrayPubKey))
+    interp.script.add(op)
+    interp.flags = Interpreter.SCRIPT_VERIFY_P2SH |
+      Interpreter.SCRIPT_ENABLE_MAGNETIC_OPCODES | Interpreter.SCRIPT_ENABLE_MONOLITH_OPCODES
+    interp.evaluate()
+    return interp
+  }
+
+  const debugScript = function (step, stack) {
+    const script = (new Script()).add(step.opcode)
+    // stack is array of buffers
+    for (let item in stack) {
+      console.log(`Step ${step.pc}: ${script}: ${stack[item].toString('hex')}`)
+    }
+  }
+
+  const toBitpattern = function (binaryString) {
+    return parseInt(binaryString, 2).toString(16).padStart(8, '0')
+  }
+
+  describe('#Empty and null script', function () {
+    it('Empty buffer should have value 0x00 in script', function () {
+      const s = new Script().add(Buffer.from([]))
+      // script does not render anything so it appears invisible
+      s.toString().should.equal('')
+      // yet there is a script chunk there
+      s.chunks.length.should.equal(1)
+      s.chunks[0].opcodenum.should.equal(0)
+    })
+    it('Zero value (0x00) buffer should have value 0x01 0x00 in script', function () {
+      const s = new Script().add(Buffer.from([0x00]))
+      s.toString().should.equal('1 0x00')
+      s.chunks.length.should.equal(1)
+      s.chunks[0].opcodenum.should.equal(1)
+    })
+  })
+
+  describe('#NegativeValType', function () {
+    it('should pass all tests', function () {
+      // Test zero values
+      new Script().add(Buffer.from(NegativeValtype([]))).should.to.deep.equal(new Script().add(Buffer.from([])))
+      new Script().add(Buffer.from(NegativeValtype([0x00]))).should.to.deep.equal(new Script().add(Buffer.from([])))
+      new Script().add(Buffer.from(NegativeValtype([0x80]))).should.to.deep.equal(new Script().add(Buffer.from([])))
+      new Script().add(Buffer.from(NegativeValtype([0x00, 0x00]))).should.to.deep.equal(new Script().add(Buffer.from([])))
+      new Script().add(Buffer.from(NegativeValtype([0x00, 0x80]))).should.to.deep.equal(new Script().add(Buffer.from([])))
+
+      // Non-zero values
+      NegativeValtype([0x01]).should.to.deep.equal([0x81])
+      NegativeValtype([0x81]).should.to.deep.equal([0x01])
+      NegativeValtype([0x02, 0x01]).should.to.deep.equal([0x02, 0x81])
+      NegativeValtype([0x02, 0x81]).should.to.deep.equal([0x02, 0x01])
+      NegativeValtype([0xff, 0x02, 0x01]).should.to.deep.equal([0xff, 0x02, 0x81])
+      NegativeValtype([0xff, 0x02, 0x81]).should.to.deep.equal([0xff, 0x02, 0x01])
+      NegativeValtype([0xff, 0xff, 0x02, 0x01]).should.to.deep.equal([0xff, 0xff, 0x02, 0x81])
+      NegativeValtype([0xff, 0xff, 0x02, 0x81]).should.to.deep.equal([0xff, 0xff, 0x02, 0x01])
+
+      // Should not be overly-minimized
+      NegativeValtype([0xff, 0x80]).should.to.deep.equal([0xff, 0x00])
+      NegativeValtype([0xff, 0x00]).should.to.deep.equal([0xff, 0x80])
+    })
+  })
+
+  describe('#OP_LSHIFT tests from bitcoind', function () {
+    it('should not shift when no n value', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [], Opcode.OP_LSHIFT)
+      console.log(interp.script)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('10011111000100011111010101010101'))
+    })
+    it('should shift left 1', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x01], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00111110001000111110101010101010'))
+    })
+    it('should shift left 2', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x02], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('01111100010001111101010101010100'))
+    })
+    it('should shift left 3', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x03], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('11111000100011111010101010101000'))
+    })
+    it('should shift left 4', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x04], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('11110001000111110101010101010000'))
+    })
+    it('should shift left 5', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x05], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('11100010001111101010101010100000'))
+    })
+    it('should shift left 6', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x06], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('11000100011111010101010101000000'))
+    })
+    it('should shift left 7', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x07], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('10001000111110101010101010000000'))
+    })
+    it('should shift left 08', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x08], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00010001111101010101010100000000'))
+    })
+    it('should shift left 9', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x09], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00100011111010101010101000000000'))
+    })
+    it('should shift left 0A', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0A], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('01000111110101010101010000000000'))
+    })
+    it('should shift left 0B', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0B], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('10001111101010101010100000000000'))
+    })
+    it('should shift left 0C', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0C], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00011111010101010101000000000000'))
+    })
+    it('should shift left 0D', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0D], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00111110101010101010000000000000'))
+    })
+    it('should shift left 0E', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0E], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('01111101010101010100000000000000'))
+    })
+    it('should shift left 0F', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0F], Opcode.OP_LSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('11111010101010101000000000000000'))
+    })
+  })
+
+  describe('#OP_RSHIFT tests from bitcoind', function () {
+    it('should not shift when no n value', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('10011111000100011111010101010101'))
+    })
+    it('should shift right 1', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x01], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('01001111100010001111101010101010'))
+    })
+    it('should shift right 2', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x02], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00100111110001000111110101010101'))
+    })
+    it('should shift right 3', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x03], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00010011111000100011111010101010'))
+    })
+    it('should shift right 4', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x04], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00001001111100010001111101010101'))
+    })
+    it('should shift right 5', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x05], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000100111110001000111110101010'))
+    })
+    it('should shift right 6', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x06], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000010011111000100011111010101'))
+    })
+    it('should shift right 7', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x07], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000001001111100010001111101010'))
+    })
+    it('should shift right 08', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x08], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000100111110001000111110101'))
+    })
+    it('should shift right 9', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x09], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000010011111000100011111010'))
+    })
+    it('should shift right 0A', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0A], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000001001111100010001111101'))
+    })
+    it('should shift right 0B', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0B], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000000100111110001000111110'))
+    })
+    it('should shift right 0C', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0C], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000000010011111000100011111'))
+    })
+    it('should shift right 0D', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0D], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000000001001111100010001111'))
+    })
+    it('should shift right 0E', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0E], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000000000100111110001000111'))
+    })
+    it('should shift right 0F', function () {
+      const interp = evaluateScript([0x9F, 0x11, 0xF5, 0x55], [0x0F], Opcode.OP_RSHIFT)
+      const result = interp.stack.pop()
+      result.toString('hex').should.equal(toBitpattern('00000000000000010011111000100011'))
+    })
+  })
+  describe('#OP_MUL tests from bitcoind', function () {
+    it('OP_MUL tests', function () {
+      CheckMul([0x05], [0x06], [0x1E])
+      CheckMul([0x05], [0x26], [0xBE, 0x00])
+      CheckMul([0x45], [0x26], [0x3E, 0x0A])
+      CheckMul([0x02], [0x56, 0x24], [0xAC, 0x48])
+      CheckMul([0x05], [0x26, 0x03, 0x32], [0xBE, 0x0F, 0xFA, 0x00])
+      CheckMul([0x06], [0x26, 0x03, 0x32, 0x04], [0xE4, 0x12, 0x2C, 0x19])
+      CheckMul([0xA0, 0xA0], [0xF5, 0xE4], [0x20, 0xB9, 0xDD, 0x0C]) // -20A0*-64F5=0CDDB920
+      CheckMul([0x05, 0x26], [0x26, 0x03, 0x32], [0xBE, 0xB3, 0x71, 0x6D, 0x07])
+      CheckMul([0x06, 0x26], [0x26, 0x03, 0x32, 0x04], [0xE4, 0xB6, 0xA3, 0x85, 0x9F, 0x00])
+      CheckMul([0x05, 0x26, 0x09], [0x26, 0x03, 0x32], [0xBE, 0xB3, 0xC7, 0x89, 0xC9, 0x01])
+      CheckMul([0x06, 0x26, 0x09], [0x26, 0x03, 0x32, 0x04], [0xE4, 0xB6, 0xF9, 0xA1, 0x61, 0x26])
+      CheckMul([0x06, 0x26, 0x09, 0x34], [0x26, 0x03, 0x32, 0x04], [0xE4, 0xB6, 0xF9, 0x59, 0x05, 0x4F, 0xDA, 0x00])
+    })
+  })
+
   describe('bitcoind script evaluation fixtures', function () {
     var testAllFixtures = function (set) {
       var c = 0; var l = set.length
@@ -264,12 +566,11 @@ describe('Interpreter', function () {
           extraData = vector.shift()
         }
 
-        var fullScriptString = vector[0] + ' ' + vector[1]
+        var fullScriptString = `${vector[0]} ${vector[1]}`
         var expected = vector[3] === 'OK'
         var descstr = vector[4]
-        var comment = descstr ? (' (' + descstr + ')') : ''
-        var txt = 'should ' + vector[3] + ' script_tests ' +
-            'vector #' + c + '/ ' + l + ': ' + fullScriptString + comment
+        var comment = descstr ? (` (${descstr})`) : ''
+        var txt = `should ${vector[3]} script_tests vector #${c}/${l}: ${fullScriptString}${comment}`
 
         it(txt, function () { testFixture(vector, expected, extraData) })
       })
