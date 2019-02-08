@@ -149,14 +149,30 @@ describe('Interpreter', function () {
     it('debugger should fire while executing script', function () {
       var si = Interpreter()
       let debugCount = 0
-      si.callbackDebug = function (step) {
+      si.stepListener = function (step) {
         debugCount += 1
       }
-      // si.callbackDebug = debugScript
       si.verify(Script('OP_1 OP_2 OP_ADD'), Script('OP_3 OP_EQUAL'))
       si.errstr.should.equal('')
       // two scripts. first one has 3 instructions. second one has 2 instructions
       debugCount.should.equal(3 + 2)
+    })
+    it('debugger error in callback should not kill executing script', function () {
+      var si = Interpreter()
+      si.stepListener = function (step) {
+        throw new Error('This error is expected.')
+      }
+      si.verify(Script('OP_1 OP_2 OP_ADD'), Script(''))
+      const result = [...si.stack.pop()]
+      result.should.to.deep.equal([3])
+      si.errstr.should.equal('')
+      si.stack.length.should.equal(0)
+    })
+    it('script debugger should fire and not cause an error', function () {
+      var si = Interpreter()
+      si.stepListener = debugScript
+      si.verify(Script('OP_1 OP_2 OP_ADD'), Script('OP_3 OP_EQUAL'))
+      si.errstr.should.equal('')
     })
   })
 
@@ -304,9 +320,9 @@ describe('Interpreter', function () {
     return Interpreter._minimallyEncode(copy)
   }
 
-  const evaluateScript = function (arraySig, arrayPubKey, op) {
+  const evaluateScript = function (arraySig, arrayPubKey, op, funcDebug) {
     const interp = new Interpreter()
-    interp.callbackDebug = debugScript
+    interp.stepListener = funcDebug
     interp.script = new Script().add(Buffer.from(arraySig)).add(Buffer.from(arrayPubKey))
     interp.script.add(op)
     interp.flags = Interpreter.SCRIPT_VERIFY_P2SH |
@@ -318,8 +334,10 @@ describe('Interpreter', function () {
   const debugScript = function (step, stack) {
     const script = (new Script()).add(step.opcode)
     // stack is array of buffers
-    for (let item in stack) {
-      console.log(`Step ${step.pc}: ${script}: ${stack[item].toString('hex')}`)
+    let stackTop = '>'
+    for (let item in stack.main.reverse()) {
+      console.log(`Step ${step.pc}: ${script}:${stackTop}${stack.main[item].toString('hex')}`)
+      stackTop = ' '
     }
   }
 
