@@ -69,6 +69,16 @@ describe('Interpreter', function () {
     interp.errstr.should.equal('')
     interp.flags.should.equal(0)
   })
+  it('interpreter can set new values for stacks', function () {
+    const interp = new Interpreter()
+    interp.stack.push(Buffer.from(['stack']))
+    interp.stack.length.should.equal(1)
+    interp.altstack.push(Buffer.from(['altstack']))
+    interp.altstack.length.should.equal(1)
+    interp.set({stack: [], altstack: []})
+    interp.stack.length.should.equal(0)
+    interp.altstack.length.should.equal(0)
+  })
 
   describe('@castToBool', function () {
     it('should cast these bufs to bool correctly', function () {
@@ -173,6 +183,32 @@ describe('Interpreter', function () {
       si.stepListener = debugScript
       si.verify(Script('OP_1 OP_2 OP_ADD'), Script('OP_3 OP_EQUAL'))
       si.errstr.should.equal('')
+    })
+    it('script debugger should make copies of stack', function () {
+      var si = Interpreter()
+      let stk, stkval, altstk, altstkval
+      si.stepListener = function (step, stack, altstack) {
+        // stack is an array of buffers, interpreter must give us copies of stack so we can't mess it up
+        console.log(step)
+        console.log(stack)
+        console.log(altstack)
+        // these values will get overwritten each step but we only care about that final values
+        stk = (stack === si.stack)
+        stkval = (stack[0] === si.stack[0])
+        altstk = (altstack === si.altstack)
+        altstkval = (altstack[0] === si.altstack[0])
+      }
+      // alt stack is not copied to second script execution so just do everything in second script
+      si.verify(Script(''), Script('OP_2 OP_TOALTSTACK OP_1'))
+      console.log(si.stack)
+      console.log(si.altstack)
+      si.errstr.should.equal('')
+      si.stack.length.should.equal(1)
+      si.altstack.length.should.equal(1)
+      stk.should.equal(false)
+      stkval.should.equal(false)
+      altstk.should.equal(false)
+      altstkval.should.equal(false)
     })
   })
 
@@ -331,12 +367,12 @@ describe('Interpreter', function () {
     return interp
   }
 
-  const debugScript = function (step, stack) {
+  const debugScript = function (step, stack, altstack) {
     const script = (new Script()).add(step.opcode)
     // stack is array of buffers
     let stackTop = '>'
-    for (let item in stack.main.reverse()) {
-      console.log(`Step ${step.pc}: ${script}:${stackTop}${stack.main[item].toString('hex')}`)
+    for (let item in stack.reverse()) {
+      console.log(`Step ${step.pc}: ${script}:${stackTop}${stack[item].toString('hex')}`)
       stackTop = ' '
     }
   }
