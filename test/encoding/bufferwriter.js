@@ -16,7 +16,7 @@ describe('BufferWriter', function () {
     it('set bufs', function () {
       var buf1 = Buffer.from([0])
       var buf2 = Buffer.from([1])
-      var bw = new BufferWriter().set({bufs: [buf1, buf2]})
+      var bw = new BufferWriter().set({ bufs: [buf1, buf2] })
       bw.concat().toString('hex').should.equal('0001')
     })
   })
@@ -25,7 +25,7 @@ describe('BufferWriter', function () {
     it('should concat these two bufs', function () {
       var buf1 = Buffer.from([0])
       var buf2 = Buffer.from([1])
-      var bw = new BufferWriter({bufs: [buf1, buf2]})
+      var bw = new BufferWriter({ bufs: [buf1, buf2] })
       bw.toBuffer().toString('hex').should.equal('0001')
     })
   })
@@ -34,7 +34,7 @@ describe('BufferWriter', function () {
     it('should concat these two bufs', function () {
       var buf1 = Buffer.from([0])
       var buf2 = Buffer.from([1])
-      var bw = new BufferWriter({bufs: [buf1, buf2]})
+      var bw = new BufferWriter({ bufs: [buf1, buf2] })
       bw.concat().toString('hex').should.equal('0001')
     })
   })
@@ -127,7 +127,7 @@ describe('BufferWriter', function () {
       var n = Math.pow(2, 53)
       n.should.equal(n + 1) // javascript number precision limit
       bw.writeVarintNum(n)
-      var br = new BufferReader({buf: bw.concat()})
+      var br = new BufferReader({ buf: bw.concat() })
       br.readVarintBN().toNumber().should.equal(n)
     })
   })

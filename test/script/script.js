@@ -35,12 +35,12 @@ describe('Script', function () {
 
     it('chunks should be array', function () {
       expect(function () {
-        script.set({chunks: 1})
+        script.set({ chunks: 1 })
       }).to.throw(/^Invalid Argument$/)
     })
 
     it('set chunks', function () {
-      script.set({chunks: [1]})
+      script.set({ chunks: [1] })
       expect(script.chunks).to.deep.equal([1])
     })
   })
@@ -941,15 +941,15 @@ describe('Script', function () {
     it('for a P2PKH address', function () {
       var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
       var script = Script.buildPublicKeyHashOut(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.true()
+      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
     it('for a P2SH address', function () {
       var address = Address.fromString('bitcoincash:pzjt8lxnl977xtexlycnl5fyt0al9gcnauyjtqh68n')
       var script = new Script(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.true()
+      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
     it('for a standard opreturn output', function () {
-      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.be.true()
+      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.equal(true)
     })
     it('fails if content is not recognized', function () {
       expect(function () {
