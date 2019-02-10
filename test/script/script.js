@@ -35,12 +35,12 @@ describe('Script', function () {
 
     it('chunks should be array', function () {
       expect(function () {
-        script.set({chunks: 1})
+        script.set({ chunks: 1 })
       }).to.throw(/^Invalid Argument$/)
     })
 
     it('set chunks', function () {
-      script.set({chunks: [1]})
+      script.set({ chunks: [1] })
       expect(script.chunks).to.deep.equal([1])
     })
   })
