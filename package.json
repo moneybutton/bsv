@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "brfs": "2.0.1",
-    "chai": "1.10.0",
+    "chai": "4.2.0",
     "sinon": "^1.13.0",
     "webpack-cli": "^3.2.1"
   },
