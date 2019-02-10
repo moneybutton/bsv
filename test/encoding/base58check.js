@@ -33,7 +33,7 @@ describe('Base58Check', function () {
 
   describe('#set', function () {
     it('should set a buf', function () {
-      should.exist(Base58Check().set({buf: buf}).buf)
+      should.exist(Base58Check().set({ buf: buf }).buf)
     })
   })
 
@@ -95,14 +95,14 @@ describe('Base58Check', function () {
 
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({buf: buf})
+      var b58 = Base58Check({ buf: buf })
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({buf: buf})
+      var b58 = Base58Check({ buf: buf })
       b58.toString().should.equal(enc)
     })
   })

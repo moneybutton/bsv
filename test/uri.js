@@ -15,19 +15,19 @@ describe('URI', function () {
     URI.parse.bind(URI, 'badURI').should.throw(TypeError)
 
     uri = URI.parse('bitcoincash:')
-    expect(uri.address).to.be.undefined()
-    expect(uri.amount).to.be.undefined()
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.address).to.equal(undefined)
+    expect(uri.amount).to.equal(undefined)
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bitcoincash:1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj')
     uri.address.should.equal('1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj')
-    expect(uri.amount).to.be.undefined()
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.amount).to.equal(undefined)
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bitcoincash:1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj?amount=123.22')
     uri.address.should.equal('1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj')
     uri.amount.should.equal('123.22')
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bitcoincash:1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj?amount=123.22' +
                     '&other-param=something&req-extra=param')
@@ -44,19 +44,19 @@ describe('URI', function () {
     URI.parse.bind(URI, 'badURI').should.throw(TypeError)
 
     uri = URI.parse('bchtest:')
-    expect(uri.address).to.be.undefined()
-    expect(uri.amount).to.be.undefined()
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.address).to.equal(undefined)
+    expect(uri.amount).to.equal(undefined)
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
     uri.address.should.equal('mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
-    expect(uri.amount).to.be.undefined()
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.amount).to.equal(undefined)
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF?amount=123.22')
     uri.address.should.equal('mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
     uri.amount.should.equal('123.22')
-    expect(uri.otherParam).to.be.undefined()
+    expect(uri.otherParam).to.equal(undefined)
 
     uri = URI.parse('bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF?amount=123.22' +
                     '&other-param=something&req-extra=param')
@@ -83,8 +83,8 @@ describe('URI', function () {
       var str = 'bitcoincash:1KQHaXuwvwA8GCBvZNHrZpW2H3F8YxHJ5n'
       uri = URI.parse(str)
       uri.address.should.equal('1KQHaXuwvwA8GCBvZNHrZpW2H3F8YxHJ5n')
-      expect(uri.amount).to.be.undefined()
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.amount).to.equal(undefined)
+      expect(uri.otherParam).to.equal(undefined)
       URI.isValid(str).should.equal(true)
     })
 
@@ -94,7 +94,7 @@ describe('URI', function () {
       uri = URI.parse(str)
       uri.address.should.equal('1KQHaXuwvwA8GCBvZNHrZpW2H3F8YxHJ5n')
       uri.amount.should.equal('123.22')
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.otherParam).to.equal(undefined)
       URI.isValid(str).should.equal(true)
     })
 
@@ -149,8 +149,8 @@ describe('URI', function () {
       var str = 'bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF'
       uri = URI.parse(str)
       uri.address.should.equal('mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
-      expect(uri.amount).to.be.undefined()
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.amount).to.equal(undefined)
+      expect(uri.otherParam).to.equal(undefined)
       URI.isValid(str).should.equal(true)
     })
 
@@ -160,7 +160,7 @@ describe('URI', function () {
       uri = URI.parse(str)
       uri.address.should.equal('mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
       uri.amount.should.equal('123.22')
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.otherParam).to.equal(undefined)
       URI.isValid(str).should.equal(true)
     })
 
@@ -280,13 +280,13 @@ describe('URI', function () {
       uri = URI.fromString('bitcoincash:1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj?amount=123.22')
       uri.address.toString().should.equal('1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj')
       uri.amount.should.equal(12322000000)
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.otherParam).to.equal(undefined)
     })
 
     it('stores unknown parameters as "extras"', function () {
       uri = new URI('bitcoincash:1DP69gMMvSuYhbnxsi4EJEFufUAbDrEQfj?amount=1.2&other=param')
       uri.address.should.be.instanceof(bitcore.Address)
-      expect(uri.other).to.be.undefined()
+      expect(uri.other).to.equal(undefined)
       uri.extras.other.should.equal('param')
     })
 
@@ -320,13 +320,13 @@ describe('URI', function () {
       uri = URI.fromString('bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF?amount=123.22')
       uri.address.toString().should.equal('mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF')
       uri.amount.should.equal(12322000000)
-      expect(uri.otherParam).to.be.undefined()
+      expect(uri.otherParam).to.equal(undefined)
     })
 
     it('stores unknown parameters as "extras"', function () {
       uri = new URI('bchtest:mjdptprJUHU3ZbMD6obp4LcrU8rgWtp6dF?amount=1.2&other=param')
       uri.address.should.be.instanceof(bitcore.Address)
-      expect(uri.other).to.be.undefined()
+      expect(uri.other).to.equal(undefined)
       uri.extras.other.should.equal('param')
     })
 
@@ -370,7 +370,7 @@ describe('URI', function () {
     })
     uri.address.should.be.instanceof(bitcore.Address)
     uri.amount.should.equal(120000000)
-    expect(uri.other).to.be.undefined()
+    expect(uri.other).to.equal(undefined)
     uri.extras.other.should.equal('param');
 
     (function () {

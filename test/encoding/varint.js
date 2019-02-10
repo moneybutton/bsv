@@ -26,7 +26,7 @@ describe('Varint', function () {
   describe('#set', function () {
     it('should set a buffer', function () {
       var buf = Buffer.from('00', 'hex')
-      var varint = Varint().set({buf: buf})
+      var varint = Varint().set({ buf: buf })
       varint.buf.toString('hex').should.equal('00')
       varint.set({})
       varint.buf.toString('hex').should.equal('00')

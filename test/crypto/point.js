@@ -30,7 +30,7 @@ describe('Point', function () {
 
     it('should be convertable to a buffer', function () {
       var p = Point(valid.x, valid.y)
-      var a = p.getX().toBuffer({size: 32})
+      var a = p.getX().toBuffer({ size: 32 })
       a.length.should.equal(32)
       a.should.deep.equal(Buffer.from(valid.x, 'hex'))
     })
@@ -44,7 +44,7 @@ describe('Point', function () {
 
     it('should be convertable to a buffer', function () {
       var p = Point(valid.x, valid.y)
-      var a = p.getY().toBuffer({size: 32})
+      var a = p.getY().toBuffer({ size: 32 })
       a.length.should.equal(32)
       a.should.deep.equal(Buffer.from(valid.y, 'hex'))
     })

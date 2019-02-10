@@ -75,7 +75,7 @@ describe('Interpreter', function () {
     interp.stack.length.should.equal(1)
     interp.altstack.push(Buffer.from(['altstack']))
     interp.altstack.length.should.equal(1)
-    interp.set({stack: [], altstack: []})
+    interp.set({ stack: [], altstack: [] })
     interp.stack.length.should.equal(0)
     interp.altstack.length.should.equal(0)
   })
