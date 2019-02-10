@@ -54,7 +54,7 @@
   "devDependencies": {
     "brfs": "2.0.1",
     "chai": "4.2.0",
-    "sinon": "^1.13.0",
+    "sinon": "7.2.3",
     "webpack-cli": "^3.2.1"
   },
   "license": "MIT",
