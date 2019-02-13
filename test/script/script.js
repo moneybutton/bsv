@@ -223,6 +223,22 @@ describe('Script', function () {
       script.chunks[1].opcodenum.should.equal(Opcode.OP_PUSHDATA4)
       script.toASM().should.equal(asm)
     })
+
+    it('should return this script correctly', function () {
+      var asm1 = 'OP_FALSE'
+      var asm2 = 'OP_0'
+      var asm3 = '0'
+      Script.fromASM(asm1).toASM().should.equal(asm3)
+      Script.fromASM(asm2).toASM().should.equal(asm3)
+      Script.fromASM(asm3).toASM().should.equal(asm3)
+    })
+
+    it('should return this script correctly', function () {
+      var asm1 = 'OP_1NEGATE'
+      var asm2 = '-1'
+      Script.fromASM(asm1).toASM().should.equal(asm2)
+      Script.fromASM(asm2).toASM().should.equal(asm2)
+    })
   })
 
   describe('#fromString', function () {
