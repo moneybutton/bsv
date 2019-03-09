@@ -1,7 +1,7 @@
 'use strict'
 
-var bitcore = require('../..')
-var Random = bitcore.crypto.Random
+var bsv = require('../..')
+var Random = bsv.crypto.Random
 
 describe('Random', function () {
   describe('@getRandomBuffer', function () {

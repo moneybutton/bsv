@@ -4,8 +4,8 @@ var _ = require('lodash')
 var chai = require('chai')
 var expect = chai.expect
 
-var bitcore = require('../..')
-var UnspentOutput = bitcore.Transaction.UnspentOutput
+var bsv = require('../..')
+var UnspentOutput = bsv.Transaction.UnspentOutput
 
 describe('UnspentOutput', function () {
   var sampleData1 = {

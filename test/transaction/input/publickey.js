@@ -1,8 +1,8 @@
 'use strict'
 
-var bitcore = require('../../..')
-var Transaction = bitcore.Transaction
-var PrivateKey = bitcore.PrivateKey
+var bsv = require('../../..')
+var Transaction = bsv.Transaction
+var PrivateKey = bsv.PrivateKey
 
 describe('PublicKeyInput', function () {
   var utxo = {

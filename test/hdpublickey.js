@@ -5,14 +5,14 @@ var _ = require('lodash')
 var assert = require('assert')
 require('chai').should()
 var expect = require('chai').expect
-var bitcore = require('..')
+var bsv = require('..')
 var buffer = require('buffer')
-var errors = bitcore.errors
-var hdErrors = bitcore.errors.HDPublicKey
-var BufferUtil = bitcore.util.buffer
-var HDPublicKey = bitcore.HDPublicKey
-var Base58Check = bitcore.encoding.Base58Check
-var Networks = bitcore.Networks
+var errors = bsv.errors
+var hdErrors = bsv.errors.HDPublicKey
+var BufferUtil = bsv.util.buffer
+var HDPublicKey = bsv.HDPublicKey
+var Base58Check = bsv.encoding.Base58Check
+var Networks = bsv.Networks
 
 var xprivkey = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
 var xpubkey = 'xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8'

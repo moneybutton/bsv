@@ -1,8 +1,8 @@
 'use strict'
 
 var should = require('chai').should()
-var bitcore = require('../..')
-var BN = bitcore.crypto.BN
+var bsv = require('../..')
+var BN = bsv.crypto.BN
 
 describe('BN', function () {
   it('should create a bn', function () {
