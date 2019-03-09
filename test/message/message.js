@@ -138,7 +138,7 @@ describe('Message', function () {
     it('roundtrip to-from-to', function () {
       var json = new Message(text).toJSON()
       var message = Message.fromJSON(json)
-      message.toString().should.equal(Buffer.from(text).toString('base64'))
+      message.toString().should.equal(Buffer.from(text).toString())
     })
 
     it('checks that the string parameter is valid JSON', function () {
