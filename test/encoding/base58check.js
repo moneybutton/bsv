@@ -107,6 +107,12 @@ describe('Base58Check', function () {
     })
   })
 
+  describe('@fromString', function () {
+    it('should convert this known string to a buffer', function () {
+      Base58Check.fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
       var b58 = Base58Check(buf)
