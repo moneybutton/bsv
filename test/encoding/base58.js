@@ -102,6 +102,12 @@ describe('Base58', function () {
     })
   })
 
+  describe('#fromString', function () {
+    it('should convert this known string to a buffer', function () {
+      Base58.fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
       var b58 = Base58(buf)
