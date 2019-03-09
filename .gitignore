@@ -15,10 +15,4 @@ bower_components
 report
 .DS_Store
 
-
-bsv.js
-bsv.min.js
-bsv.js.sig
-bsv.min.js.sig
 tests.js
-bsv-lib.js
