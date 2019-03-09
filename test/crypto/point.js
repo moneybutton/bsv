@@ -104,6 +104,49 @@ describe('Point', function () {
     })
   })
 
+  describe('@pointToCompressed', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let pbuf = Point.pointToCompressed(g)
+      pbuf.length.should.equal(33)
+      pbuf.toString('hex').should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('#toBuffer', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let pbuf = g.toBuffer()
+      pbuf.length.should.equal(33)
+      pbuf.toString('hex').should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('@fromBuffer', function () {
+    it('should return g', function () {
+      let buf = Buffer.from('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 'hex')
+      let p = Point.fromBuffer(buf)
+      p.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let phex = g.toHex()
+      phex.length.should.equal(33 * 2)
+      phex.should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('should return g', function () {
+      let hex = '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798'
+      let p = Point.fromHex(hex)
+      p.toHex().should.equal(hex)
+    })
+  })
+
   describe('#validate', function () {
     it('should describe this point as valid', function () {
       var p = Point(valid.x, valid.y)
