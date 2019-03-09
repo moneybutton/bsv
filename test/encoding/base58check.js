@@ -83,6 +83,20 @@ describe('Base58Check', function () {
 
     it('should set buffer', function () {
       var b58 = Base58Check().fromBuffer(buf)
+      b58.toHex().should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('@fromBuffer', function () {
+    it('should set buffer', function () {
+      var b58 = Base58Check.fromBuffer(buf)
+      b58.buf.toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('should set hex', function () {
+      var b58 = Base58Check.fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -95,14 +109,21 @@ describe('Base58Check', function () {
 
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({ buf: buf })
-      b58.buf.toString('hex').should.equal(buf.toString('hex'))
+      var b58 = Base58Check(buf)
+      b58.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should return the hex', function () {
+      var b58 = Base58Check(buf)
+      b58.toHex().should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({ buf: buf })
+      var b58 = Base58Check(buf)
       b58.toString().should.equal(enc)
     })
   })
