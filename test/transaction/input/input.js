@@ -4,13 +4,13 @@ var should = require('chai').should()
 var expect = require('chai').expect
 var _ = require('lodash')
 
-var bitcore = require('../../..')
-var errors = bitcore.errors
-var PrivateKey = bitcore.PrivateKey
-var Address = bitcore.Address
-var Script = bitcore.Script
-var Networks = bitcore.Networks
-var Input = bitcore.Transaction.Input
+var bsv = require('../../..')
+var errors = bsv.errors
+var PrivateKey = bsv.PrivateKey
+var Address = bsv.Address
+var Script = bsv.Script
+var Networks = bsv.Networks
+var Input = bsv.Transaction.Input
 
 describe('Transaction.Input', function () {
   var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')

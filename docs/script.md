@@ -103,7 +103,7 @@ s.isMultisigOut() // true
 ```
 
 ## Script Interpreting and Validation
-To validate a transaction, the bitcoin network validates all of its inputs and outputs. To validate an input, the input's script is concatenated with the referenced output script, and the result is executed. If at the end of execution the stack contains a 'true' value, then the transaction is valid. You can do this in `bitcore` by using the `Interpreter` class. The entry point (and probably the only interface you'll need for most applications) is the method `Interpreter#verify()`.
+To validate a transaction, the bitcoin network validates all of its inputs and outputs. To validate an input, the input's script is concatenated with the referenced output script, and the result is executed. If at the end of execution the stack contains a 'true' value, then the transaction is valid. You can do this in `bsv` by using the `Interpreter` class. The entry point (and probably the only interface you'll need for most applications) is the method `Interpreter#verify()`.
 
 You can use it like this:
 

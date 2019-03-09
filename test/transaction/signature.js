@@ -3,12 +3,12 @@
 require('chai').should()
 var expect = require('chai').expect
 
-var bitcore = require('../..')
-var Transaction = bitcore.Transaction
-var TransactionSignature = bitcore.Transaction.Signature
-var Script = bitcore.Script
-var PrivateKey = bitcore.PrivateKey
-var errors = bitcore.errors
+var bsv = require('../..')
+var Transaction = bsv.Transaction
+var TransactionSignature = bsv.Transaction.Signature
+var Script = bsv.Script
+var PrivateKey = bsv.PrivateKey
+var errors = bsv.errors
 
 describe('TransactionSignature', function () {
   var fromAddress = 'mszYqVnqKoQx4jcTdJXxwKAissE3Jbrrc1'

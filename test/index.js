@@ -4,7 +4,7 @@ var should = require('chai').should()
 var bsv = require('../')
 
 describe('#versionGuard', function () {
-  it('global._bitcore should be defined', function () {
+  it('global._bsv should be defined', function () {
     should.equal(global._bsv, bsv.version)
   })
 

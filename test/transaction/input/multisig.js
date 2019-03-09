@@ -4,13 +4,13 @@
 var should = require('chai').should()
 var _ = require('lodash')
 
-var bitcore = require('../../..')
-var Transaction = bitcore.Transaction
-var PrivateKey = bitcore.PrivateKey
-var Address = bitcore.Address
-var Script = bitcore.Script
-var Signature = bitcore.crypto.Signature
-var MultiSigInput = bitcore.Transaction.Input.MultiSig
+var bsv = require('../../..')
+var Transaction = bsv.Transaction
+var PrivateKey = bsv.PrivateKey
+var Address = bsv.Address
+var Script = bsv.Script
+var Signature = bsv.crypto.Signature
+var MultiSigInput = bsv.Transaction.Input.MultiSig
 
 describe('MultiSigInput', function () {
   var privateKey1 = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')

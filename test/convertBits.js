@@ -1,8 +1,8 @@
 'use strict'
 
 require('chai').should()
-var bitcore = require('..')
-var convertBits = bitcore.util.convertBits
+var bsv = require('..')
+var convertBits = bsv.util.convertBits
 
 describe('convertBits', function () {
   it('should convert 1', function () {
