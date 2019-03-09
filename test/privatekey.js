@@ -4,12 +4,12 @@ var chai = require('chai')
 var should = chai.should()
 var expect = chai.expect
 
-var bitcore = require('..')
-var BN = bitcore.crypto.BN
-var Point = bitcore.crypto.Point
-var PrivateKey = bitcore.PrivateKey
-var Networks = bitcore.Networks
-var Base58Check = bitcore.encoding.Base58Check
+var bsv = require('..')
+var BN = bsv.crypto.BN
+var Point = bsv.crypto.Point
+var PrivateKey = bsv.PrivateKey
+var Networks = bsv.Networks
+var Base58Check = bsv.encoding.Base58Check
 
 var validbase58 = require('./data/bitcoind/base58_keys_valid.json')
 var invalidbase58 = require('./data/bitcoind/base58_keys_invalid.json')

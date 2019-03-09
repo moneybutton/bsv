@@ -1,8 +1,8 @@
 'use strict'
 
 require('chai').should()
-var bitcore = require('..')
-var base32 = bitcore.util.base32
+var bsv = require('..')
+var base32 = bsv.util.base32
 
 describe('base32', function () {
   it('should encode 0-5', function () {
