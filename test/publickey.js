@@ -266,6 +266,14 @@ describe('PublicKey', function () {
     })
   })
 
+  describe('#fromHex', function () {
+    it('should parse this known valid public key', function () {
+      var pk = PublicKey.fromHex('041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+      pk.point.getX().toString(16).should.equal('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
+      pk.point.getY().toString(16).should.equal('7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341')
+    })
+  })
+
   describe('#fromX', function () {
     it('should create this known public key', function () {
       var x = BN.fromBuffer(Buffer.from('1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a', 'hex'))
@@ -347,6 +355,14 @@ describe('PublicKey', function () {
       var hex = '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
       var pk = PublicKey.fromString(hex)
       pk.toString().should.equal(hex)
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should print this known public key', function () {
+      var hex = '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
+      var pk = PublicKey.fromHex(hex)
+      pk.toHex().should.equal(hex)
     })
   })
 
