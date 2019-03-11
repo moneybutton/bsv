@@ -233,7 +233,7 @@ describe('BIP32 compliance', function () {
       chainCode: chainCodeBuffer
     })
     var derived = key.deriveChild("m/44'/0'/0'/0/0'")
-    derived.privateKey.toString().should.equal('3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb')
+    derived.privateKey.toHex().should.equal('3348069561d2a0fb925e74bf198762acc47dce7db27372257d2d959a9e6f8aeb')
   })
 
   it('should NOT use full 32 bytes for private key data that is hashed with nonCompliant flag', function () {
@@ -249,7 +249,7 @@ describe('BIP32 compliance', function () {
       chainCode: chainCodeBuffer
     })
     var derived = key.deriveNonCompliantChild("m/44'/0'/0'/0/0'")
-    derived.privateKey.toString().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836')
+    derived.privateKey.toHex().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836')
   })
 
   it('should NOT use full 32 bytes for private key data that is hashed with the nonCompliant derive method', function () {
@@ -265,7 +265,7 @@ describe('BIP32 compliance', function () {
       chainCode: chainCodeBuffer
     })
     var derived = key.derive("m/44'/0'/0'/0/0'")
-    derived.privateKey.toString().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836')
+    derived.privateKey.toHex().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836')
   })
 
   describe('edge cases', function () {
@@ -299,7 +299,7 @@ describe('BIP32 compliance', function () {
         chainCode: chainCodeBuffer
       })
       var derived = key.derive("m/44'")
-      derived.privateKey.toString().should.equal('b15bce3608d607ee3a49069197732c656bca942ee59f3e29b4d56914c1de6825')
+      derived.privateKey.toHex().should.equal('b15bce3608d607ee3a49069197732c656bca942ee59f3e29b4d56914c1de6825')
       bsv.PrivateKey.isValid.callCount.should.equal(2)
     })
     it('will handle edge case that a derive public key is invalid', function () {
