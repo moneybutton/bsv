@@ -208,6 +208,16 @@ describe('PrivateKey', function () {
       JSON.stringify(key).should.equal(json)
     })
 
+    it('should input/output json', function () {
+      var json = JSON.stringify({
+        bn: '96c132224121b509b7d0a16245e957d9192609c5637c6228311287b1be21627a',
+        compressed: false,
+        network: 'livenet'
+      })
+      var key = PrivateKey.fromJSON(JSON.parse(json))
+      JSON.stringify(key).should.equal(json)
+    })
+
     it('input json should correctly initialize network field', function () {
       ['livenet', 'testnet', 'mainnet'].forEach(function (net) {
         var pk = PrivateKey.fromObject({
@@ -228,6 +238,12 @@ describe('PrivateKey', function () {
     it('also accepts an object as argument', function () {
       expect(function () {
         return PrivateKey.fromObject(new PrivateKey().toObject())
+      }).to.not.throw()
+    })
+
+    it('also accepts an object as argument', function () {
+      expect(function () {
+        return PrivateKey.fromObject(new PrivateKey().toJSON())
       }).to.not.throw()
     })
   })
@@ -315,38 +331,15 @@ describe('PrivateKey', function () {
   describe('buffer serialization', function () {
     it('returns an expected value when creating a PrivateKey from a buffer', function () {
       var privkey = new PrivateKey(BN.fromBuffer(buf), 'livenet')
-      privkey.toString().should.equal(buf.toString('hex'))
+      privkey.toHex().should.equal(buf.toString('hex'))
     })
 
     it('roundtrips correctly when using toBuffer/fromBuffer', function () {
       var privkey = new PrivateKey(BN.fromBuffer(buf))
       var toBuffer = new PrivateKey(privkey.toBuffer())
       var fromBuffer = PrivateKey.fromBuffer(toBuffer.toBuffer())
-      fromBuffer.toString().should.equal(privkey.toString())
+      fromBuffer.toHex().should.equal(privkey.toHex())
     })
-
-    it('will output a 31 byte buffer', function () {
-      var bn = BN.fromBuffer(Buffer.from('9b5a0e8fee1835e21170ce1431f9b6f19b487e67748ed70d8a4462bc031915', 'hex'))
-      var privkey = new PrivateKey(bn)
-      var buffer = privkey.toBufferNoPadding()
-      buffer.length.should.equal(31)
-    })
-
-    // TODO: enable for v1.0.0 when toBuffer is changed to always be 32 bytes long
-    // it('will output a 32 byte buffer', function() {
-    //   var bn = BN.fromBuffer(Buffer.from('9b5a0e8fee1835e21170ce1431f9b6f19b487e67748ed70d8a4462bc031915', 'hex'));
-    //   var privkey = new PrivateKey(bn);
-    //   var buffer = privkey.toBuffer();
-    //   buffer.length.should.equal(32);
-    // });
-
-    // TODO: enable for v1.0.0 when toBuffer is changed to always be 32 bytes long
-    // it('should return buffer with length equal 32', function() {
-    //   var bn = BN.fromBuffer(buf.slice(0, 31));
-    //   var privkey = new PrivateKey(bn, 'livenet');
-    //   var expected = Buffer.concat([ Buffer.from([0]), buf.slice(0, 31) ]);
-    //   privkey.toBuffer().toString('hex').should.equal(expected.toString('hex'));
-    // });
   })
 
   describe('#toBigNumber', function () {
@@ -391,7 +384,7 @@ describe('PrivateKey', function () {
   describe('#toString', function () {
     it('should parse this uncompressed livenet address correctly', function () {
       var privkey = PrivateKey.fromString(wifLivenetUncompressed)
-      privkey.toString().should.equal('96c132224121b509b7d0a16245e957d9192609c5637c6228311287b1be21627a')
+      privkey.toHex().should.equal('96c132224121b509b7d0a16245e957d9192609c5637c6228311287b1be21627a')
     })
   })
 
