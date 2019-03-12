@@ -598,7 +598,7 @@ describe('Address', function () {
       let privateKey = PrivateKey.fromRandom()
       let publicKey = PublicKey.fromPrivateKey(privateKey)
       let address = Address.fromPublicKey(publicKey)
-      address.toString()[0].should.equal('1') 
+      address.toString()[0].should.equal('1')
     })
 
     it('should derive from public key testnet', function () {
@@ -613,7 +613,7 @@ describe('Address', function () {
     it('should derive from public key', function () {
       let privateKey = PrivateKey.fromRandom()
       let address = Address.fromPrivateKey(privateKey)
-      address.toString()[0].should.equal('1') 
+      address.toString()[0].should.equal('1')
     })
 
     it('should derive from public key testnet', function () {
