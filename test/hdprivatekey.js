@@ -282,6 +282,18 @@ describe('HDPrivate key interface', function () {
     })
   })
 
+  describe('from random', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var xprv1 = new HDPrivateKey(str)
+      var xprv2 = HDPrivateKey.fromRandom()
+      var xprv3 = HDPrivateKey.fromRandom()
+      xprv1.toString().should.not.equal(xprv2.toString())
+      xprv2.toString().should.not.equal(xprv3.toString())
+      xprv1.toString().should.not.equal(xprv3.toString())
+    })
+  })
+
   describe('conversion to plain object/json', function () {
     var plainObject = {
       'network': 'livenet',
