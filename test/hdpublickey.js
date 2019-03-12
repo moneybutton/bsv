@@ -160,6 +160,16 @@ describe('HDPublicKey interface', function () {
     })
   })
 
+  describe('conversion to/from hex', function () {
+    it('should roundtrip to an equivalent object', function () {
+      var pubKey = new HDPublicKey(xpubkey)
+      var toHex = pubKey.toHex()
+      var fromHex = HDPublicKey.fromHex(toHex)
+      var roundTrip = new HDPublicKey(fromHex.toBuffer())
+      roundTrip.xpubkey.should.equal(xpubkey)
+    })
+  })
+
   describe('from hdprivatekey', function () {
     var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
     it('should roundtrip to/from a buffer', function () {
