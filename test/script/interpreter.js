@@ -3,6 +3,7 @@
 var should = require('chai').should()
 var bsv = require('../..')
 var Interpreter = bsv.Script.Interpreter
+var Address = bsv.Address
 var Transaction = bsv.Transaction
 var PrivateKey = bsv.PrivateKey
 var Script = bsv.Script
@@ -129,7 +130,7 @@ describe('Interpreter', function () {
       // first we create a transaction
       var privateKey = new PrivateKey('cSBnVM4xvxarwGQuAfQFwqDg9k5tErHUHzgWsEfD4zdwUasvqRVY')
       var publicKey = privateKey.publicKey
-      var fromAddress = publicKey.toAddress()
+      var fromAddress = Address.fromPublicKey(publicKey)
       var toAddress = 'mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc'
       var scriptPubkey = Script.buildPublicKeyHashOut(fromAddress)
       var utxo = {

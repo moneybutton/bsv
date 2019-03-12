@@ -976,8 +976,8 @@ describe('Script', function () {
 
   describe('toAddress', function () {
     var pubkey = new PublicKey('027ffeb8c7795d529ee9cd96512d472cefe398a0597623438ac5d066a64af50072')
-    var liveAddress = pubkey.toAddress(Networks.livenet)
-    var testAddress = pubkey.toAddress(Networks.testnet)
+    var liveAddress = Address.fromPublicKey(pubkey, Networks.livenet)
+    var testAddress = Address.fromPublicKey(pubkey, Networks.testnet)
 
     it('priorize the network argument', function () {
       var script = new Script(liveAddress)
