@@ -8,6 +8,7 @@ var expect = chai.expect
 
 var bsv = require('..')
 var PublicKey = bsv.PublicKey
+var PrivateKey = bsv.PrivateKey
 var Address = bsv.Address
 var Script = bsv.Script
 var Networks = bsv.Networks
@@ -589,6 +590,42 @@ describe('Address', function () {
       expect(function () {
         return Address.createMultisig([], 3, 'testnet')
       }).to.throw('Number of required signatures must be less than or equal to the number of public keys')
+    })
+  })
+
+  describe('#fromPublicKey', function () {
+    it('should derive from public key', function () {
+      let privateKey = PrivateKey.fromRandom()
+      let publicKey = PublicKey.fromPrivateKey(privateKey)
+      let address = Address.fromPublicKey(publicKey)
+      address.toString()[0].should.equal('1')
+    })
+
+    it('should derive from public key testnet', function () {
+      let privateKey = PrivateKey.fromRandom('testnet')
+      let publicKey = PublicKey.fromPrivateKey(privateKey)
+      let address = Address.fromPublicKey(publicKey, 'testnet')
+      ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
+    })
+  })
+
+  describe('#fromPrivateKey', function () {
+    it('should derive from public key', function () {
+      let privateKey = PrivateKey.fromRandom()
+      let address = Address.fromPrivateKey(privateKey)
+      address.toString()[0].should.equal('1')
+    })
+
+    it('should derive from public key testnet', function () {
+      let privateKey = PrivateKey.fromRandom('testnet')
+      let address = Address.fromPrivateKey(privateKey, 'testnet')
+      ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
+    })
+
+    it('should derive from public key testnet', function () {
+      let privateKey = PrivateKey.fromRandom('testnet')
+      let address = Address.fromPrivateKey(privateKey)
+      ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
     })
   })
 })
