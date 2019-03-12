@@ -266,7 +266,18 @@ describe('HDPrivate key interface', function () {
       var priv = new HDPrivateKey(str)
       var toBuffer = priv.toBuffer()
       var fromBuffer = HDPrivateKey.fromBuffer(toBuffer)
-      var roundTrip = new HDPrivateKey(fromBuffer.toBuffer())
+      var roundTrip = new HDPrivateKey(fromBuffer.toString())
+      roundTrip.xprivkey.should.equal(str)
+    })
+  })
+
+  describe('conversion to/from hex', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var priv = new HDPrivateKey(str)
+      var toBuffer = priv.toBuffer()
+      var fromBuffer = HDPrivateKey.fromBuffer(toBuffer)
+      var roundTrip = new HDPrivateKey(fromBuffer.toString())
       roundTrip.xprivkey.should.equal(str)
     })
   })
