@@ -239,6 +239,30 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromBuffer', function () {
+    it('can be instantiated from another address', function () {
+      var address = Address.fromBuffer(buf)
+      var address2 = new Address({
+        hashBuffer: address.hashBuffer,
+        network: address.network,
+        type: address.type
+      })
+      address.toString().should.equal(address2.toString())
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('can be instantiated from another address', function () {
+      var address = Address.fromHex(buf.toString('hex'))
+      var address2 = new Address({
+        hashBuffer: address.hashBuffer,
+        network: address.network,
+        type: address.type
+      })
+      address.toString().should.equal(address2.toString())
+    })
+  })
+
   describe('encodings', function () {
     it('should make an address from a buffer', function () {
       Address.fromBuffer(buf).toString().should.equal(str)
@@ -449,6 +473,13 @@ describe('Address', function () {
     it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', function () {
       var address = new Address(str)
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'))
+    })
+  })
+
+  describe('#toHex', function () {
+    it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', function () {
+      var address = new Address(str)
+      address.toHex().slice(2).should.equal(pubkeyhash.toString('hex'))
     })
   })
 
