@@ -228,7 +228,7 @@ describe('PublicKey', function () {
     it('should throw error because not a buffer', function () {
       (function () {
         PublicKey.fromBuffer('091ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a')
-      }).should.throw('Must be a hex buffer of DER encoded public key')
+      }).should.throw('Must be a buffer of DER encoded public key')
     })
 
     it('should throw error because buffer is the incorrect length', function () {
