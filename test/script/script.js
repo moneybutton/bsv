@@ -753,7 +753,7 @@ describe('Script', function () {
   })
   describe('#buildPublicKeyHashOut', function () {
     it('should create script from livenet address', function () {
-      var address = Address.fromString('bitcoincash:qrk2ulgf99rm0mjfnr39f2jgjqxjd5kwr5rfyamw2k')
+      var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
       var s = Script.buildPublicKeyHashOut(address)
       should.exist(s)
       s.toString().should.equal('OP_DUP OP_HASH160 20 0xecae7d092947b7ee4998e254aa48900d26d2ce1d OP_EQUALVERIFY OP_CHECKSIG')
@@ -761,7 +761,7 @@ describe('Script', function () {
       s.toAddress().toString().should.equal('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
     })
     it('should create script from testnet address', function () {
-      var address = Address.fromString('bchtest:qzukhqt0x796hv07tpdhheaze5twhxdnuslxfpzagp')
+      var address = Address.fromString('mxRN6AQJaDi5R6KmvMaEmZGe3n5ScV9u33')
       var s = Script.buildPublicKeyHashOut(address)
       should.exist(s)
       s.toString().should.equal('OP_DUP OP_HASH160 20 0xb96b816f378babb1fe585b7be7a2cd16eb99b3e4 OP_EQUALVERIFY OP_CHECKSIG')
@@ -960,7 +960,7 @@ describe('Script', function () {
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
     it('for a P2SH address', function () {
-      var address = Address.fromString('bitcoincash:pzjt8lxnl977xtexlycnl5fyt0al9gcnauyjtqh68n')
+      var address = Address.fromString('3GhtMmAbWrUf6Y8vDxn9ETB14R6V7Br3mt')
       var script = new Script(address)
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
