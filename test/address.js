@@ -73,85 +73,6 @@ describe('Address', function () {
     })
   })
 
-  describe('Cashaddr', function () {
-    // from https://github.com/Bitcoin-UAHF/spec/blob/master/cashaddr.md#examples-of-address-translation
-    //
-    //
-    var t = [
-      ['1BpEi6DfDAUFd7GtittLSdBeYJvcoaVggu', 'bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a'],
-      ['1KXrWXciRDZUpQwQmuM1DbwsKDLYAYsVLR', 'bitcoincash:qr95sy3j9xwd2ap32xkykttr4cvcu7as4y0qverfuy'],
-      ['16w1D5WRVKJuZUsSRzdLp9w3YGcgoxDXb', 'bitcoincash:qqq3728yw0y47sqn6l2na30mcw6zm78dzqre909m2r'],
-      ['3CWFddi6m4ndiGyKqzYvsFYagqDLPVMTzC', 'bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq'],
-      ['3LDsS579y7sruadqu11beEJoTjdFiFCdX4', 'bitcoincash:pr95sy3j9xwd2ap32xkykttr4cvcu7as4yc93ky28e'],
-      ['31nwvkZwyPdgzjBJZXfDmSWsC4ZLKpYyUw', 'bitcoincash:pqq3728yw0y47sqn6l2na30mcw6zm78dzq5ucqzc37']
-    ]
-    var i
-
-    for (i = 0; i < t.length; i++) {
-      let legacyaddr = t[i][0]
-      let cashaddr = t[i][1]
-      it('should convert ' + legacyaddr, function () {
-        var a = new Address(legacyaddr)
-        a.toCashAddress().should.equal(cashaddr)
-      })
-    }
-
-    for (i = 0; i < t.length; i++) {
-      let legacyaddr = t[i][0]
-      let cashaddr = t[i][1]
-      it('should convert ' + cashaddr, function () {
-        var a = new Address(cashaddr)
-        a.toLegacyAddress().should.equal(legacyaddr)
-      })
-    }
-
-    for (i = 0; i < t.length; i++) {
-      let legacyaddr2 = t[i][0]
-      let cashaddr2 = t[i][1].toUpperCase()
-      it('should convert UPPERCASE addresses ' + cashaddr2, function () {
-        var a = new Address(cashaddr2)
-        a.toLegacyAddress().should.equal(legacyaddr2)
-      })
-    }
-
-    for (i = 0; i < t.length; i++) {
-      let legacyaddr3 = t[i][0]
-      let cashaddr3 = t[i][1].split(':')[1]
-      it('should convert no cashAddrPrefix addresses ' + cashaddr3, function () {
-        var a = new Address(cashaddr3)
-        a.toObject().network.should.equal('livenet')
-        a.toLegacyAddress().should.equal(legacyaddr3)
-      })
-    }
-
-    it('should be able to convert a testnet address to a cashaddr', function () {
-      var a = new Address('mysKEM9kN86Nkcqwb4gw7RqtDyc552LQoq')
-      a.toCashAddress().should.equal('bchtest:qry5cr6h2qe25pzwwfrz8m653fh2tf6nusj9dl0ujc')
-    })
-
-    it('should be able to convert a testnet address to a cashaddr without cashAddrPrefix', function () {
-      var a = new Address('mysKEM9kN86Nkcqwb4gw7RqtDyc552LQoq')
-      a.toCashAddress(false).should.equal('bchtest:qry5cr6h2qe25pzwwfrz8m653fh2tf6nusj9dl0ujc')
-    })
-
-    it('should be able to convert a testnet address to a cashaddr with cashAddrPrefix', function () {
-      var a = new Address('mysKEM9kN86Nkcqwb4gw7RqtDyc552LQoq')
-      a.toCashAddress().should.equal('bchtest:qry5cr6h2qe25pzwwfrz8m653fh2tf6nusj9dl0ujc')
-    })
-
-    it('should fail convert no cashAddrPrefix addresses bad checksum ', function () {
-      (function () {
-        new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx7') //eslint-disable-line
-      }).should.throw('Invalid checksum')
-    })
-
-    it('should fail convert a mixed case addresses ', function () {
-      (function () {
-        new Address('qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6A') //eslint-disable-line
-      }).should.throw('Invalid Argument: Mixed case')
-    })
-  })
-
   // livenet valid
   var PKHLivenet = [
     '15vkcKf7gB23wLAnZLmbVuMiiVDc1Nm4a2',
@@ -215,35 +136,6 @@ describe('Address', function () {
     it('isValid returns false on network mismatch', function () {
       Address.isValid('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo', 'testnet').should.equal(false)
       Address.isValid('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo', 'regtest').should.equal(false)
-    })
-
-    it('isValid returns true on network match on cashaddr', function () {
-      Address.isValid('bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a', 'mainnet').should.equal(true)
-      Address.isValid('bchreg:qrjf2q4j0vx7xwqlnzcuy56vk9j9an0z458k0lrw3m', 'regtest').should.equal(true)
-      Address.isValid('bchtest:qrzm24wqva0gnvgcsyc0h8tdpgw462mgmc9lef83vw', 'testnet').should.equal(true)
-    })
-
-    it('isValid returns false on network mismatch on cashaddr', function () {
-      Address.isValid('bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a', 'testnet').should.equal(false)
-      Address.isValid('bchreg:qrjf2q4j0vx7xwqlnzcuy56vk9j9an0z458k0lrw3m', 'testnet').should.equal(false)
-      Address.isValid('bchtest:qrzm24wqva0gnvgcsyc0h8tdpgw462mgmc9lef83vw', 'mainnet').should.equal(false)
-    })
-
-    it('isValid returns true on regtest address', function () {
-      Address.isValid('qqww7zk6w7e6eu6299cwcu45ymwx7rmt3ckhj4xs0d', 'regtest').should.equal(true)
-      Address.isValid('qqww7zk6w7e6eu6299cwcu45ymwx7rmt3ckhj4xs0d', 'testnet').should.equal(false)
-      Address.isValid('qqww7zk6w7e6eu6299cwcu45ymwx7rmt3ckhj4xs0d', 'mainnet').should.equal(false)
-    })
-
-    it('isValid works as expected even after enableRegtest() is called', function () {
-      Networks.enableRegtest()
-      Address.isValid('bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a', 'mainnet').should.equal(true)
-      Address.isValid('bchreg:qrjf2q4j0vx7xwqlnzcuy56vk9j9an0z458k0lrw3m', 'regtest').should.equal(true)
-      Address.isValid('bchtest:qrzm24wqva0gnvgcsyc0h8tdpgw462mgmc9lef83vw', 'testnet').should.equal(true)
-      Address.isValid('bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a', 'testnet').should.equal(false)
-      Address.isValid('bchreg:qrjf2q4j0vx7xwqlnzcuy56vk9j9an0z458k0lrw3m', 'testnet').should.equal(false)
-      Address.isValid('bchtest:qrzm24wqva0gnvgcsyc0h8tdpgw462mgmc9lef83vw', 'mainnet').should.equal(false)
-      Networks.disableRegtest()
     })
 
     it('validates correctly the P2PKH test vector', function () {
@@ -328,7 +220,7 @@ describe('Address', function () {
     })
 
     it('addresses with whitespace are validated correctly', function () {
-      var ws = '  \r \t    \n bitcoincash:qp3awknl3dz8ezu3rmapff3phnzz95kansf0r3rs4x \t \n            \r'
+      var ws = '  \r \t    \n 1A6ut1tWnUq1SEQLMr4ttDh24wcbJ5o9TT \t \n            \r'
       var error = Address.getValidationError(ws)
       should.not.exist(error)
       Address.fromString(ws).toString().should.equal('1A6ut1tWnUq1SEQLMr4ttDh24wcbJ5o9TT')

@@ -62,7 +62,7 @@ describe('Transaction', function () {
       'script': testScript,
       'satoshis': testAmount
     })
-    .to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', testAmount - 10000)
+    .to('mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc', testAmount - 10000)
 
   it('can serialize to a plain javascript object', function () {
     var object = testTransaction.toObject()
@@ -75,7 +75,7 @@ describe('Transaction', function () {
 
   it('will not accept NaN as an amount', function () {
     (function () {
-      new Transaction().to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', NaN) //eslint-disable-line
+      new Transaction().to('mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc', NaN) //eslint-disable-line
     }).should.throw('Amount is expected to be a positive integer')
   })
 
@@ -607,7 +607,7 @@ describe('Transaction', function () {
           'script': testScript,
           'satoshis': testAmount
         })
-        .to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', testAmount - 10000)
+        .to('mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc', testAmount - 10000)
 
       tx.outputs[0]._satoshis = 100
       tx.outputs[0]._satoshisBN = new BN('fffffffffffffff', 16)
@@ -623,7 +623,7 @@ describe('Transaction', function () {
           'script': testScript,
           'satoshis': testAmount
         })
-        .to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', testAmount - 10000)
+        .to('mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc', testAmount - 10000)
 
       tx.outputs[0]._satoshis = -100
       tx.outputs[0]._satoshisBN = new BN(-100, 10)
@@ -639,7 +639,7 @@ describe('Transaction', function () {
           'script': testScript,
           'satoshis': testAmount
         })
-        .to('bchtest:qpuzrs9rw692n5dr0ctv7asq9th4xul34qes9nf4x6', testAmount - 10000)
+        .to('mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc', testAmount - 10000)
 
       tx.toBuffer = sinon.stub().returns({
         length: 10000000
