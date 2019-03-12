@@ -10,6 +10,7 @@ var buffer = require('buffer')
 var errors = bsv.errors
 var hdErrors = bsv.errors.HDPublicKey
 var BufferUtil = bsv.util.buffer
+var HDPrivateKey = bsv.HDPrivateKey
 var HDPublicKey = bsv.HDPublicKey
 var Base58Check = bsv.encoding.Base58Check
 var Networks = bsv.Networks
@@ -156,6 +157,21 @@ describe('HDPublicKey interface', function () {
       var fromBuffer = HDPublicKey.fromBuffer(toBuffer)
       var roundTrip = new HDPublicKey(fromBuffer.toBuffer())
       roundTrip.xpubkey.should.equal(xpubkey)
+    })
+  })
+
+  describe('from hdprivatekey', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var xprv1 = new HDPrivateKey(str)
+      var xprv2 = HDPrivateKey.fromRandom()
+      var xprv3 = HDPrivateKey.fromRandom()
+      var xpub1 = HDPublicKey.fromHDPrivateKey(xprv1)
+      var xpub2 = HDPublicKey.fromHDPrivateKey(xprv2)
+      var xpub3 = HDPublicKey.fromHDPrivateKey(xprv3)
+      xpub1.toString().should.equal('xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8')
+      xpub1.toString().should.not.equal(xpub2.toString())
+      xpub1.toString().should.not.equal(xpub3.toString())
     })
   })
 
