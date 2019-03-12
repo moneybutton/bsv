@@ -6,6 +6,7 @@ var should = chai.should()
 
 var bsv = require('../../')
 var Address = bsv.Address
+var PublicKey = bsv.PublicKey
 var Signature = bsv.crypto.Signature
 var Message = require('../../lib/message')
 
@@ -23,7 +24,7 @@ describe('Message', function () {
   var signature = Signature.fromCompact(Buffer.from(signatureString, 'base64'))
   var badSignature = Signature.fromCompact(Buffer.from(badSignatureString, 'base64'))
 
-  var publicKey = privateKey.toPublicKey()
+  var publicKey = PublicKey.fromPrivateKey(privateKey)
 
   it('will error with incorrect message type', function () {
     expect(function () {
@@ -125,7 +126,7 @@ describe('Message', function () {
     var privateKey = new bsv.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
     var message = new Message('This is an example of a signed message.')
     var signature = message.sign(privateKey)
-    var verified = message.verify(privateKey.toAddress(), signature)
+    var verified = message.verify(Address.fromPrivateKey(privateKey), signature)
     verified.should.equal(true)
   })
 

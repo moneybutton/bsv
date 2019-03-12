@@ -5,6 +5,7 @@ var ECIES = require('../../lib/ecies/bitcore-ecies')
 var should = require('chai').should()
 var bsv = require('../../')
 var PrivateKey = bsv.PrivateKey
+var PublicKey = bsv.PublicKey
 
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
@@ -39,18 +40,18 @@ describe('Bitcore ECIES', function () {
   it('chainable function', function () {
     var ecies = ECIES()
       .privateKey(aliceKey)
-      .publicKey(bobKey.publicKey);
+      .publicKey(PublicKey.fromPrivateKey(bobKey))
 
-    (ecies instanceof ECIES).should.equal(true)
+    ;(ecies instanceof ECIES).should.equal(true)
   })
 
   var alice = ECIES()
     .privateKey(aliceKey)
-    .publicKey(bobKey.publicKey)
+    .publicKey(PublicKey.fromPrivateKey(bobKey))
 
   var bob = ECIES()
     .privateKey(bobKey)
-    .publicKey(aliceKey.publicKey)
+    .publicKey(PublicKey.fromPrivateKey(aliceKey))
 
   var message = 'attack at dawn'
   var encrypted = '0339e504d6492b082da96e11e8f039796b06cd4855c101e2492a6f10f3e056a9e712c732611c6917ab5c57a1926973bc44a1586e94a783f81d05ce72518d9b0a80e2e13c7ff7d1306583f9cc7a48def5b37fbf2d5f294f128472a6e9c78dede5f5'
@@ -72,7 +73,7 @@ describe('Bitcore ECIES', function () {
   it('retrieves senders publickey from the encypted buffer', function () {
     var bob2 = ECIES().privateKey(bobKey)
     var decrypted = bob2.decrypt(encBuf).toString()
-    bob2._publicKey.toDER().should.deep.equal(aliceKey.publicKey.toDER())
+    bob2._publicKey.toDER().should.deep.equal(PublicKey.fromPrivateKey(aliceKey).toDER())
     decrypted.should.equal(message)
   })
 

@@ -3,6 +3,7 @@
 var bsv = require('../../..')
 var Transaction = bsv.Transaction
 var PrivateKey = bsv.PrivateKey
+var Address = bsv.Address
 
 describe('PublicKeyInput', function () {
   var utxo = {
@@ -15,15 +16,16 @@ describe('PublicKeyInput', function () {
     spendable: true
   }
   var privateKey = PrivateKey.fromWIF('cQ7tSSQDEwaxg9usnnP1Aztqvm9nCQVfNWz9kU2rdocDjknF2vd6')
-  var address = privateKey.toAddress()
+  var address = Address.fromPrivateKey(privateKey, 'testnet')
   utxo.address.should.equal(address.toString())
 
   var destKey = new PrivateKey()
+  var destAddress = Address.fromPrivateKey(destKey)
 
   it('will correctly sign a publickey out transaction', function () {
     var tx = new Transaction()
     tx.from(utxo)
-    tx.to(destKey.toAddress(), 10000)
+    tx.to(destAddress, 10000)
     tx.sign(privateKey)
     tx.inputs[0].script.toBuffer().length.should.be.above(0)
   })
@@ -31,7 +33,7 @@ describe('PublicKeyInput', function () {
   it('count can count missing signatures', function () {
     var tx = new Transaction()
     tx.from(utxo)
-    tx.to(destKey.toAddress(), 10000)
+    tx.to(destAddress, 10000)
     var input = tx.inputs[0]
     input.isFullySigned().should.equal(false)
     tx.sign(privateKey)
@@ -41,7 +43,7 @@ describe('PublicKeyInput', function () {
   it('it\'s size can be estimated', function () {
     var tx = new Transaction()
     tx.from(utxo)
-    tx.to(destKey.toAddress(), 10000)
+    tx.to(destAddress, 10000)
     var input = tx.inputs[0]
     input._estimateSize().should.equal(73)
   })
@@ -49,7 +51,7 @@ describe('PublicKeyInput', function () {
   it('it\'s signature can be removed', function () {
     var tx = new Transaction()
     tx.from(utxo)
-    tx.to(destKey.toAddress(), 10000)
+    tx.to(destAddress, 10000)
     var input = tx.inputs[0]
     tx.sign(privateKey)
     input.isFullySigned().should.equal(true)
@@ -60,7 +62,7 @@ describe('PublicKeyInput', function () {
   it('returns an empty array if private key mismatches', function () {
     var tx = new Transaction()
     tx.from(utxo)
-    tx.to(destKey.toAddress(), 10000)
+    tx.to(destAddress, 10000)
     var input = tx.inputs[0]
     var signatures = input.getSignatures(tx, new PrivateKey(), 0)
     signatures.length.should.equal(0)

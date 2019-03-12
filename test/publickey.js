@@ -73,7 +73,7 @@ describe('PublicKey', function () {
 
       for (var i = 0; i < knownKeys.length; i++) {
         var privkey = new PrivateKey(knownKeys[i].wif)
-        var pubkey = privkey.toPublicKey()
+        var pubkey = PublicKey.fromPrivateKey(privkey)
         pubkey.toString().should.equal(knownKeys[i].pub)
         pubkey.point.x.toString('hex').should.equal(knownKeys[i].pubx)
         pubkey.point.y.toString('hex').should.equal(knownKeys[i].puby)
@@ -329,7 +329,8 @@ describe('PublicKey', function () {
       ]
 
       data.forEach(function (d) {
-        var publicKey = PrivateKey.fromWIF(d[0]).toPublicKey()
+        var privateKey = PrivateKey.fromWIF(d[0])
+        var publicKey = PublicKey.fromPrivateKey(privateKey)
         var address = Address.fromString(d[1])
         address.hashBuffer.should.deep.equal(publicKey._getID())
       })

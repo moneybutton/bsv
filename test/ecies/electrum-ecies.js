@@ -5,6 +5,7 @@ var ECIES = require('../../lib/ecies/electrum-ecies')
 var should = require('chai').should()
 var bsv = require('../../')
 var PrivateKey = bsv.PrivateKey
+var PublicKey = bsv.PublicKey
 
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
@@ -33,9 +34,9 @@ describe('ECIES', function () {
   it('chainable function', function () {
     var ecies = ECIES()
       .privateKey(aliceKey)
-      .publicKey(bobKey.publicKey);
+      .publicKey(PublicKey.fromPrivateKey(bobKey))
 
-    (ecies instanceof ECIES).should.equal(true)
+    ;(ecies instanceof ECIES).should.equal(true)
   })
 
   it('should do these test vectors correctly', function () {
@@ -43,22 +44,22 @@ describe('ECIES', function () {
 
     let alice = ECIES()
       .privateKey(aliceKey)
-      .publicKey(bobKey.publicKey)
+      .publicKey(PublicKey.fromPrivateKey(bobKey))
     alice.decrypt(Buffer.from('QklFMQOGFyMXLo9Qv047K3BYJhmnJgt58EC8skYP/R2QU/U0yXXHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbiaH4FsxKIOOvzolIFVAS0FplUmib2HnlAM1yP/iiPsU=', 'base64')).toString().should.equal(message.toString())
 
     let bob = ECIES()
       .privateKey(bobKey)
-      .publicKey(aliceKey.publicKey)
+      .publicKey(PublicKey.fromPrivateKey(aliceKey))
     bob.decrypt(Buffer.from('QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap53XHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbvZJHgyAzxA6SoujduvJXv+A9ri3po9veilrmc8p6dwo=', 'base64')).toString().should.equal(message.toString())
   })
 
   var alice = ECIES()
     .privateKey(aliceKey)
-    .publicKey(bobKey.publicKey)
+    .publicKey(PublicKey.fromPrivateKey(bobKey))
 
   var bob = ECIES()
     .privateKey(bobKey)
-    .publicKey(aliceKey.publicKey)
+    .publicKey(PublicKey.fromPrivateKey(aliceKey))
 
   var message = 'attack at dawn'
   var encrypted = 'QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap56+ajq0hzmnaQJXwUMZ/DUNgEx9i2TIhCA1mpBFIfxWZy+sH6H+sqqfX3sPHsGu0ug=='
@@ -80,7 +81,7 @@ describe('ECIES', function () {
   it('retrieves senders publickey from the encypted buffer', function () {
     var bob2 = ECIES().privateKey(bobKey)
     var decrypted = bob2.decrypt(encBuf).toString()
-    bob2._publicKey.toDER().should.deep.equal(aliceKey.publicKey.toDER())
+    bob2._publicKey.toDER().should.deep.equal(PublicKey.fromPrivateKey(aliceKey).toDER())
     decrypted.should.equal(message)
   })
 

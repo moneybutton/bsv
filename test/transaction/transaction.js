@@ -13,6 +13,7 @@ var Transaction = bsv.Transaction
 var Input = bsv.Transaction.Input
 var Output = bsv.Transaction.Output
 var PrivateKey = bsv.PrivateKey
+var PublicKey = bsv.PublicKey
 var Script = bsv.Script
 var Address = bsv.Address
 var Opcode = bsv.Opcode
@@ -235,8 +236,8 @@ describe('Transaction', function () {
   var privateKey = 'cSBnVM4xvxarwGQuAfQFwqDg9k5tErHUHzgWsEfD4zdwUasvqRVY'
   var private1 = '6ce7e97e317d2af16c33db0b9270ec047a91bff3eff8558afb5014afb2bb5976'
   var private2 = 'c9b26b0f771a0d2dad88a44de90f05f416b3b385ff1d989343005546a0032890'
-  var public1 = new PrivateKey(private1).publicKey
-  var public2 = new PrivateKey(private2).publicKey
+  var public1 = PublicKey.fromPrivateKey(PrivateKey.fromHex(private1))
+  var public2 = PublicKey.fromPrivateKey(PrivateKey.fromHex(private2))
 
   var simpleUtxoWith1BTC = {
     address: fromAddress,
@@ -251,11 +252,11 @@ describe('Transaction', function () {
   var half = 5e7
 
   var p2shPrivateKey1 = PrivateKey.fromWIF('cNuW8LX2oeQXfKKCGxajGvqwhCgBtacwTQqiCGHzzKfmpHGY4TE9')
-  var p2shPublicKey1 = p2shPrivateKey1.toPublicKey()
+  var p2shPublicKey1 = PublicKey.fromPrivateKey(p2shPrivateKey1)
   var p2shPrivateKey2 = PrivateKey.fromWIF('cTtLHt4mv6zuJytSnM7Vd6NLxyNauYLMxD818sBC8PJ1UPiVTRSs')
-  var p2shPublicKey2 = p2shPrivateKey2.toPublicKey()
+  var p2shPublicKey2 = PublicKey.fromPrivateKey(p2shPrivateKey2)
   var p2shPrivateKey3 = PrivateKey.fromWIF('cQFMZ5gP9CJtUZPc9X3yFae89qaiQLspnftyxxLGvVNvM6tS6mYY')
-  var p2shPublicKey3 = p2shPrivateKey3.toPublicKey()
+  var p2shPublicKey3 = PublicKey.fromPrivateKey(p2shPrivateKey3)
 
   var p2shAddress = Address.createMultisig([
     p2shPublicKey1,

@@ -7,6 +7,7 @@ var _ = require('lodash')
 var bsv = require('../../..')
 var Transaction = bsv.Transaction
 var PrivateKey = bsv.PrivateKey
+var PublicKey = bsv.PublicKey
 var Address = bsv.Address
 var Script = bsv.Script
 var Signature = bsv.crypto.Signature
@@ -16,9 +17,9 @@ describe('MultiSigScriptHashInput', function () {
   var privateKey1 = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')
   var privateKey2 = new PrivateKey('L4PqnaPTCkYhAqH3YQmefjxQP6zRcF4EJbdGqR8v6adtG9XSsadY')
   var privateKey3 = new PrivateKey('L4CTX79zFeksZTyyoFuPQAySfmP7fL3R41gWKTuepuN7hxuNuJwV')
-  var public1 = privateKey1.publicKey
-  var public2 = privateKey2.publicKey
-  var public3 = privateKey3.publicKey
+  var public1 = PublicKey.fromPrivateKey(privateKey1)
+  var public2 = PublicKey.fromPrivateKey(privateKey2)
+  var public3 = PublicKey.fromPrivateKey(privateKey3)
   var address = new Address('33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb')
 
   var output = {

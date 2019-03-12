@@ -129,7 +129,7 @@ describe('Interpreter', function () {
     it('should verify these simple transaction', function () {
       // first we create a transaction
       var privateKey = new PrivateKey('cSBnVM4xvxarwGQuAfQFwqDg9k5tErHUHzgWsEfD4zdwUasvqRVY')
-      var publicKey = privateKey.publicKey
+      var publicKey = PublicKey.fromPrivateKey(privateKey)
       var fromAddress = Address.fromPublicKey(publicKey)
       var toAddress = 'mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc'
       var scriptPubkey = Script.buildPublicKeyHashOut(fromAddress)

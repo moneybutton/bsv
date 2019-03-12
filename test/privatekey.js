@@ -6,6 +6,7 @@ var expect = chai.expect
 
 var bsv = require('..')
 var Address = bsv.Address
+var PublicKey = bsv.PublicKey
 var BN = bsv.crypto.BN
 var Point = bsv.crypto.Point
 var PrivateKey = bsv.PrivateKey
@@ -151,7 +152,7 @@ describe('PrivateKey', function () {
       var privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
       var pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
       var privkey = new PrivateKey(privhex)
-      privkey.publicKey.toString().should.equal(pubhex)
+      PublicKey.fromPrivateKey(privkey).toString().should.equal(pubhex)
     })
 
     it('should not be able to instantiate because of unrecognized data', function () {
@@ -249,15 +250,6 @@ describe('PrivateKey', function () {
     })
   })
 
-  it('coverage: public key cache', function () {
-    expect(function () {
-      var privateKey = new PrivateKey()
-      /* jshint unused: false */
-      var publicKey = privateKey.publicKey
-      return publicKey
-    }).to.not.throw()
-  })
-
   describe('#toString', function () {
     it('should output this address correctly', function () {
       var privkey = PrivateKey.fromWIF(wifLivenetUncompressed)
@@ -268,20 +260,20 @@ describe('PrivateKey', function () {
   describe('#toAddress', function () {
     it('should output this known livenet address correctly', function () {
       var privkey = PrivateKey.fromWIF('L3T1s1TYP9oyhHpXgkyLoJFGniEgkv2Jhi138d7R2yJ9F4QdDU2m')
-      var address = privkey.toAddress()
+      var address = Address.fromPrivateKey(privkey)
       address.toString().should.equal('1A6ut1tWnUq1SEQLMr4ttDh24wcbJ5o9TT')
     })
 
     it('should output this known testnet address correctly', function () {
       var privkey = PrivateKey.fromWIF('cR4qogdN9UxLZJXCNFNwDRRZNeLRWuds9TTSuLNweFVjiaE4gPaq')
-      var address = privkey.toAddress()
+      var address = Address.fromPrivateKey(privkey, 'testnet')
       address.toString().should.equal('mtX8nPZZdJ8d3QNLRJ1oJTiEi26Sj6LQXS')
     })
 
     it('creates network specific address', function () {
       var pk = PrivateKey.fromWIF('cR4qogdN9UxLZJXCNFNwDRRZNeLRWuds9TTSuLNweFVjiaE4gPaq')
-      pk.toAddress(Networks.livenet).network.name.should.equal(Networks.livenet.name)
-      pk.toAddress(Networks.testnet).network.name.should.equal(Networks.testnet.name)
+      Address.fromPrivateKey(pk, Networks.livenet).network.name.should.equal(Networks.livenet.name)
+      Address.fromPrivateKey(pk, Networks.testnet).network.name.should.equal(Networks.testnet.name)
     })
   })
 
@@ -394,28 +386,21 @@ describe('PrivateKey', function () {
       var privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
       var pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
       var privkey = new PrivateKey(new BN(Buffer.from(privhex, 'hex')))
-      var pubkey = privkey.toPublicKey()
+      var pubkey = PublicKey.fromPrivateKey(privkey)
       pubkey.toString().should.equal(pubhex)
-    })
-
-    it('should have a "publicKey" property', function () {
-      var privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
-      var pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
-      var privkey = new PrivateKey(new BN(Buffer.from(privhex, 'hex')))
-      privkey.publicKey.toString().should.equal(pubhex)
     })
 
     it('should convert this known PrivateKey to known PublicKey and preserve compressed=true', function () {
       var privwif = 'L3T1s1TYP9oyhHpXgkyLoJFGniEgkv2Jhi138d7R2yJ9F4QdDU2m'
       var privkey = new PrivateKey(privwif, 'livenet')
-      var pubkey = privkey.toPublicKey()
+      var pubkey = PublicKey.fromPrivateKey(privkey)
       pubkey.compressed.should.equal(true)
     })
 
     it('should convert this known PrivateKey to known PublicKey and preserve compressed=false', function () {
       var privwif = '92jJzK4tbURm1C7udQXxeCBvXHoHJstDXRxAMouPG1k1XUaXdsu'
       var privkey = new PrivateKey(privwif, 'testnet')
-      var pubkey = privkey.toPublicKey()
+      var pubkey = PublicKey.fromPrivateKey(privkey, 'testnet')
       pubkey.compressed.should.equal(false)
     })
   })

@@ -7,6 +7,7 @@ var _ = require('lodash')
 var bsv = require('../../..')
 var errors = bsv.errors
 var PrivateKey = bsv.PrivateKey
+var PublicKey = bsv.PublicKey
 var Address = bsv.Address
 var Script = bsv.Script
 var Networks = bsv.Networks
@@ -14,8 +15,8 @@ var Input = bsv.Transaction.Input
 
 describe('Transaction.Input', function () {
   var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')
-  var publicKey = privateKey.publicKey
-  var address = new Address(publicKey, Networks.livenet)
+  var publicKey = PublicKey.fromPrivateKey(privateKey)
+  var address = Address.fromPublicKey(publicKey, Networks.livenet)
   var output = {
     address: '33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb',
     prevTxId: '66e64ef8a3b384164b78453fa8c8194de9a473ba14f89485a0e433699daec140',
