@@ -37,7 +37,6 @@ bsv.util = {}
 bsv.util.buffer = require('./lib/util/buffer')
 bsv.util.js = require('./lib/util/js')
 bsv.util.preconditions = require('./lib/util/preconditions')
-bsv.util.base32 = require('./lib/util/base32')
 
 // errors thrown by the library
 bsv.errors = require('./lib/errors')
