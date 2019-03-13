@@ -14,6 +14,7 @@ Changelog
 * HDPrivateKey / HDPublicKey toHex() and fromHex()
 * HDPrivateKey.fromRandom()
 * Remove Base32 (this was only used for cashaddr and is now obsolete).
+* Add .fromRandom() method for Mnemonic.
 
 **v0.25.0**
 * Remove support for cashaddr completely. This saves size in the bundle.
