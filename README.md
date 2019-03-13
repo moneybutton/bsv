@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.26.1**
+* Add .fromRandom() method for Mnemonic.
+
 **v0.26.0**
 * Remove the (already deprecated) .derive() method from HDPrivateKey and HDPublicKey. If you rely on this, please switch to .deriveNonCompliantChild(). If you do not already rely on this, you should use .deriveChild() instead.
 * Move large portions of the documentation to [docs.moneybutton.com](https://docs.moneybutton.com).
