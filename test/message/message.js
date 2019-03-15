@@ -7,6 +7,7 @@ var should = chai.should()
 var bsv = require('../../')
 var Address = bsv.Address
 var Signature = bsv.crypto.Signature
+var PrivateKey = bsv.PrivateKey
 var Message = require('../../lib/message')
 
 describe('Message', function () {
@@ -132,6 +133,18 @@ describe('Message', function () {
   it('can chain methods', function () {
     var verified = Message(text).verify(address, signatureString)
     verified.should.equal(true)
+  })
+
+  describe('@sign', function () {
+    it('should sign and verify', function () {
+      var privateKey = PrivateKey.fromString('L3nrwRssVKMkScjejmmu6kmq4hSuUApJnFdW1hGvBP69jnQuKYCh')
+      var address = privateKey.toAddress()
+      var message = 'this is the message that I want to sign'
+      var sig = Message.sign(message, privateKey)
+      sig.toString().should.equal('II5uoh3m0yQ+/5va+1acFQhPaEdTnFFiG/PiKpoC+kpgHbmIk3aWHQ6tyPGgNCUmKlSfwzcP6qVAxuUt0PwDzpg=')
+      var verify = Message.verify(message, address, sig)
+      verify.should.equal(true)
+    })
   })
 
   describe('#json', function () {
