@@ -153,6 +153,16 @@ describe('Mnemonic', function () {
       mnemonic.toString().should.equal(mnemonic.phrase)
     })
 
+    it('has a fromString method', function () {
+      var mnemonic = Mnemonic.fromRandom()
+      mnemonic.toString().should.equal(mnemonic.phrase)
+      var mnemonic2 = Mnemonic.fromString(mnemonic.toString())
+      mnemonic2.toString().should.equal(mnemonic.toString())
+      var mnemonic3 = Mnemonic.fromRandom(Mnemonic.Words.SPANISH)
+      var mnemonic4 = Mnemonic.fromString(mnemonic3.toString(), Mnemonic.Words.SPANISH)
+      mnemonic3.toString().should.equal(mnemonic4.toString())
+    })
+
     it('has a toString method', function () {
       var mnemonic = new Mnemonic()
       mnemonic.inspect().should.have.string('<Mnemonic:')
@@ -161,6 +171,7 @@ describe('Mnemonic', function () {
     it('derives a seed without a passphrase', function () {
       var mnemonic = new Mnemonic()
       var seed = mnemonic.toSeed()
+      seed.length.should.equal(512 / 8)
       should.exist(seed)
     })
 
