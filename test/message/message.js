@@ -139,7 +139,7 @@ describe('Message', function () {
     it('should sign and verify', function () {
       var privateKey = PrivateKey.fromString('L3nrwRssVKMkScjejmmu6kmq4hSuUApJnFdW1hGvBP69jnQuKYCh')
       var address = privateKey.toAddress()
-      var message = "this is the message that I want to sign"
+      var message = 'this is the message that I want to sign'
       var sig = Message.sign(message, privateKey)
       sig.toString().should.equal('II5uoh3m0yQ+/5va+1acFQhPaEdTnFFiG/PiKpoC+kpgHbmIk3aWHQ6tyPGgNCUmKlSfwzcP6qVAxuUt0PwDzpg=')
       var verify = Message.verify(message, address, sig)
