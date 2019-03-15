@@ -8,6 +8,12 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.26.2**
+* Add Mnemonic.fromString(string).
+* Add convenience method for ECDSA.signRandomK (mostly for demo purposes).
+* Add convenience methods Message.sign and message.verify.
+* Move large portions of the documentation to [docs.moneybutton.com](https://docs.moneybutton.com).
+
 **v0.26.1**
 * Add .fromRandom() method for Mnemonic.
 
