@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.26.4**
+* Use ECDSA.signWithCalcI(...) convenience method inside Message.
+
 **v0.26.3**
 * Add ECDSA.signWithCalcI(...) convenience method.
 
