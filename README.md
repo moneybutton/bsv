@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.26.3**
+* Add ECDSA.signWithCalcI(...) convenience method.
+
 **v0.26.2**
 * Add Mnemonic.fromString(string).
 * Add convenience method for ECDSA.signRandomK (mostly for demo purposes).
