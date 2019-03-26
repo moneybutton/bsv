@@ -1,14 +1,14 @@
 'use strict'
 
 var should = require('chai').should()
-var bitcore = require('../..')
-var Interpreter = bitcore.Script.Interpreter
-var Transaction = bitcore.Transaction
-var PrivateKey = bitcore.PrivateKey
-var Script = bitcore.Script
-var BN = bitcore.crypto.BN
-var BufferWriter = bitcore.encoding.BufferWriter
-var Opcode = bitcore.Opcode
+var bsv = require('../..')
+var Interpreter = bsv.Script.Interpreter
+var Transaction = bsv.Transaction
+var PrivateKey = bsv.PrivateKey
+var Script = bsv.Script
+var BN = bsv.crypto.BN
+var BufferWriter = bsv.encoding.BufferWriter
+var Opcode = bsv.Opcode
 var _ = require('lodash')
 
 var scriptTests = require('../data/bitcoind/script_tests')
@@ -75,7 +75,7 @@ describe('Interpreter', function () {
     interp.stack.length.should.equal(1)
     interp.altstack.push(Buffer.from(['altstack']))
     interp.altstack.length.should.equal(1)
-    interp.set({stack: [], altstack: []})
+    interp.set({ stack: [], altstack: [] })
     interp.stack.length.should.equal(0)
     interp.altstack.length.should.equal(0)
   })

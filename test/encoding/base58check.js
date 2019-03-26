@@ -1,9 +1,9 @@
 'use strict'
 
 var should = require('chai').should()
-var bitcore = require('../..')
-var Base58Check = bitcore.encoding.Base58Check
-var Base58 = bitcore.encoding.Base58
+var bsv = require('../..')
+var Base58Check = bsv.encoding.Base58Check
+var Base58 = bsv.encoding.Base58
 
 describe('Base58Check', function () {
   var buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
@@ -33,7 +33,7 @@ describe('Base58Check', function () {
 
   describe('#set', function () {
     it('should set a buf', function () {
-      should.exist(Base58Check().set({buf: buf}).buf)
+      should.exist(Base58Check().set({ buf: buf }).buf)
     })
   })
 
@@ -83,6 +83,20 @@ describe('Base58Check', function () {
 
     it('should set buffer', function () {
       var b58 = Base58Check().fromBuffer(buf)
+      b58.toHex().should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('@fromBuffer', function () {
+    it('should set buffer', function () {
+      var b58 = Base58Check.fromBuffer(buf)
+      b58.buf.toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('should set hex', function () {
+      var b58 = Base58Check.fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -93,16 +107,29 @@ describe('Base58Check', function () {
     })
   })
 
+  describe('@fromString', function () {
+    it('should convert this known string to a buffer', function () {
+      Base58Check.fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({buf: buf})
-      b58.buf.toString('hex').should.equal(buf.toString('hex'))
+      var b58 = Base58Check(buf)
+      b58.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should return the hex', function () {
+      var b58 = Base58Check(buf)
+      b58.toHex().should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      var b58 = Base58Check({buf: buf})
+      var b58 = Base58Check(buf)
       b58.toString().should.equal(enc)
     })
   })

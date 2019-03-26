@@ -4,9 +4,9 @@
 require('chai').should()
 var expect = require('chai').expect
 
-var bitcore = require('../..')
-var errors = bitcore.errors
-var BufferUtil = bitcore.util.buffer
+var bsv = require('../..')
+var errors = bsv.errors
+var BufferUtil = bsv.util.buffer
 
 describe('buffer utils', function () {
   describe('equals', function () {

@@ -14,6 +14,21 @@ describe('Mnemonic', function () {
     should.exist(Mnemonic)
   })
 
+  describe('@fromRandom', function () {
+    it('should make a new mnemonic', function () {
+      let mnemonic = Mnemonic.fromRandom()
+      let mnemonic2 = Mnemonic.fromRandom()
+      mnemonic.toString().should.not.equal(mnemonic2.toString())
+      Mnemonic.Words.ENGLISH.includes(mnemonic.toString().split(' ')[0]).should.equal(true)
+      Mnemonic.Words.ENGLISH.includes(mnemonic.toString().split(' ')[1]).should.equal(true)
+      Mnemonic.Words.ENGLISH.includes(mnemonic.toString().split(' ')[2]).should.equal(true)
+      let mnemonic3 = Mnemonic.fromRandom(Mnemonic.Words.SPANISH)
+      Mnemonic.Words.SPANISH.includes(mnemonic3.toString().split(' ')[0]).should.equal(true)
+      Mnemonic.Words.SPANISH.includes(mnemonic3.toString().split(' ')[1]).should.equal(true)
+      Mnemonic.Words.SPANISH.includes(mnemonic3.toString().split(' ')[2]).should.equal(true)
+    })
+  })
+
   describe('# Mnemonic', function () {
     describe('Constructor', function () {
       it('does not require new keyword', function () {
@@ -138,6 +153,16 @@ describe('Mnemonic', function () {
       mnemonic.toString().should.equal(mnemonic.phrase)
     })
 
+    it('has a fromString method', function () {
+      var mnemonic = Mnemonic.fromRandom()
+      mnemonic.toString().should.equal(mnemonic.phrase)
+      var mnemonic2 = Mnemonic.fromString(mnemonic.toString())
+      mnemonic2.toString().should.equal(mnemonic.toString())
+      var mnemonic3 = Mnemonic.fromRandom(Mnemonic.Words.SPANISH)
+      var mnemonic4 = Mnemonic.fromString(mnemonic3.toString(), Mnemonic.Words.SPANISH)
+      mnemonic3.toString().should.equal(mnemonic4.toString())
+    })
+
     it('has a toString method', function () {
       var mnemonic = new Mnemonic()
       mnemonic.inspect().should.have.string('<Mnemonic:')
@@ -146,6 +171,7 @@ describe('Mnemonic', function () {
     it('derives a seed without a passphrase', function () {
       var mnemonic = new Mnemonic()
       var seed = mnemonic.toSeed()
+      seed.length.should.equal(512 / 8)
       should.exist(seed)
     })
 

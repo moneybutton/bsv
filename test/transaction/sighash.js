@@ -4,11 +4,11 @@ var buffer = require('buffer')
 
 var chai = require('chai')
 chai.should()
-var bitcore = require('../../')
-var Script = bitcore.Script
-var BN = bitcore.crypto.BN
-var Transaction = bitcore.Transaction
-var Signature = bitcore.crypto.Signature
+var bsv = require('../../')
+var Script = bsv.Script
+var BN = bsv.crypto.BN
+var Transaction = bsv.Transaction
+var Signature = bsv.crypto.Signature
 var sighash = Transaction.sighash
 
 var vectorsSighash = require('../data/sighash.json')

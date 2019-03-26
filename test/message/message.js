@@ -4,16 +4,19 @@ var chai = require('chai')
 var expect = chai.expect
 var should = chai.should()
 
-var bitcore = require('../../')
-var Address = bitcore.Address
-var Signature = bitcore.crypto.Signature
+var bsv = require('../../')
+var Address = bsv.Address
+var Signature = bsv.crypto.Signature
+var PrivateKey = bsv.PrivateKey
 var Message = require('../../lib/message')
 
 describe('Message', function () {
   var address = 'n1ZCYg9YXtB5XCZazLxSmPDa8iwJRZHhGx'
   var badAddress = 'mmRcrB5fTwgxaFJmVLNtaG8SV454y1E3kC'
-  var privateKey = bitcore.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4')
+  var privateKey = bsv.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4')
   var text = 'hello, world'
+  var textBuffer = Buffer.from('hello, world')
+  var bufferData = Buffer.from('H/DIn8uA1scAuKLlCx+/9LnAcJtwQQ0PmcPrJUq90aboLv3fH5fFvY+vmbfOSFEtGarznYli6ShPr9RXwY9UrIY=', 'base64')
   var signatureString = 'H/DIn8uA1scAuKLlCx+/9LnAcJtwQQ0PmcPrJUq90aboLv3fH5fFvY+vmbfOSFEtGarznYli6ShPr9RXwY9UrIY='
 
   var badSignatureString = 'H69qZ4mbZCcvXk7CWjptD5ypnYVLvQ3eMXLM8+1gX21SLH/GaFnAjQrDn37+TDw79i9zHhbiMMwhtvTwnPigZ6k='
@@ -43,6 +46,26 @@ describe('Message', function () {
     signature3 = Message(text).sign(privateKey)
     should.exist(signature2)
     should.exist(signature3)
+  })
+
+  it('can sign a message (buffer representation of utf-8 string)', function () {
+    var messageBuf = new Message(textBuffer)
+    var signatureBuffer1 = messageBuf.sign(privateKey)
+    var signatureBuffer2 = Message(textBuffer).sign(privateKey)
+    should.exist(signatureBuffer1)
+    should.exist(signatureBuffer2)
+    var verified = messageBuf.verify(address, signatureBuffer1.toString()) && messageBuf.verify(address, signatureBuffer2.toString())
+    verified.should.equal(true)
+  })
+
+  it('can sign a message (buffer representation of arbitrary data)', function () {
+    var messageBuf = new Message(bufferData)
+    var signatureBuffer1 = messageBuf.sign(privateKey)
+    var signatureBuffer2 = Message(bufferData).sign(privateKey)
+    should.exist(signatureBuffer1)
+    should.exist(signatureBuffer2)
+    var verified = messageBuf.verify(address, signatureBuffer1.toString()) && messageBuf.verify(address, signatureBuffer2.toString())
+    verified.should.equal(true)
   })
 
   it('sign will error with incorrect private key argument', function () {
@@ -100,7 +123,7 @@ describe('Message', function () {
   })
 
   it('will verify with an uncompressed pubkey', function () {
-    var privateKey = new bitcore.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
+    var privateKey = new bsv.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
     var message = new Message('This is an example of a signed message.')
     var signature = message.sign(privateKey)
     var verified = message.verify(privateKey.toAddress(), signature)
@@ -112,11 +135,23 @@ describe('Message', function () {
     verified.should.equal(true)
   })
 
+  describe('@sign', function () {
+    it('should sign and verify', function () {
+      var privateKey = PrivateKey.fromString('L3nrwRssVKMkScjejmmu6kmq4hSuUApJnFdW1hGvBP69jnQuKYCh')
+      var address = privateKey.toAddress()
+      var message = 'this is the message that I want to sign'
+      var sig = Message.sign(message, privateKey)
+      sig.toString().should.equal('II5uoh3m0yQ+/5va+1acFQhPaEdTnFFiG/PiKpoC+kpgHbmIk3aWHQ6tyPGgNCUmKlSfwzcP6qVAxuUt0PwDzpg=')
+      var verify = Message.verify(message, address, sig)
+      verify.should.equal(true)
+    })
+  })
+
   describe('#json', function () {
     it('roundtrip to-from-to', function () {
       var json = new Message(text).toJSON()
       var message = Message.fromJSON(json)
-      message.toString().should.equal(text)
+      message.toString().should.equal(Buffer.from(text).toString())
     })
 
     it('checks that the string parameter is valid JSON', function () {

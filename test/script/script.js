@@ -2,14 +2,14 @@
 
 var should = require('chai').should()
 var expect = require('chai').expect
-var bitcore = require('../..')
+var bsv = require('../..')
 
-var BufferUtil = bitcore.util.buffer
-var Script = bitcore.Script
-var Networks = bitcore.Networks
-var Opcode = bitcore.Opcode
-var PublicKey = bitcore.PublicKey
-var Address = bitcore.Address
+var BufferUtil = bsv.util.buffer
+var Script = bsv.Script
+var Networks = bsv.Networks
+var Opcode = bsv.Opcode
+var PublicKey = bsv.PublicKey
+var Address = bsv.Address
 
 describe('Script', function () {
   it('should make a new script', function () {
@@ -35,12 +35,12 @@ describe('Script', function () {
 
     it('chunks should be array', function () {
       expect(function () {
-        script.set({chunks: 1})
+        script.set({ chunks: 1 })
       }).to.throw(/^Invalid Argument$/)
     })
 
     it('set chunks', function () {
-      script.set({chunks: [1]})
+      script.set({ chunks: [1] })
       expect(script.chunks).to.deep.equal([1])
     })
   })
@@ -223,6 +223,22 @@ describe('Script', function () {
       script.chunks[1].opcodenum.should.equal(Opcode.OP_PUSHDATA4)
       script.toASM().should.equal(asm)
     })
+
+    it('should return this script correctly', function () {
+      var asm1 = 'OP_FALSE'
+      var asm2 = 'OP_0'
+      var asm3 = '0'
+      Script.fromASM(asm1).toASM().should.equal(asm3)
+      Script.fromASM(asm2).toASM().should.equal(asm3)
+      Script.fromASM(asm3).toASM().should.equal(asm3)
+    })
+
+    it('should return this script correctly', function () {
+      var asm1 = 'OP_1NEGATE'
+      var asm2 = '-1'
+      Script.fromASM(asm1).toASM().should.equal(asm2)
+      Script.fromASM(asm2).toASM().should.equal(asm2)
+    })
   })
 
   describe('#fromString', function () {
@@ -337,7 +353,7 @@ describe('Script', function () {
       // from txid: 5c85ed63469aa9971b5d01063dbb8bcdafd412b2f51a3d24abf2e310c028bbf8
       // and input index: 5
       var scriptBuffer = Buffer.from('483045022050eb59c79435c051f45003d9f82865c8e4df5699d7722e77113ef8cadbd92109022100d4ab233e070070eb8e0e62e3d2d2eb9474a5bf135c9eda32755acb0875a6c20601', 'hex')
-      var script = bitcore.Script.fromBuffer(scriptBuffer)
+      var script = bsv.Script.fromBuffer(scriptBuffer)
       script.isPublicKeyIn().should.equal(true)
     })
   })
@@ -737,7 +753,7 @@ describe('Script', function () {
   })
   describe('#buildPublicKeyHashOut', function () {
     it('should create script from livenet address', function () {
-      var address = Address.fromString('bitcoincash:qrk2ulgf99rm0mjfnr39f2jgjqxjd5kwr5rfyamw2k')
+      var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
       var s = Script.buildPublicKeyHashOut(address)
       should.exist(s)
       s.toString().should.equal('OP_DUP OP_HASH160 20 0xecae7d092947b7ee4998e254aa48900d26d2ce1d OP_EQUALVERIFY OP_CHECKSIG')
@@ -745,7 +761,7 @@ describe('Script', function () {
       s.toAddress().toString().should.equal('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
     })
     it('should create script from testnet address', function () {
-      var address = Address.fromString('bchtest:qzukhqt0x796hv07tpdhheaze5twhxdnuslxfpzagp')
+      var address = Address.fromString('mxRN6AQJaDi5R6KmvMaEmZGe3n5ScV9u33')
       var s = Script.buildPublicKeyHashOut(address)
       should.exist(s)
       s.toString().should.equal('OP_DUP OP_HASH160 20 0xb96b816f378babb1fe585b7be7a2cd16eb99b3e4 OP_EQUALVERIFY OP_CHECKSIG')
@@ -941,15 +957,15 @@ describe('Script', function () {
     it('for a P2PKH address', function () {
       var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
       var script = Script.buildPublicKeyHashOut(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.true()
+      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
     it('for a P2SH address', function () {
-      var address = Address.fromString('bitcoincash:pzjt8lxnl977xtexlycnl5fyt0al9gcnauyjtqh68n')
+      var address = Address.fromString('3GhtMmAbWrUf6Y8vDxn9ETB14R6V7Br3mt')
       var script = new Script(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.be.true()
+      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
     it('for a standard opreturn output', function () {
-      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.be.true()
+      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.equal(true)
     })
     it('fails if content is not recognized', function () {
       expect(function () {
@@ -1072,7 +1088,7 @@ describe('Script', function () {
     })
     it('should handle P2SH-multisig-in scripts from utility', function () {
       // create a well-formed signature, does not need to match pubkeys
-      var signature = bitcore.crypto.Signature.fromString('30060201FF0201FF')
+      var signature = bsv.crypto.Signature.fromString('30060201FF0201FF')
       var signatures = [ signature.toBuffer() ]
       var p2sh = Script.buildP2SHMultisigIn(pubKeyHexes, 1, signatures, {})
       p2sh.getSignatureOperationsCount(true).should.equal(0)

@@ -3,8 +3,8 @@
 
 require('chai').should()
 
-var bitcore = require('../..')
-var JSUtil = bitcore.util.js
+var bsv = require('../..')
+var JSUtil = bsv.util.js
 
 describe('js utils', function () {
   describe('isValidJSON', function () {

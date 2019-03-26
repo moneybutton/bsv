@@ -1,71 +1,67 @@
 'use strict'
 
-var bitcore = module.exports
+var bsv = module.exports
 
 // module information
-bitcore.version = 'v' + require('./package.json').version
-bitcore.versionGuard = function (version) {
+bsv.version = 'v' + require('./package.json').version
+bsv.versionGuard = function (version) {
   if (version !== undefined) {
-    var message = 'More than one instance of bitcore-lib-cash found. ' +
-      'Please make sure to require bitcore-lib and check that submodules do' +
-      ' not also include their own bitcore-lib dependency.'
+    var message = 'More than one instance of bsv found. ' +
+      'Please make sure to require bsv and check that submodules do' +
+      ' not also include their own bsv dependency.'
     throw new Error(message)
   }
 }
-bitcore.versionGuard(global._bitcoreCash)
-global._bitcoreCash = bitcore.version
+bsv.versionGuard(global._bsv)
+global._bsv = bsv.version
 
 // crypto
-bitcore.crypto = {}
-bitcore.crypto.BN = require('./lib/crypto/bn')
-bitcore.crypto.ECDSA = require('./lib/crypto/ecdsa')
-bitcore.crypto.Hash = require('./lib/crypto/hash')
-bitcore.crypto.Random = require('./lib/crypto/random')
-bitcore.crypto.Point = require('./lib/crypto/point')
-bitcore.crypto.Signature = require('./lib/crypto/signature')
+bsv.crypto = {}
+bsv.crypto.BN = require('./lib/crypto/bn')
+bsv.crypto.ECDSA = require('./lib/crypto/ecdsa')
+bsv.crypto.Hash = require('./lib/crypto/hash')
+bsv.crypto.Random = require('./lib/crypto/random')
+bsv.crypto.Point = require('./lib/crypto/point')
+bsv.crypto.Signature = require('./lib/crypto/signature')
 
 // encoding
-bitcore.encoding = {}
-bitcore.encoding.Base58 = require('./lib/encoding/base58')
-bitcore.encoding.Base58Check = require('./lib/encoding/base58check')
-bitcore.encoding.BufferReader = require('./lib/encoding/bufferreader')
-bitcore.encoding.BufferWriter = require('./lib/encoding/bufferwriter')
-bitcore.encoding.Varint = require('./lib/encoding/varint')
+bsv.encoding = {}
+bsv.encoding.Base58 = require('./lib/encoding/base58')
+bsv.encoding.Base58Check = require('./lib/encoding/base58check')
+bsv.encoding.BufferReader = require('./lib/encoding/bufferreader')
+bsv.encoding.BufferWriter = require('./lib/encoding/bufferwriter')
+bsv.encoding.Varint = require('./lib/encoding/varint')
 
 // utilities
-bitcore.util = {}
-bitcore.util.buffer = require('./lib/util/buffer')
-bitcore.util.js = require('./lib/util/js')
-bitcore.util.preconditions = require('./lib/util/preconditions')
-bitcore.util.base32 = require('./lib/util/base32')
-bitcore.util.convertBits = require('./lib/util/convertBits')
+bsv.util = {}
+bsv.util.buffer = require('./lib/util/buffer')
+bsv.util.js = require('./lib/util/js')
+bsv.util.preconditions = require('./lib/util/preconditions')
 
 // errors thrown by the library
-bitcore.errors = require('./lib/errors')
+bsv.errors = require('./lib/errors')
 
 // main bitcoin library
-bitcore.Address = require('./lib/address')
-bitcore.Block = require('./lib/block')
-bitcore.MerkleBlock = require('./lib/block/merkleblock')
-bitcore.BlockHeader = require('./lib/block/blockheader')
-bitcore.HDPrivateKey = require('./lib/hdprivatekey.js')
-bitcore.HDPublicKey = require('./lib/hdpublickey.js')
-bitcore.Networks = require('./lib/networks')
-bitcore.Opcode = require('./lib/opcode')
-bitcore.PrivateKey = require('./lib/privatekey')
-bitcore.PublicKey = require('./lib/publickey')
-bitcore.Script = require('./lib/script')
-bitcore.Transaction = require('./lib/transaction')
-bitcore.URI = require('./lib/uri')
-bitcore.Unit = require('./lib/unit')
+bsv.Address = require('./lib/address')
+bsv.Block = require('./lib/block')
+bsv.MerkleBlock = require('./lib/block/merkleblock')
+bsv.BlockHeader = require('./lib/block/blockheader')
+bsv.HDPrivateKey = require('./lib/hdprivatekey.js')
+bsv.HDPublicKey = require('./lib/hdpublickey.js')
+bsv.Networks = require('./lib/networks')
+bsv.Opcode = require('./lib/opcode')
+bsv.PrivateKey = require('./lib/privatekey')
+bsv.PublicKey = require('./lib/publickey')
+bsv.Script = require('./lib/script')
+bsv.Transaction = require('./lib/transaction')
 
 // dependencies, subject to change
-bitcore.deps = {}
-bitcore.deps.bnjs = require('bn.js')
-bitcore.deps.bs58 = require('bs58')
-bitcore.deps.Buffer = Buffer
-bitcore.deps.elliptic = require('elliptic')
-bitcore.deps._ = require('lodash')
+bsv.deps = {}
+bsv.deps.bnjs = require('bn.js')
+bsv.deps.bs58 = require('bs58')
+bsv.deps.Buffer = Buffer
+bsv.deps.elliptic = require('elliptic')
+bsv.deps._ = require('lodash')
 
 // Internal usage, exposed for testing/advanced tweaking
-bitcore.Transaction.sighash = require('./lib/transaction/sighash')
+bsv.Transaction.sighash = require('./lib/transaction/sighash')

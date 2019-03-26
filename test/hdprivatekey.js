@@ -4,14 +4,14 @@ var _ = require('lodash')
 var assert = require('assert')
 var should = require('chai').should()
 var expect = require('chai').expect
-var bitcore = require('..')
-var errors = bitcore.errors
+var bsv = require('..')
+var errors = bsv.errors
 var hdErrors = errors.HDPrivateKey
 var buffer = require('buffer')
-var Networks = bitcore.Networks
-var BufferUtil = bitcore.util.buffer
-var HDPrivateKey = bitcore.HDPrivateKey
-var Base58Check = bitcore.encoding.Base58Check
+var Networks = bsv.Networks
+var BufferUtil = bsv.util.buffer
+var HDPrivateKey = bsv.HDPrivateKey
+var Base58Check = bsv.encoding.Base58Check
 
 var xprivkey = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
 var json = '{"network":"livenet","depth":0,"fingerPrint":876747070,"parentFingerPrint":0,"childIndex":0,"chainCode":"873dff81c02f525623fd1fe5167eac3a55a049de3d314bb42ee227ffed37d508","privateKey":"e8f32e723decf4051aefac8e2c93c9c5b214313817cdb01a1494b917c8436b35","checksum":-411132559,"xprivkey":"xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi"}'
@@ -30,7 +30,7 @@ describe('HDPrivate key interface', function () {
   var expectDerivationFail = function (argument, error) {
     return expectFail(function () {
       var privateKey = new HDPrivateKey(xprivkey)
-      privateKey.derive(argument)
+      privateKey.deriveChild(argument)
     }, error)
   }
 
@@ -122,14 +122,14 @@ describe('HDPrivate key interface', function () {
 
   it('allows derivation of hardened keys by passing a very big number', function () {
     var privateKey = new HDPrivateKey(xprivkey)
-    var derivedByNumber = privateKey.derive(0x80000000)
-    var derivedByArgument = privateKey.derive(0, true)
+    var derivedByNumber = privateKey.deriveChild(0x80000000)
+    var derivedByArgument = privateKey.deriveChild(0, true)
     derivedByNumber.xprivkey.should.equal(derivedByArgument.xprivkey)
   })
 
   it('returns itself with \'m\' parameter', function () {
     var privateKey = new HDPrivateKey(xprivkey)
-    privateKey.should.equal(privateKey.derive('m'))
+    privateKey.should.equal(privateKey.deriveChild('m'))
   })
 
   it('returns InvalidArgument if invalid data is given to getSerializedError', function () {
@@ -202,8 +202,8 @@ describe('HDPrivate key interface', function () {
 
   it('shouldn\'t matter if derivations are made with strings or numbers', function () {
     var privateKey = new HDPrivateKey(xprivkey)
-    var derivedByString = privateKey.derive('m/0\'/1/2\'')
-    var derivedByNumber = privateKey.derive(0, true).derive(1).derive(2, true)
+    var derivedByString = privateKey.deriveChild('m/0\'/1/2\'')
+    var derivedByNumber = privateKey.deriveChild(0, true).deriveChild(1).deriveChild(2, true)
     derivedByNumber.xprivkey.should.equal(derivedByString.xprivkey)
   })
 
@@ -266,8 +266,31 @@ describe('HDPrivate key interface', function () {
       var priv = new HDPrivateKey(str)
       var toBuffer = priv.toBuffer()
       var fromBuffer = HDPrivateKey.fromBuffer(toBuffer)
-      var roundTrip = new HDPrivateKey(fromBuffer.toBuffer())
+      var roundTrip = new HDPrivateKey(fromBuffer.toString())
       roundTrip.xprivkey.should.equal(str)
+    })
+  })
+
+  describe('conversion to/from hex', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var priv = new HDPrivateKey(str)
+      var toBuffer = priv.toBuffer()
+      var fromBuffer = HDPrivateKey.fromBuffer(toBuffer)
+      var roundTrip = new HDPrivateKey(fromBuffer.toString())
+      roundTrip.xprivkey.should.equal(str)
+    })
+  })
+
+  describe('from random', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var xprv1 = new HDPrivateKey(str)
+      var xprv2 = HDPrivateKey.fromRandom()
+      var xprv3 = HDPrivateKey.fromRandom()
+      xprv1.toString().should.not.equal(xprv2.toString())
+      xprv2.toString().should.not.equal(xprv3.toString())
+      xprv1.toString().should.not.equal(xprv3.toString())
     })
   })
 

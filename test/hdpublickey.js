@@ -5,14 +5,15 @@ var _ = require('lodash')
 var assert = require('assert')
 require('chai').should()
 var expect = require('chai').expect
-var bitcore = require('..')
+var bsv = require('..')
 var buffer = require('buffer')
-var errors = bitcore.errors
-var hdErrors = bitcore.errors.HDPublicKey
-var BufferUtil = bitcore.util.buffer
-var HDPublicKey = bitcore.HDPublicKey
-var Base58Check = bitcore.encoding.Base58Check
-var Networks = bitcore.Networks
+var errors = bsv.errors
+var hdErrors = bsv.errors.HDPublicKey
+var BufferUtil = bsv.util.buffer
+var HDPrivateKey = bsv.HDPrivateKey
+var HDPublicKey = bsv.HDPublicKey
+var Base58Check = bsv.encoding.Base58Check
+var Networks = bsv.Networks
 
 var xprivkey = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
 var xpubkey = 'xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8'
@@ -30,7 +31,7 @@ describe('HDPublicKey interface', function () {
   var expectDerivationFail = function (argument, error) {
     (function () {
       var pubkey = new HDPublicKey(xpubkey)
-      pubkey.derive(argument)
+      pubkey.deriveChild(argument)
     }).should.throw(error)
   }
 
@@ -159,6 +160,31 @@ describe('HDPublicKey interface', function () {
     })
   })
 
+  describe('conversion to/from hex', function () {
+    it('should roundtrip to an equivalent object', function () {
+      var pubKey = new HDPublicKey(xpubkey)
+      var toHex = pubKey.toHex()
+      var fromHex = HDPublicKey.fromHex(toHex)
+      var roundTrip = new HDPublicKey(fromHex.toBuffer())
+      roundTrip.xpubkey.should.equal(xpubkey)
+    })
+  })
+
+  describe('from hdprivatekey', function () {
+    var str = 'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
+    it('should roundtrip to/from a buffer', function () {
+      var xprv1 = new HDPrivateKey(str)
+      var xprv2 = HDPrivateKey.fromRandom()
+      var xprv3 = HDPrivateKey.fromRandom()
+      var xpub1 = HDPublicKey.fromHDPrivateKey(xprv1)
+      var xpub2 = HDPublicKey.fromHDPrivateKey(xprv2)
+      var xpub3 = HDPublicKey.fromHDPrivateKey(xprv3)
+      xpub1.toString().should.equal('xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8')
+      xpub1.toString().should.not.equal(xpub2.toString())
+      xpub1.toString().should.not.equal(xpub3.toString())
+    })
+  })
+
   describe('conversion to different formats', function () {
     var plainObject = {
       'network': 'livenet',
@@ -183,15 +209,15 @@ describe('HDPublicKey interface', function () {
   describe('derivation', function () {
     it('derivation is the same whether deriving with number or string', function () {
       var pubkey = new HDPublicKey(xpubkey)
-      var derived1 = pubkey.derive(0).derive(1).derive(200000)
-      var derived2 = pubkey.derive('m/0/1/200000')
+      var derived1 = pubkey.deriveChild(0).deriveChild(1).deriveChild(200000)
+      var derived2 = pubkey.deriveChild('m/0/1/200000')
       derived1.xpubkey.should.equal(derived01200000)
       derived2.xpubkey.should.equal(derived01200000)
     })
 
     it('allows special parameters m, M', function () {
       var expectDerivationSuccess = function (argument) {
-        new HDPublicKey(xpubkey).derive(argument).xpubkey.should.equal(xpubkey)
+        new HDPublicKey(xpubkey).deriveChild(argument).xpubkey.should.equal(xpubkey)
       }
       expectDerivationSuccess('m')
       expectDerivationSuccess('M')
@@ -199,13 +225,13 @@ describe('HDPublicKey interface', function () {
 
     it('doesn\'t allow object arguments for derivation', function () {
       expectFail(function () {
-        return new HDPublicKey(xpubkey).derive({})
+        return new HDPublicKey(xpubkey).deriveChild({})
       }, hdErrors.InvalidDerivationArgument)
     })
 
     it('needs first argument for derivation', function () {
       expectFail(function () {
-        return new HDPublicKey(xpubkey).derive('s')
+        return new HDPublicKey(xpubkey).deriveChild('s')
       }, hdErrors.InvalidPath)
     })
 
@@ -219,13 +245,13 @@ describe('HDPublicKey interface', function () {
 
     it('can\'t derive hardened keys', function () {
       expectFail(function () {
-        return new HDPublicKey(xpubkey).derive(HDPublicKey.Hardened)
+        return new HDPublicKey(xpubkey).deriveChild(HDPublicKey.Hardened)
       }, hdErrors.InvalidIndexCantDeriveHardened)
     })
 
     it('can\'t derive hardened keys via second argument', function () {
       expectFail(function () {
-        return new HDPublicKey(xpubkey).derive(5, true)
+        return new HDPublicKey(xpubkey).deriveChild(5, true)
       }, hdErrors.InvalidIndexCantDeriveHardened)
     })
 

@@ -1,9 +1,9 @@
 'use strict'
 
 var should = require('chai').should()
-var bitcore = require('../..')
-var Point = bitcore.crypto.Point
-var BN = bitcore.crypto.BN
+var bsv = require('../..')
+var Point = bsv.crypto.Point
+var BN = bsv.crypto.BN
 
 describe('Point', function () {
   var valid = {
@@ -30,7 +30,7 @@ describe('Point', function () {
 
     it('should be convertable to a buffer', function () {
       var p = Point(valid.x, valid.y)
-      var a = p.getX().toBuffer({size: 32})
+      var a = p.getX().toBuffer({ size: 32 })
       a.length.should.equal(32)
       a.should.deep.equal(Buffer.from(valid.x, 'hex'))
     })
@@ -44,7 +44,7 @@ describe('Point', function () {
 
     it('should be convertable to a buffer', function () {
       var p = Point(valid.x, valid.y)
-      var a = p.getY().toBuffer({size: 32})
+      var a = p.getY().toBuffer({ size: 32 })
       a.length.should.equal(32)
       a.should.deep.equal(Buffer.from(valid.y, 'hex'))
     })
@@ -101,6 +101,49 @@ describe('Point', function () {
       var g = Point.getG()
       var p = Point.fromX(false, g.getX())
       g.eq(p).should.equal(true)
+    })
+  })
+
+  describe('@pointToCompressed', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let pbuf = Point.pointToCompressed(g)
+      pbuf.length.should.equal(33)
+      pbuf.toString('hex').should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('#toBuffer', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let pbuf = g.toBuffer()
+      pbuf.length.should.equal(33)
+      pbuf.toString('hex').should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('@fromBuffer', function () {
+    it('should return g', function () {
+      let buf = Buffer.from('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 'hex')
+      let p = Point.fromBuffer(buf)
+      p.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should return g', function () {
+      let g = Point.getG()
+      let phex = g.toHex()
+      phex.length.should.equal(33 * 2)
+      phex.should.equal('0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798')
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('should return g', function () {
+      let hex = '0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798'
+      let p = Point.fromHex(hex)
+      p.toHex().should.equal(hex)
     })
   })
 

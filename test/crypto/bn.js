@@ -1,8 +1,8 @@
 'use strict'
 
 var should = require('chai').should()
-var bitcore = require('../..')
-var BN = bitcore.crypto.BN
+var bsv = require('../..')
+var BN = bsv.crypto.BN
 
 describe('BN', function () {
   it('should create a bn', function () {
@@ -137,6 +137,32 @@ describe('BN', function () {
       bn.toBuffer({
         size: 4
       }).toString('hex').should.equal('ffffff00')
+    })
+  })
+
+  describe('@fromHex', function () {
+    it('should work with big endian', function () {
+      var bn = BN.fromHex('0001', {
+        endian: 'big'
+      })
+      bn.toString().should.equal('1')
+    })
+
+    it('should work with little endian if we specify the size', function () {
+      var bn = BN.fromHex('0100', {
+        size: 2,
+        endian: 'little'
+      })
+      bn.toString().should.equal('1')
+    })
+  })
+
+  describe('#toHex', function () {
+    it('should create a 4 byte he string', function () {
+      var bn = new BN(1)
+      bn.toHex({
+        size: 4
+      }).should.equal('00000001')
     })
   })
 })
