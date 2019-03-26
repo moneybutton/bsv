@@ -2,11 +2,11 @@
 
 var should = require('chai').should()
 
-var bitcore = require('../..')
-var MerkleBlock = bitcore.MerkleBlock
-var BufferReader = bitcore.encoding.BufferReader
-var BufferWriter = bitcore.encoding.BufferWriter
-var Transaction = bitcore.Transaction
+var bsv = require('../..')
+var MerkleBlock = bsv.MerkleBlock
+var BufferReader = bsv.encoding.BufferReader
+var BufferWriter = bsv.encoding.BufferWriter
+var Transaction = bsv.Transaction
 var data = require('../data/merkleblocks.js')
 var transactionVector = require('../data/tx_creation')
 
@@ -58,7 +58,7 @@ describe('MerkleBlock', function () {
 
     it('accepts an object as argument', function () {
       var block = MerkleBlock(blockbuf)
-      MerkleBlock.fromObject(block.toObject()).should.exist()
+      should.exist(MerkleBlock.fromObject(block.toObject()))
     })
   })
 

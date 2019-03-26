@@ -3,12 +3,12 @@
 
 require('chai').should()
 
-var bitcore = require('../../..')
-var Transaction = bitcore.Transaction
-var PrivateKey = bitcore.PrivateKey
-var Address = bitcore.Address
-var Script = bitcore.Script
-var Networks = bitcore.Networks
+var bsv = require('../../..')
+var Transaction = bsv.Transaction
+var PrivateKey = bsv.PrivateKey
+var Address = bsv.Address
+var Script = bsv.Script
+var Networks = bsv.Networks
 
 describe('PublicKeyHashInput', function () {
   var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')

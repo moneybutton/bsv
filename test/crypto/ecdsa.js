@@ -221,9 +221,25 @@ describe('ECDSA', function () {
   describe('signing and verification', function () {
     describe('@sign', function () {
       it('should produce a signature', function () {
-        var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.privkey);
-        (sig instanceof Signature).should.equal(true)
+        var sig = ECDSA.sign(ecdsa.hashbuf, ecdsa.privkey)
+        ;(sig instanceof Signature).should.equal(true)
       })
+
+      it('should produce a signaturei', function () {
+        var sig = ECDSA.signWithCalcI(ecdsa.hashbuf, ecdsa.privkey)
+        ;(sig instanceof Signature).should.equal(true)
+        should.exist(sig.i)
+        sig.toCompact().toString('base64').should.equal('IF7ucRrxMczOWYg28NkA+krY4aXx9XgT7KVglwpLEqqyIUtqBrrU5mSDQqOm0ETZ47KdQEMv121aWkxO7P1hbGk=')
+      })
+
+      it('should produce a signature', function () {
+        var sig = ECDSA.signRandomK(ecdsa.hashbuf, ecdsa.privkey)
+        ;(sig instanceof Signature).should.equal(true)
+        var sig2 = ECDSA.signRandomK(ecdsa.hashbuf, ecdsa.privkey)
+        ;(sig2 instanceof Signature).should.equal(true)
+        sig.toString().should.not.equal(sig2.toString())
+      })
+
       it('should produce a signature, and be different when called twice', function () {
         ecdsa.signRandomK()
         should.exist(ecdsa.sig)

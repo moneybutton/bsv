@@ -2,10 +2,10 @@
 
 var should = require('chai').should()
 
-var bitcore = require('../..')
-var errors = bitcore.errors
-var $ = bitcore.util.preconditions
-var PrivateKey = bitcore.PrivateKey
+var bsv = require('../..')
+var errors = bsv.errors
+var $ = bsv.util.preconditions
+var PrivateKey = bsv.PrivateKey
 
 describe('preconditions', function () {
   it('can be used to assert state', function () {
