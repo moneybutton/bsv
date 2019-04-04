@@ -4,10 +4,10 @@
 /* jshint latedef: false */
 var should = require('chai').should()
 var expect = require('chai').expect
-var _ = require('lodash')
 var sinon = require('sinon')
 
 var bsv = require('../..')
+var _ = bsv.deps._
 var BN = bsv.crypto.BN
 var Transaction = bsv.Transaction
 var Input = bsv.Transaction.Input

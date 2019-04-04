@@ -61,7 +61,7 @@ bsv.deps.bnjs = require('bn.js')
 bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
 bsv.deps.elliptic = require('elliptic')
-bsv.deps._ = require('lodash')
+bsv.deps._ = require('./lib/util/_')
 
 // Internal usage, exposed for testing/advanced tweaking
 bsv.Transaction.sighash = require('./lib/transaction/sighash')
