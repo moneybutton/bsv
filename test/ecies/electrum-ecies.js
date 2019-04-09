@@ -60,6 +60,10 @@ describe('ECIES', function () {
     .privateKey(bobKey)
     .publicKey(aliceKey.publicKey)
 
+  var aliceReloaded = ECIES()
+    .privateKey(aliceKey)
+    .publicKey(bobKey.publicKey)
+
   var message = 'attack at dawn'
   var encrypted = 'QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap56+ajq0hzmnaQJXwUMZ/DUNgEx9i2TIhCA1mpBFIfxWZy+sH6H+sqqfX3sPHsGu0ug=='
   var encBuf = Buffer.from(encrypted, 'base64')
@@ -77,11 +81,31 @@ describe('ECIES', function () {
     decrypted.should.equal(message)
   })
 
+  it('correctly recovers a message', function () {
+    var decrypted = aliceReloaded
+      .decrypt(encBuf)
+      .toString()
+    decrypted.should.equal(message)
+  })
+
   it('retrieves senders publickey from the encypted buffer', function () {
     var bob2 = ECIES().privateKey(bobKey)
     var decrypted = bob2.decrypt(encBuf).toString()
     bob2._publicKey.toDER().should.deep.equal(aliceKey.publicKey.toDER())
     decrypted.should.equal(message)
+  })
+
+  var message1 = 'This is message from first sender'
+  var message2 = 'This is message from second sender'
+
+  it('decrypt messages from different senders', function () {
+    var sender1 = ECIES().publicKey(bobKey.publicKey)
+    var sender2 = ECIES().publicKey(bobKey.publicKey)
+    var bob2 = ECIES().privateKey(bobKey)
+    var decrypted1 = bob2.decrypt(sender1.encrypt(message1)).toString()
+    var decrypted2 = bob2.decrypt(sender2.encrypt(message2)).toString()
+    decrypted1.should.equal(message1)
+    decrypted2.should.equal(message2)
   })
 
   it('roundtrips', function () {
