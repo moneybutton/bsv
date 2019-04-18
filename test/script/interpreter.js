@@ -634,15 +634,13 @@ describe('Interpreter', function () {
   describe('bitcoind transaction evaluation fixtures', function () {
     var testTxs = function (set, expected) {
       var c = 0
-      let lasttitle = ''
       set.forEach(function (vector) {
         if (vector.length === 1) {
-          lasttitle = vector[0]
           return
         }
         c++
         var cc = c // copy to local
-        it(`should pass tx_${expected ? '' : 'in'} valid vector ${cc} '${lasttitle}'`, function () {
+        it('should pass tx_' + (expected ? '' : 'in') + 'valid vector ' + cc, function () {
           var inputs = vector[0]
           var txhex = vector[1]
 
@@ -680,11 +678,6 @@ describe('Interpreter', function () {
           txVerified = (txVerified === true)
           allInputsVerified = allInputsVerified && txVerified
           allInputsVerified.should.equal(expected)
-          if (allInputsVerified !== expected) {
-            console.log(vector)
-            console.log(scriptSig)
-            console.log(scriptPubkey)
-          }
         })
       })
     }
