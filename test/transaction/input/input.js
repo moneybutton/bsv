@@ -81,4 +81,12 @@ describe('Transaction.Input', function () {
     var input = new Input(output)
     input._estimateSize().should.equal(66)
   })
+
+  it('defaults isFinal correctly', function () {
+    new Input(output).isFinal().should.equal(true)
+  })
+
+  it('handles isFinal when sequence number is set to non default value', function () {
+    new Input({ ...output, sequenceNumber: 0 }).isFinal().should.equal(false)
+  })
 })
