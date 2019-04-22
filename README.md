@@ -8,6 +8,12 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.26.5**
+* lodash optimization and overall size optimization of bsv.min.js
+* fix isFinal
+* fix non-dust amount example
+* minor ECIES API issue
+
 **v0.26.4**
 * Use ECDSA.signWithCalcI(...) convenience method inside Message.
 
