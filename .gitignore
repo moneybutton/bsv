@@ -1,7 +1,6 @@
 *.swp
 coverage
 node_modules
-browser/tests.js
 docs/api
 
 CONTRIBUTING.html
@@ -14,5 +13,3 @@ apiref
 bower_components
 report
 .DS_Store
-
-tests.js
