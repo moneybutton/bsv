@@ -8,6 +8,13 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.27.0**
+* Remove version guard. This should fix the "two versions of bsv" error that
+  people often get. Note that it is poor practice to use incompatible versions
+  of bsv. To send objects from one version of the library to another, always
+  serialize to a string or buffer first. Do not send objects from one version to
+  another. This due to frequent use of "instanceof" inside the library.
+
 **v0.26.5**
 * lodash optimization and overall size optimization of bsv.min.js
 * fix isFinal
