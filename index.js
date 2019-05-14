@@ -9,7 +9,7 @@ bsv.versionGuard = function (version) {
     var message = 'More than one instance of bsv found. ' +
       'Please make sure to require bsv and check that submodules do' +
       ' not also include their own bsv dependency.'
-    throw new Error(message)
+    console.log(message)
   }
 }
 bsv.versionGuard(global._bsv)
