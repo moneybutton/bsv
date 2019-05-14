@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**v0.27.1**
+* Replace lodash methods with inline pure javascript methods.
+
 **v0.27.0**
 * Remove version guard. This should fix the "two versions of bsv" error that
   people often get. Note that it is poor practice to use incompatible versions
