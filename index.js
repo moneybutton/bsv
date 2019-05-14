@@ -6,10 +6,11 @@ var bsv = module.exports
 bsv.version = 'v' + require('./package.json').version
 bsv.versionGuard = function (version) {
   if (version !== undefined) {
-    var message = 'More than one instance of bsv found. ' +
-      'Please make sure to require bsv and check that submodules do' +
-      ' not also include their own bsv dependency.'
-    console.log(message)
+    var message = `
+      More than one instance of bsv found.
+      Please make sure to require bsv and check that submodules do
+      not also include their own bsv dependency.`
+    console.warn(message)
   }
 }
 bsv.versionGuard(global._bsv)
