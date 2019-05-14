@@ -11,6 +11,6 @@ describe('#versionGuard', function () {
   it('throw an error if version is already defined', function () {
     (function () {
       bsv.versionGuard('version')
-    }).should.throw('More than one instance of bsv')
+    }).should.not.throw('More than one instance of bsv')
   })
 })
