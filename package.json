@@ -59,7 +59,7 @@
     "sinon": "7.2.3",
     "webpack-cli": "3.2.3"
   },
-  "license": "MIT",
+  "license": "Open-BSV",
   "standard": {
     "globals": [
       "afterEach",
