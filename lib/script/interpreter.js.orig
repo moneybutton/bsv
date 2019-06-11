@@ -982,8 +982,8 @@ Interpreter.prototype.step = function () {
         }
         buf1 = stacktop(-2)
         buf2 = stacktop(-1)
-        this.stack.push(Buffer.from(buf1))
-        this.stack.push(Buffer.from(buf2))
+        this.stack.push(buf1)
+        this.stack.push(buf2)
         break
 
       case Opcode.OP_3DUP:
@@ -995,9 +995,9 @@ Interpreter.prototype.step = function () {
         buf1 = stacktop(-3)
         buf2 = stacktop(-2)
         var buf3 = stacktop(-1)
-        this.stack.push(Buffer.from(buf1))
-        this.stack.push(Buffer.from(buf2))
-        this.stack.push(Buffer.from(buf3))
+        this.stack.push(buf1)
+        this.stack.push(buf2)
+        this.stack.push(buf3)
         break
 
       case Opcode.OP_2OVER:
@@ -1008,8 +1008,8 @@ Interpreter.prototype.step = function () {
         }
         buf1 = stacktop(-4)
         buf2 = stacktop(-3)
-        this.stack.push(Buffer.from(buf1))
-        this.stack.push(Buffer.from(buf2))
+        this.stack.push(buf1)
+        this.stack.push(buf2)
         break
 
       case Opcode.OP_2ROT:
@@ -1043,7 +1043,7 @@ Interpreter.prototype.step = function () {
         buf = stacktop(-1)
         fValue = Interpreter.castToBool(buf)
         if (fValue) {
-          this.stack.push(Buffer.from(buf))
+          this.stack.push(buf)
         }
         break
 
@@ -1068,7 +1068,7 @@ Interpreter.prototype.step = function () {
           this.errstr = 'SCRIPT_ERR_INVALID_STACK_OPERATION'
           return false
         }
-        this.stack.push(Buffer.from(stacktop(-1)))
+        this.stack.push(stacktop(-1))
         break
 
       case Opcode.OP_NIP:
@@ -1086,7 +1086,7 @@ Interpreter.prototype.step = function () {
           this.errstr = 'SCRIPT_ERR_INVALID_STACK_OPERATION'
           return false
         }
-        this.stack.push(Buffer.from(stacktop(-2)))
+        this.stack.push(stacktop(-2))
         break
 
       case Opcode.OP_PICK:
@@ -1109,7 +1109,7 @@ Interpreter.prototype.step = function () {
         if (opcodenum === Opcode.OP_ROLL) {
           this.stack.splice(this.stack.length - n - 1, 1)
         }
-        this.stack.push(Buffer.from(buf))
+        this.stack.push(buf)
         break
 
       case Opcode.OP_ROT:
@@ -1146,7 +1146,7 @@ Interpreter.prototype.step = function () {
           this.errstr = 'SCRIPT_ERR_INVALID_STACK_OPERATION'
           return false
         }
-        this.stack.splice(this.stack.length - 2, 0, Buffer.from(stacktop(-1)))
+        this.stack.splice(this.stack.length - 2, 0, stacktop(-1))
         break
 
       case Opcode.OP_SIZE:
