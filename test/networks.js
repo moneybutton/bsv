@@ -11,6 +11,7 @@ describe('Networks', function () {
   it('should contain all Networks', function () {
     should.exist(networks.livenet)
     should.exist(networks.testnet)
+    should.exist(networks.stn)
     should.exist(networks.defaultNetwork)
   })
 
@@ -48,6 +49,12 @@ describe('Networks', function () {
     buffUtil.isBuffer(testnet.networkMagic).should.equal(true)
   })
 
+  it('should have network magic for stn', function () {
+    var stn = networks.get('stn')
+    var buffUtil = require('../lib/util/buffer')
+    buffUtil.isBuffer(stn.networkMagic).should.equal(true)
+  })
+
   it('can remove a custom network', function () {
     networks.remove(customnet)
     var net = networks.get('customnet')
@@ -80,9 +87,10 @@ describe('Networks', function () {
   var constants = ['name', 'alias', 'pubkeyhash', 'scripthash', 'xpubkey', 'xprivkey']
 
   constants.forEach(function (key) {
-    it('should have constant ' + key + ' for livenet and testnet', function () {
+    it('should have constant ' + key + ' for livenet, testnet and stn', function () {
       networks.testnet.hasOwnProperty(key).should.equal(true)
       networks.livenet.hasOwnProperty(key).should.equal(true)
+      networks.stn.hasOwnProperty(key).should.equal(true)
     })
   })
 
@@ -103,6 +111,10 @@ describe('Networks', function () {
 
   it('should have testnet network', function () {
     expect(networks.get('testnet').name).to.equal('testnet')
+  })
+
+  it('should have stn network', function () {
+    expect(networks.get('stn').name).to.equal('stn')
   })
 
   it('should have livenet network', function () {
@@ -126,6 +138,17 @@ describe('Networks', function () {
   it('should have bchtest cashAddrPrefix after disableRegtest is called', function () {
     var network = networks.get('testnet')
     networks.disableRegtest()
+    expect(network.cashAddrPrefix).to.equal('bchtest')
+  })
+  it('should have bsvstn cashAddrPrefix after enableStn is called', function () {
+    var network = networks.get('testnet')
+    networks.enableStn()
+    expect(network.cashAddrPrefix).to.equal('bsvstn')
+  })
+
+  it('should have bchtest cashAddrPrefix after disableStn is called', function () {
+    var network = networks.get('testnet')
+    networks.disableStn()
     expect(network.cashAddrPrefix).to.equal('bchtest')
   })
 
