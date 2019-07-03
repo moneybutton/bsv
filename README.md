@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**0.27.2**
+* Add support for Stress Test Network (STN).
+
 **v0.27.1**
 * Replace lodash methods with inline pure javascript methods.
 
