@@ -8,7 +8,7 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
-**0.28.0**
+**0.29.0**
 * Add support for new OP_RETURN style: buildSafeDataOut and isSafeDataOut (and getData)
 
 **0.27.2**
