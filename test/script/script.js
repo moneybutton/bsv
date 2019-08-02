@@ -348,6 +348,58 @@ describe('Script', function () {
     })
   })
 
+  describe('#isPrunableDataOut', function () {
+    it('should know this is a (blank) OP_RETURN script', function () {
+      Script('OP_FALSE OP_RETURN').isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this two part OP_RETURN is standard', function () {
+      Script.fromASM('OP_FALSE OP_RETURN 026d02 0568656c6c6f').isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 40-byte OP_RETURN is standard', function () {
+      var buf = Buffer.alloc(40)
+      buf.fill(0)
+      Script('OP_FALSE OP_RETURN 40 0x' + buf.toString('hex')).isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 80-byte OP_RETURN is standard', function () {
+      var buf = Buffer.alloc(80)
+      buf.fill(0)
+      Script('OP_FALSE OP_RETURN OP_PUSHDATA1 80 0x' + buf.toString('hex')).isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 220-byte OP_RETURN is standard', function () {
+      var buf = Buffer.alloc(220)
+      buf.fill(0)
+      Script('OP_FALSE OP_RETURN OP_PUSHDATA1 220 0x' + buf.toString('hex')).isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 40-byte long OP_CHECKMULTISIG is not standard op_return', function () {
+      var buf = Buffer.alloc(40)
+      buf.fill(0)
+      Script('OP_CHECKMULTISIG 40 0x' + buf.toString('hex')).isPrunableDataOut().should.equal(false)
+    })
+
+    it('validates that this 221-byte OP_RETURN is a valid standard OP_RETURN', function () {
+      var buf = Buffer.alloc(221)
+      buf.fill(0)
+      Script('OP_FALSE OP_RETURN OP_PUSHDATA1 221 0x' + buf.toString('hex')).isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 99994-byte OP_RETURN is a valid standard OP_RETURN', function () {
+      var buf = Buffer.alloc(100000 - 6)
+      buf.fill(0)
+      Script(`OP_FALSE OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isPrunableDataOut().should.equal(true)
+    })
+
+    it('validates that this 99995-byte OP_RETURN is not a valid standard OP_RETURN', function () {
+      var buf = Buffer.alloc(100000 - 5)
+      buf.fill(0)
+      Script(`OP_FALSE OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isPrunableDataOut().should.equal(false)
+    })
+  })
+
   describe('#isPublicKeyIn', function () {
     it('correctly identify scriptSig as a public key in', function () {
       // from txid: 5c85ed63469aa9971b5d01063dbb8bcdafd412b2f51a3d24abf2e310c028bbf8
@@ -867,6 +919,86 @@ describe('Script', function () {
       s.isDataOut().should.equal(true)
     })
   })
+  describe('#buildPrunableDataOut', function () {
+    it('should create script from no data', function () {
+      var s = Script.buildPrunableDataOut()
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from empty data', function () {
+      var data = Buffer.from('')
+      var s = Script.buildPrunableDataOut(data)
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from some data', function () {
+      var data = Buffer.from('bacacafe0102030405', 'hex')
+      var s = Script.buildPrunableDataOut(data)
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 9 0xbacacafe0102030405')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from array of some data', function () {
+      var data = Buffer.from('bacacafe0102030405', 'hex')
+      var s = Script.buildPrunableDataOut([data, data])
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 9 0xbacacafe0102030405 9 0xbacacafe0102030405')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from array of some datas', function () {
+      var data1 = Buffer.from('moneybutton.com')
+      var data2 = Buffer.from('hello'.repeat(100))
+      var s = Script.buildPrunableDataOut([data1, data2])
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 15 0x6d6f6e6579627574746f6e2e636f6d OP_PUSHDATA2 500 0x68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f68656c6c6f')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from array of lots of data', function () {
+      var data1 = Buffer.from('moneybutton.com')
+      var data2 = Buffer.from('00'.repeat(90000), 'hex')
+      var s = Script.buildPrunableDataOut([data1, data2])
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 15 0x6d6f6e6579627574746f6e2e636f6d OP_PUSHDATA4 90000 0x' + '00'.repeat(90000))
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from string', function () {
+      var data = 'hello world!!!'
+      var s = Script.buildPrunableDataOut(data)
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 14 0x68656c6c6f20776f726c64212121')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from an array of strings', function () {
+      var data = 'hello world!!!'
+      var s = Script.buildPrunableDataOut([data, data])
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 14 0x68656c6c6f20776f726c64212121 14 0x68656c6c6f20776f726c64212121')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from a hex string', function () {
+      var hexString = 'abcdef0123456789'
+      var s = Script.buildPrunableDataOut(hexString, 'hex')
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 8 0xabcdef0123456789')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from an array of a hex string', function () {
+      var hexString = 'abcdef0123456789'
+      var s = Script.buildPrunableDataOut([hexString], 'hex')
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 8 0xabcdef0123456789')
+      s.isPrunableDataOut().should.equal(true)
+    })
+    it('should create script from an array of hex strings', function () {
+      var hexString = 'abcdef0123456789'
+      var s = Script.buildPrunableDataOut([hexString, hexString], 'hex')
+      should.exist(s)
+      s.toString().should.equal('OP_0 OP_RETURN 8 0xabcdef0123456789 8 0xabcdef0123456789')
+      s.isPrunableDataOut().should.equal(true)
+    })
+  })
   describe('#buildScriptHashOut', function () {
     it('should create script from another script', function () {
       var inner = new Script('OP_DUP OP_HASH160 20 0x06c06f6d931d7bfba2b5bd5ad0d19a8f257af3e3 OP_EQUALVERIFY OP_CHECKSIG')
@@ -964,8 +1096,11 @@ describe('Script', function () {
       var script = new Script(address)
       expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
     })
-    it('for a standard opreturn output', function () {
+    it('for a old-style opreturn output', function () {
       expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.equal(true)
+    })
+    it('for a prunable opreturn output', function () {
+      expect(BufferUtil.equal(Script('OP_FALSE OP_RETURN 1 0xFF').getData()[0], Buffer.from([255]))).to.equal(true)
     })
     it('fails if content is not recognized', function () {
       expect(function () {
