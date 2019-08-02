@@ -72,7 +72,7 @@ Data outputs are used to push data into the blockchain. Up to 40 bytes can be pu
 ```javascript
 var data = 'hello world!!!';
 var script = Script.buildDataOut(data);
-assert(script.toString() === 'OP_FALSE OP_RETURN 14 0x68656c6c6f20776f726c64212121'
+assert(script.toString() === 'OP_RETURN 14 0x68656c6c6f20776f726c64212121'
 ```
 
 ### Custom Scripts
