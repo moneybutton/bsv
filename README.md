@@ -8,7 +8,10 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
-**0.29.0**
+**0.29.2**
+* Throw error on invalid hex strings in script
+
+**0.29.1**
 * Add support for new OP_RETURN style: buildSafeDataOut and isSafeDataOut (and getData)
 
 **0.27.2**
