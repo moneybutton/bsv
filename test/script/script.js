@@ -200,6 +200,19 @@ describe('Script', function () {
       script.toASM().should.equal(asm)
     })
 
+    it('should know this is invalid hex', function () {
+      var asm = 'OP_RETURN 026d02 0568656c6c6fzz'
+      let errors = 0
+      try {
+        errors++
+        var script = Script.fromASM(asm)
+        script.toASM().should.equal(asm)
+      } catch (err) {
+        err.message.should.equal('invalid hex string in script')
+      }
+      errors.should.equal(1)
+    })
+
     it('should parse this long PUSHDATA1 script in ASM', function () {
       var buf = Buffer.alloc(220, 0)
       var asm = 'OP_RETURN ' + buf.toString('hex')
