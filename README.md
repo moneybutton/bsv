@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**0.30.0**
+* Fix transaction size calculation.
+
 **0.29.2**
 * Throw error on invalid hex strings in script
 
