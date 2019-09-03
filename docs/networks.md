@@ -7,13 +7,13 @@ The `Network` namespace has a function, `get(...)` that returns an instance of a
 
 The regtest network is useful for development as it's possible to programmatically and instantly generate blocks for testing. It's currently supported as a variation of testnet. Here is an example of how to use regtest with the Bitcore Library:
 
-```js
+```javascript
 // Standard testnet
 > bsv.Networks.testnet.networkMagic;
 <Buffer 0b 11 09 07>
 ```
 
-```js
+```javascript
 // Enabling testnet to use the regtest port and magicNumber
 > bsv.Networks.enableRegtest();
 > bsv.Networks.testnet.networkMagic;
