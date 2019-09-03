@@ -172,6 +172,3 @@ var transaction = new Transaction()
 console.log(transaction.getLockTime());
 // output similar to: Sun Nov 30 2025 00:00:00 GMT-0300 (ART)
 ```
-
-## Upcoming changes
-We're debating an API for Merge Avoidance, CoinJoin, Smart contracts, CoinSwap, and Stealth Addresses. We're expecting to have all of them by some time in 2015. Payment channel creation is available in the [bsv-channel](https://github.com/bitpay/bsv-channel) module.
