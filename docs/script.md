@@ -107,7 +107,7 @@ To validate a transaction, the bitcoin network validates all of its inputs and o
 
 You can use it like this:
 
-```
+```javascript
 var inputScript = Script('OP_1');
 var outputScript = Script('OP_15 OP_ADD OP_16 OP_EQUAL');
 
@@ -119,7 +119,7 @@ Note that `verify` expects two scripts: one is the input script (scriptSig) and 
 
 It also accepts some optional parameters, assuming defaults if not provided:
 
-```
+```javascript
 // first we create a transaction
 var tx = new Transaction()
   .from(utxo)
