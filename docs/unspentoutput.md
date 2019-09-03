@@ -8,7 +8,7 @@
 ## Parameters
 The constructor is quite permissive with the input arguments. It can take outputs straight out of bitcoind's getunspent RPC call. Some of the names are not very informative for new users, so the UnspentOutput constructor also understands these aliases:
 - `scriptPubKey`: just `script` is also accepted
-- `amount`: expected value in BTC. If the `satoshis` alias is used, make sure to use satoshis instead of BTC.
+- `amount`: expected value in BSV. If the `satoshis` alias is used, make sure to use satoshis instead of BSV.
 - `vout`: this is the index of the output in the transaction, renamed to `outputIndex`
 - `txid`: `txId`
 
