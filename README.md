@@ -8,6 +8,28 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**0.30.0**
+* Fix transaction size calculation.
+
+**0.29.2**
+* Throw error on invalid hex strings in script
+
+**0.29.1**
+* Add support for new OP_RETURN style: buildSafeDataOut and isSafeDataOut (and getData)
+
+**0.27.2**
+* Add support for Stress Test Network (STN).
+
+**v0.27.1**
+* Replace lodash methods with inline pure javascript methods.
+
+**v0.27.0**
+* Remove version guard. This should fix the "two versions of bsv" error that
+  people often get. Note that it is poor practice to use incompatible versions
+  of bsv. To send objects from one version of the library to another, always
+  serialize to a string or buffer first. Do not send objects from one version to
+  another. This due to frequent use of "instanceof" inside the library.
+
 **v0.26.5**
 * lodash optimization and overall size optimization of bsv.min.js
 * fix isFinal
