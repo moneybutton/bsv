@@ -8,6 +8,11 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**0.30.1**
+* Enforce buffer check for Electrum ECIES decryption.
+* Clean up script folder (no API breaking changes).
+* Documentation improvements.
+
 **0.30.0**
 * Fix transaction size calculation.
 
