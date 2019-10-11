@@ -8,6 +8,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 Changelog
 ---------
 
+**1.0.0**
+* Bump to 1.0 release as per the suggestion of @mathiasrw
+
 **0.30.2**
 * Added addSafeData to Transaction.
 
