@@ -278,6 +278,15 @@ describe('Transaction', function () {
       tx.inputs.length.should.equal(1)
     })
 
+    it('adds OP_FALSE in front of OP_RETURN', function () {
+      var transaction = new Transaction()
+        .from(simpleUtxoWith100000Satoshis)
+        .addSafeData('genesis is coming')
+        .change(changeAddress)
+        .sign(privateKey)
+      transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006a47304402204c25336229ffe838ab3c5629f78c1cc2d3a578383b1d71dc576b40e092aa5e2502200dbd32cc40348c92c10bedb57f1a2926225354d4ddb616ab9cb5ed2a30b6816f41210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e67c3850100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
+    })
+
     describe('isFullySigned', function () {
       it('works for normal p2pkh', function () {
         var transaction = new Transaction()
