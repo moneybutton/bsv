@@ -136,11 +136,11 @@ describe('MerkleBlock', function () {
     })
   })
 
-  describe('#filterdTxsHash', function () {
+  describe('#filteredTxsHash', function () {
     it('should validate good merkleblocks', function () {
       var hashOfFilteredTx = '6f64fd5aa9dd01f74c03656d376625cf80328d83d9afebe60cc68b8f0e245bd9'
       var b = MerkleBlock(data.JSON[3])
-      b.filterdTxsHash()[0].should.equal(hashOfFilteredTx)
+      b.filteredTxsHash()[0].should.equal(hashOfFilteredTx)
     })
 
     it('should fail with merkleblocks with too many hashes', function () {
@@ -151,7 +151,7 @@ describe('MerkleBlock', function () {
         b.hashes.push('bad' + i++)
       }
       (function () {
-        b.filterdTxsHash()
+        b.filteredTxsHash()
       }).should.throw('This MerkleBlock contain an invalid Merkle Tree')
     })
 
@@ -159,7 +159,7 @@ describe('MerkleBlock', function () {
       var b = MerkleBlock(JSON.parse(blockJSON))
       b.flags.pop();
       (function () {
-        b.filterdTxsHash()
+        b.filteredTxsHash()
       }).should.throw('This MerkleBlock contain an invalid Merkle Tree')
     })
   })
