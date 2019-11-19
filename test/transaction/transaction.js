@@ -9,6 +9,7 @@ var sinon = require('sinon')
 var bsv = require('../..')
 var _ = bsv.deps._
 var BN = bsv.crypto.BN
+var Random = bsv.crypto.Random
 var Transaction = bsv.Transaction
 var Input = bsv.Transaction.Input
 var Output = bsv.Transaction.Output
@@ -285,6 +286,28 @@ describe('Transaction', function () {
         .change(changeAddress)
         .sign(privateKey)
       transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006a47304402204c25336229ffe838ab3c5629f78c1cc2d3a578383b1d71dc576b40e092aa5e2502200dbd32cc40348c92c10bedb57f1a2926225354d4ddb616ab9cb5ed2a30b6816f41210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e67c3850100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
+    })
+
+    it.skip('should handle 1000 inputs', function () {
+      this.timeout(4800000)
+      let n = 3000
+      let satoshis = 1e3
+      let total = satoshis * n - satoshis / 2
+      let tx = new Transaction()
+      for (let i = 0; i < n; i++) {
+        tx = tx.from({
+          txId: Random.getRandomBuffer(32).toString('hex'),
+          outputIndex: 0,
+          script: Script.buildPublicKeyHashOut(fromAddress).toString(),
+          satoshis: satoshis
+        })
+      }
+      tx = tx.to([{
+        address: toAddress,
+        satoshis: total
+      }])
+        .change(changeAddress)
+        .sign(privateKey)
     })
 
     describe('isFullySigned', function () {
