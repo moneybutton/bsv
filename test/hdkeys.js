@@ -269,7 +269,7 @@ describe('BIP32 compliance', function () {
   })
 
   describe('edge cases', function () {
-    var sandbox = sinon.sandbox.create()
+    var sandbox = sinon.createSandbox()
     afterEach(function () {
       sandbox.restore()
     })
