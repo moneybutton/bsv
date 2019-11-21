@@ -1,6 +1,5 @@
 'use strict'
 
-var _ = require('../lib/util/_')
 var chai = require('chai')
 var should = chai.should()
 var expect = chai.expect
@@ -85,7 +84,7 @@ describe('Opcode', function () {
 
   describe('@map', function () {
     it('should have a map containing 118 elements', function () {
-      _.size(Opcode.map).should.equal(118)
+      Object.keys(Opcode.map).length.should.equal(118)
     })
   })
 
