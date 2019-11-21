@@ -1,8 +1,8 @@
 'use strict'
 
-var _ = require('lodash')
 var chai = require('chai')
 var expect = chai.expect
+var cloneDeep = require('clone-deep')
 
 var bsv = require('../..')
 var UnspentOutput = bsv.Transaction.UnspentOutput
@@ -38,7 +38,7 @@ describe('UnspentOutput', function () {
   })
 
   it('fails if vout is not a number', function () {
-    var sample = _.cloneDeep(sampleData2)
+    var sample = cloneDeep(sampleData2)
     sample.vout = '1'
     expect(function () {
       return new UnspentOutput(sample)

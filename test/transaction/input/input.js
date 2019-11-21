@@ -2,7 +2,7 @@
 
 var should = require('chai').should()
 var expect = require('chai').expect
-var _ = require('lodash')
+var _ = require('../../../lib/util/_')
 
 var bsv = require('../../..')
 var errors = bsv.errors
