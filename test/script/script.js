@@ -4,7 +4,6 @@ var should = require('chai').should()
 var expect = require('chai').expect
 var bsv = require('../..')
 
-var BufferUtil = bsv.util.buffer
 var Script = bsv.Script
 var Networks = bsv.Networks
 var Opcode = bsv.Opcode
@@ -1102,18 +1101,18 @@ describe('Script', function () {
     it('for a P2PKH address', function () {
       var address = Address.fromString('1NaTVwXDDUJaXDQajoa9MqHhz4uTxtgK14')
       var script = Script.buildPublicKeyHashOut(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
+      expect(script.getData().equals(address.hashBuffer)).to.equal(true)
     })
     it('for a P2SH address', function () {
       var address = Address.fromString('3GhtMmAbWrUf6Y8vDxn9ETB14R6V7Br3mt')
       var script = new Script(address)
-      expect(BufferUtil.equal(script.getData(), address.hashBuffer)).to.equal(true)
+      expect(script.getData().equals(address.hashBuffer)).to.equal(true)
     })
     it('for a old-style opreturn output', function () {
-      expect(BufferUtil.equal(Script('OP_RETURN 1 0xFF').getData(), Buffer.from([255]))).to.equal(true)
+      expect(Script('OP_RETURN 1 0xFF').getData().equals(Buffer.from([255]))).to.equal(true)
     })
     it('for a safe opreturn output', function () {
-      expect(BufferUtil.equal(Script('OP_FALSE OP_RETURN 1 0xFF').getData()[0], Buffer.from([255]))).to.equal(true)
+      expect(Script('OP_FALSE OP_RETURN 1 0xFF').getData()[0].equals(Buffer.from([255]))).to.equal(true)
     })
     it('fails if content is not recognized', function () {
       expect(function () {

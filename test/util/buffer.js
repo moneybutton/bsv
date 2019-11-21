@@ -9,30 +9,6 @@ var errors = bsv.errors
 var BufferUtil = bsv.util.buffer
 
 describe('buffer utils', function () {
-  describe('equals', function () {
-    it('recognizes these two equal buffers', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from('010203', 'hex')
-      BufferUtil.equal(bufferA, bufferB).should.equal(true)
-    })
-    it('no false positive: returns false with two different buffers', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from('010204', 'hex')
-      BufferUtil.equal(bufferA, bufferB).should.equal(false)
-    })
-    it('coverage: quickly realizes a difference in size and returns false', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from([])
-      BufferUtil.equal(bufferA, bufferB).should.equal(false)
-    })
-    it('"equals" is an an alias for "equal"', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from([1, 2, 3])
-      BufferUtil.equal(bufferA, bufferB).should.equal(true)
-      BufferUtil.equals(bufferA, bufferB).should.equal(true)
-    })
-  })
-
   describe('fill', function () {
     it('checks arguments', function () {
       expect(function () {
@@ -138,7 +114,7 @@ describe('buffer utils', function () {
       var original = Buffer.from([255, 0, 128])
       var hexa = BufferUtil.bufferToHex(original)
       var back = BufferUtil.hexToBuffer(hexa)
-      expect(BufferUtil.equal(original, back)).to.equal(true)
+      expect(original.equals(back)).to.equal(true)
     })
   })
 
