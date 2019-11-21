@@ -1,6 +1,6 @@
 'use strict'
 /* jshint unused: false */
-var _ = require('lodash')
+var _ = require('../lib/util/_')
 var assert = require('assert')
 var should = require('chai').should()
 var expect = require('chai').expect
@@ -73,10 +73,10 @@ describe('HDPrivate key interface', function () {
   })
 
   it('builds a json keeping the structure and same members', function () {
-    assert(_.isEqual(
+    assert.deepStrictEqual(
       new HDPrivateKey(json).toJSON(),
       new HDPrivateKey(xprivkey).toJSON()
-    ))
+    )
   })
 
   describe('instantiation', function () {

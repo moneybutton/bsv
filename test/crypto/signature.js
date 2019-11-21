@@ -1,6 +1,6 @@
 'use strict'
 
-var _ = require('lodash')
+var _ = require('../../lib/util/_')
 var should = require('chai').should()
 var bsv = require('../..')
 var BN = bsv.crypto.BN
