@@ -1,7 +1,7 @@
 'use strict'
 
 /* jshint unused: false */
-var _ = require('lodash')
+var _ = require('../lib/util/_')
 var assert = require('assert')
 require('chai').should()
 var expect = require('chai').expect

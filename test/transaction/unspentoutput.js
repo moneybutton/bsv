@@ -1,6 +1,6 @@
 'use strict'
 
-var _ = require('lodash')
+var _ = require('../../lib/util/_')
 var chai = require('chai')
 var expect = chai.expect
 

@@ -9,7 +9,7 @@ var Script = bsv.Script
 var BN = bsv.crypto.BN
 var BufferWriter = bsv.encoding.BufferWriter
 var Opcode = bsv.Opcode
-var _ = require('lodash')
+var _ = require('../../lib/util/_')
 
 var scriptTests = require('../data/bitcoind/script_tests')
 var txValid = require('../data/bitcoind/tx_valid')
