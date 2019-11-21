@@ -1,7 +1,6 @@
 'use strict'
 
 /* jshint unused: false */
-var _ = require('../lib/util/_')
 var assert = require('assert')
 require('chai').should()
 var expect = require('chai').expect
@@ -95,10 +94,10 @@ describe('HDPublicKey interface', function () {
     })
 
     it('can generate a json that has a particular structure', function () {
-      assert(_.isEqual(
+      assert.deepStrictEqual(
         new HDPublicKey(JSON.parse(json)).toJSON(),
         new HDPublicKey(xpubkey).toJSON()
-      ))
+      )
     })
 
     it('builds from a buffer object', function () {
