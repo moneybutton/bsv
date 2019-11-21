@@ -9,23 +9,6 @@ var errors = bsv.errors
 var BufferUtil = bsv.util.buffer
 
 describe('buffer utils', function () {
-  describe('fill', function () {
-    it('checks arguments', function () {
-      expect(function () {
-        BufferUtil.fill('something')
-      }).to.throw(errors.InvalidArgumentType)
-      expect(function () {
-        BufferUtil.fill(Buffer.from([0, 0, 0]), 'invalid')
-      }).to.throw(errors.InvalidArgumentType)
-    })
-    it('works correctly for a small buffer', function () {
-      var buffer = BufferUtil.fill(Buffer.alloc(10), 6)
-      for (var i = 0; i < 10; i++) {
-        buffer[i].should.equal(6)
-      }
-    })
-  })
-
   describe('isBuffer', function () {
     it('has no false positive', function () {
       expect(BufferUtil.isBuffer(1)).to.equal(false)
