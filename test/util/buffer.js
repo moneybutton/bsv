@@ -81,7 +81,7 @@ describe('buffer utils', function () {
     it('round trips', function () {
       var original = Buffer.from([255, 0, 128])
       var hexa = BufferUtil.bufferToHex(original)
-      var back = BufferUtil.hexToBuffer(hexa)
+      var back = Buffer.from(hexa, 'hex')
       expect(original.equals(back)).to.equal(true)
     })
   })
