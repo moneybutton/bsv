@@ -1,5 +1,4 @@
 'use strict'
-/* jshint unused: false */
 
 require('chai').should()
 

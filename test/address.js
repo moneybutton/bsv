@@ -1,7 +1,5 @@
 'use strict'
 
-/* jshint maxstatements: 30 */
-
 var chai = require('chai')
 var should = chai.should()
 var expect = chai.expect
