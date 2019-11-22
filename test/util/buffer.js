@@ -9,68 +9,12 @@ var errors = bsv.errors
 var BufferUtil = bsv.util.buffer
 
 describe('buffer utils', function () {
-  describe('equals', function () {
-    it('recognizes these two equal buffers', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from('010203', 'hex')
-      BufferUtil.equal(bufferA, bufferB).should.equal(true)
-    })
-    it('no false positive: returns false with two different buffers', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from('010204', 'hex')
-      BufferUtil.equal(bufferA, bufferB).should.equal(false)
-    })
-    it('coverage: quickly realizes a difference in size and returns false', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from([])
-      BufferUtil.equal(bufferA, bufferB).should.equal(false)
-    })
-    it('"equals" is an an alias for "equal"', function () {
-      var bufferA = Buffer.from([1, 2, 3])
-      var bufferB = Buffer.from([1, 2, 3])
-      BufferUtil.equal(bufferA, bufferB).should.equal(true)
-      BufferUtil.equals(bufferA, bufferB).should.equal(true)
-    })
-  })
-
-  describe('fill', function () {
-    it('checks arguments', function () {
-      expect(function () {
-        BufferUtil.fill('something')
-      }).to.throw(errors.InvalidArgumentType)
-      expect(function () {
-        BufferUtil.fill(Buffer.from([0, 0, 0]), 'invalid')
-      }).to.throw(errors.InvalidArgumentType)
-    })
-    it('works correctly for a small buffer', function () {
-      var buffer = BufferUtil.fill(Buffer.alloc(10), 6)
-      for (var i = 0; i < 10; i++) {
-        buffer[i].should.equal(6)
-      }
-    })
-  })
-
   describe('isBuffer', function () {
     it('has no false positive', function () {
       expect(BufferUtil.isBuffer(1)).to.equal(false)
     })
     it('has no false negative', function () {
       expect(BufferUtil.isBuffer(Buffer.alloc(0))).to.equal(true)
-    })
-  })
-
-  describe('emptyBuffer', function () {
-    it('creates a buffer filled with zeros', function () {
-      var buffer = BufferUtil.emptyBuffer(10)
-      expect(buffer.length).to.equal(10)
-      for (var i = 0; i < 10; i++) {
-        expect(buffer[i]).to.equal(0)
-      }
-    })
-    it('checks arguments', function () {
-      expect(function () {
-        BufferUtil.emptyBuffer('invalid')
-      }).to.throw(errors.InvalidArgumentType)
     })
   })
 
@@ -122,23 +66,6 @@ describe('buffer utils', function () {
       expect(BufferUtil.integerFromBuffer(
         BufferUtil.integerAsBuffer(10000)
       )).to.equal(10000)
-    })
-  })
-
-  describe('buffer to hex', function () {
-    it('returns an expected value in hexa', function () {
-      expect(BufferUtil.bufferToHex(Buffer.from([255, 0, 128]))).to.equal('ff0080')
-    })
-    it('checks the argument type', function () {
-      expect(function () {
-        BufferUtil.bufferToHex('invalid')
-      }).to.throw(errors.InvalidArgumentType)
-    })
-    it('round trips', function () {
-      var original = Buffer.from([255, 0, 128])
-      var hexa = BufferUtil.bufferToHex(original)
-      var back = BufferUtil.hexToBuffer(hexa)
-      expect(BufferUtil.equal(original, back)).to.equal(true)
     })
   })
 
