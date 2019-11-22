@@ -18,21 +18,6 @@ describe('buffer utils', function () {
     })
   })
 
-  describe('emptyBuffer', function () {
-    it('creates a buffer filled with zeros', function () {
-      var buffer = BufferUtil.emptyBuffer(10)
-      expect(buffer.length).to.equal(10)
-      for (var i = 0; i < 10; i++) {
-        expect(buffer[i]).to.equal(0)
-      }
-    })
-    it('checks arguments', function () {
-      expect(function () {
-        BufferUtil.emptyBuffer('invalid')
-      }).to.throw(errors.InvalidArgumentType)
-    })
-  })
-
   describe('single byte buffer <=> integer', function () {
     it('integerAsSingleByteBuffer should return a buffer of length 1', function () {
       expect(BufferUtil.integerAsSingleByteBuffer(100)[0]).to.equal(100)
