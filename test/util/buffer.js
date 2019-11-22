@@ -17,29 +17,6 @@ describe('buffer utils', function () {
     })
   })
 
-  describe('single byte buffer <=> integer', function () {
-    it('integerAsSingleByteBuffer should return a buffer of length 1', function () {
-      expect(BufferUtil.integerAsSingleByteBuffer(100)[0]).to.equal(100)
-    })
-    it('should check the type', function () {
-      expect(function () {
-        BufferUtil.integerAsSingleByteBuffer('invalid')
-      }).to.throw(errors.InvalidArgumentType)
-      expect(function () {
-        BufferUtil.integerFromSingleByteBuffer('invalid')
-      }).to.throw(errors.InvalidArgumentType)
-    })
-    it('works correctly for edge cases', function () {
-      expect(BufferUtil.integerAsSingleByteBuffer(255)[0]).to.equal(255)
-      expect(BufferUtil.integerAsSingleByteBuffer(-1)[0]).to.equal(255)
-    })
-    it('does a round trip', function () {
-      expect(BufferUtil.integerAsSingleByteBuffer(
-        BufferUtil.integerFromSingleByteBuffer(Buffer.from([255]))
-      )[0]).to.equal(255)
-    })
-  })
-
   describe('4byte buffer integer <=> integer', function () {
     it('integerAsBuffer should return a buffer of length 4', function () {
       expect(BufferUtil.integerAsBuffer(100).length).to.equal(4)
