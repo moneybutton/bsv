@@ -32,7 +32,7 @@ describe('Mnemonic', function () {
   describe('# Mnemonic', function () {
     describe('Constructor', function () {
       it('does not require new keyword', function () {
-        var mnemonic = Mnemonic() // jshint ignore:line
+        var mnemonic = Mnemonic()
         mnemonic.should.be.instanceof(Mnemonic)
       })
 

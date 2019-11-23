@@ -251,7 +251,6 @@ describe('PrivateKey', function () {
   it('coverage: public key cache', function () {
     expect(function () {
       var privateKey = new PrivateKey()
-      /* jshint unused: false */
       var publicKey = privateKey.publicKey
       return publicKey
     }).to.not.throw()

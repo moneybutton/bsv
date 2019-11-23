@@ -1,6 +1,5 @@
 'use strict'
 
-/* jshint unused: false */
 var assert = require('assert')
 require('chai').should()
 var expect = require('chai').expect
@@ -235,7 +234,6 @@ describe('HDPublicKey interface', function () {
     })
 
     it('doesn\'t allow other parameters like m\' or M\' or "s"', function () {
-      /* jshint quotmark: double */
       expectDerivationFail("m'", hdErrors.InvalidIndexCantDeriveHardened)
       expectDerivationFail("M'", hdErrors.InvalidIndexCantDeriveHardened)
       expectDerivationFail('1', hdErrors.InvalidPath)

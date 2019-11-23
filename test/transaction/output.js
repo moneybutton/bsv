@@ -1,7 +1,5 @@
 'use strict'
 
-/* jshint unused: false */
-/* jshint latedef: false */
 var should = require('chai').should()
 
 var bsv = require('../..')
