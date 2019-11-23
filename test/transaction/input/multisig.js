@@ -1,5 +1,4 @@
 'use strict'
-/* jshint unused: false */
 
 var should = require('chai').should()
 var _ = require('../../../lib/util/_')

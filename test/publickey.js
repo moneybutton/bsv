@@ -11,11 +11,7 @@ var PrivateKey = bsv.PrivateKey
 var Address = bsv.Address
 var Networks = bsv.Networks
 
-/* jshint maxlen: 200 */
-
 describe('PublicKey', function () {
-  /* jshint maxstatements: 30 */
-
   var invalidPoint = '0400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
   describe('validating errors on creation', function () {

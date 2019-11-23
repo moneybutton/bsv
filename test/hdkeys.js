@@ -5,10 +5,6 @@
 //   * too many tests, maxstatements -> 100
 //   * store test vectors at the end, latedef: false
 //   * should call is never defined
-/* jshint quotmark: false */
-/* jshint latedef: false */
-/* jshint maxstatements: 100 */
-/* jshint unused: false */
 
 var _ = require('../lib/util/_')
 require('chai').should()
