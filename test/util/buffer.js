@@ -15,15 +15,4 @@ describe('buffer utils', function () {
       expect(BufferUtil.isBuffer(Buffer.alloc(0))).to.equal(true)
     })
   })
-
-  describe('reverse', function () {
-    it('reverses a buffer', function () {
-      // http://bit.ly/1J2Ai4x
-      var original = Buffer.from([255, 0, 128])
-      var reversed = BufferUtil.reverse(original)
-      original[0].should.equal(reversed[2])
-      original[1].should.equal(reversed[1])
-      original[2].should.equal(reversed[0])
-    })
-  })
 })
