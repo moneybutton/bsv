@@ -310,7 +310,7 @@ describe('HDPrivate key interface', function () {
       var privKey = new HDPrivateKey(xprivkey)
       var object = privKey.toObject()
       _.each(_.values(object), function (value) {
-        expect(BufferUtil.isBuffer(value)).to.equal(false)
+        expect(Buffer.isBuffer(value)).to.equal(false)
       })
     })
     it('roundtrips toObject', function () {
