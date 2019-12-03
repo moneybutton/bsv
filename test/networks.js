@@ -45,14 +45,12 @@ describe('Networks', function () {
 
   it('should have network magic for testnet', function () {
     var testnet = networks.get('testnet')
-    var buffUtil = require('../lib/util/buffer')
-    buffUtil.isBuffer(testnet.networkMagic).should.equal(true)
+    Buffer.isBuffer(testnet.networkMagic).should.equal(true)
   })
 
   it('should have network magic for stn', function () {
     var stn = networks.get('stn')
-    var buffUtil = require('../lib/util/buffer')
-    buffUtil.isBuffer(stn.networkMagic).should.equal(true)
+    Buffer.isBuffer(stn.networkMagic).should.equal(true)
   })
 
   it('can remove a custom network', function () {

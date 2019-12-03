@@ -7,7 +7,7 @@ var bsv = require('..')
 var buffer = require('buffer')
 var errors = bsv.errors
 var hdErrors = bsv.errors.HDPublicKey
-var BufferUtil = bsv.util.buffer
+var JSUtil = require('../lib/util/js')
 var HDPrivateKey = bsv.HDPrivateKey
 var HDPublicKey = bsv.HDPublicKey
 var Base58Check = bsv.encoding.Base58Check
@@ -105,7 +105,7 @@ describe('HDPublicKey interface', function () {
 
     it('checks the checksum', function () {
       var buffers = new HDPublicKey(xpubkey)._buffers
-      buffers.checksum = BufferUtil.integerAsBuffer(1)
+      buffers.checksum = JSUtil.integerAsBuffer(1)
       expectFail(function () {
         return new HDPublicKey(buffers)
       }, errors.InvalidB58Checksum)

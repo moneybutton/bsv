@@ -9,7 +9,7 @@ var errors = bsv.errors
 var hdErrors = errors.HDPrivateKey
 var buffer = require('buffer')
 var Networks = bsv.Networks
-var BufferUtil = bsv.util.buffer
+var JSUtil = require('../lib/util/js')
 var HDPrivateKey = bsv.HDPrivateKey
 var Base58Check = bsv.encoding.Base58Check
 
@@ -184,7 +184,7 @@ describe('HDPrivate key interface', function () {
     var error = null
     try {
       var buffers = privKey._buffers
-      buffers.checksum = BufferUtil.integerAsBuffer(0)
+      buffers.checksum = JSUtil.integerAsBuffer(0)
       new HDPrivateKey(buffers) //eslint-disable-line
     } catch (e) {
       error = e
@@ -310,7 +310,7 @@ describe('HDPrivate key interface', function () {
       var privKey = new HDPrivateKey(xprivkey)
       var object = privKey.toObject()
       _.each(_.values(object), function (value) {
-        expect(BufferUtil.isBuffer(value)).to.equal(false)
+        expect(Buffer.isBuffer(value)).to.equal(false)
       })
     })
     it('roundtrips toObject', function () {

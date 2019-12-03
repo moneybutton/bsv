@@ -121,7 +121,7 @@ describe('Bitcore ECIES', function () {
   })
 
   it('correctly fails if trying to decrypt a bad message', function () {
-    var encrypted = bsv.util.buffer.copy(encBuf)
+    var encrypted = Buffer.from(encBuf)
     encrypted[encrypted.length - 1] = 2;
     (function () {
       return bob.decrypt(encrypted)
