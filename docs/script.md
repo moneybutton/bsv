@@ -51,7 +51,7 @@ assert(script.toString() === 'OP_2 33 0x022df8750480ad5b26950b25c7ba79d3e37d75f6
 
 ### Pay to Script Hash (p2sh)
 
-DEPRECIATED - Do not use p2sh on Bitcoin SV.
+DEPRECATED - Do not use p2sh on Bitcoin SV.
 
 Pay to script hash outputs are scripts that contain the hash of another script, called `redeemScript`. To spend bitcoins sent in a p2sh output, the spending transaction must provide a script matching the script hash and data which makes the script evaluate to true.  This allows to defer revealing the spending conditions to the moment of spending. It also makes it possible for the receiver to set the conditions to spend those bitcoins.
 
