@@ -9,6 +9,7 @@
     "test": "standard && mocha",
     "coverage": "nyc --reporter=text npm run test",
     "build-bsv": "webpack index.js --config webpack.config.js",
+    "build-benchmarking": "webpack benchmarking/index.js --config webpack.subproject.config.js --output-library bsvBenchmarking -o bsv-benchmarking.min.js",
     "build-ecies": "webpack ecies/index.js --config webpack.subproject.config.js --output-library bsvEcies -o bsv-ecies.min.js",
     "build-message": "webpack message/index.js --config webpack.subproject.config.js --output-library bsvMessage -o bsv-message.min.js",
     "build-mnemonic": "webpack mnemonic/index.js --config webpack.subproject.config.js --output-library bsvMnemonic -o bsv-mnemonic.min.js",
@@ -50,6 +51,7 @@
     "unorm": "1.4.1"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "brfs": "2.0.1",
     "chai": "4.2.0",
     "mocha": "^5.2.0",

@@ -1,0 +1,22 @@
+<html>
+<meta charset="utf-8" />
+
+<head>
+    <title>Benchmarking Test</title>
+</head>
+
+<body>
+    <p>Check console.log in inspector for results of benchmarking.</p>
+    <p>Note: console errors due to an issue with benchmark package,
+        <i>"Uncaught ReferenceError: define is not defined"</i></p>
+    <script src="./bsv.min.js"></script>
+    <script src="./bsv-benchmarking.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            bsv.Benchmarking.asyncFlag = true
+            bsv.Benchmarking.createAndSignNumInputs([1, 10, 20, 30])
+        }
+    </script>
+</body>
+
+</html>
