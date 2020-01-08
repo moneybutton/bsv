@@ -10,6 +10,7 @@
 /// <reference types="node" />
 
 declare module 'bsv' {
+
     export namespace crypto {
         class BN { }
 
@@ -65,6 +66,7 @@ declare module 'bsv' {
         class Output {
             readonly script: Script;
             readonly satoshis: number;
+            readonly satoshisBN: crypto.BN;
             spentTxId: string | null;
             constructor(data: object);
 
@@ -128,6 +130,14 @@ declare module 'bsv' {
         isFullySigned(): boolean;
     }
 
+    export class ECIES {
+        constructor(opts?: any, algorithm?: string);
+        
+        privateKey(privateKey: PrivateKey): ECIES;
+        publicKey(publicKey: PublicKey): ECIES;
+        encrypt(message: string | Buffer): Buffer;
+        decrypt(encbuf: Buffer): Buffer;
+    }
     export class Block {
         hash: string;
         height: number;
@@ -141,36 +151,108 @@ declare module 'bsv' {
     }
 
     export class PrivateKey {
+        constructor(key?: string, network?: Networks.Network);
+        
         readonly publicKey: PublicKey;
+        readonly compressed: boolean;
         readonly network: Networks.Network;
-
+        
         toAddress(): Address;
         toPublicKey(): PublicKey;
         toString(): string;
         toObject(): object;
         toJSON(): object;
         toWIF(): string;
+        toHex(): string;
+        toBigNumber(): any; //BN;
+        toBuffer(): Buffer;
+        inspect(): string;
 
         static fromString(str: string): PrivateKey;
         static fromWIF(str: string): PrivateKey;
         static fromRandom(netowrk?: string): PrivateKey;
-
-        constructor(key?: string, network?: Networks.Network);
+        static fromBuffer(buf: Buffer, network: string | Networks.Network): PrivateKey;
+        static fromHex(hex: string, network: string | Networks.Network): PrivateKey;
+        static getValidationError(data: string): any | null;
+        static isValid(data: string): boolean;
     }
 
     export class PublicKey {
-        constructor(source: string);
+        constructor(source: string, extra?: object);
+        
+        //readonly point: Point;
+        readonly compressed: boolean;
+        readonly network: Networks.Network;
+
+        toDER(): Buffer;
+        toObject(): object;
+        toBuffer(): Buffer;
+        toAddress(network?: string | Networks.Network): Address;
+        toString(): string;
+        toHex(): string;
+        inspect(): string;
 
         static fromPrivateKey(privateKey: PrivateKey): PublicKey;
+        static fromBuffer(buf: Buffer, strict: boolean): PublicKey;
+        static fromDER(buf: Buffer, strict: boolean): PublicKey;
+        //static fromPoint(point: Point, compressed: boolean): PublicKey;
+        //static fromX(odd: boolean, x: Point): PublicKey;
+        static fromString(str: string): PublicKey;
+        static fromHex(hex: string): PublicKey;
+        static getValidationError(data: string): any | null;
+        static isValid(data: string): boolean;
+    }
 
-        toBuffer(): Buffer;
-        toDER(): Buffer;
+    export class Message {
+        constructor(message: string | Buffer);
+
+        readonly messageBuffer: Buffer;
+
+        sign(privateKey: PrivateKey): string;
+        verify(address: string | Address, signature: string): boolean;
+        toObject(): object;
+        toJSON(): string;
+        toString(): string;
+        inspect(): string;
+
+        static sign(message: string | Buffer, privateKey: PrivateKey): string;
+        static verify(message: string | Buffer, address: string | Address, signature: string): boolean;
+        static MAGIC_BYTES: Buffer;
+        static magicHash(): string;
+        static fromString(str: string): Message;
+        static fromJSON(json: string): Message;
+        static fromObject(obj: object): Message;
+    }
+
+    export class Mnemonic {
+        constructor(data: string | Array<string>, wordList?: Array<string>);
+
+        readonly wordList: Array<string>;
+        readonly phrase: string;
+
+        toSeed(passphrase?: string): Buffer;
+        toHDPrivateKey(passphrase: string, network: string | number): HDPrivateKey;
+        toString(): string;
+        inspect(): string;
+
+        static fromRandom(wordlist?: Array<string>): Mnemonic;
+        static fromString(mnemonic: String, wordList?: Array<string>): Mnemonic;
+        static isValid(mnemonic: String, wordList?: Array<string>): boolean;
+        static fromSeed(seed: Buffer, wordlist: Array<string>): Mnemonic
     }
 
     export class HDPrivateKey {
-        readonly hdPublicKey: HDPublicKey;
-
         constructor(data?: string | Buffer | object);
+
+        readonly hdPublicKey: HDPublicKey;
+        
+        readonly xprivkey: Buffer;
+        readonly xpubkey: Buffer;
+        readonly network: Networks.Network;
+        readonly depth: number;
+        readonly privateKey: PrivateKey;
+        readonly publicKey: PublicKey;
+        readonly fingerPrint: Buffer;
 
         derive(arg: string | number, hardened?: boolean): HDPrivateKey;
         deriveChild(arg: string | number, hardened?: boolean): HDPrivateKey;
@@ -179,21 +261,50 @@ declare module 'bsv' {
         toString(): string;
         toObject(): object;
         toJSON(): object;
+        toBuffer(): Buffer;
+        toHex(): string;
+        inspect(): string;
+
+        static fromRandom(): HDPrivateKey;
+        static fromString(str: string): HDPrivateKey;
+        static fromObject(obj: object): HDPrivateKey;
+        static fromSeed(hexa: string | Buffer, network: string | Networks.Network): HDPrivateKey;
+        static fromBuffer(buf: Buffer): HDPrivateKey;
+        static fromHex(hex: string): HDPrivateKey;
+        static isValidPath(arg: string | number, hardened: boolean): boolean;
+        static isValidSerialized(data: string | Buffer, network?: string | Networks.Network): boolean;
+        static getSerializedError(data: string | Buffer, network?: string | Networks.Network): any | null;
     }
 
     export class HDPublicKey {
+        constructor(arg: string | Buffer | object);
+
         readonly xpubkey: Buffer;
         readonly network: Networks.Network;
         readonly depth: number;
         readonly publicKey: PublicKey;
         readonly fingerPrint: Buffer;
 
-        constructor(arg: string | Buffer | object);
-
         derive(arg: string | number, hardened?: boolean): HDPublicKey;
         deriveChild(arg: string | number, hardened?: boolean): HDPublicKey;
 
         toString(): string;
+        toObject(): object;
+        toJSON(): object;
+        toBuffer(): Buffer;
+        toHex(): string;
+        inspect(): string;
+
+        static fromString(str: string): HDPublicKey;
+        static fromObject(obj: object): HDPublicKey;
+        static fromBuffer(buf: Buffer): HDPublicKey;
+        static fromHex(hex:  string): HDPublicKey;
+
+        static fromHDPrivateKey(hdPrivateKey: HDPrivateKey): HDPublicKey;
+        static isValidPath(arg: string | number): boolean;
+        static isValidSerialized(data: string | Buffer, network?: string | Networks.Network): boolean;
+        static getSerializedError(data: string | Buffer, network?: string | Networks.Network): any | null;
+
     }
 
     export namespace Script {
@@ -214,10 +325,10 @@ declare module 'bsv' {
         function fromAddress(address: string | Address): Script;
 
         function empty(): Script;
-
         namespace Interpreter {
             const SCRIPT_ENABLE_SIGHASH_FORKID: any;
         }
+
         function Interpreter(): {
             verify: (
                 inputScript: Script, 
@@ -257,6 +368,7 @@ declare module 'bsv' {
         isMultisigOut(): boolean;
         isMultisigIn(): boolean;
         isDataOut(): boolean;
+        isSafeDataOut(): boolean;
 
         getData(): Buffer;
         isPushOnly(): boolean;
