@@ -78,7 +78,7 @@ declare module 'bsv' {
         class Input {
             readonly prevTxId: Buffer;
             readonly outputIndex: number;
-            readonly sequenceNumber: number;
+            sequenceNumber: number;
             readonly script: Script;
             output?: Output;
             isValidSignature(tx: Transaction, sig: any): boolean;
