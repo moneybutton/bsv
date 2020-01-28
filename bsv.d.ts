@@ -93,7 +93,7 @@ declare module 'bsv' {
         readonly inputAmount: number;
         readonly outputAmount: number;
         nid: string;
-        nLocktime: number;
+        nLockTime: number;
 
         constructor(serialized?: any);
 
