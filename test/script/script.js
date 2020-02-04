@@ -353,10 +353,10 @@ describe('Script', function () {
       Script(`OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isDataOut().should.equal(true)
     })
 
-    it('validates that this 99995-byte OP_RETURN is not a valid standard OP_RETURN', function () {
+    it('validates that this 99995-byte OP_RETURN is a valid standard OP_RETURN', function () {
       var buf = Buffer.alloc(100000 - 5)
       buf.fill(0)
-      Script(`OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isDataOut().should.equal(false)
+      Script(`OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isDataOut().should.equal(true)
     })
   })
 
@@ -405,10 +405,10 @@ describe('Script', function () {
       Script(`OP_FALSE OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isSafeDataOut().should.equal(true)
     })
 
-    it('validates that this 99995-byte OP_RETURN is not a valid standard OP_RETURN', function () {
+    it('validates that this 99995-byte OP_RETURN is a valid standard OP_RETURN', function () {
       var buf = Buffer.alloc(100000 - 5)
       buf.fill(0)
-      Script(`OP_FALSE OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isSafeDataOut().should.equal(false)
+      Script(`OP_FALSE OP_RETURN OP_PUSHDATA4 ${buf.length} 0x` + buf.toString('hex')).isSafeDataOut().should.equal(true)
     })
   })
 
