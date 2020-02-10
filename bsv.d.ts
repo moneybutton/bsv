@@ -418,11 +418,33 @@ declare module 'bsv' {
     }
 
     export class Address {
-        readonly hashBuffer: Buffer;
-        readonly network: Networks.Network;
-        readonly type: string;
-
+        public static PayToPublicKeyHash: string;
+        public static PayToScriptHash: string;
+        public readonly hashBuffer: Buffer;
+        public readonly network: Networks.Network;
+        public readonly type: string;
         constructor(data: Buffer | Uint8Array | string | object, network?: Networks.Network | string, type?: string);
+        public static createMultisig(publicKeys: PublicKey[], threshold: number, network: Networks.Network | string): Address;
+        public static fromBuffer(hash: Buffer, network: Networks.Network | string): Address;
+        public static fromHex(hex: string, network?: Networks.Network | string, type?: string): Address;
+        public static fromObject(obj: any): Address
+        public static fromPrivateKey(data: PrivateKey, network: Networks.Network | string): Address;
+        public static fromPublicKey(data: PublicKey, network: Networks.Network | string): Address;
+        public static fromPublicKeyHash(hash: Buffer, network: Networks.Network | string): Address;
+        public static fromScript(script: Script, network: Networks.Network | string): Address;
+        public static fromScriptHash(hash: Buffer, network: Networks.Network | string): Address;
+        public static fromString(str: string, network?: Networks.Network | string, type?: string): Address;
+        public static getValidationError(data: string, network?: Networks.Network | string, type?: string): Error | null;
+        public static isValid(data: string, network?: Networks.Network | string, type?: string): boolean;
+        public static payingTo(script: Script, network: Networks.Network | string): Address;
+        public inspect(): string;
+        public isPayToPublicKeyHash(): boolean;
+        public isPayToScriptHash(): boolean;
+        public toBuffer(): Buffer;
+        public toHex(): string;
+        public toJSON(): any;
+        public toObject(): any;
+        public toString(): string;
     }
 
     export class Unit {
