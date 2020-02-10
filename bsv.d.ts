@@ -7,8 +7,6 @@
 
 // TypeScript Version: 2.2
 
-/// <reference types="node" />
-
 declare module 'bsv' {
 
     export namespace crypto {
