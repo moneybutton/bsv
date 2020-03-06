@@ -4,7 +4,7 @@
   "description": "A pure and powerful JavaScript Bitcoin SV (BSV) library.",
   "author": "Ryan X. Charles <ryan@moneybutton.com>",
   "main": "index.js",
-  "types": "bsv.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "lint": "standard",
     "test": "standard && mocha",
