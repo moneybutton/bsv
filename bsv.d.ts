@@ -26,7 +26,6 @@ declare module 'bsv' {
             function sha256ripemd160(buffer: Buffer): Buffer;
             function sha512(buffer: Buffer): Buffer;
             function ripemd160(buffer: Buffer): Buffer;
-
             function sha256hmac(data: Buffer, key: Buffer): Buffer;
             function sha512hmac(data: Buffer, key: Buffer): Buffer;
         }
@@ -132,7 +131,7 @@ declare module 'bsv' {
 
     export class ECIES {
         constructor(opts?: any, algorithm?: string);
-        
+
         privateKey(privateKey: PrivateKey): ECIES;
         publicKey(publicKey: PublicKey): ECIES;
         encrypt(message: string | Buffer): Buffer;
@@ -152,11 +151,11 @@ declare module 'bsv' {
 
     export class PrivateKey {
         constructor(key?: string, network?: Networks.Network);
-        
+
         readonly publicKey: PublicKey;
         readonly compressed: boolean;
         readonly network: Networks.Network;
-        
+
         toAddress(): Address;
         toPublicKey(): PublicKey;
         toString(): string;
@@ -179,7 +178,7 @@ declare module 'bsv' {
 
     export class PublicKey {
         constructor(source: string, extra?: object);
-        
+
         //readonly point: Point;
         readonly compressed: boolean;
         readonly network: Networks.Network;
@@ -245,7 +244,7 @@ declare module 'bsv' {
         constructor(data?: string | Buffer | object);
 
         readonly hdPublicKey: HDPublicKey;
-        
+
         readonly xprivkey: Buffer;
         readonly xpubkey: Buffer;
         readonly network: Networks.Network;
@@ -298,7 +297,7 @@ declare module 'bsv' {
         static fromString(str: string): HDPublicKey;
         static fromObject(obj: object): HDPublicKey;
         static fromBuffer(buf: Buffer): HDPublicKey;
-        static fromHex(hex:  string): HDPublicKey;
+        static fromHex(hex: string): HDPublicKey;
 
         static fromHDPrivateKey(hdPrivateKey: HDPrivateKey): HDPublicKey;
         static isValidPath(arg: string | number): boolean;
@@ -331,8 +330,8 @@ declare module 'bsv' {
 
         function Interpreter(): {
             verify: (
-                inputScript: Script, 
-                outputScript: Script, 
+                inputScript: Script,
+                outputScript: Script,
                 txn: Transaction,
                 nin: Number,
                 flags: any,
@@ -410,7 +409,6 @@ declare module 'bsv' {
         const livenet: Network;
         const mainnet: Network;
         const testnet: Network;
-
         function add(data: any): Network;
         function remove(network: Network): void;
         function get(args: string | number | Network, keys: string | string[]): Network;
