@@ -13,6 +13,7 @@
     "build-message": "webpack message/index.js --config webpack.subproject.config.js --output-library bsvMessage -o bsv-message.min.js",
     "build-mnemonic": "webpack mnemonic/index.js --config webpack.subproject.config.js --output-library bsvMnemonic -o bsv-mnemonic.min.js",
     "build": "yarn build-bsv && yarn build-ecies && yarn build-message && yarn build-mnemonic",
+    "postinstall": "yarn build",
     "prepublishOnly": "yarn build"
   },
   "unpkg": "bsv.min.js",
