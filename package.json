@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "standard",
     "test": "standard && mocha",
+    "test-browser": "mochify --transform brfs test/*.js test/**/*.js test/**/**/*.js",
     "coverage": "nyc --reporter=text npm run test",
     "build-bsv": "webpack index.js --config webpack.config.js",
     "build-ecies": "webpack ecies/index.js --config webpack.subproject.config.js --output-library bsvEcies -o bsv-ecies.min.js",
@@ -53,6 +54,7 @@
     "brfs": "2.0.1",
     "chai": "4.2.0",
     "mocha": "^5.2.0",
+    "mochify": "^6.6.0",
     "nyc": "^14.1.1",
     "sinon": "7.2.3",
     "standard": "12.0.1",
