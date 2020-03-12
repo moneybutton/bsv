@@ -18,13 +18,15 @@ var dataJson = fs.readFileSync('test/data/blk86756-testnet.json').toString()
 var data = require('../data/blk86756-testnet')
 var dataBlocks = require('../data/bitcoind/blocks')
 
-describe('Block', function () {
+describe('Block', async function () {
   var blockhex = data.blockhex
   var blockbuf = Buffer.from(blockhex, 'hex')
   var bh = BlockHeader.fromBuffer(Buffer.from(data.blockheaderhex, 'hex'))
   var txs = []
-  JSON.parse(dataJson).transactions.forEach(function (tx) {
-    txs.push(new Transaction().fromObject(tx))
+  JSON.parse(dataJson).transactions.forEach(async function (tx) {
+    const transaction = new Transaction().fromObject(tx);
+    await transaction._setHash()
+    txs.push(transaction)
   })
   var json = dataJson
 
