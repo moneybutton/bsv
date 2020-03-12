@@ -9,60 +9,50 @@ var PrivateKey = bsv.PrivateKey
 var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
 var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
 
-describe('ECIES', function () {
+describe('ECIES', async function () {
   it('constructor', function () {
     (typeof ECIES).should.equal('function')
   })
 
-  it('constructs an instance', function () {
-    var ecies = new ECIES();
-    (ecies instanceof ECIES).should.equal(true)
-  })
-
-  it('doesnt require the "new" keyword', function () {
-    var ecies = ECIES();
-    (ecies instanceof ECIES).should.equal(true)
-  })
-
-  it('use ephemeral privateKey if privateKey is not set', function () {
-    var ecies = ECIES()
-    var ephemeralKey = ecies._privateKey;
-    (ephemeralKey instanceof bsv.PrivateKey).should.equal(true)
-  })
-
-  it('chainable function', function () {
-    var ecies = ECIES()
-      .privateKey(aliceKey)
-      .publicKey(bobKey.publicKey);
-
-    (ecies instanceof ECIES).should.equal(true)
-  })
-
-  it('should do these test vectors correctly', function () {
-    let message = Buffer.from('this is my test message')
-
-    let alice = ECIES()
+  it('chainable function', async function () {
+    var ecies = await ECIES()
       .privateKey(aliceKey)
       .publicKey(bobKey.publicKey)
+      .initialized
+
+    (ecies instanceof ECIES).should.equal(true)
+  })
+
+  it('should do these test vectors correctly', async function () {
+    let message = Buffer.from('this is my test message')
+
+    let alice = await ECIES()
+      .privateKey(aliceKey)
+      .publicKey(bobKey.publicKey)
+      .initialized
     alice.decrypt(Buffer.from('QklFMQOGFyMXLo9Qv047K3BYJhmnJgt58EC8skYP/R2QU/U0yXXHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbiaH4FsxKIOOvzolIFVAS0FplUmib2HnlAM1yP/iiPsU=', 'base64')).toString().should.equal(message.toString())
 
-    let bob = ECIES()
+    let bob = await ECIES()
       .privateKey(bobKey)
       .publicKey(aliceKey.publicKey)
+      .initialized
     bob.decrypt(Buffer.from('QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap53XHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbvZJHgyAzxA6SoujduvJXv+A9ri3po9veilrmc8p6dwo=', 'base64')).toString().should.equal(message.toString())
   })
 
-  var alice = ECIES()
+  var alice = await ECIES()
     .privateKey(aliceKey)
     .publicKey(bobKey.publicKey)
+    .initialized
 
-  var bob = ECIES()
+  var bob = await ECIES()
     .privateKey(bobKey)
     .publicKey(aliceKey.publicKey)
+    .initialized
 
-  var aliceReloaded = ECIES()
+  var aliceReloaded = await ECIES()
     .privateKey(aliceKey)
     .publicKey(bobKey.publicKey)
+    .initialized
 
   var message = 'attack at dawn'
   var encrypted = 'QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap56+ajq0hzmnaQJXwUMZ/DUNgEx9i2TIhCA1mpBFIfxWZy+sH6H+sqqfX3sPHsGu0ug=='
@@ -164,11 +154,11 @@ describe('ECIES', function () {
     }).should.throw('Invalid checksum')
   })
 
-  it('decrypting uncompressed keys', function () {
+  it('decrypting uncompressed keys', async function () {
     var secret = 'test'
 
     // test uncompressed
-    var alicePrivateKey = bsv.PrivateKey.fromObject({
+    var alicePrivateKey = await bsv.PrivateKey.fromObject({
       bn: '1fa76f9c799ca3a51e2c7c901d3ba8e24f6d870beccf8df56faf30120b38f360',
       compressed: false,
       network: 'livenet'
@@ -176,19 +166,25 @@ describe('ECIES', function () {
     var alicePublicKey = bsv.PublicKey.fromPrivateKey(alicePrivateKey) // alicePrivateKey.publicKey
     alicePrivateKey.compressed.should.equal(false)
 
-    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher1 = await ECIES()
+      .privateKey(alicePrivateKey)
+      .publicKey(alicePublicKey)
+      .initialized
     var encrypted = cypher1.encrypt(secret)
 
-    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher2 = await ECIES()
+      .privateKey(alicePrivateKey)
+      .publicKey(alicePublicKey)
+      .initialized
     var decrypted = cypher2.decrypt(encrypted)
     secret.should.equal(decrypted.toString())
   })
 
-  it('decrypting compressed keys', function () {
+  it('decrypting compressed keys', async function () {
     var secret = 'test'
 
     // test compressed
-    var alicePrivateKey = bsv.PrivateKey.fromObject({
+    var alicePrivateKey = await bsv.PrivateKey.fromObject({
       bn: '1fa76f9c799ca3a51e2c7c901d3ba8e24f6d870beccf8df56faf30120b38f360',
       compressed: true,
       network: 'livenet'
@@ -196,10 +192,16 @@ describe('ECIES', function () {
     var alicePublicKey = bsv.PublicKey.fromPrivateKey(alicePrivateKey) // alicePrivateKey.publicKey
     alicePrivateKey.compressed.should.equal(true)
 
-    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher1 = await ECIES()
+      .privateKey(alicePrivateKey)
+      .publicKey(alicePublicKey)
+      .initialized
     var encrypted = cypher1.encrypt(secret)
 
-    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher2 = await ECIES()
+      .privateKey(alicePrivateKey)
+      .publicKey(alicePublicKey)
+      .initialized
     var decrypted = cypher2.decrypt(encrypted)
     secret.should.equal(decrypted.toString())
   })

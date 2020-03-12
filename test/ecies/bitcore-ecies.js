@@ -6,26 +6,16 @@ var should = require('chai').should()
 var bsv = require('../../')
 var PrivateKey = bsv.PrivateKey
 
-var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
-var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
+describe('Bitcore ECIES', async function () {
+  var aliceKey = await new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ').initialized
+  var bobKey = await new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG').initialized
 
-describe('Bitcore ECIES', function () {
   it('should exist', function () {
     should.exist(ECIES)
   })
 
   it('constructor', function () {
     (typeof ECIES).should.equal('function')
-  })
-
-  it('constructs an instance', function () {
-    var ecies = new ECIES();
-    (ecies instanceof ECIES).should.equal(true)
-  })
-
-  it('doesnt require the "new" keyword', function () {
-    var ecies = ECIES();
-    (ecies instanceof ECIES).should.equal(true)
   })
 
   it('privateKey fails with no argument', function () {
@@ -36,21 +26,24 @@ describe('Bitcore ECIES', function () {
     fail.should.throw('no private key provided')
   })
 
-  it('chainable function', function () {
-    var ecies = ECIES()
+  it('chainable function', async function () {
+    var ecies = await ECIES()
       .privateKey(aliceKey)
-      .publicKey(bobKey.publicKey);
+      .publicKey(bobKey.publicKey)
+      .initialized;
 
     (ecies instanceof ECIES).should.equal(true)
   })
 
-  var alice = ECIES()
+  var alice = await ECIES()
     .privateKey(aliceKey)
     .publicKey(bobKey.publicKey)
+    .initialized
 
-  var bob = ECIES()
+  var bob = await ECIES()
     .privateKey(bobKey)
     .publicKey(aliceKey.publicKey)
+    .initialized
 
   var message = 'attack at dawn'
   var encrypted = '0339e504d6492b082da96e11e8f039796b06cd4855c101e2492a6f10f3e056a9e712c732611c6917ab5c57a1926973bc44a1586e94a783f81d05ce72518d9b0a80e2e13c7ff7d1306583f9cc7a48def5b37fbf2d5f294f128472a6e9c78dede5f5'
@@ -69,8 +62,8 @@ describe('Bitcore ECIES', function () {
     decrypted.should.equal(message)
   })
 
-  it('retrieves senders publickey from the encypted buffer', function () {
-    var bob2 = ECIES().privateKey(bobKey)
+  it('retrieves senders publickey from the encypted buffer', async function () {
+    var bob2 = await ECIES().privateKey(bobKey).initialized
     var decrypted = bob2.decrypt(encBuf).toString()
     bob2._publicKey.toDER().should.deep.equal(aliceKey.publicKey.toDER())
     decrypted.should.equal(message)
@@ -128,7 +121,7 @@ describe('Bitcore ECIES', function () {
     }).should.throw('Invalid checksum')
   })
 
-  it('decrypting uncompressed keys', function () {
+  it('decrypting uncompressed keys', async function () {
     var secret = 'test'
 
     // test uncompressed
@@ -140,19 +133,19 @@ describe('Bitcore ECIES', function () {
     var alicePublicKey = bsv.PublicKey.fromPrivateKey(alicePrivateKey) // alicePrivateKey.publicKey
     alicePrivateKey.compressed.should.equal(false)
 
-    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher1 = await ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey).initialized
     var encrypted = cypher1.encrypt(secret)
 
-    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher2 = await ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey).initialized
     var decrypted = cypher2.decrypt(encrypted)
     secret.should.equal(decrypted.toString())
   })
 
-  it('decrypting compressed keys', function () {
+  it('decrypting compressed keys', async function () {
     var secret = 'test'
 
     // test compressed
-    var alicePrivateKey = bsv.PrivateKey.fromObject({
+    var alicePrivateKey = await bsv.PrivateKey.fromObject({
       bn: '1fa76f9c799ca3a51e2c7c901d3ba8e24f6d870beccf8df56faf30120b38f360',
       compressed: true,
       network: 'livenet'
@@ -160,10 +153,10 @@ describe('Bitcore ECIES', function () {
     var alicePublicKey = bsv.PublicKey.fromPrivateKey(alicePrivateKey) // alicePrivateKey.publicKey
     alicePrivateKey.compressed.should.equal(true)
 
-    var cypher1 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher1 = await ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey).initialized
     var encrypted = cypher1.encrypt(secret)
 
-    var cypher2 = ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey)
+    var cypher2 = await ECIES().privateKey(alicePrivateKey).publicKey(alicePublicKey).initialized
     var decrypted = cypher2.decrypt(encrypted)
     secret.should.equal(decrypted.toString())
   })
