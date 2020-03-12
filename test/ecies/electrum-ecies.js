@@ -6,10 +6,10 @@ var should = require('chai').should()
 var bsv = require('../../')
 var PrivateKey = bsv.PrivateKey
 
-var aliceKey = new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ')
-var bobKey = new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG')
-
 describe('ECIES', async function () {
+  var aliceKey = await new PrivateKey('L1Ejc5dAigm5XrM3mNptMEsNnHzS7s51YxU7J61ewGshZTKkbmzJ').initialized
+  var bobKey = await new PrivateKey('KxfxrUXSMjJQcb3JgnaaA6MqsrKQ1nBSxvhuigdKRyFiEm6BZDgG').initialized
+
   it('constructor', function () {
     (typeof ECIES).should.equal('function')
   })
