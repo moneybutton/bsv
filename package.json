@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "mocha",
+    "test": "mocha --bail",
     "test-browser": "mochify --transform brfs test/*.js test/**/*.js test/**/**/*.js",
     "coverage": "nyc --reporter=text npm run test",
     "build-bsv": "webpack index.js --config webpack.config.js",

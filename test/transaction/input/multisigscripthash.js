@@ -11,14 +11,14 @@ var Script = bsv.Script
 var Signature = bsv.crypto.Signature
 var MultiSigScriptHashInput = bsv.Transaction.Input.MultiSigScriptHash
 
-describe('MultiSigScriptHashInput', function () {
-  var privateKey1 = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')
-  var privateKey2 = new PrivateKey('L4PqnaPTCkYhAqH3YQmefjxQP6zRcF4EJbdGqR8v6adtG9XSsadY')
-  var privateKey3 = new PrivateKey('L4CTX79zFeksZTyyoFuPQAySfmP7fL3R41gWKTuepuN7hxuNuJwV')
+describe('MultiSigScriptHashInput', async function () {
+  var privateKey1 = await new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4').initialized
+  var privateKey2 = await new PrivateKey('L4PqnaPTCkYhAqH3YQmefjxQP6zRcF4EJbdGqR8v6adtG9XSsadY').initialized
+  var privateKey3 = await new PrivateKey('L4CTX79zFeksZTyyoFuPQAySfmP7fL3R41gWKTuepuN7hxuNuJwV').initialized
   var public1 = privateKey1.publicKey
   var public2 = privateKey2.publicKey
   var public3 = privateKey3.publicKey
-  var address = new Address('33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb')
+  var address = await new Address('33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb').initialized
 
   var output = {
     address: '33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb',

@@ -10,7 +10,7 @@ var point = require('../../lib/crypto/point')
 var should = require('chai').should()
 var vectors = require('../data/ecdsa')
 
-describe('ECDSA', function () {
+describe('ECDSA', async function () {
   it('instantiation', function () {
     var ecdsa = new ECDSA()
     should.exist(ecdsa)
@@ -18,9 +18,9 @@ describe('ECDSA', function () {
 
   var ecdsa = new ECDSA()
   ecdsa.hashbuf = Hash.sha256(Buffer.from('test data'))
-  ecdsa.privkey = new Privkey(BN.fromBuffer(
+  ecdsa.privkey = await new Privkey(BN.fromBuffer(
     Buffer.from('fee0a1f7afebf9d2a5a80c0c98a31c709681cce195cbcd06342b517970c0be1e', 'hex')
-  ))
+  )).initialized
   ecdsa.privkey2pubkey()
 
   describe('#set', function () {
@@ -39,12 +39,12 @@ describe('ECDSA', function () {
       should.exist(ecdsa.sig.i)
     })
 
-    it('calulates this known i', function () {
+    it('calulates this known i', async function () {
       var hashbuf = Hash.sha256(Buffer.from('some data'))
       var r = new BN('71706645040721865894779025947914615666559616020894583599959600180037551395766', 10)
       var s = new BN('109412465507152403114191008482955798903072313614214706891149785278625167723646', 10)
       var ecdsa = new ECDSA({
-        privkey: new Privkey(BN.fromBuffer(Hash.sha256(Buffer.from('test')))),
+        privkey: await new Privkey(BN.fromBuffer(Hash.sha256(Buffer.from('test')))).initialized,
         hashbuf: hashbuf,
         sig: new Signature({
           r: r,
@@ -99,12 +99,12 @@ describe('ECDSA', function () {
       ecdsa.k.toBuffer().toString('hex')
         .should.equal('727fbcb59eb48b1d7d46f95a04991fc512eb9dbf9105628e3aec87428df28fd8')
     })
-    it('should compute this test vector correctly', function () {
+    it('should compute this test vector correctly', async function () {
       // test fixture from bitcoinjs
       // https://github.com/bitcoinjs/bitcoinjs-lib/blob/10630873ebaa42381c5871e20336fbfb46564ac8/test/fixtures/ecdsa.json#L6
       var ecdsa = new ECDSA()
-      ecdsa.hashbuf = Hash.sha256(Buffer.from('Everything should be made as simple as possible, but not simpler.'))
-      ecdsa.privkey = new Privkey(new BN(1))
+      ecdsa.hashbuf = await Hash.sha256(Buffer.from('Everything should be made as simple as possible, but not simpler.'))
+      ecdsa.privkey = await new Privkey(new BN(1)).initialized
       ecdsa.privkey2pubkey()
       ecdsa.deterministicK()
       ecdsa.k.toBuffer().toString('hex')
@@ -201,12 +201,12 @@ describe('ECDSA', function () {
       called.should.equal(1)
     })
 
-    it('should generate right K', function () {
+    it('should generate right K', async function () {
       var msg1 = Buffer.from('52204d20fd0131ae1afd173fd80a3a746d2dcc0cddced8c9dc3d61cc7ab6e966', 'hex')
       var msg2 = [].reverse.call(Buffer.from(msg1))
       var pk = Buffer.from('16f243e962c59e71e54189e67e66cf2440a1334514c09c00ddcc21632bac9808', 'hex')
-      var signature1 = ECDSA.sign(msg1, Privkey.fromBuffer(pk)).toBuffer().toString('hex')
-      var signature2 = ECDSA.sign(msg2, Privkey.fromBuffer(pk), 'little').toBuffer().toString('hex')
+      var signature1 = ECDSA.sign(msg1, await Privkey.fromBuffer(pk)).toBuffer().toString('hex')
+      var signature2 = ECDSA.sign(msg2, await Privkey.fromBuffer(pk), 'little').toBuffer().toString('hex')
       signature1.should.equal(signature2)
     })
   })
@@ -277,9 +277,9 @@ describe('ECDSA', function () {
 
     describe('vectors', function () {
       vectors.valid.forEach(function (obj, i) {
-        it('should validate valid vector ' + i, function () {
+        it('should validate valid vector ' + i, async function () {
           var ecdsa = ECDSA().set({
-            privkey: new Privkey(BN.fromBuffer(Buffer.from(obj.d, 'hex'))),
+            privkey: await new Privkey(BN.fromBuffer(Buffer.from(obj.d, 'hex'))).initialized,
             k: BN.fromBuffer(Buffer.from(obj.k, 'hex')),
             hashbuf: Hash.sha256(Buffer.from(obj.message)),
             sig: new Signature().set({
@@ -300,20 +300,20 @@ describe('ECDSA', function () {
       })
 
       vectors.invalid.sigError.forEach(function (obj, i) {
-        it('should validate invalid.sigError vector ' + i + ': ' + obj.description, function () {
+        it('should validate invalid.sigError vector ' + i + ': ' + obj.description, async function () {
           var ecdsa = ECDSA().set({
             pubkey: Pubkey.fromPoint(point.fromX(true, 1)),
             sig: new Signature(new BN(obj.signature.r), new BN(obj.signature.s)),
-            hashbuf: Hash.sha256(Buffer.from(obj.message))
+            hashbuf: await Hash.sha256(Buffer.from(obj.message))
           })
           ecdsa.sigError().should.equal(obj.exception)
         })
       })
 
       vectors.deterministicK.forEach(function (obj, i) {
-        it('should validate deterministicK vector ' + i, function () {
-          var hashbuf = Hash.sha256(Buffer.from(obj.message))
-          var privkey = Privkey(BN.fromBuffer(Buffer.from(obj.privkey, 'hex')), 'mainnet')
+        it('should validate deterministicK vector ' + i, async function () {
+          var hashbuf = await Hash.sha256(Buffer.from(obj.message))
+          var privkey = await Privkey(BN.fromBuffer(Buffer.from(obj.privkey, 'hex')), 'mainnet').initialized
           var ecdsa = ECDSA({
             privkey: privkey,
             hashbuf: hashbuf

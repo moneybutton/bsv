@@ -12,10 +12,10 @@ var Script = bsv.Script
 var Networks = bsv.Networks
 var Input = bsv.Transaction.Input
 
-describe('Transaction.Input', function () {
-  var privateKey = new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4')
+describe('Transaction.Input', async function () {
+  var privateKey = await new PrivateKey('KwF9LjRraetZuEjR8VqEq539z137LW5anYDUnVK11vM3mNMHTWb4').initialized
   var publicKey = privateKey.publicKey
-  var address = new Address(publicKey, Networks.livenet)
+  var address = await new Address(publicKey, Networks.livenet).initialized
   var output = {
     address: '33zbk2aSZYdNbRsMPPt6jgy6Kq1kQreqeb',
     prevTxId: '66e64ef8a3b384164b78453fa8c8194de9a473ba14f89485a0e433699daec140',

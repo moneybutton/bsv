@@ -4,7 +4,7 @@ var bsv = require('../../..')
 var Transaction = bsv.Transaction
 var PrivateKey = bsv.PrivateKey
 
-describe('PublicKeyInput', function () {
+describe('PublicKeyInput', async function () {
   var utxo = {
     txid: '7f3b688cb224ed83e12d9454145c26ac913687086a0a62f2ae0bc10934a4030f',
     vout: 0,
@@ -14,7 +14,7 @@ describe('PublicKeyInput', function () {
     confirmations: 104,
     spendable: true
   }
-  var privateKey = PrivateKey.fromWIF('cQ7tSSQDEwaxg9usnnP1Aztqvm9nCQVfNWz9kU2rdocDjknF2vd6')
+  var privateKey = await PrivateKey.fromWIF('cQ7tSSQDEwaxg9usnnP1Aztqvm9nCQVfNWz9kU2rdocDjknF2vd6')
   var address = privateKey.toAddress()
   utxo.address.should.equal(address.toString())
 

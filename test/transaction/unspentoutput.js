@@ -23,32 +23,33 @@ describe('UnspentOutput', function () {
     'amount': 0.01080000
   }
 
-  it('roundtrip from raw data', function () {
-    expect(UnspentOutput(sampleData2).toObject()).to.deep.equal(sampleData2)
+  it('roundtrip from raw data', async function () {
+    var utxo = await UnspentOutput(sampleData2).initialized
+    expect(utxo.toObject()).to.deep.equal(sampleData2)
   })
 
-  it('can be created without "new" operand', function () {
-    expect(UnspentOutput(sampleData1) instanceof UnspentOutput).to.equal(true)
+  it('can be created without "new" operand', async function () {
+    expect(await UnspentOutput(sampleData1).initialized instanceof UnspentOutput).to.equal(true)
   })
 
   it('fails if no tx id is provided', function () {
-    expect(function () {
-      return new UnspentOutput({})
+    expect(async function () {
+      return new UnspentOutput({}).initialized
     }).to.throw()
   })
 
   it('fails if vout is not a number', function () {
     var sample = cloneDeep(sampleData2)
     sample.vout = '1'
-    expect(function () {
-      return new UnspentOutput(sample)
+    expect(async function () {
+      return new UnspentOutput(sample).initialized
     }).to.throw()
   })
 
-  it('displays nicely on the console', function () {
+  it('displays nicely on the console', async function () {
     var expected = '<UnspentOutput: a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458:0' +
                    ', satoshis: 1020000, address: mszYqVnqKoQx4jcTdJXxwKAissE3Jbrrc1>'
-    expect(new UnspentOutput(sampleData1).inspect()).to.equal(expected)
+    expect(await new UnspentOutput(sampleData1).inspect().initialized).to.equal(expected)
   })
 
   describe('checking the constructor parameters', function () {
@@ -64,29 +65,30 @@ describe('UnspentOutput', function () {
       'amount': 0
     }
     it('fails when no amount is defined', function () {
-      expect(function () {
-        return new UnspentOutput(notDefined)
+      expect(async function () {
+        return new UnspentOutput(notDefined).initialized
       }).to.throw('Must provide an amount for the output')
     })
     it('does not fail when amount is zero', function () {
-      expect(function () {
-        return new UnspentOutput(zero)
+      expect(async function () {
+        return new UnspentOutput(zero).initialized
       }).to.not.throw()
     })
   })
 
-  it('toString returns txid:vout', function () {
+  it('toString returns txid:vout', async function () {
     var expected = 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458:0'
-    expect(new UnspentOutput(sampleData1).toString()).to.equal(expected)
+    var utxo = await new UnspentOutput(sampleData1).initialized
+    expect(utxo.toString()).to.equal(expected)
   })
 
-  it('to/from JSON roundtrip', function () {
-    var utxo = new UnspentOutput(sampleData2)
+  it('to/from JSON roundtrip', async function () {
+    var utxo = await new UnspentOutput(sampleData2).initialized
     var obj = UnspentOutput.fromObject(utxo.toJSON()).toObject()
     expect(obj).to.deep.equal(sampleData2)
     var str = JSON.stringify(UnspentOutput.fromObject(obj))
     expect(JSON.parse(str)).to.deep.equal(sampleData2)
-    var str2 = JSON.stringify(new UnspentOutput(JSON.parse(str)))
+    var str2 = JSON.stringify(await new UnspentOutput(JSON.parse(str).initialized))
     expect(JSON.parse(str2)).to.deep.equal(sampleData2)
   })
 })

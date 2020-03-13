@@ -24,7 +24,7 @@ describe('Block', async function () {
   var bh = BlockHeader.fromBuffer(Buffer.from(data.blockheaderhex, 'hex'))
   var txs = []
   JSON.parse(dataJson).transactions.forEach(async function (tx) {
-    const transaction = new Transaction().fromObject(tx);
+    const transaction = (await new Transaction().initialized).fromObject(tx);
     await transaction._setHash()
     txs.push(transaction)
   })
