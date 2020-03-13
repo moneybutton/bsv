@@ -10,10 +10,10 @@ var Signature = bsv.crypto.Signature
 var PrivateKey = bsv.PrivateKey
 var Message = require('../../lib/message')
 
-describe('Message', function () {
+describe('Message', async function () {
   var address = 'n1ZCYg9YXtB5XCZazLxSmPDa8iwJRZHhGx'
   var badAddress = 'mmRcrB5fTwgxaFJmVLNtaG8SV454y1E3kC'
-  var privateKey = bsv.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4')
+  var privateKey = await bsv.PrivateKey.fromWIF('cPBn5A4ikZvBTQ8D7NnvHZYCAxzDZ5Z2TSGW2LkyPiLxqYaJPBW4')
   var text = 'hello, world'
   var textBuffer = Buffer.from('hello, world')
   var bufferData = Buffer.from('H/DIn8uA1scAuKLlCx+/9LnAcJtwQQ0PmcPrJUq90aboLv3fH5fFvY+vmbfOSFEtGarznYli6ShPr9RXwY9UrIY=', 'base64')
@@ -122,8 +122,8 @@ describe('Message', function () {
     verified.should.equal(false)
   })
 
-  it('will verify with an uncompressed pubkey', function () {
-    var privateKey = new bsv.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
+  it('will verify with an uncompressed pubkey', async function () {
+    var privateKey = await new bsv.PrivateKey('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss').initialized
     var message = new Message('This is an example of a signed message.')
     var signature = message.sign(privateKey)
     var verified = message.verify(privateKey.toAddress(), signature)
@@ -136,8 +136,8 @@ describe('Message', function () {
   })
 
   describe('@sign', function () {
-    it('should sign and verify', function () {
-      var privateKey = PrivateKey.fromString('L3nrwRssVKMkScjejmmu6kmq4hSuUApJnFdW1hGvBP69jnQuKYCh')
+    it('should sign and verify', async function () {
+      var privateKey = await PrivateKey.fromString('L3nrwRssVKMkScjejmmu6kmq4hSuUApJnFdW1hGvBP69jnQuKYCh').initialized
       var address = privateKey.toAddress()
       var message = 'this is the message that I want to sign'
       var sig = Message.sign(message, privateKey)

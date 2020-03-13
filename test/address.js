@@ -19,28 +19,27 @@ describe('Address', function () {
   var buf = Buffer.concat([Buffer.from([0]), pubkeyhash])
   var str = '16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r'
 
-  it('can\'t build without data', function () {
-    (function () {
-      return new Address()
-    }).should.throw('First argument is required, please include address data.')
-  })
 
-  it('should throw an error because of bad network param', function () {
-    (function () {
-      return new Address(PKHLivenet[0], 'main', 'pubkeyhash')
-    }).should.throw('Second argument must be "livenet", "testnet", or "regtest".')
+  it('should throw an error because of bad network param', async function () {
+    var result = await (async function () {
+      return new Address(PKHLivenet[0], 'main', 'pubkeyhash').initialized
+    })
+    
+    result.should.throw('Second argument must be "livenet", "testnet", or "regtest".')
   })
 
   it('should throw an error because of bad type param', function () {
-    (function () {
-      return new Address(PKHLivenet[0], 'livenet', 'pubkey')
-    }).should.throw('Third argument must be "pubkeyhash" or "scripthash"')
+    var result = await (async function () {
+      return new Address(PKHLivenet[0], 'livenet', 'pubkey').initialized
+    })
+    
+    result.should.throw('Third argument must be "pubkeyhash" or "scripthash"')
   })
 
   describe('bitcoind compliance', function () {
     validbase58.map(function (d) {
       if (!d[2].isPrivkey) {
-        it('should describe address ' + d[0] + ' as valid', function () {
+        it('should describe address ' + d[0] + ' as valid', async function () {
           var type
           if (d[2].addrType === 'script') {
             type = 'scripthash'
@@ -51,13 +50,13 @@ describe('Address', function () {
           if (d[2].isTestnet) {
             network = 'testnet'
           }
-          return new Address(d[0], network, type)
+          return new Address(d[0], network, type).initialized
         })
       }
     })
     invalidbase58.map(function (d) {
       it('should describe input ' + d[0].slice(0, 10) + '... as invalid', function () {
-        expect(function () {
+        expect(async function () {
           return new Address(d[0])
         }).to.throw(Error)
       })
@@ -227,72 +226,77 @@ describe('Address', function () {
   })
 
   describe('instantiation', function () {
-    it('can be instantiated from another address', function () {
-      var address = Address.fromBuffer(buf)
-      var address2 = new Address({
+    it('can be instantiated from another address', async function () {
+      var address = await Address.fromBuffer(buf)
+      var address2 = await new Address({
         hashBuffer: address.hashBuffer,
         network: address.network,
         type: address.type
-      })
+      }).initialized
       address.toString().should.equal(address2.toString())
     })
   })
 
   describe('@fromBuffer', function () {
-    it('can be instantiated from another address', function () {
-      var address = Address.fromBuffer(buf)
-      var address2 = new Address({
+    it('can be instantiated from another address', async function () {
+      var address = await Address.fromBuffer(buf)
+      var address2 = await new Address({
         hashBuffer: address.hashBuffer,
         network: address.network,
         type: address.type
-      })
+      }).initialized
       address.toString().should.equal(address2.toString())
     })
   })
 
   describe('@fromHex', function () {
-    it('can be instantiated from another address', function () {
-      var address = Address.fromHex(buf.toString('hex'))
-      var address2 = new Address({
+    it('can be instantiated from another address', async function () {
+      var address = await Address.fromHex(buf.toString('hex'))
+      var address2 = await new Address({
         hashBuffer: address.hashBuffer,
         network: address.network,
         type: address.type
-      })
+      }).initialized
       address.toString().should.equal(address2.toString())
     })
   })
 
   describe('encodings', function () {
-    it('should make an address from a buffer', function () {
-      Address.fromBuffer(buf).toString().should.equal(str)
-      new Address(buf).toString().should.equal(str)
-      new Address(buf).toString().should.equal(str)
+    it('should make an address from a buffer', async function () {
+      var addr1 = await Address.fromBuffer(buf).toString()
+      var addr2 = await new Address(buf).initialized.toString()
+      addr1.should.equal(str)
+      addr2.should.equal(str)
     })
 
-    it('should make an address from a string', function () {
-      Address.fromString(str).toString().should.equal(str)
-      new Address(str).toString().should.equal(str)
+    it('should make an address from a string', async function () {
+      var addr1 = await Address.fromString(str).toString()
+      var addr2 = await new Address(str).initialized.toString()
+      addr1.should.equal(str)
+      addr2.should.equal(str)
     })
 
-    it('should make an address using a non-string network', function () {
-      Address.fromString(str, Networks.livenet).toString().should.equal(str)
+    it('should make an address using a non-string network', async function () {
+      var addr = await Address.fromString(str, Networks.livenet)
+      addr.toString().should.equal(str)
     })
 
-    it('should throw with bad network param', function () {
-      (function () {
-        Address.fromString(str, 'somenet')
+    it('should throw with bad network param', async function () {
+      (async function () {
+        await Address.fromString(str, 'somenet')
       }).should.throw('Unknown network')
     })
 
     it('should error because of unrecognized data format', function () {
-      (function () {
-        return new Address(new Error())
+      (async function () {
+        var addr = await new Address(new Error()).initialized
+        return addr
       }).should.throw(bsv.errors.InvalidArgument)
     })
 
     it('should error because of incorrect format for pubkey hash', function () {
       (function () {
-        return new Address.fromPublicKeyHash('notahash') //eslint-disable-line
+        return Address.fromPublicKeyHash('notahash') //eslint-disable-line
       }).should.throw('Address supplied is not a buffer.')
     })
 
@@ -332,7 +336,7 @@ describe('Address', function () {
       }).should.throw('data parameter supplied is not a string.')
     })
 
-    it('should make an address from a pubkey hash buffer', function () {
+    it('should make an address from a pubkey hash buffer', async function () {
       var hash = pubkeyhash // use the same hash
       var a = Address.fromPublicKeyHash(hash, 'livenet')
       a.network.should.equal(Networks.livenet)
@@ -340,7 +344,8 @@ describe('Address', function () {
       var b = Address.fromPublicKeyHash(hash, 'testnet')
       b.network.should.equal(Networks.testnet)
       b.type.should.equal('pubkeyhash')
-      new Address(hash, 'livenet').toString().should.equal(str)
+      var addr = await new Address(hash, 'livenet').initialized
+      addr.toString().should.equal(str)
     })
 
     it('should make an address using the default network', function () {
@@ -407,156 +412,159 @@ describe('Address', function () {
     describe('from a script', function () {
       it('should fail to build address from a non p2sh,p2pkh script', function () {
         var s = new Script('OP_CHECKMULTISIG');
-        (function () {
-          return new Address(s)
+        (async function () {
+          return new Address(s).initialized
         }).should.throw('needs to be p2pkh in, p2pkh out, p2sh in, or p2sh out')
       })
-      it('should make this address from a p2pkh output script', function () {
+      it('should make this address from a p2pkh output script', async function () {
         var s = new Script('OP_DUP OP_HASH160 20 ' +
           '0xc8e11b0eb0d2ad5362d894f048908341fa61b6e1 OP_EQUALVERIFY OP_CHECKSIG')
         var a = Address.fromScript(s, 'livenet')
         a.toString().should.equal('1KK9oz4bFH8c1t6LmighHaoSEGx3P3FEmc')
-        var b = new Address(s, 'livenet')
+        var b = await new Address(s, 'livenet').initialized
         b.toString().should.equal('1KK9oz4bFH8c1t6LmighHaoSEGx3P3FEmc')
       })
 
-      it('should make this address from a p2sh input script', function () {
+      it('should make this address from a p2sh input script', async function () {
         var s = Script.fromString('OP_HASH160 20 0xa6ed4af315271e657ee307828f54a4365fa5d20f OP_EQUAL')
         var a = Address.fromScript(s, 'livenet')
         a.toString().should.equal('3GueMn6ruWVfQTN4XKBGEbCbGLwRSUhfnS')
-        var b = new Address(s, 'livenet')
+        var b = await new Address(s, 'livenet').initialized
         b.toString().should.equal('3GueMn6ruWVfQTN4XKBGEbCbGLwRSUhfnS')
       })
 
-      it('returns the same address if the script is a pay to public key hash out', function () {
+      it('returns the same address if the script is a pay to public key hash out', async function () {
         var address = '16JXnhxjJUhxfyx4y6H4sFcxrgt8kQ8ewX'
-        var script = Script.buildPublicKeyHashOut(new Address(address))
-        Address(script, Networks.livenet).toString().should.equal(address)
+        var script = Script.buildPublicKeyHashOut(await new Address(address).initialized)
+        var addr = await Address(script, Networks.livenet).initialized
+        addr.toString().should.equal(address)
       })
-      it('returns the same address if the script is a pay to script hash out', function () {
+      it('returns the same address if the script is a pay to script hash out', async function () {
         var address = '3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm'
         var script = Script.buildScriptHashOut(new Address(address))
-        Address(script, Networks.livenet).toString().should.equal(address)
+        var addr = await Address(script, Networks.livenet).initialized
+        addr.toString().should.equal(address)
       })
     })
 
-    it('should derive from this known address string livenet', function () {
-      var address = new Address(str)
+    it('should derive from this known address string livenet', async function () {
+      var address = await new Address(str).initialized
       var buffer = address.toBuffer()
       var slice = buffer.slice(1)
       var sliceString = slice.toString('hex')
       sliceString.should.equal(pubkeyhash.toString('hex'))
     })
 
-    it('should derive from this known address string testnet', function () {
-      var a = new Address(PKHTestnet[0], 'testnet')
-      var b = new Address(a.toString())
+    it('should derive from this known address string testnet', async function () {
+      var a = await new Address(PKHTestnet[0], 'testnet').initialized
+      var b = await new Address(a.toString()).initialized
       b.toString().should.equal(PKHTestnet[0])
       b.network.should.equal(Networks.testnet)
     })
 
-    it('should derive from this known address string livenet scripthash', function () {
-      var a = new Address(P2SHLivenet[0], 'livenet', 'scripthash')
-      var b = new Address(a.toString())
+    it('should derive from this known address string livenet scripthash', async function () {
+      var a = await new Address(P2SHLivenet[0], 'livenet', 'scripthash').initialized
+      var b = await new Address(a.toString()).initialized
       b.toString().should.equal(P2SHLivenet[0])
     })
 
-    it('should derive from this known address string testnet scripthash', function () {
-      var address = new Address(P2SHTestnet[0], 'testnet', 'scripthash')
-      address = new Address(address.toString())
+    it('should derive from this known address string testnet scripthash', async function () {
+      var address = await new Address(P2SHTestnet[0], 'testnet', 'scripthash').initialized
+      address = await new Address(address.toString()).initialized
       address.toString().should.equal(P2SHTestnet[0])
     })
   })
 
   describe('#toBuffer', function () {
-    it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', function () {
-      var address = new Address(str)
+    it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', async function () {
+      var address = await new Address(str).initialized
       address.toBuffer().slice(1).toString('hex').should.equal(pubkeyhash.toString('hex'))
     })
   })
 
   describe('#toHex', function () {
-    it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', function () {
-      var address = new Address(str)
+    it('3c3fa3d4adcaf8f52d5b1843975e122548269937 corresponds to hash 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r', async function () {
+      var address = await new Address(str).initialized
       address.toHex().slice(2).should.equal(pubkeyhash.toString('hex'))
     })
   })
 
   describe('#object', function () {
-    it('roundtrip to-from-to', function () {
-      var obj = new Address(str).toObject()
-      var address = Address.fromObject(obj)
+    it('roundtrip to-from-to', async function () {
+      var obj = await new Address(str).initialized
+      obj = obj.toObject()
+      var address = await Address.fromObject(obj)
       address.toString().should.equal(str)
     })
 
     it('will fail with invalid state', function () {
-      expect(function () {
+      expect(async function () {
         return Address.fromObject('¹')
       }).to.throw(bsv.errors.InvalidState)
     })
   })
 
   describe('#toString', function () {
-    it('livenet pubkeyhash address', function () {
-      var address = new Address(str)
+    it('livenet pubkeyhash address', async function () {
+      var address = await new Address(str).initialized
       address.toString().should.equal(str)
     })
 
-    it('scripthash address', function () {
-      var address = new Address(P2SHLivenet[0])
+    it('scripthash address', async function () {
+      var address = await new Address(P2SHLivenet[0]).initialized
       address.toString().should.equal(P2SHLivenet[0])
     })
 
-    it('testnet scripthash address', function () {
-      var address = new Address(P2SHTestnet[0])
+    it('testnet scripthash address', async function () {
+      var address = await new Address(P2SHTestnet[0]).initialized
       address.toString().should.equal(P2SHTestnet[0])
     })
 
-    it('testnet pubkeyhash address', function () {
-      var address = new Address(PKHTestnet[0])
+    it('testnet pubkeyhash address', async function () {
+      var address = await new Address(PKHTestnet[0]).initialized
       address.toString().should.equal(PKHTestnet[0])
     })
   })
 
   describe('#inspect', function () {
-    it('should output formatted output correctly', function () {
-      var address = new Address(str)
+    it('should output formatted output correctly', async function () {
+      var address = await new Address(str).initialized
       var output = '<Address: 16VZnHwRhwrExfeHFHGjwrgEMq8VcYPs9r, type: pubkeyhash, network: livenet>'
       address.inspect().should.equal(output)
     })
   })
 
   describe('questions about the address', function () {
-    it('should detect a P2SH address', function () {
-      new Address(P2SHLivenet[0]).isPayToScriptHash().should.equal(true)
-      new Address(P2SHLivenet[0]).isPayToPublicKeyHash().should.equal(false)
-      new Address(P2SHTestnet[0]).isPayToScriptHash().should.equal(true)
-      new Address(P2SHTestnet[0]).isPayToPublicKeyHash().should.equal(false)
+    it('should detect a P2SH address', async function () {
+      (await new Address(P2SHLivenet[0]).initialized).isPayToScriptHash().should.equal(true)
+      (await new Address(P2SHLivenet[0]).initialized).isPayToPublicKeyHash().should.equal(false)
+      (await new Address(P2SHTestnet[0]).initialized).isPayToScriptHash().should.equal(true)
+      (await new Address(P2SHTestnet[0]).initialized).isPayToPublicKeyHash().should.equal(false)
     })
-    it('should detect a Pay To PubkeyHash address', function () {
-      new Address(PKHLivenet[0]).isPayToPublicKeyHash().should.equal(true)
-      new Address(PKHLivenet[0]).isPayToScriptHash().should.equal(false)
-      new Address(PKHTestnet[0]).isPayToPublicKeyHash().should.equal(true)
-      new Address(PKHTestnet[0]).isPayToScriptHash().should.equal(false)
+    it('should detect a Pay To PubkeyHash address', async function () {
+      (await new Address(PKHLivenet[0]).initialized).isPayToPublicKeyHash().should.equal(true)
+      (await new Address(PKHLivenet[0]).initialized).isPayToScriptHash().should.equal(false)
+      (await new Address(PKHTestnet[0]).initialized).isPayToPublicKeyHash().should.equal(true)
+      (await new Address(PKHTestnet[0]).initialized).isPayToScriptHash().should.equal(false)
     })
   })
 
   it('throws an error if it couldn\'t instantiate', function () {
-    expect(function () {
+    expect(async function () {
       return new Address(1)
     }).to.throw(TypeError)
   })
-  it('can roundtrip from/to a object', function () {
-    var address = new Address(P2SHLivenet[0])
-    expect(new Address(address.toObject()).toString()).to.equal(P2SHLivenet[0])
+  it('can roundtrip from/to a object', async function () {
+    var address = await new Address(P2SHLivenet[0]).initialized
+    expect((await new Address(address.toObject()).initialized).toString()).to.equal(P2SHLivenet[0])
   })
 
-  it('will use the default network for an object', function () {
+  it('will use the default network for an object', async function () {
     var obj = {
       hash: '19a7d869032368fd1f1e26e5e73a4ad0e474960e',
       type: 'scripthash'
     }
-    var address = new Address(obj)
+    var address = await new Address(obj).initialized
     address.network.should.equal(Networks.defaultNetwork)
   })
 
@@ -566,10 +574,10 @@ describe('Address', function () {
     var public3 = '02738a516a78355db138e8119e58934864ce222c553a5407cf92b9c1527e03c1a2'
     var publics = [public1, public2, public3]
 
-    it('can create an address from a set of public keys', function () {
+    it('can create an address from a set of public keys', async function () {
       var address = Address.createMultisig(publics, 2, Networks.livenet)
       address.toString().should.equal('3FtqPRirhPvrf7mVUSkygyZ5UuoAYrTW3y')
-      address = new Address(publics, 2, Networks.livenet)
+      address = await new Address(publics, 2, Networks.livenet).initialized
       address.toString().should.equal('3FtqPRirhPvrf7mVUSkygyZ5UuoAYrTW3y')
     })
 
@@ -599,30 +607,30 @@ describe('Address', function () {
       address.toString()[0].should.equal('1')
     })
 
-    it('should derive from public key testnet', function () {
-      let privateKey = PrivateKey.fromRandom('testnet')
+    it('should derive from public key testnet', async function () {
+      let privateKey = await PrivateKey.fromRandom('testnet')
       let publicKey = PublicKey.fromPrivateKey(privateKey)
-      let address = Address.fromPublicKey(publicKey, 'testnet')
+      let address = await Address.fromPublicKey(publicKey, 'testnet')
       ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
     })
   })
 
   describe('#fromPrivateKey', function () {
-    it('should derive from public key', function () {
-      let privateKey = PrivateKey.fromRandom()
-      let address = Address.fromPrivateKey(privateKey)
+    it('should derive from public key', async function () {
+      let privateKey = await PrivateKey.fromRandom()
+      let address = await Address.fromPrivateKey(privateKey)
       address.toString()[0].should.equal('1')
     })
 
-    it('should derive from public key testnet', function () {
-      let privateKey = PrivateKey.fromRandom('testnet')
-      let address = Address.fromPrivateKey(privateKey, 'testnet')
+    it('should derive from public key testnet', async function () {
+      let privateKey = await PrivateKey.fromRandom('testnet')
+      let address = await Address.fromPrivateKey(privateKey, 'testnet')
       ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
     })
 
-    it('should derive from public key testnet', function () {
-      let privateKey = PrivateKey.fromRandom('testnet')
-      let address = Address.fromPrivateKey(privateKey)
+    it('should derive from public key testnet', async function () {
+      let privateKey = await PrivateKey.fromRandom('testnet')
+      let address = await Address.fromPrivateKey(privateKey)
       ;(address.toString()[0] === 'm' || address.toString()[0] === 'n').should.equal(true)
     })
   })
