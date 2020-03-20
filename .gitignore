@@ -14,5 +14,4 @@ bower_components
 report
 .DS_Store
 
-**/*.min.js
 .nyc_output
