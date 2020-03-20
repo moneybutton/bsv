@@ -7,6 +7,16 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 
 Changelog
 ---------
+**1.4.0**
+* Change default fee to 0.5 sat/byte
+
+**1.3.0**
+* Remove limit on OP_RETURN size
+
+**1.1.0**
+* Refactor code related to buffers and get rid of bufferUtil
+* Deprecate p2sh
+* Add .Mnemonic to bsv object
 
 **1.0.0**
 * Bump to 1.0 release as per the suggestion of @mathiasrw
