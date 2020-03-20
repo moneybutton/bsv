@@ -7,6 +7,9 @@ Documentation is available on the [Money Button Documentation Page](https://docs
 
 Changelog
 ---------
+**1.5.0**
+* Add build files into repo.
+
 **1.4.0**
 * Change default fee to 0.5 sat/byte
 
