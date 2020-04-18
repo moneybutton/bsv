@@ -8,9 +8,10 @@
   </head>
   <body>
     <div id="mocha"></div>
+    <script src="./babel-polyfill.js"></script>
     <script src="./mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
-    <script src="./fullnode.js"></script>
+    <script src="./bsv.js"></script>
     <script src="./tests.js"></script>
     <script>
       mocha.run();

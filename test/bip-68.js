@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
 let Bip68 = require('../lib/bip-68')
-let should = require('chai').should()
+let should = require('should')
 
 describe('Bip68', function () {
   it('should exist', function () {

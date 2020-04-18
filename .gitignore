@@ -1,10 +1,10 @@
 *.swp
 coverage
 node_modules
-build/yours-bitcoin.js
-build/yours-bitcoin-worker.js
-build/yours-bitcoin-min.js
-build/yours-bitcoin-worker-min.js
+build/bsv.js
+build/bsv-worker.js
+build/bsv-min.js
+build/bsv-worker-min.js
 build/tests.js
 npm-debug.log
 doc

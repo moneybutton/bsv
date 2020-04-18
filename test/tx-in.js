@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
+let should = require('should')
 let Script = require('../lib/script')
 let TxIn = require('../lib/tx-in')
 let TxOut = require('../lib/tx-out')
@@ -11,7 +11,7 @@ let KeyPair = require('../lib/key-pair')
 let Address = require('../lib/address')
 
 describe('TxIn', function () {
-  let txHashBuf = new Buffer(32)
+  let txHashBuf = Buffer.alloc(32)
   txHashBuf.fill(0)
   let txOutNum = 0
   let script = new Script().fromString('OP_CHECKMULTISIG')
@@ -30,7 +30,7 @@ describe('TxIn', function () {
     should.exist(txIn)
     txIn = new TxIn()
     should.exist(txIn)
-    let txHashBuf = new Buffer(32)
+    let txHashBuf = Buffer.alloc(32)
     txHashBuf.fill(0)
     new TxIn(txHashBuf, 0).txHashBuf.length.should.equal(32)
   })
@@ -60,7 +60,12 @@ describe('TxIn', function () {
 
   describe('#fromProperties', function () {
     it('should make a new txIn', function () {
-      let txIn = new TxIn().fromProperties(txHashBuf, txOutNum, script, nSequence)
+      let txIn = new TxIn().fromProperties(
+        txHashBuf,
+        txOutNum,
+        script,
+        nSequence
+      )
       should.exist(txIn.scriptVi)
     })
   })
@@ -75,7 +80,10 @@ describe('TxIn', function () {
   describe('#setScript', function () {
     it('should calculate the varInt size correctly', function () {
       let txIn2 = new TxIn(txIn)
-      txIn2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
+      txIn2
+        .setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN'))
+        .scriptVi.toNumber()
+        .should.equal(3)
     })
   })
 
@@ -103,7 +111,8 @@ describe('TxIn', function () {
 
   describe('#fromHex', function () {
     it('should convert this known buffer', function () {
-      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+      let hex =
+        '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
       let txIn = new TxIn().fromHex(hex)
       txIn.scriptVi.toNumber().should.equal(1)
       txIn.script.toString().should.equal('OP_CHECKMULTISIG')
@@ -112,8 +121,9 @@ describe('TxIn', function () {
 
   describe('#fromBuffer', function () {
     it('should convert this known buffer', function () {
-      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let buf = new Buffer(hex, 'hex')
+      let hex =
+        '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+      let buf = Buffer.from(hex, 'hex')
       let txIn = new TxIn().fromBuffer(buf)
       txIn.scriptVi.toNumber().should.equal(1)
       txIn.script.toString().should.equal('OP_CHECKMULTISIG')
@@ -122,8 +132,9 @@ describe('TxIn', function () {
 
   describe('#fromBr', function () {
     it('should convert this known buffer', function () {
-      let hex = '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let buf = new Buffer(hex, 'hex')
+      let hex =
+        '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+      let buf = Buffer.from(hex, 'hex')
       let br = new Br(buf)
       let txIn = new TxIn().fromBr(br)
       txIn.scriptVi.toNumber().should.equal(1)
@@ -133,19 +144,34 @@ describe('TxIn', function () {
 
   describe('#toHex', function () {
     it('should convert this known hex', function () {
-      txIn.toHex().should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn
+        .toHex()
+        .should.equal(
+          '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+        )
     })
   })
 
   describe('#toBuffer', function () {
     it('should convert this known buffer', function () {
-      txIn.toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn
+        .toBuffer()
+        .toString('hex')
+        .should.equal(
+          '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+        )
     })
   })
 
   describe('#toBw', function () {
     it('should convert this known buffer', function () {
-      txIn.toBw().toBuffer().toString('hex').should.equal('00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000')
+      txIn
+        .toBw()
+        .toBuffer()
+        .toString('hex')
+        .should.equal(
+          '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
+        )
     })
   })
 
@@ -153,11 +179,19 @@ describe('TxIn', function () {
     it('should convert from pubKeyHash out', function () {
       let keyPair = new KeyPair().fromRandom()
       let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromPubKeyHash(address.hashBuf))
-      let txHashBuf = new Buffer(32)
+      let txOut = TxOut.fromProperties(
+        new Bn(1000),
+        new Script().fromPubKeyHash(address.hashBuf)
+      )
+      let txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txIn = new TxIn().fromPubKeyHashTxOut(txHashBuf, txOutNum, txOut, keyPair.pubKey)
+      let txIn = new TxIn().fromPubKeyHashTxOut(
+        txHashBuf,
+        txOutNum,
+        txOut,
+        keyPair.pubKey
+      )
       should.exist(txIn)
     })
   })
@@ -166,14 +200,27 @@ describe('TxIn', function () {
     it('should convert from scriptHash out', function () {
       let keyPair1 = new KeyPair().fromRandom()
       let keyPair2 = new KeyPair().fromRandom()
-      let script = new Script().fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
+      let script = new Script().fromPubKeys(2, [
+        keyPair1.pubKey,
+        keyPair2.pubKey
+      ])
       let address = new Address().fromRedeemScript(script)
-      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
-      let txHashBuf = new Buffer(32)
+      let txOut = TxOut.fromProperties(
+        new Bn(1000),
+        new Script().fromScriptHash(address.hashBuf)
+      )
+      let txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txIn = new TxIn().fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txOut, script)
-      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      let txIn = new TxIn().fromScriptHashMultiSigTxOut(
+        txHashBuf,
+        txOutNum,
+        txOut,
+        script
+      )
+      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(
+        0
+      )
     })
   })
 
@@ -183,12 +230,22 @@ describe('TxIn', function () {
       let keyPair2 = KeyPair.fromRandom()
       let script = Script.fromPubKeys(2, [keyPair1.pubKey, keyPair2.pubKey])
       let address = Address.fromRedeemScript(script)
-      let txOut = TxOut.fromProperties(new Bn(1000), new Script().fromScriptHash(address.hashBuf))
-      let txHashBuf = new Buffer(32)
+      let txOut = TxOut.fromProperties(
+        new Bn(1000),
+        new Script().fromScriptHash(address.hashBuf)
+      )
+      let txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
       let txOutNum = 0
-      let txIn = TxIn.fromScriptHashMultiSigTxOut(txHashBuf, txOutNum, txOut, script)
-      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(0)
+      let txIn = TxIn.fromScriptHashMultiSigTxOut(
+        txHashBuf,
+        txOutNum,
+        txOut,
+        script
+      )
+      Buffer.compare(txIn.script.chunks[3].buf, script.toBuffer()).should.equal(
+        0
+      )
     })
   })
 })

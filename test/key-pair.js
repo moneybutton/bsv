@@ -3,9 +3,8 @@
 let KeyPair = require('../lib/key-pair')
 let PrivKey = require('../lib/priv-key')
 let PubKey = require('../lib/pub-key')
-let asink = require('asink')
 let bn = require('../lib/bn')
-let should = require('chai').should()
+let should = require('should')
 
 describe('KeyPair', function () {
   it('should satisfy this basic API', function () {
@@ -16,8 +15,12 @@ describe('KeyPair', function () {
 
     KeyPair.Mainnet.should.equal(KeyPair.Mainnet)
     KeyPair.Testnet.should.equal(KeyPair.Testnet)
-    new KeyPair.Mainnet().fromRandom().privKey.constructor.should.equal(PrivKey.Mainnet)
-    new KeyPair.Testnet().fromRandom().privKey.constructor.should.equal(PrivKey.Testnet)
+    new KeyPair.Mainnet()
+      .fromRandom()
+      .privKey.constructor.should.equal(PrivKey.Mainnet)
+    new KeyPair.Testnet()
+      .fromRandom()
+      .privKey.constructor.should.equal(PrivKey.Testnet)
   })
 
   it('should make a key with a priv and pub', function () {
@@ -48,8 +51,14 @@ describe('KeyPair', function () {
       should.exist(json.privKey)
       should.exist(json.pubKey)
       let keyPair = new KeyPair().fromJSON(json)
-      keyPair.toJSON().privKey.toString().should.equal(json.privKey.toString())
-      keyPair.toJSON().pubKey.toString().should.equal(json.pubKey.toString())
+      keyPair
+        .toJSON()
+        .privKey.toString()
+        .should.equal(json.privKey.toString())
+      keyPair
+        .toJSON()
+        .pubKey.toString()
+        .should.equal(json.pubKey.toString())
     })
   })
 
@@ -91,7 +100,10 @@ describe('KeyPair', function () {
     it('should convert to and from a string', function () {
       let keyPair = new KeyPair().fromRandom()
       let str = keyPair.toString()
-      new KeyPair().fromString(str).toString().should.equal(str)
+      new KeyPair()
+        .fromString(str)
+        .toString()
+        .should.equal(str)
     })
   })
 
@@ -112,16 +124,19 @@ describe('KeyPair', function () {
     })
 
     it('should convert this known PrivKey to known PubKey', function () {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
-      let pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
-      let privKey = new PrivKey().fromBn(bn(new Buffer(privhex, 'hex')))
+      let privhex =
+        '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
+      let pubhex =
+        '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
+      let privKey = new PrivKey().fromBn(bn(Buffer.from(privhex, 'hex')))
       let key = new KeyPair().fromPrivKey(privKey)
       key.pubKey.toString().should.equal(pubhex)
     })
 
     it('should convert this known PrivKey to known PubKey and preserve compressed=false', function () {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
-      let privKey = new PrivKey().fromBn(bn(new Buffer(privhex, 'hex')))
+      let privhex =
+        '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
+      let privKey = new PrivKey().fromBn(bn(Buffer.from(privhex, 'hex')))
       privKey.compressed = false
       let key = new KeyPair().fromPrivKey(privKey)
       key.pubKey.compressed.should.equal(false)
@@ -134,16 +149,19 @@ describe('KeyPair', function () {
     })
 
     it('should convert this known PrivKey to known PubKey', function () {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
-      let pubhex = '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
-      let privKey = new PrivKey().fromBn(bn(new Buffer(privhex, 'hex')))
+      let privhex =
+        '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
+      let pubhex =
+        '02a1633cafcc01ebfb6d78e39f687a1f0995c62fc95f51ead10a02ee0be551b5dc'
+      let privKey = new PrivKey().fromBn(bn(Buffer.from(privhex, 'hex')))
       let key = KeyPair.fromPrivKey(privKey)
       key.pubKey.toString().should.equal(pubhex)
     })
 
     it('should convert this known PrivKey to known PubKey and preserve compressed=false', function () {
-      let privhex = '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
-      let privKey = new PrivKey().fromBn(bn(new Buffer(privhex, 'hex')))
+      let privhex =
+        '906977a061af29276e40bf377042ffbde414e496ae2260bbf1fa9d085637bfff'
+      let privKey = new PrivKey().fromBn(bn(Buffer.from(privhex, 'hex')))
       privKey.compressed = false
       let key = KeyPair.fromPrivKey(privKey)
       key.pubKey.compressed.should.equal(false)
@@ -151,24 +169,20 @@ describe('KeyPair', function () {
   })
 
   describe('#asyncFromPrivKey', function () {
-    it('should convert a privKey same as .fromPrivKey', function () {
-      return asink(function * () {
-        let privKey = new PrivKey().fromRandom()
-        let keyPair = new KeyPair().fromPrivKey(privKey)
-        let keyPair2 = yield new KeyPair().asyncFromPrivKey(privKey)
-        keyPair.pubKey.toString().should.equal(keyPair2.pubKey.toString())
-      })
+    it('should convert a privKey same as .fromPrivKey', async function () {
+      let privKey = new PrivKey().fromRandom()
+      let keyPair = new KeyPair().fromPrivKey(privKey)
+      let keyPair2 = await new KeyPair().asyncFromPrivKey(privKey)
+      keyPair.pubKey.toString().should.equal(keyPair2.pubKey.toString())
     })
   })
 
   describe('@asyncFromPrivKey', function () {
-    it('should convert a privKey same as .fromPrivKey', function () {
-      return asink(function * () {
-        let privKey = new PrivKey().fromRandom()
-        let keyPair = KeyPair.fromPrivKey(privKey)
-        let keyPair2 = yield KeyPair.asyncFromPrivKey(privKey)
-        keyPair.pubKey.toString().should.equal(keyPair2.pubKey.toString())
-      })
+    it('should convert a privKey same as .fromPrivKey', async function () {
+      let privKey = new PrivKey().fromRandom()
+      let keyPair = KeyPair.fromPrivKey(privKey)
+      let keyPair2 = await KeyPair.asyncFromPrivKey(privKey)
+      keyPair.pubKey.toString().should.equal(keyPair2.pubKey.toString())
     })
   })
 
@@ -179,8 +193,14 @@ describe('KeyPair', function () {
       should.exist(key.privKey)
       should.exist(key.pubKey)
       key.privKey.bn.gt(bn(0)).should.equal(true)
-      key.pubKey.point.getX().gt(bn(0)).should.equal(true)
-      key.pubKey.point.getY().gt(bn(0)).should.equal(true)
+      key.pubKey.point
+        .getX()
+        .gt(bn(0))
+        .should.equal(true)
+      key.pubKey.point
+        .getY()
+        .gt(bn(0))
+        .should.equal(true)
       key.privKey.compressed.should.equal(true)
       key.pubKey.compressed.should.equal(true)
     })
@@ -192,30 +212,32 @@ describe('KeyPair', function () {
       should.exist(key.privKey)
       should.exist(key.pubKey)
       key.privKey.bn.gt(bn(0)).should.equal(true)
-      key.pubKey.point.getX().gt(bn(0)).should.equal(true)
-      key.pubKey.point.getY().gt(bn(0)).should.equal(true)
+      key.pubKey.point
+        .getX()
+        .gt(bn(0))
+        .should.equal(true)
+      key.pubKey.point
+        .getY()
+        .gt(bn(0))
+        .should.equal(true)
       key.privKey.compressed.should.equal(true)
       key.pubKey.compressed.should.equal(true)
     })
   })
 
   describe('#asyncFromRandom', function () {
-    it('should have a privKey and pubKey and compute same as pubKey methods', function () {
-      return asink(function * () {
-        let keyPair = yield new KeyPair().asyncFromRandom()
-        let pubKey = new PubKey().fromPrivKey(keyPair.privKey)
-        pubKey.toString().should.equal(keyPair.pubKey.toString())
-      })
+    it('should have a privKey and pubKey and compute same as pubKey methods', async function () {
+      let keyPair = await new KeyPair().asyncFromRandom()
+      let pubKey = new PubKey().fromPrivKey(keyPair.privKey)
+      pubKey.toString().should.equal(keyPair.pubKey.toString())
     })
   })
 
   describe('@asyncFromRandom', function () {
-    it('should have a privKey and pubKey and compute same as pubKey methods', function () {
-      return asink(function * () {
-        let keyPair = yield KeyPair.asyncFromRandom()
-        let pubKey = new PubKey().fromPrivKey(keyPair.privKey)
-        pubKey.toString().should.equal(keyPair.pubKey.toString())
-      })
+    it('should have a privKey and pubKey and compute same as pubKey methods', async function () {
+      let keyPair = await KeyPair.asyncFromRandom()
+      let pubKey = new PubKey().fromPrivKey(keyPair.privKey)
+      pubKey.toString().should.equal(keyPair.pubKey.toString())
     })
   })
 })

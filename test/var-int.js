@@ -1,14 +1,14 @@
 /* global describe,it */
 'use strict'
 let Bn = require('../lib/bn')
-let should = require('chai').should()
+let should = require('should')
 let Br = require('../lib/br')
 let Bw = require('../lib/bw')
 let VarInt = require('../lib/var-int')
 
 describe('VarInt', function () {
   it('should make a new varInt', function () {
-    let buf = new Buffer('00', 'hex')
+    let buf = Buffer.from('00', 'hex')
     let varInt = new VarInt(buf)
     should.exist(varInt)
     varInt.buf.toString('hex').should.equal('00')
@@ -17,14 +17,24 @@ describe('VarInt', function () {
     varInt.buf.toString('hex').should.equal('00')
 
     // varInts can have multiple buffer representations
-    VarInt.fromNumber(0).toNumber().should.equal(new VarInt(new Buffer([0xFD, 0, 0])).toNumber())
-    VarInt.fromNumber(0).toBuffer().toString('hex').should.not.equal(new VarInt().fromBuffer(new Buffer([0xFD, 0, 0])).toBuffer().toString('hex'))
+    VarInt.fromNumber(0)
+      .toNumber()
+      .should.equal(new VarInt(Buffer.from([0xfd, 0, 0])).toNumber())
+    VarInt.fromNumber(0)
+      .toBuffer()
+      .toString('hex')
+      .should.not.equal(
+        new VarInt()
+          .fromBuffer(Buffer.from([0xfd, 0, 0]))
+          .toBuffer()
+          .toString('hex')
+      )
   })
 
   describe('#fromObject', function () {
     it('should set a buffer', function () {
-      let buf = new Buffer('00', 'hex')
-      let varInt = new VarInt().fromObject({buf: buf})
+      let buf = Buffer.from('00', 'hex')
+      let varInt = new VarInt().fromObject({ buf: buf })
       varInt.buf.toString('hex').should.equal('00')
       varInt.fromObject({})
       varInt.buf.toString('hex').should.equal('00')
@@ -96,14 +106,20 @@ describe('VarInt', function () {
     it('should return a buffer', function () {
       let buf = new Bw().writeVarIntNum(5).toBuffer()
       let varInt = new VarInt(buf)
-      varInt.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+      varInt
+        .toBuffer()
+        .toString('hex')
+        .should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toBn', function () {
     it('should return a buffer', function () {
       let varInt = VarInt.fromNumber(5)
-      varInt.toBn().toString().should.equal(new Bn(5).toString())
+      varInt
+        .toBn()
+        .toString()
+        .should.equal(new Bn(5).toString())
     })
   })
 

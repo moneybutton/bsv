@@ -1,0 +1,48 @@
+[
+  [
+    "Format is: [[wit..., amount]?, scriptSig, scriptPubKey, flags, expected_scripterror, ... comments]"
+  ],
+  [
+    "It is evaluated as if there was a crediting coinbase transaction with two 0"
+  ],
+  ["pushes as scriptSig, and one output of 0 satoshi and given scriptPubKey,"],
+  [
+    "followed by a spending transaction which spends this output as only input (and"
+  ],
+  [
+    "correct prevout hash), using the given scriptSig. All nLockTimes are 0, all"
+  ],
+  ["nSequences are max."],
+
+  [
+    "For Yours Bitcoin, all tests except those relevant for Bitcoin ABC have been removed."
+  ],
+
+  ["SIGHASH_FORKID"],
+  [
+    "0x09 0x300602010102010141",
+    "0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 CHECKSIG NOT",
+    "STRICTENC",
+    "ILLEGAL_FORKID"
+  ],
+  [
+    "0x09 0x300602010102010141",
+    "0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 CHECKSIG NOT",
+    "SIGHASH_FORKID",
+    "OK"
+  ],
+  [
+    "0 0x09 0x300602010102010141",
+    "1 0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 1 CHECKMULTISIG NOT",
+    "STRICTENC",
+    "ILLEGAL_FORKID"
+  ],
+  [
+    "0 0x09 0x300602010102010141",
+    "1 0x21 0x02865c40293a680cb9c020e7b1e106d8c1916d3cef99aa431a56d253e69256dac0 1 CHECKMULTISIG NOT",
+    "SIGHASH_FORKID",
+    "OK"
+  ],
+
+  ["The End"]
+]

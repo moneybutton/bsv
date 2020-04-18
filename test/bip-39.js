@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
+let Address = require('../lib/address')
 let Bip32 = require('../lib/bip-32')
 let Bip39 = require('../lib/bip-39')
 let Random = require('../lib/random')
-let asink = require('asink')
-let should = require('chai').should()
+let should = require('should')
 let vectors = require('./vectors/bip39')
 
 describe('Bip39', function () {
@@ -22,6 +22,22 @@ describe('Bip39', function () {
     require('../lib/bip-39-jp').length.should.equal(2048)
   })
 
+  it('should handle this community-derived test vector', function () {
+    // There was a bug in Copay and bip32jp about deriving addresses with bip39
+    // and bip44. This confirms we are handling the situation correctly and
+    // derive the correct value.
+    //
+    // More information here:
+    // https://github.com/iancoleman/bip39/issues/58
+    let seed = Bip39.fromString(
+      'fruit wave dwarf banana earth journey tattoo true farm silk olive fence'
+    ).toSeed('banana')
+    let bip32 = Bip32.fromSeed(seed)
+    bip32 = bip32.derive("m/44'/0'/0'/0/0")
+    let address = Address.fromPubKey(bip32.pubKey)
+    address.toString().should.equal('17rxURoF96VhmkcEGCj5LNQkmN9HVhWb7F')
+  })
+
   it('should generate a mnemonic phrase that passes the check', function () {
     let mnemonic
 
@@ -31,7 +47,7 @@ describe('Bip39', function () {
     bip39 = new Bip39().fromRandom(128)
     bip39.check().should.equal(true)
 
-    let entropy = new Buffer(32)
+    let entropy = Buffer.alloc(32)
     entropy.fill(0)
     bip39 = new Bip39.En().fromEntropy(entropy)
     bip39.check().should.equal(true)
@@ -47,7 +63,10 @@ describe('Bip39', function () {
     words[words.length - 1].should.not.equal('zoo')
     words[words.length - 1] = 'zoo'
     mnemonic = words.join(' ')
-    new Bip39.En().fromString(mnemonic).check().should.equal(false)
+    new Bip39.En()
+      .fromString(mnemonic)
+      .check()
+      .should.equal(false)
   })
 
   describe('#toFastBuffer', function () {
@@ -71,55 +90,51 @@ describe('Bip39', function () {
 
   describe('#fromRandom', function () {
     it('should throw an error if bits is too low', function () {
-      (function () {
+      ;(function () {
         new Bip39().fromRandom(127)
-      }).should.throw('bits must be multiple of 32')
+      }.should.throw('bits must be multiple of 32'))
     })
 
     it('should throw an error if bits is not a multiple of 32', function () {
-      (function () {
+      ;(function () {
         new Bip39().fromRandom(256 - 1)
-      }).should.throw('bits must be multiple of 32')
+      }.should.throw('bits must be multiple of 32'))
     })
   })
 
   describe('@fromRandom', function () {
     it('should throw an error if bits is too low', function () {
-      (function () {
+      ;(function () {
         Bip39.fromRandom(127)
-      }).should.throw('bits must be multiple of 32')
+      }.should.throw('bits must be multiple of 32'))
     })
 
     it('should throw an error if bits is not a multiple of 32', function () {
-      (function () {
+      ;(function () {
         Bip39.fromRandom(256 - 1)
-      }).should.throw('bits must be multiple of 32')
+      }.should.throw('bits must be multiple of 32'))
     })
   })
 
   describe('#asyncFromRandom', function () {
-    it('should have a seed and a mnemonic', function () {
-      return asink(function * () {
-        let bip39 = yield new Bip39().asyncFromRandom()
-        should.exist(bip39.mnemonic)
-        should.exist(bip39.seed)
-        let seed = bip39.seed
-        bip39.mnemonic2Seed()
-        seed.toString('hex').should.equal(bip39.seed.toString('hex'))
-      }, this)
+    it('should have a seed and a mnemonic', async function () {
+      let bip39 = await new Bip39().asyncFromRandom()
+      should.exist(bip39.mnemonic)
+      should.exist(bip39.seed)
+      let seed = bip39.seed
+      bip39.mnemonic2Seed()
+      seed.toString('hex').should.equal(bip39.seed.toString('hex'))
     })
   })
 
   describe('@asyncFromRandom', function () {
-    it('should have a seed and a mnemonic', function () {
-      return asink(function * () {
-        let bip39 = yield Bip39.asyncFromRandom()
-        should.exist(bip39.mnemonic)
-        should.exist(bip39.seed)
-        let seed = bip39.seed
-        bip39.mnemonic2Seed()
-        seed.toString('hex').should.equal(bip39.seed.toString('hex'))
-      }, this)
+    it('should have a seed and a mnemonic', async function () {
+      let bip39 = await Bip39.asyncFromRandom()
+      should.exist(bip39.mnemonic)
+      should.exist(bip39.seed)
+      let seed = bip39.seed
+      bip39.mnemonic2Seed()
+      seed.toString('hex').should.equal(bip39.seed.toString('hex'))
     })
   })
 
@@ -138,38 +153,42 @@ describe('Bip39', function () {
   })
 
   describe('#asyncFromEntropy', function () {
-    it('should return same as fromEntropy', function () {
-      return asink(function * () {
-        let entropy = Random.getRandomBuffer(32)
-        let bip39a = yield new Bip39().asyncFromEntropy(entropy)
-        let bip39b = yield new Bip39().fromEntropy(entropy)
-        bip39a.toSeed().toString('hex').should.equal(bip39b.toSeed().toString('hex'))
-      })
+    it('should return same as fromEntropy', async function () {
+      let entropy = Random.getRandomBuffer(32)
+      let bip39a = await new Bip39().asyncFromEntropy(entropy)
+      let bip39b = await new Bip39().fromEntropy(entropy)
+      bip39a
+        .toSeed()
+        .toString('hex')
+        .should.equal(bip39b.toSeed().toString('hex'))
     })
   })
 
   describe('@asyncFromEntropy', function () {
-    it('should return same as fromEntropy', function () {
-      return asink(function * () {
-        let entropy = Random.getRandomBuffer(32)
-        let bip39a = yield Bip39.asyncFromEntropy(entropy)
-        let bip39b = yield Bip39.fromEntropy(entropy)
-        bip39a.toSeed().toString('hex').should.equal(bip39b.toSeed().toString('hex'))
-      })
+    it('should return same as fromEntropy', async function () {
+      let entropy = Random.getRandomBuffer(32)
+      let bip39a = await Bip39.asyncFromEntropy(entropy)
+      let bip39b = await Bip39.fromEntropy(entropy)
+      bip39a
+        .toSeed()
+        .toString('hex')
+        .should.equal(bip39b.toSeed().toString('hex'))
     })
   })
 
   describe('#entropy2Mnemonic', function () {
     it('should throw an error if you do not use enough entropy', function () {
-      let buf = new Buffer(128 / 8 - 1)
+      let buf = Buffer.alloc(128 / 8 - 1)
       buf.fill(0)
       ;(function () {
         new Bip39().entropy2Mnemonic(buf)
-      }).should.throw('Entropy is less than 128 bits. It must be 128 bits or more.')
+      }.should.throw(
+        'Entropy is less than 128 bits. It must be 128 bits or more.'
+      ))
     })
 
     it('should work with or without the wordlist', function () {
-      let buf = new Buffer(128 / 8)
+      let buf = Buffer.alloc(128 / 8)
       buf.fill(0)
       let mnemonic1 = new Bip39().entropy2Mnemonic(buf).mnemonic
       let mnemonic2 = new Bip39.En().entropy2Mnemonic(buf).mnemonic
@@ -179,58 +198,70 @@ describe('Bip39', function () {
 
   describe('#check', function () {
     it('should work with or without optional wordlist', function () {
-      let buf = new Buffer(128 / 8)
+      let buf = Buffer.alloc(128 / 8)
       buf.fill(0)
       let mnemonic = new Bip39().entropy2Mnemonic(buf).mnemonic
-      new Bip39().fromString(mnemonic).check().should.equal(true)
-      new Bip39.En().fromString(mnemonic).check().should.equal(true)
+      new Bip39()
+        .fromString(mnemonic)
+        .check()
+        .should.equal(true)
+      new Bip39.En()
+        .fromString(mnemonic)
+        .check()
+        .should.equal(true)
     })
   })
 
   describe('#fromString', function () {
     it('should throw an error in invalid mnemonic', function () {
-      (function () {
+      ;(function () {
         new Bip39().fromString('invalid mnemonic').toSeed()
-      }).should.throw('Mnemonic does not pass the check - was the mnemonic typed incorrectly? Are there extra spaces?')
+      }.should.throw(
+        'Mnemonic does not pass the check - was the mnemonic typed incorrectly? Are there extra spaces?'
+      ))
     })
   })
 
   describe('#asyncToSeed', function () {
-    it('should result the same as toSeed', function () {
-      return asink(function * () {
-        let bip39 = new Bip39().fromRandom()
-        let seed1a = bip39.toSeed()
-        let seed2a = yield bip39.asyncToSeed()
-        seed1a.toString('hex').should.equal(seed2a.toString('hex'))
-        let seed1b = bip39.toSeed('pass')
-        let seed2b = yield bip39.asyncToSeed('pass')
-        seed1b.toString('hex').should.equal(seed2b.toString('hex'))
-      }, this)
+    it('should result the same as toSeed', async function () {
+      let bip39 = new Bip39().fromRandom()
+      let seed1a = bip39.toSeed()
+      let seed2a = await bip39.asyncToSeed()
+      seed1a.toString('hex').should.equal(seed2a.toString('hex'))
+      let seed1b = bip39.toSeed('pass')
+      let seed2b = await bip39.asyncToSeed('pass')
+      seed1b.toString('hex').should.equal(seed2b.toString('hex'))
     })
   })
 
   describe('vectors', function () {
     vectors.english.forEach(function (vector, v) {
       it('should pass english test vector ' + v, function () {
-        let entropy = new Buffer(vector.entropy, 'hex')
+        let entropy = Buffer.from(vector.entropy, 'hex')
         let bip39 = new Bip39.En().fromEntropy(entropy)
         bip39.toString().should.equal(vector.mnemonic)
         bip39.check().should.equal(true)
         let seed = bip39.toSeed(vector.passphrase)
         seed.toString('hex').should.equal(vector.seed)
-        new Bip32().fromSeed(seed).toString().should.equal(vector.bip32_xprv)
+        new Bip32()
+          .fromSeed(seed)
+          .toString()
+          .should.equal(vector.bip32_xprv)
       })
     })
 
     vectors.japanese.forEach(function (vector, v) {
       it('should pass japanese test vector ' + v, function () {
-        let entropy = new Buffer(vector.entropy, 'hex')
+        let entropy = Buffer.from(vector.entropy, 'hex')
         let bip39 = new Bip39.Jp().fromEntropy(entropy)
         bip39.toString().should.equal(vector.mnemonic)
         bip39.check().should.equal(true)
         let seed = bip39.toSeed(vector.passphrase)
         seed.toString('hex').should.equal(vector.seed)
-        new Bip32().fromSeed(seed).toString().should.equal(vector.bip32_xprv)
+        new Bip32()
+          .fromSeed(seed)
+          .toString()
+          .should.equal(vector.bip32_xprv)
       })
     })
   })

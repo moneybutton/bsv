@@ -2,7 +2,7 @@
 'use strict'
 let Version = require('../lib/version')
 let Bn = require('../lib/bn')
-let should = require('chai').should()
+let should = require('should')
 let VarInt = require('../lib/var-int')
 
 describe('Version', function () {
@@ -25,7 +25,7 @@ describe('Version', function () {
         addrTransPort: 0,
         nonceBuf: Buffer.alloc(8),
         userAgentVi: VarInt.fromNumber('test'.length),
-        userAgentBuf: new Buffer('test'),
+        userAgentBuf: Buffer.from('test'),
         startHeightNum: 100,
         relay: true
       })
@@ -47,7 +47,7 @@ describe('Version', function () {
         addrTransPort: 0,
         nonceBuf: Buffer.alloc(8),
         userAgentVi: VarInt.fromNumber('test'.length),
-        userAgentBuf: new Buffer('test'),
+        userAgentBuf: Buffer.from('test'),
         startHeightNum: 100,
         relay: true
       })
@@ -70,7 +70,7 @@ describe('Version', function () {
         addrTransPort: 0,
         nonceBuf: Buffer.alloc(8),
         userAgentVi: VarInt.fromNumber('test'.length),
-        userAgentBuf: new Buffer('test'),
+        userAgentBuf: Buffer.from('test'),
         startHeightNum: 100,
         relay: true
       })

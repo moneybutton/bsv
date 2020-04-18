@@ -1,131 +1,128 @@
-/* global self */
 /**
-  * YoursBitcoin
-  * ============
-  *
-  * index.js is an example of how to build a bundle with YoursBitcoin. This
-  * bundle includes the entire library, which uses the default configuration
-  * (which is the same as Mainnet) and can be overridden. It also includes
-  * Mainnet and Testnet configuration which are accessible even if you override
-  * the defaults. It is not necessary to  use Yours Bitcoin this way, since you
-  * probably do not use every component, and therefore do not need to include
-  * every component into your project. You can simply directly require the
-  * elements of the library you need, and, if your project is browser-based,
-  * browserify your project. For instance:
-  * let Address = require('yours-bitcoin/lib/address').
-  */
+ * bsv
+ * ===
+ *
+ * index.js is an example of how to build a bundle with bsv. This
+ * bundle includes the entire library, which uses the default configuration
+ * (which is the same as Mainnet) and can be overridden. It also includes
+ * Mainnet and Testnet configuration which are accessible even if you override
+ * the defaults. It is not necessary to  use Yours Bitcoin this way, since you
+ * probably do not use every component, and therefore do not need to include
+ * every component into your project. You can simply directly require the
+ * elements of the library you need, and, if your project is browser-based,
+ * browserify your project. For instance:
+ * let Address = require('bsv/lib/address').
+ */
 'use strict'
-require('./config')
+require('babel-polyfill')
+const path = require('path')
 
-let YoursBitcoin = module.exports
-global.YoursBitcoin = YoursBitcoin
-
-// In order to use the YoursBitcoin classes inside a web worker, this file is
-// used.  However, this file indirectly depends on PeerJS, and PeerJS refers to
-// the "window" variable explicitly, which is actually not set in web workers,
-// and causes Chrome to throw an error. Rather than window, web workers have
-// self.  We simply set window to self so that PeerJS does not throw errors
-// which this file is loaded inside a web worker. This will cause problems if
-// any code relies on the non-existence of window inside a web worker, but
-// there is probably not much code like that that would need to work with
-// Yours Bitcoin.
-if (!global.window && typeof self !== 'undefined') {
-  global.window = self
+if (!process.browser) {
+  require('dotenv-extended').load({
+    path: path.resolve('.env'),
+    defaults: path.resolve('.env.defaults'),
+    schema: path.resolve('.env.schema')
+  })
 }
 
-YoursBitcoin.version = require('./package').version
+let bsv = module.exports
+
+bsv.version = require('./version').version
 
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
 // utilities.
-YoursBitcoin.Address = require('./lib/address')
-YoursBitcoin.Addr = require('./lib/addr')
-YoursBitcoin.Bip32 = require('./lib/bip-32')
-YoursBitcoin.Bip39 = require('./lib/bip-39')
-YoursBitcoin.Bip68 = require('./lib/bip-68')
-YoursBitcoin.Bn = require('./lib/bn')
-YoursBitcoin.Br = require('./lib/br')
-YoursBitcoin.Bsm = require('./lib/bsm')
-YoursBitcoin.Bw = require('./lib/bw')
-YoursBitcoin.Base58 = require('./lib/base-58')
-YoursBitcoin.Base58Check = require('./lib/base-58-check')
-YoursBitcoin.Block = require('./lib/block')
-YoursBitcoin.BlockHeader = require('./lib/block-header')
-YoursBitcoin.Constants = require('./lib/constants')
-YoursBitcoin.Ecdsa = require('./lib/ecdsa')
-YoursBitcoin.GetBlocks = require('./lib/get-blocks')
-YoursBitcoin.Hash = require('./lib/hash')
-YoursBitcoin.Interp = require('./lib/interp')
-YoursBitcoin.Inv = require('./lib/inv')
-YoursBitcoin.Kdf = require('./lib/kdf')
-YoursBitcoin.KeyPair = require('./lib/key-pair')
-YoursBitcoin.Msg = require('./lib/msg')
-YoursBitcoin.MsgAddr = require('./lib/msg-addr')
-YoursBitcoin.MsgAlert = require('./lib/msg-alert')
-YoursBitcoin.MsgBlock = require('./lib/msg-block')
-YoursBitcoin.MsgGetBlocks = require('./lib/msg-get-blocks')
-YoursBitcoin.MsgGetData = require('./lib/msg-get-data')
-YoursBitcoin.MsgGetHeaders = require('./lib/msg-get-headers')
-YoursBitcoin.MsgHeaders = require('./lib/msg-headers')
-YoursBitcoin.MsgInv = require('./lib/msg-inv')
-YoursBitcoin.MsgMemPool = require('./lib/msg-mem-pool')
-YoursBitcoin.MsgNotFound = require('./lib/msg-not-found')
-YoursBitcoin.MsgPing = require('./lib/msg-ping')
-YoursBitcoin.MsgPong = require('./lib/msg-pong')
-YoursBitcoin.MsgReject = require('./lib/msg-reject')
-YoursBitcoin.MsgTx = require('./lib/msg-tx')
-YoursBitcoin.MsgVerAck = require('./lib/msg-ver-ack')
-YoursBitcoin.MsgVersion = require('./lib/msg-version')
-YoursBitcoin.OpCode = require('./lib/op-code')
-YoursBitcoin.Point = require('./lib/point')
-YoursBitcoin.PrivKey = require('./lib/priv-key')
-YoursBitcoin.PubKey = require('./lib/pub-key')
-YoursBitcoin.Random = require('./lib/random')
-YoursBitcoin.Reject = require('./lib/reject')
-YoursBitcoin.Script = require('./lib/script')
-YoursBitcoin.Sig = require('./lib/sig')
-YoursBitcoin.Struct = require('./lib/struct')
-YoursBitcoin.Tx = require('./lib/tx')
-YoursBitcoin.TxBuilder = require('./lib/tx-builder')
-YoursBitcoin.TxIn = require('./lib/tx-in')
-YoursBitcoin.TxOut = require('./lib/tx-out')
-YoursBitcoin.TxVerifier = require('./lib/tx-verifier')
-YoursBitcoin.VarInt = require('./lib/var-int')
-YoursBitcoin.Version = require('./lib/version')
-YoursBitcoin.Workers = require('./lib/workers')
-YoursBitcoin.WorkersCmd = require('./lib/workers-cmd')
-YoursBitcoin.WorkersResult = require('./lib/workers-result')
-YoursBitcoin.cmp = require('./lib/cmp')
+bsv.Address = require('./lib/address')
+bsv.Bip32 = require('./lib/bip-32')
+bsv.Bip39 = require('./lib/bip-39')
+bsv.Bip68 = require('./lib/bip-68')
+bsv.Bn = require('./lib/bn')
+bsv.Br = require('./lib/br')
+bsv.Bsm = require('./lib/bsm')
+bsv.Bw = require('./lib/bw')
+bsv.Base58 = require('./lib/base-58')
+bsv.Base58Check = require('./lib/base-58-check')
+bsv.Block = require('./lib/block')
+bsv.BlockHeader = require('./lib/block-header')
+bsv.Constants = require('./lib/constants')
+bsv.Ecdsa = require('./lib/ecdsa')
+bsv.Hash = require('./lib/hash')
+bsv.Interp = require('./lib/interp')
+bsv.Kdf = require('./lib/kdf')
+bsv.KeyPair = require('./lib/key-pair')
+bsv.OpCode = require('./lib/op-code')
+bsv.Point = require('./lib/point')
+bsv.PrivKey = require('./lib/priv-key')
+bsv.PubKey = require('./lib/pub-key')
+bsv.Random = require('./lib/random')
+bsv.Script = require('./lib/script')
+bsv.Sig = require('./lib/sig')
+bsv.Struct = require('./lib/struct')
+bsv.Tx = require('./lib/tx')
+bsv.TxBuilder = require('./lib/tx-builder')
+bsv.TxIn = require('./lib/tx-in')
+bsv.TxOut = require('./lib/tx-out')
+bsv.TxOutMap = require('./lib/tx-out-map')
+bsv.TxVerifier = require('./lib/tx-verifier')
+bsv.VarInt = require('./lib/var-int')
+bsv.Workers = require('./lib/workers')
+bsv.WorkersResult = require('./lib/workers-result')
+bsv.cmp = require('./lib/cmp')
 
 // Encryption tools. Some bitcoin standards use Aes encryption, so that's why
 // these are available.
-YoursBitcoin.Ach = require('./lib/ach')
-YoursBitcoin.Aes = require('./lib/aes')
-YoursBitcoin.Aescbc = require('./lib/aescbc')
-YoursBitcoin.Cbc = require('./lib/cbc')
-YoursBitcoin.Ecies = require('./lib/ecies')
+bsv.Ach = require('./lib/ach')
+bsv.Aes = require('./lib/aes')
+bsv.Aescbc = require('./lib/aescbc')
+bsv.Cbc = require('./lib/cbc')
+bsv.Ecies = require('./lib/ecies')
 
 // Dependencies, subject to change.
-YoursBitcoin.deps = {}
-YoursBitcoin.deps.aes = require('aes')
-YoursBitcoin.deps.bnjs = require('bn.js')
-YoursBitcoin.deps.bs58 = require('bs58')
-YoursBitcoin.deps.Buffer = Buffer
-YoursBitcoin.deps.elliptic = require('elliptic')
-YoursBitcoin.deps.hashjs = require('hash.js')
-YoursBitcoin.deps.injecter = require('injecter')
-YoursBitcoin.deps.pbkdf2compat = require('pbkdf2-compat')
+bsv.deps = {}
+bsv.deps.aes = require('aes')
+bsv.deps.bnjs = require('bn.js')
+bsv.deps.bs58 = require('bs58')
+bsv.deps.Buffer = Buffer
+bsv.deps.elliptic = require('elliptic')
+bsv.deps.hashjs = require('hash.js')
+bsv.deps.injecter = require('./lib/injecter')
+bsv.deps.pbkdf2compat = require('pbkdf2-compat')
 
 // Mainnet classes for your convenience (in case default is not what you want).
 let Mainnet = {}
-Object.keys(YoursBitcoin).forEach(function (key) {
-  Mainnet[key] = YoursBitcoin[key].Mainnet ? YoursBitcoin[key].Mainnet : YoursBitcoin[key]
+Object.keys(bsv).forEach(function (key) {
+  Mainnet[key] = bsv[key].Mainnet
+    ? bsv[key].Mainnet
+    : bsv[key]
 })
 
 // Testnet classes for your convenience (in case default is not what you want).
 let Testnet = {}
-Object.keys(YoursBitcoin).forEach(function (key) {
-  Testnet[key] = YoursBitcoin[key].Testnet ? YoursBitcoin[key].Testnet : YoursBitcoin[key]
+Object.keys(bsv).forEach(function (key) {
+  Testnet[key] = bsv[key].Testnet
+    ? bsv[key].Testnet
+    : bsv[key]
 })
 
-YoursBitcoin.Mainnet = Mainnet
-YoursBitcoin.Testnet = Testnet
+// Litecoin classes for your convenience (in case default is not what you want).
+let Litecoin = {}
+Object.keys(bsv).forEach(function (key) {
+  Litecoin[key] = bsv[key].Litecoin
+    ? bsv[key].Litecoin
+    : bsv[key]
+})
+
+// LitecoinTestnet classes for your convenience (in case default is not what you want).
+let LitecoinTestnet = {}
+Object.keys(bsv).forEach(function (key) {
+  LitecoinTestnet[key] = bsv[key].LitecoinTestnet
+    ? bsv[key].LitecoinTestnet
+    : bsv[key]
+})
+
+bsv.Mainnet = Mainnet
+bsv.Testnet = Testnet
+bsv.Litecoin = Litecoin
+bsv.LitecoinTestnet = LitecoinTestnet
+
+bsv.browser = process.browser
+bsv.env = process.env

@@ -1,20 +1,20 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
+let should = require('should')
 let Hash = require('../lib/hash')
 let Aes = require('../lib/aes')
 let vectors = require('./vectors/aes')
 
 describe('Aes', function () {
-  let m128 = Hash.sha256(new Buffer('test1')).slice(0, 128 / 8)
+  let m128 = Hash.sha256(Buffer.from('test1')).slice(0, 128 / 8)
 
-  let k128 = Hash.sha256(new Buffer('test2')).slice(0, 128 / 8)
-  let k192 = Hash.sha256(new Buffer('test2')).slice(0, 192 / 8)
-  let k256 = Hash.sha256(new Buffer('test2')).slice(0, 256 / 8)
+  let k128 = Hash.sha256(Buffer.from('test2')).slice(0, 128 / 8)
+  let k192 = Hash.sha256(Buffer.from('test2')).slice(0, 192 / 8)
+  let k256 = Hash.sha256(Buffer.from('test2')).slice(0, 256 / 8)
 
-  let e128 = new Buffer('3477e13884125038f4dc24e9d2cfbbc7', 'hex')
-  let e192 = new Buffer('b670954c0e2da1aaa5f9063de04eb961', 'hex')
-  let e256 = new Buffer('dd2ce24581183a4a7c0b1068f8bc79f0', 'hex')
+  let e128 = Buffer.from('3477e13884125038f4dc24e9d2cfbbc7', 'hex')
+  let e192 = Buffer.from('b670954c0e2da1aaa5f9063de04eb961', 'hex')
+  let e256 = Buffer.from('dd2ce24581183a4a7c0b1068f8bc79f0', 'hex')
 
   should.exist(Aes)
 
@@ -57,16 +57,16 @@ describe('Aes', function () {
 
   describe('@buf2Words', function () {
     it('should convert this 4 length buffer into an array', function () {
-      let buf = new Buffer([0, 0, 0, 0])
+      let buf = Buffer.from([0, 0, 0, 0])
       let words = Aes.buf2Words(buf)
       words.length.should.equal(1)
     })
 
     it('should throw an error on this 5 length buffer', function () {
-      let buf = new Buffer([0, 0, 0, 0, 0])
+      let buf = Buffer.from([0, 0, 0, 0, 0])
       ;(function () {
         Aes.buf2Words(buf)
-      }).should.throw()
+      }.should.throw())
     })
   })
 
@@ -81,12 +81,16 @@ describe('Aes', function () {
   describe('vectors', function () {
     vectors.forEach(function (vector, i) {
       it('should pass sjcl test vector ' + i, function () {
-        let keyBuf = new Buffer(vector.key, 'hex')
-        let ptbuf = new Buffer(vector.pt, 'hex')
-        let ctBuf = new Buffer(vector.ct, 'hex')
+        let keyBuf = Buffer.from(vector.key, 'hex')
+        let ptbuf = Buffer.from(vector.pt, 'hex')
+        let ctBuf = Buffer.from(vector.ct, 'hex')
 
-        Aes.encrypt(ptbuf, keyBuf).toString('hex').should.equal(ctBuf.toString('hex'))
-        Aes.decrypt(ctBuf, keyBuf).toString('hex').should.equal(ptbuf.toString('hex'))
+        Aes.encrypt(ptbuf, keyBuf)
+          .toString('hex')
+          .should.equal(ctBuf.toString('hex'))
+        Aes.decrypt(ctBuf, keyBuf)
+          .toString('hex')
+          .should.equal(ptbuf.toString('hex'))
       })
     })
   })

@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-require('chai').should()
+require('should')
 let Random = require('../lib/random')
 
 describe('Random', function () {

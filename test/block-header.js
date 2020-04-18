@@ -3,14 +3,14 @@
 let BlockHeader = require('../lib/block-header')
 let Bw = require('../lib/bw')
 let Br = require('../lib/br')
-let should = require('chai').should()
+let should = require('should')
 
 describe('BlockHeader', function () {
   let bh = new BlockHeader()
   let versionBytesNum = 1
-  let prevBlockHashBuf = new Buffer(32)
+  let prevBlockHashBuf = Buffer.alloc(32)
   prevBlockHashBuf.fill(5)
-  let merkleRootBuf = new Buffer(32)
+  let merkleRootBuf = Buffer.alloc(32)
   merkleRootBuf.fill(9)
   let time = 2
   let bits = 3
@@ -23,8 +23,9 @@ describe('BlockHeader', function () {
     bits: bits,
     nonce: nonce
   })
-  let bhhex = '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
-  let bhbuf = new Buffer(bhhex, 'hex')
+  let bhhex =
+    '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
+  let bhbuf = Buffer.from(bhhex, 'hex')
 
   it('should make a new blockHeader', function () {
     let blockHeader = new BlockHeader()
@@ -85,40 +86,67 @@ describe('BlockHeader', function () {
 
   describe('#fromHex', function () {
     it('should parse this known hex string', function () {
-      new BlockHeader().fromHex(bhhex).toBuffer().toString('hex').should.equal(bhhex)
+      new BlockHeader()
+        .fromHex(bhhex)
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
     })
   })
 
   describe('#fromBuffer', function () {
     it('should parse this known buffer', function () {
-      new BlockHeader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
+      new BlockHeader()
+        .fromBuffer(bhbuf)
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
     })
   })
 
   describe('#fromBr', function () {
     it('should parse this known buffer', function () {
-      new BlockHeader().fromBr(new Br(bhbuf)).toBuffer().toString('hex').should.equal(bhhex)
+      new BlockHeader()
+        .fromBr(new Br(bhbuf))
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
     })
   })
 
   describe('#toHex', function () {
     it('should output this known hex string', function () {
-      new BlockHeader().fromBuffer(bhbuf).toHex().should.equal(bhhex)
+      new BlockHeader()
+        .fromBuffer(bhbuf)
+        .toHex()
+        .should.equal(bhhex)
     })
   })
 
   describe('#toBuffer', function () {
     it('should output this known buffer', function () {
-      new BlockHeader().fromBuffer(bhbuf).toBuffer().toString('hex').should.equal(bhhex)
+      new BlockHeader()
+        .fromBuffer(bhbuf)
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
     })
   })
 
   describe('#toBw', function () {
     it('should output this known buffer', function () {
-      new BlockHeader().fromBuffer(bhbuf).toBw().toBuffer().toString('hex').should.equal(bhhex)
+      new BlockHeader()
+        .fromBuffer(bhbuf)
+        .toBw()
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
       let bw = new Bw()
       new BlockHeader().fromBuffer(bhbuf).toBw(bw)
-      bw.toBuffer().toString('hex').should.equal(bhhex)
+      bw
+        .toBuffer()
+        .toString('hex')
+        .should.equal(bhhex)
     })
   })
 })

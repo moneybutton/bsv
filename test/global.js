@@ -6,6 +6,17 @@
  * hanging when the tests are done running so that the tests end properly.
  */
 'use strict'
+
+const path = require('path')
+
+if (!process.browser) {
+  require('dotenv-extended').load({
+    path: path.resolve('.env'),
+    defaults: path.resolve('.env.defaults'),
+    schema: path.resolve('.env.schema')
+  })
+}
+
 let Workers = require('../lib/workers')
 
 after(function () {

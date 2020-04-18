@@ -3,7 +3,7 @@
 let Inv = require('../lib/inv')
 let Hash = require('../lib/hash')
 let Bw = require('../lib/bw')
-let should = require('chai').should()
+let should = require('should')
 
 describe('Inv', function () {
   it('should exist', function () {
@@ -14,7 +14,7 @@ describe('Inv', function () {
 
   describe('#fromBuffer', function () {
     it('should convert from a buffer', function () {
-      let hashBuf = Hash.sha256(new Buffer(0))
+      let hashBuf = Hash.sha256(Buffer.alloc(0))
       let typeNum = 1
       let typebuf = new Bw().writeUInt32LE(typeNum).toBuffer()
       let buf = Buffer.concat([typebuf, hashBuf])
@@ -26,7 +26,7 @@ describe('Inv', function () {
 
   describe('#toBuffer', function () {
     it('should convert to a buffer', function () {
-      let hashBuf = Hash.sha256(new Buffer(0))
+      let hashBuf = Hash.sha256(Buffer.alloc(0))
       let typeNum = 1
       let typebuf = new Bw().writeUInt32LE(typeNum).toBuffer()
       let buf = Buffer.concat([typebuf, hashBuf])
@@ -38,7 +38,7 @@ describe('Inv', function () {
 
   describe('#isTx', function () {
     it('should know this is a tx hash', function () {
-      let hashBuf = Hash.sha256(new Buffer(0))
+      let hashBuf = Hash.sha256(Buffer.alloc(0))
       let typeNum = Inv.MSG_TX
       let inv = new Inv(typeNum, hashBuf)
       inv.isTx().should.equal(true)
@@ -47,7 +47,7 @@ describe('Inv', function () {
 
   describe('#isBlock', function () {
     it('should know this is a block hash', function () {
-      let hashBuf = Hash.sha256(new Buffer(0))
+      let hashBuf = Hash.sha256(Buffer.alloc(0))
       let typeNum = Inv.MSG_BLOCK
       let inv = new Inv(typeNum, hashBuf)
       inv.isBlock().should.equal(true)
@@ -56,7 +56,7 @@ describe('Inv', function () {
 
   describe('#isFilteredBlock', function () {
     it('should know this is a filtered block hash', function () {
-      let hashBuf = Hash.sha256(new Buffer(0))
+      let hashBuf = Hash.sha256(Buffer.alloc(0))
       let typeNum = Inv.MSG_FILTERED_BLOCK
       let inv = new Inv(typeNum, hashBuf)
       inv.isFilteredBlock().should.equal(true)

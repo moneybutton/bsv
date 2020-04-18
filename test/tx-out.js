@@ -5,7 +5,7 @@ let Br = require('../lib/br')
 let Script = require('../lib/script')
 let TxOut = require('../lib/tx-out')
 let VarInt = require('../lib/var-int')
-let should = require('chai').should()
+let should = require('should')
 
 describe('TxOut', function () {
   let valueBn = new Bn(5)
@@ -39,7 +39,10 @@ describe('TxOut', function () {
   describe('#setScript', function () {
     it('should set the script size correctly', function () {
       let txOut2 = new TxOut(txOut)
-      txOut2.setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN')).scriptVi.toNumber().should.equal(3)
+      txOut2
+        .setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN'))
+        .scriptVi.toNumber()
+        .should.equal(3)
     })
   })
 
@@ -91,35 +94,59 @@ describe('TxOut', function () {
   describe('#fromHex', function () {
     it('should make this txIn from this known hex', function () {
       let txOut = new TxOut().fromHex('050000000000000001ae')
-      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
+      txOut
+        .toBuffer()
+        .toString('hex')
+        .should.equal('050000000000000001ae')
     })
   })
 
   describe('#fromBuffer', function () {
     it('should make this txIn from this known buffer', function () {
-      let txOut = new TxOut().fromBuffer(new Buffer('050000000000000001ae', 'hex'))
-      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBuffer(
+        Buffer.from('050000000000000001ae', 'hex')
+      )
+      txOut
+        .toBuffer()
+        .toString('hex')
+        .should.equal('050000000000000001ae')
     })
   })
 
   describe('#fromBr', function () {
     it('should make this txIn from this known buffer', function () {
-      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBr(
+        new Br(Buffer.from('050000000000000001ae', 'hex'))
+      )
+      txOut
+        .toBuffer()
+        .toString('hex')
+        .should.equal('050000000000000001ae')
     })
   })
 
   describe('#toBuffer', function () {
     it('should output this known buffer', function () {
-      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txOut.toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBr(
+        new Br(Buffer.from('050000000000000001ae', 'hex'))
+      )
+      txOut
+        .toBuffer()
+        .toString('hex')
+        .should.equal('050000000000000001ae')
     })
   })
 
   describe('#toBw', function () {
     it('should output this known buffer', function () {
-      let txOut = new TxOut().fromBr(new Br(new Buffer('050000000000000001ae', 'hex')))
-      txOut.toBw().toBuffer().toString('hex').should.equal('050000000000000001ae')
+      let txOut = new TxOut().fromBr(
+        new Br(Buffer.from('050000000000000001ae', 'hex'))
+      )
+      txOut
+        .toBw()
+        .toBuffer()
+        .toString('hex')
+        .should.equal('050000000000000001ae')
     })
   })
 })

@@ -1,29 +1,15 @@
 {
-  "name": "yours-bitcoin",
-  "version": "0.14.14",
-  "description": "Javascript implementation of Bitcoin.",
-  "author": "Ryan X. Charles <ryanxcharles@gmail.com>",
-  "homepage": "https://github.com/yoursnetwork/yours-bitcoin",
+  "name": "bsv",
+  "description": "Javascript library for Bitcoin SV (BSV).",
+  "version": "2.0.0-beta.0",
+  "author": "Yours Inc.",
+  "homepage": "https://github.com/moneybutton/bsv",
   "main": "index.js",
   "scripts": {
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive -R progress",
-    "parallel": "./node_modules/.bin/standard && ./bin/test-parallel",
-    "test-node": "./node_modules/.bin/standard && ./node_modules/.bin/mocha --recursive -R progress",
-    "test-browser": "./node_modules/.bin/gulp test-karma",
-    "test": "npm run test-node && npm run test-browser",
-    "build": "./node_modules/.bin/gulp build"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
+    "clean": "rm -rf node_modules/* package-lock.json yarn.lock",
+    "lint": "standard *.js lib/**/*.js bin/**/*.js test/**/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha --recursive -R progress test/global.js test/*.js"
   },
   "contributors": [
     {
@@ -65,60 +51,56 @@
     {
       "name": "Wei Lu",
       "email": "luwei.here@gmail.com"
+    },
+    {
+      "name": "Josh Ellithorpe",
+      "email": "quest@mac.com"
     }
   ],
   "keywords": [
     "bitcoin",
+    "bsv",
     "blockchain",
     "bip32",
     "bip39",
     "bip68",
-    "multisig"
+    "multisig",
+    "ecies"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yoursnetwork/yours-bitcoin.git"
+    "url": "https://github.com/moneybutton/bsv.git"
   },
   "engines": {
-    "node": ">=6.1.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "aes": "0.1.0",
-    "asink": "1.0.4",
-    "babel-polyfill": "6.9.1",
-    "babel-preset-es2015": "6.9.0",
-    "babel-preset-react": "6.11.1",
-    "babelify": "7.3.0",
-    "bn.js": "4.11.4",
-    "browserify": "13.0.1",
-    "bs58": "3.0.0",
-    "elliptic": "6.3.1",
-    "envify": "3.4.1",
-    "express": "4.14.0",
-    "glob": "7.0.5",
-    "gulp": "3.9.1",
-    "gulp-mocha": "2.2.0",
-    "hash.js": "1.0.3",
-    "injecter": "1.0.2",
-    "istanbul": "0.4.4",
-    "karma": "1.1.0",
-    "karma-mocha": "1.1.1",
-    "mocha": "2.5.3",
+    "babel-polyfill": "^6.26.0",
+    "bs58": "4.0.1",
+    "chai": "^4.2.0",
+    "dotenv-extended": "^2.8.0",
+    "is-hex": "1.1.3",
     "pbkdf2-compat": "4.0.0",
-    "randombytes": "2.0.3",
-    "standard": "7.1.2",
-    "uglifyify": "3.0.2"
+    "randombytes": "2.0.5",
+    "secp256k1": "3.3.0",
+    "styled-jsx": "2.2.6"
   },
   "devDependencies": {
-    "chai": "3.5.0",
-    "express": "4.13.4",
-    "istanbul": "0.4.3",
-    "karma": "0.13.22",
-    "karma-firefox-launcher": "1.0.0",
-    "karma-mocha": "1.0.1",
-    "mocha": "2.4.5",
-    "sinon": "1.17.4",
-    "standard": "7.0.1"
+    "babel-preset-bluebird": "1.0.1",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "bluebird": "3.5.0",
+    "mocha": "3.4.2",
+    "npm-link-shared": "0.5.2",
+    "should": "11.2.1",
+    "sinon": "2.3.2",
+    "standard": "11.0.1"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "standard": {
+    "ignore": [
+      "lib/interp.js"
+    ]
+  }
 }

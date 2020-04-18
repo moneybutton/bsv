@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
+let should = require('should')
 let OpCode = require('../lib/op-code')
 
 describe('OpCode', function () {
@@ -26,9 +26,18 @@ describe('OpCode', function () {
   })
 
   it('should convert to a number with this handy syntax', function () {
-    new OpCode().fromString('OP_0').toNumber().should.equal(0)
-    new OpCode().fromString('OP_16').toNumber().should.equal(96)
-    new OpCode().fromString('OP_NOP').toNumber().should.equal(97)
+    new OpCode()
+      .fromString('OP_0')
+      .toNumber()
+      .should.equal(0)
+    new OpCode()
+      .fromString('OP_16')
+      .toNumber()
+      .should.equal(96)
+    new OpCode()
+      .fromString('OP_NOP')
+      .toNumber()
+      .should.equal(97)
   })
 
   describe('#fromNumber', function () {
@@ -39,7 +48,10 @@ describe('OpCode', function () {
 
   describe('#toNumber', function () {
     it('should work for 0', function () {
-      new OpCode().fromNumber(0).toNumber().should.equal(0)
+      new OpCode()
+        .fromNumber(0)
+        .toNumber()
+        .should.equal(0)
     })
   })
 
@@ -51,7 +63,10 @@ describe('OpCode', function () {
 
   describe('#toString', function () {
     it('should work for OP_0', function () {
-      new OpCode().fromString('OP_0').toString().should.equal('OP_0')
+      new OpCode()
+        .fromString('OP_0')
+        .toString()
+        .should.equal('OP_0')
     })
   })
 

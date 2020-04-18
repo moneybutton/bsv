@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('chai').should()
+let should = require('should')
 let Base58Check = require('../lib/base-58-check')
 let base58 = require('../lib/base-58')
 
 describe('Base58Check', function () {
-  let buf = new Buffer([0, 1, 2, 3, 253, 254, 255])
+  let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
   let enc = '14HV44ipwoaqfg'
 
   it('should make an instance with "new"', function () {
@@ -20,12 +20,16 @@ describe('Base58Check', function () {
 
   it('should allow this handy syntax', function () {
     new Base58Check(buf).toString().should.equal(enc)
-    new Base58Check().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+    new Base58Check()
+      .fromString(enc)
+      .toBuffer()
+      .toString('hex')
+      .should.equal(buf.toString('hex'))
   })
 
   describe('#fromObject', function () {
     it('should set a buf', function () {
-      should.exist(new Base58Check().fromObject({buf: buf}).buf)
+      should.exist(new Base58Check().fromObject({ buf: buf }).buf)
     })
   })
 
@@ -35,27 +39,29 @@ describe('Base58Check', function () {
     })
 
     it('should throw an error when the input is not a buffer', function () {
-      (function () {
+      ;(function () {
         Base58Check.encode('string')
-      }).should.throw('Input must be a buffer')
+      }.should.throw('Input must be a buffer'))
     })
   })
 
   describe('@decode', function () {
     it('should decode this encoded value correctly', function () {
-      Base58Check.decode(enc).toString('hex').should.equal(buf.toString('hex'))
+      Base58Check.decode(enc)
+        .toString('hex')
+        .should.equal(buf.toString('hex'))
     })
 
     it('should throw an error when input is not a string', function () {
-      (function () {
+      ;(function () {
         Base58Check.decode(5)
-      }).should.throw('Input must be a string')
+      }.should.throw('Input must be a string'))
     })
 
     it('should throw an error when input is too short', function () {
-      (function () {
+      ;(function () {
         Base58Check.decode(enc.slice(0, 1))
-      }).should.throw('Input string too short')
+      }.should.throw('Input string too short'))
     })
 
     it('should throw an error when there is a checksum mismatch', function () {
@@ -64,7 +70,7 @@ describe('Base58Check', function () {
       let enc2 = base58.encode(buf2)
       ;(function () {
         Base58Check.decode(enc2)
-      }).should.throw('Checksum mismatch')
+      }.should.throw('Checksum mismatch'))
     })
   })
 
@@ -88,7 +94,11 @@ describe('Base58Check', function () {
 
   describe('#fromString', function () {
     it('should convert this known string to a buffer', function () {
-      new Base58Check().fromString(enc).toBuffer().toString('hex').should.equal(buf.toString('hex'))
+      new Base58Check()
+        .fromString(enc)
+        .toBuffer()
+        .toString('hex')
+        .should.equal(buf.toString('hex'))
     })
   })
 
@@ -102,7 +112,10 @@ describe('Base58Check', function () {
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
       let b58 = new Base58Check(buf)
-      b58.toBuffer().toString('hex').should.equal(buf.toString('hex'))
+      b58
+        .toBuffer()
+        .toString('hex')
+        .should.equal(buf.toString('hex'))
     })
   })
 
