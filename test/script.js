@@ -272,17 +272,17 @@ describe('Script', function () {
     })
   })
 
-  describe('#fromBitcoindString', function () {
+  describe('#fromAsmString', function () {
     it('should convert from this known string', function () {
       new Script()
-        .fromBitcoindString('DEPTH 0 EQUAL')
-        .toBitcoindString()
+        .fromAsmString('DEPTH 0 EQUAL')
+        .toAsmString()
         .should.equal('DEPTH 0 EQUAL')
       new Script()
-        .fromBitcoindString(
+        .fromAsmString(
           "'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL"
         )
-        .toBitcoindString()
+        .toAsmString()
         .should.equal(
           '0x4b417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL'
         )
@@ -290,42 +290,42 @@ describe('Script', function () {
       let str =
         '0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601'
       new Script()
-        .fromBitcoindString(str)
-        .toBitcoindString()
+        .fromAsmString(str)
+        .toAsmString()
         .should.equal(str)
     })
 
     it('should convert to this known string', function () {
       new Script()
-        .fromBitcoindString('DEPTH 0 EQUAL')
-        .toBitcoindString()
+        .fromAsmString('DEPTH 0 EQUAL')
+        .toAsmString()
         .should.equal('DEPTH 0 EQUAL')
     })
   })
 
-  describe('@fromBitcoindString', function () {
+  describe('@fromAsmString', function () {
     it('should convert from this known string', function () {
-      Script.fromBitcoindString('DEPTH 0 EQUAL')
-        .toBitcoindString()
+      Script.fromAsmString('DEPTH 0 EQUAL')
+        .toAsmString()
         .should.equal('DEPTH 0 EQUAL')
-      Script.fromBitcoindString(
+      Script.fromAsmString(
         "'Azzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' EQUAL"
       )
-        .toBitcoindString()
+        .toAsmString()
         .should.equal(
           '0x4b417a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a EQUAL'
         )
 
       let str =
         '0x4c47304402203acf75dd59bbef171aeeedae4f1020b824195820db82575c2b323b8899f95de9022067df297d3a5fad049ba0bb81255d0e495643cbcf9abae9e396988618bc0c6dfe01 0x47304402205f8b859230c1cab7d4e8de38ff244d2ebe046b64e8d3f4219b01e483c203490a022071bdc488e31b557f7d9e5c8a8bec90dc92289ca70fa317685f4f140e38b30c4601'
-      Script.fromBitcoindString(str)
-        .toBitcoindString()
+      Script.fromAsmString(str)
+        .toAsmString()
         .should.equal(str)
     })
 
     it('should convert to this known string', function () {
-      Script.fromBitcoindString('DEPTH 0 EQUAL')
-        .toBitcoindString()
+      Script.fromAsmString('DEPTH 0 EQUAL')
+        .toAsmString()
         .should.equal('DEPTH 0 EQUAL')
     })
   })
@@ -1078,24 +1078,24 @@ describe('Script', function () {
       }
       it('should not fail when reading scriptValid vector ' + i, function () {
         ;(function () {
-          new Script().fromBitcoindString(a[0]).toString()
-          new Script().fromBitcoindString(a[0]).toBitcoindString()
+          new Script().fromAsmString(a[0]).toString()
+          new Script().fromAsmString(a[0]).toAsmString()
         }.should.not.throw())
         ;(function () {
-          new Script().fromBitcoindString(a[1]).toString()
-          new Script().fromBitcoindString(a[1]).toBitcoindString()
+          new Script().fromAsmString(a[1]).toString()
+          new Script().fromAsmString(a[1]).toAsmString()
         }.should.not.throw())
 
         // should be able to return the same output over and over
-        let str = new Script().fromBitcoindString(a[0]).toBitcoindString()
+        let str = new Script().fromAsmString(a[0]).toAsmString()
         new Script()
-          .fromBitcoindString(str)
-          .toBitcoindString()
+          .fromAsmString(str)
+          .toAsmString()
           .should.equal(str)
-        str = new Script().fromBitcoindString(a[1]).toBitcoindString()
+        str = new Script().fromAsmString(a[1]).toAsmString()
         new Script()
-          .fromBitcoindString(str)
-          .toBitcoindString()
+          .fromAsmString(str)
+          .toAsmString()
           .should.equal(str)
       })
     })
@@ -1106,24 +1106,24 @@ describe('Script', function () {
       }
       it('should not fail when reading scriptInvalid vector ' + i, function () {
         ;(function () {
-          new Script().fromBitcoindString(a[0]).toString()
-          new Script().fromBitcoindString(a[0]).toBitcoindString()
+          new Script().fromAsmString(a[0]).toString()
+          new Script().fromAsmString(a[0]).toAsmString()
         }.should.not.throw())
         ;(function () {
-          new Script().fromBitcoindString(a[1]).toString()
-          new Script().fromBitcoindString(a[1]).toBitcoindString()
+          new Script().fromAsmString(a[1]).toString()
+          new Script().fromAsmString(a[1]).toAsmString()
         }.should.not.throw())
 
         // should be able to return the same output over and over
-        let str = new Script().fromBitcoindString(a[0]).toBitcoindString()
+        let str = new Script().fromAsmString(a[0]).toAsmString()
         new Script()
-          .fromBitcoindString(str)
-          .toBitcoindString()
+          .fromAsmString(str)
+          .toAsmString()
           .should.equal(str)
-        str = new Script().fromBitcoindString(a[1]).toBitcoindString()
+        str = new Script().fromAsmString(a[1]).toAsmString()
         new Script()
-          .fromBitcoindString(str)
-          .toBitcoindString()
+          .fromAsmString(str)
+          .toAsmString()
           .should.equal(str)
       })
     })
