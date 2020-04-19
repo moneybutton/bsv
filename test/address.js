@@ -342,6 +342,11 @@ describe('Address', function () {
       address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
     })
 
+    it('should make this address from a script', function () {
+      Address.fromPubKeyHashBuf(Buffer.from('6fa5502ea094d59576898b490d866b32a61b89f6', 'hex')).toString()
+        .should.equal('1BBL3TUavUCRauDreKv2JJ1CPgnyNxVHpA')
+    })
+
     it('should make an address from a hashBuf', function () {
       let buf = Buffer.alloc(20)
       buf.fill(0)

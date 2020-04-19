@@ -122,10 +122,10 @@ describe('Interp', function () {
 
   describe('#getDebugObject', function () {
     it('should get a failure explanation object', function () {
-      let scriptSig = Script.fromAsmString(
+      let scriptSig = Script.fromBitcoindString(
         '0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01'
       )
-      let scriptPubKey = Script.fromAsmString(
+      let scriptPubKey = Script.fromBitcoindString(
         '0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
       let flags =
@@ -161,10 +161,10 @@ describe('Interp', function () {
 
   describe('#getDebugString', function () {
     it('should get a failure explanation object', function () {
-      let scriptSig = Script.fromAsmString(
+      let scriptSig = Script.fromBitcoindString(
         '0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01'
       )
-      let scriptPubKey = Script.fromAsmString(
+      let scriptPubKey = Script.fromBitcoindString(
         '0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
       let flags =
@@ -297,10 +297,10 @@ describe('Interp', function () {
     })
 
     it('should verify this pay-to-pubKey script from script_valid.json', function () {
-      let scriptSig = new Script().fromAsmString(
+      let scriptSig = new Script().fromBitcoindString(
         '0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501'
       )
-      let scriptPubKey = new Script().fromAsmString(
+      let scriptPubKey = new Script().fromBitcoindString(
         '0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
 
@@ -338,8 +338,8 @@ describe('Interp', function () {
       it('should verify bitcoindScriptValid vector ' + c, function () {
         // ["Format is: [scriptSig, scriptPubKey, flags, expected_scripterror, ... comments]"],
         // Test vectors for SIGHASH_FORKID
-        let scriptSig = new Script().fromAsmString(vector[0])
-        let scriptPubKey = new Script().fromAsmString(vector[1])
+        let scriptSig = new Script().fromBitcoindString(vector[0])
+        let scriptPubKey = new Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
         let expectedError = vector[3]
 
@@ -389,8 +389,8 @@ describe('Interp', function () {
       }
       c++
       it('should verify bitcoindScriptValid vector ' + c, function () {
-        let scriptSig = new Script().fromAsmString(vector[0])
-        let scriptPubKey = new Script().fromAsmString(vector[1])
+        let scriptSig = new Script().fromBitcoindString(vector[0])
+        let scriptPubKey = new Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
 
         let hashBuf = Buffer.alloc(32)
@@ -422,8 +422,8 @@ describe('Interp', function () {
       }
       c++
       it('should unverify bitcoindScriptInvalid vector ' + c, function () {
-        let scriptSig = new Script().fromAsmString(vector[0])
-        let scriptPubKey = new Script().fromAsmString(vector[1])
+        let scriptSig = new Script().fromBitcoindString(vector[0])
+        let scriptPubKey = new Script().fromBitcoindString(vector[1])
         let flags = Interp.getFlags(vector[2])
 
         let hashBuf = Buffer.alloc(32)

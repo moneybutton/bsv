@@ -41,7 +41,7 @@ describe('TxVerifier', function () {
         }
         let txOut = TxOut.fromProperties(
           new Bn(0),
-          new Script().fromAsmString(input[2])
+          new Script().fromBitcoindString(input[2])
         )
         let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
         txOutMap.add(txHashBuf, txOutNum, txOut)
@@ -72,7 +72,7 @@ describe('TxVerifier', function () {
         }
         let txOut = TxOut.fromProperties(
           new Bn(0),
-          new Script().fromAsmString(input[2])
+          new Script().fromBitcoindString(input[2])
         )
         let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
         txOutMap.add(txHashBuf, txOutNum, txOut)
@@ -147,7 +147,7 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(
             new Bn(0),
-            new Script().fromAsmString(input[2])
+            new Script().fromBitcoindString(input[2])
           )
           let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
           txOutMap.add(txHashBuf, txOutNum, txOut)
@@ -171,7 +171,7 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(
             new Bn(0),
-            new Script().fromAsmString(input[2])
+            new Script().fromBitcoindString(input[2])
           )
           let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
           txOutMap.add(txHashBuf, txOutNum, txOut)
@@ -202,7 +202,7 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(
             new Bn(0),
-            new Script().fromAsmString(input[2])
+            new Script().fromBitcoindString(input[2])
           )
           let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
           txOutMap.add(txHashBuf, txOutNum, txOut)
@@ -227,7 +227,7 @@ describe('TxVerifier', function () {
           }
           let txOut = TxOut.fromProperties(
             new Bn(0),
-            new Script().fromAsmString(input[2])
+            new Script().fromBitcoindString(input[2])
           )
           let txHashBuf = new Br(Buffer.from(input[0], 'hex')).readReverse()
           txOutMap.add(txHashBuf, txOutNum, txOut)
