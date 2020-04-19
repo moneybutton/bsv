@@ -15,15 +15,7 @@
  */
 'use strict'
 require('babel-polyfill')
-const path = require('path')
-
-if (!process.browser) {
-  require('dotenv-extended').load({
-    path: path.resolve('.env'),
-    defaults: path.resolve('.env.defaults'),
-    schema: path.resolve('.env.schema')
-  })
-}
+require('./lib/config')
 
 let bsv = module.exports
 
