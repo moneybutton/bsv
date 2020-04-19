@@ -333,6 +333,25 @@ describe('Address', function () {
     })
   })
 
+  describe('@fromScript', function () {
+    it('should make this address from a script', function () {
+      let script = new Script().fromString('OP_CHECKMULTISIG')
+      let address = Address.fromRedeemScript(script)
+      script = address.toScript()
+      address = Address.fromScript(script)
+      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
+    })
+
+    it('should make an address from a hashBuf', function () {
+      let buf = Buffer.alloc(20)
+      buf.fill(0)
+      let address = new Address().fromPubKeyHashBuf(buf)
+      let script = address.toScript()
+      address = Address.fromScript(script)
+      address.toString().should.equal('1111111111111111111114oLvT2')
+    })
+  })
+
   describe('#asyncFromRedeemScript', function () {
     it('should derive the same as fromRedeemScript', async function () {
       let script = new Script().fromString('OP_CHECKMULTISIG')

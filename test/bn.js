@@ -54,7 +54,7 @@ describe('Bn', function () {
       .redSqr()
       .fromRed()
 
-    assert.equal(actual.toString(16), expected.toString(16))
+    assert.strict.equal(actual.toString(16), expected.toString(16))
   })
 
   it('should correctly square these numbers related to a bug in OpenSSL - CVE-2014-3570', function () {
