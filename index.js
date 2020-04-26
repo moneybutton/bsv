@@ -21,7 +21,7 @@ require('./lib/config')
 
 let bsv = module.exports
 
-bsv.version = require('./version').version
+bsv.version = require('./package').version
 
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
 // utilities.
