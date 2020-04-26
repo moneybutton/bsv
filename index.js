@@ -97,26 +97,8 @@ Object.keys(bsv).forEach(function (key) {
     : bsv[key]
 })
 
-// Litecoin classes for your convenience (in case default is not what you want).
-let Litecoin = {}
-Object.keys(bsv).forEach(function (key) {
-  Litecoin[key] = bsv[key].Litecoin
-    ? bsv[key].Litecoin
-    : bsv[key]
-})
-
-// LitecoinTestnet classes for your convenience (in case default is not what you want).
-let LitecoinTestnet = {}
-Object.keys(bsv).forEach(function (key) {
-  LitecoinTestnet[key] = bsv[key].LitecoinTestnet
-    ? bsv[key].LitecoinTestnet
-    : bsv[key]
-})
-
 bsv.Mainnet = Mainnet
 bsv.Testnet = Testnet
-bsv.Litecoin = Litecoin
-bsv.LitecoinTestnet = LitecoinTestnet
 
 bsv.browser = process.browser
 bsv.env = process.env
