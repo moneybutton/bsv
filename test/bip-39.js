@@ -234,6 +234,18 @@ describe('Bip39', function () {
     })
   })
 
+  describe('@isValid', function () {
+    it('should know this is valid', function () {
+      let isValid = Bip39.isValid('abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about', 'TREZOR')
+      isValid.should.equal(true)
+    })
+
+    it('should know this is invalid', function () {
+      let isValid = Bip39.isValid('abandonnnnnnn abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about', 'TREZOR')
+      isValid.should.equal(false)
+    })
+  })
+
   describe('vectors', function () {
     vectors.english.forEach(function (vector, v) {
       it('should pass english test vector ' + v, function () {
