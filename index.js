@@ -14,7 +14,9 @@
  * let Address = require('bsv/lib/address').
  */
 'use strict'
-require('babel-polyfill')
+if (!global._babelPolyfill) {
+  require('babel-polyfill')
+}
 require('./lib/config')
 
 let bsv = module.exports
