@@ -452,6 +452,16 @@ describe('Script', function () {
     })
   })
 
+  describe('#getData', function () {
+    it('should create valid op return output', function () {
+      let script = Script.fromSafeDataArray([Buffer.from('yours bitcoin'), Buffer.from('bsv')])
+      script.isSafeDataOut().should.equal(true)
+      let bufs = script.getData()
+      bufs[0].toString().should.equal('yours bitcoin')
+      bufs[1].toString().should.equal('bsv')
+    })
+  })
+
   describe('#fromPubKeyHash', function () {
     it('should create pubKeyHash output script', function () {
       let hashBuf = Buffer.alloc(20)
