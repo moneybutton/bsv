@@ -81,15 +81,6 @@ describe('Address', function () {
         new Address().fromBuffer(buf2)
       }.should.throw('address: invalid versionByteNum byte'))
     })
-
-    it('should work with copay address type', function () {
-      let addr = Address.fromRandom()
-      addr = addr.toCopay()
-      let buf = addr.toBuffer()
-      let addr2 = new Address().fromBuffer(buf)
-      addr2.isCopay().should.equal(true)
-      addr2.versionByteNum.should.equal(addr.versionByteNum)
-    })
   })
 
   describe('@fromBuffer', function () {
@@ -113,15 +104,6 @@ describe('Address', function () {
         buf2[0] = 50
         Address.fromBuffer(buf2)
       }.should.throw('address: invalid versionByteNum byte'))
-    })
-
-    it('should work with copay address type', function () {
-      let addr = Address.fromRandom()
-      addr = addr.toCopay()
-      let buf = addr.toBuffer()
-      let addr2 = Address.fromBuffer(buf)
-      addr2.isCopay().should.equal(true)
-      addr2.versionByteNum.should.equal(addr.versionByteNum)
     })
   })
 
@@ -453,41 +435,6 @@ describe('Address', function () {
     })
   })
 
-  describe('#isCopay', function () {
-    it('should not default to copay', function () {
-      Address.fromRandom()
-        .isCopay()
-        .should.equal(false)
-    })
-
-    it('should read in this copay address string', function () {
-      let addr = Address.fromString('CQVzJuEHujhnmb2zq3nFus2PEW4m4BZRFW')
-      addr.isCopay().should.equal(true)
-    })
-
-    it('should read in this copay p2sh address string', function () {
-      let addr = Address.fromString('HM4UwaDKHCjL2nm6ELLxjsNNvDw1LszzFM')
-      addr.isCopay().should.equal(true)
-    })
-  })
-
-  describe('#toCopay', function () {
-    it('should convert pubkeyhash to copay', function () {
-      let addr = Address.fromRandom()
-      addr = addr.toCopay()
-      addr.toString()[0].should.equal('C')
-      addr.isCopay().should.equal(true)
-    })
-
-    it('should convert p2sh to copay', function () {
-      let script = Script.fromString('OP_0')
-      let addr = Address.fromRedeemScript(script)
-      addr = addr.toCopay()
-      addr.toString()[0].should.equal('H')
-      addr.isCopay().should.equal(true)
-    })
-  })
-
   describe('#type', function () {
     it('should give pubKeyHash for this address', function () {
       let addr = new Address().fromString(str)
@@ -498,19 +445,6 @@ describe('Address', function () {
 
     it('should give scriptHash for this address', function () {
       let addr = new Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
-      addr.type().should.equal('scriptHash')
-    })
-
-    it('should understand copay pubkeyhash', function () {
-      let addr = Address.fromRandom()
-      addr = addr.toCopay()
-      addr.type().should.equal('pubKeyHash')
-    })
-
-    it('should understand copay p2sh', function () {
-      let script = Script.fromString('OP_0')
-      let addr = Address.fromRedeemScript(script)
-      addr = addr.toCopay()
       addr.type().should.equal('scriptHash')
     })
   })
@@ -627,16 +561,6 @@ describe('Address', function () {
       ;(function () {
         address.validate()
       }.should.throw('hashBuf must be a buffer of 20 bytes'))
-    })
-
-    it('should validate this copay address string', function () {
-      let addr = Address.fromString('CQVzJuEHujhnmb2zq3nFus2PEW4m4BZRFW')
-      addr.validate()
-    })
-
-    it('should validate this copay p2sh address string', function () {
-      let addr = Address.fromString('HM4UwaDKHCjL2nm6ELLxjsNNvDw1LszzFM')
-      addr.validate()
     })
   })
 })
