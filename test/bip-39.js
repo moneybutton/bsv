@@ -18,8 +18,8 @@ describe('Bip39', function () {
   })
 
   it('should have a wordlist of length 2048', function () {
-    require('../lib/bip-39-en').length.should.equal(2048)
-    require('../lib/bip-39-jp').length.should.equal(2048)
+    require('../lib/bip-39-en-wordlist').length.should.equal(2048)
+    require('../lib/bip-39-jp-wordlist').length.should.equal(2048)
   })
 
   it('should handle this community-derived test vector', function () {

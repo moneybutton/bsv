@@ -191,6 +191,9 @@ describe('Struct', function () {
     })
   })
 
+  /*
+  These tests relied on the injector and need to be rewritten or removed if they
+  are no longer useful.
   describe('@fromFastBuffer', function () {
     it('should call fromBuffer', function () {
       let StructMock = Struct.inject({})
@@ -208,6 +211,7 @@ describe('Struct', function () {
       StructMock.prototype.fromBuffer.calledOnce.should.equal(false)
     })
   })
+  */
 
   describe('#toBuffer', function () {
     it('should throw a not implemented error', function () {

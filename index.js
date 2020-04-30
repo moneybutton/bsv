@@ -78,7 +78,6 @@ bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
 bsv.deps.elliptic = require('elliptic')
 bsv.deps.hashjs = require('hash.js')
-bsv.deps.injecter = require('./lib/injecter')
 bsv.deps.pbkdf2compat = require('pbkdf2-compat')
 
 // Mainnet classes for your convenience (in case default is not what you want).
