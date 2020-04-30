@@ -28,7 +28,6 @@ bsv.version = require('./package').version
 bsv.Address = require('./lib/address')
 bsv.Bip32 = require('./lib/bip-32')
 bsv.Bip39 = require('./lib/bip-39')
-bsv.Bip68 = require('./lib/bip-68')
 bsv.Bn = require('./lib/bn')
 bsv.Br = require('./lib/br')
 bsv.Bsm = require('./lib/bsm')
