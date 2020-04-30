@@ -2,10 +2,8 @@
 'use strict'
 let Address = require('../lib/address')
 let Constants = require('../lib/constants')
-let Hash = require('../lib/hash')
 let PrivKey = require('../lib/priv-key')
 let PubKey = require('../lib/pub-key')
-let Script = require('../lib/script')
 let should = require('should')
 
 describe('Address', function () {
@@ -269,61 +267,7 @@ describe('Address', function () {
     })
   })
 
-  describe('#fromRedeemScriptHashBuf', function () {
-    it('should make this address from a script', function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let hashBuf = Hash.sha256Ripemd160(script.toBuffer())
-      let address = new Address().fromRedeemScriptHashBuf(hashBuf)
-      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
-    })
-  })
-
-  describe('@fromRedeemScriptHashBuf', function () {
-    it('should make this address from a script', function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let hashBuf = Hash.sha256Ripemd160(script.toBuffer())
-      let address = Address.fromRedeemScriptHashBuf(hashBuf)
-      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
-    })
-  })
-
-  describe('#fromRedeemScript', function () {
-    it('should make this address from a script', function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let address = new Address().fromRedeemScript(script)
-      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
-    })
-
-    it('should make this address from other script', function () {
-      let script = new Script().fromString('OP_CHECKSIG OP_HASH160')
-      let address = new Address().fromRedeemScript(script)
-      address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7')
-    })
-  })
-
-  describe('@fromRedeemScript', function () {
-    it('should make this address from a script', function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let address = Address.fromRedeemScript(script)
-      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
-    })
-
-    it('should make this address from other script', function () {
-      let script = new Script().fromString('OP_CHECKSIG OP_HASH160')
-      let address = Address.fromRedeemScript(script)
-      address.toString().should.equal('347iRqVwks5r493N1rsLN4k9J7Ljg488W7')
-    })
-  })
-
   describe('@fromScript', function () {
-    it('should make this address from a script', function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let address = Address.fromRedeemScript(script)
-      script = address.toScript()
-      address = Address.fromScript(script)
-      address.toString().should.equal('3BYmEwgV2vANrmfRymr1mFnHXgLjD6gAWm')
-    })
-
     it('should make this address from a script', function () {
       Address.fromPubKeyHashBuf(Buffer.from('6fa5502ea094d59576898b490d866b32a61b89f6', 'hex')).toString()
         .should.equal('1BBL3TUavUCRauDreKv2JJ1CPgnyNxVHpA')
@@ -336,24 +280,6 @@ describe('Address', function () {
       let script = address.toScript()
       address = Address.fromScript(script)
       address.toString().should.equal('1111111111111111111114oLvT2')
-    })
-  })
-
-  describe('#asyncFromRedeemScript', function () {
-    it('should derive the same as fromRedeemScript', async function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let address1 = new Address().fromRedeemScript(script)
-      let address2 = await new Address().asyncFromRedeemScript(script)
-      address1.toString().should.equal(address2.toString())
-    })
-  })
-
-  describe('@asyncFromRedeemScript', function () {
-    it('should derive the same as fromRedeemScript', async function () {
-      let script = new Script().fromString('OP_CHECKMULTISIG')
-      let address1 = Address.fromRedeemScript(script)
-      let address2 = await Address.asyncFromRedeemScript(script)
-      address1.toString().should.equal(address2.toString())
     })
   })
 
@@ -374,22 +300,6 @@ describe('Address', function () {
       address.versionByteNum = Constants.Testnet.Address['pubKeyHash']
       address.fromString(address.toString())
       address.toString().should.equal('mm1X5M2QWyHVjn7txrF7mmtZDpjCXzoa98')
-    })
-
-    it('should derive from this known address string mainnet scriptHash', function () {
-      let address = new Address()
-      address.fromString(str)
-      address.versionByteNum = Constants.Mainnet.Address['scriptHash']
-      address.fromString(address.toString())
-      address.toString().should.equal('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
-    })
-
-    it('should derive from this known address string testnet scriptHash', function () {
-      let address = new Address.Testnet()
-      address.fromString('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
-      address.versionByteNum = Constants.Testnet.Address['scriptHash']
-      address.fromString(address.toString())
-      address.toString().should.equal('2MxjnmaMtsJfyFcyG3WZCzS2RihdNuWqeX4')
     })
   })
 
@@ -423,29 +333,15 @@ describe('Address', function () {
   describe('#isValid', function () {
     it('should describe this valid address as valid', function () {
       let address = new Address()
-      address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
+      address.fromString('1111111111111111111114oLvT2')
       address.isValid().should.equal(true)
     })
 
     it('should describe this address with unknown versionByteNum as invalid', function () {
       let address = new Address()
-      address.fromString('37BahqRsFrAd3qLiNNwLNV3AWMRD7itxTo')
+      address.fromString('1111111111111111111114oLvT2')
       address.versionByteNum = 1
       address.isValid().should.equal(false)
-    })
-  })
-
-  describe('#type', function () {
-    it('should give pubKeyHash for this address', function () {
-      let addr = new Address().fromString(str)
-      addr.type().should.equal('pubKeyHash')
-      addr.versionByteNum = 1
-      addr.type().should.equal('unknown')
-    })
-
-    it('should give scriptHash for this address', function () {
-      let addr = new Address().fromString('3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy')
-      addr.type().should.equal('scriptHash')
     })
   })
 
@@ -506,19 +402,6 @@ describe('Address', function () {
         .should.equal(
           'OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG'
         )
-
-      addr.versionByteNum = Constants.Mainnet.Address['scriptHash']
-      script = addr.toScript()
-      script
-        .toString()
-        .should.equal(
-          'OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL'
-        )
-
-      addr.versionByteNum = 50
-      ;(function () {
-        script = addr.toScript()
-      }.should.throw('script must be either pubKeyHash or scriptHash'))
     })
   })
 

@@ -47,15 +47,8 @@ describe('TxBuilder', function () {
     let keyPair2 = new KeyPair().fromPrivKey(privKey2)
     let addr2 = new Address().fromPubKey(keyPair2.pubKey)
 
-    let privKey3 = new PrivKey().fromBn(new Bn(3))
-    let keyPair3 = new KeyPair().fromPrivKey(privKey3)
-    let addr3 = new Address().fromPubKey(keyPair3.pubKey)
-
     // make addresses to send to
     let saddr1 = addr1
-    let saddr2 = new Address().fromRedeemScript(
-      new Script().fromString('OP_RETURN')
-    ) // fake, unredeemable p2sh address
 
     // txOuts that we are spending
 
@@ -73,44 +66,20 @@ describe('TxBuilder', function () {
         ' OP_EQUALVERIFY OP_CHECKSIG'
     )
 
-    // p2sh 2-of-2 multisig out
-    let redeemScript3 = new Script().fromPubKeys(2, [
-      keyPair1.pubKey,
-      keyPair2.pubKey
-    ])
-    let address3 = new Address().fromRedeemScript(redeemScript3)
-    let scriptout3 = address3.toScript()
-
-    // p2sh 2-of-3 multisig out
-    let redeemScript4 = new Script().fromPubKeys(2, [
-      keyPair1.pubKey,
-      keyPair2.pubKey,
-      keyPair3.pubKey
-    ])
-    let address4 = new Address().fromRedeemScript(redeemScript4)
-    let scriptout4 = address4.toScript()
-
     let txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
     let txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
-    let txOut3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
-    let txOut4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
-    // total balance: 4e8
+    // total balance: 2e8
 
     let txHashBuf = Buffer.alloc(32)
     txHashBuf.fill(0)
     let txOutNum1 = 0
     let txOutNum2 = 1
-    let txOutNum3 = 2
-    let txOutNum4 = 3
 
     txb.setFeePerKbNum(0.0001e8)
     txb.setChangeAddress(changeaddr)
     txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1, keyPair1.pubKey)
     txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2, keyPair2.pubKey)
-    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum3, txOut3, redeemScript3)
-    txb.inputFromScriptHashMultiSig(txHashBuf, txOutNum4, txOut4, redeemScript4)
-    txb.outputToAddress(new Bn(2e8), saddr1) // pubKeyHash address
-    txb.outputToAddress(new Bn(1e8), saddr2) // p2sh address
+    txb.outputToAddress(new Bn(1.5e8), saddr1) // pubKeyHash address
     // total sending: 2e8 (plus fee)
     // txb.randomizeInputs()
     // txb.randomizeOutputs()
@@ -119,17 +88,12 @@ describe('TxBuilder', function () {
       txb,
       keyPair1,
       keyPair2,
-      keyPair3,
       addr1,
       addr2,
-      addr3,
       saddr1,
-      saddr2,
       changeaddr,
       txOut1,
-      txOut2,
-      txOut3,
-      txOut4
+      txOut2
     }
   }
 
@@ -225,20 +189,20 @@ describe('TxBuilder', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
       txb.sendDustToChangeOrFees(true)
-      txb.setDust(2e8 + 1)
+      txb.setDust(1.5e8 + 1)
       txb.build()
       txb.tx.txOuts.length.should.equal(1)
       // amount should be entire input amount minus the fee
-      txb.tx.txOuts[0].valueBn.toString().should.equal('299994740')
+      txb.tx.txOuts[0].valueBn.toString().should.equal('199996609')
     })
 
-    it('should have three outputs if dust is zero', function () {
+    it('should have two outputs if dust is zero', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
       txb.sendDustToChangeOrFees(true)
       txb.setDust(0)
       txb.build()
-      txb.tx.txOuts.length.should.equal(3)
+      txb.tx.txOuts.length.should.equal(2)
     })
   })
 
@@ -310,17 +274,6 @@ describe('TxBuilder', function () {
   })
 
   describe('#outputToAddress', function () {
-    it('should add a scriptHash address', function () {
-      let hashBuf = Buffer.alloc(20)
-      hashBuf.fill(0)
-      let address = new Address().fromRedeemScript(
-        new Script().fromScriptHash(hashBuf)
-      )
-      let txb = new TxBuilder()
-      txb.outputToAddress(new Bn(0), address)
-      txb.txOuts.length.should.equal(1)
-    })
-
     it('should add a pubKeyHash address', function () {
       let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
       let address = new Address().fromPubKey(pubKey)
@@ -532,64 +485,6 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#inputFromScriptHashMultiSig', function () {
-    it('should add an input from a scriptHash output', function () {
-      let keyPair1 = new KeyPair().fromRandom()
-      let keyPair2 = new KeyPair().fromRandom()
-      let script = new Script().fromPubKeys(2, [
-        keyPair1.pubKey,
-        keyPair2.pubKey
-      ])
-      let address = new Address().fromRedeemScript(script)
-      let txOut = TxOut.fromProperties(
-        new Bn(1000),
-        new Script().fromScriptHash(address.hashBuf)
-      )
-      let txHashBuf = Buffer.alloc(32)
-      txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(
-        txHashBuf,
-        txOutNum,
-        txOut,
-        script
-      )
-      Buffer.compare(
-        txbuilder.txIns[0].script.chunks[3].buf,
-        script.toBuffer()
-      ).should.equal(0)
-    })
-
-    it('should add an input from a scriptHash output and set nSequence', function () {
-      let keyPair1 = new KeyPair().fromRandom()
-      let keyPair2 = new KeyPair().fromRandom()
-      let script = new Script().fromPubKeys(2, [
-        keyPair1.pubKey,
-        keyPair2.pubKey
-      ])
-      let address = new Address().fromRedeemScript(script)
-      let txOut = TxOut.fromProperties(
-        new Bn(1000),
-        new Script().fromScriptHash(address.hashBuf)
-      )
-      let txHashBuf = Buffer.alloc(32)
-      txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScriptHashMultiSig(
-        txHashBuf,
-        txOutNum,
-        txOut,
-        script,
-        0xf0f0f0f0
-      )
-      Buffer.compare(
-        txbuilder.txIns[0].script.chunks[3].buf,
-        script.toBuffer()
-      ).should.equal(0)
-      txbuilder.txIns[0].nSequence.should.equal(0xf0f0f0f0)
-    })
-  })
-
   describe('#getSig', function () {
     let txb, keyPair1, txOut1
 
@@ -607,7 +502,7 @@ describe('TxBuilder', function () {
   })
 
   describe('#sign', function () {
-    it('should sign and verify synchronously', function () {
+    it('should sign and verify no SIGHASH_FORKID synchronously', function () {
       // prepare
       let txb, keyPair1, keyPair2, saddr1, changeaddr
       let obj = prepareAndBuildTxBuilder()
@@ -618,38 +513,26 @@ describe('TxBuilder', function () {
       changeaddr = obj.changeaddr
 
       // begin signing
-      txb.sign(0, keyPair1)
-      txb.sign(1, keyPair2)
+      let nHashType = Sig.SIGHASH_ALL
+      let flags = Interp.SCRIPT_VERIFY_P2SH
+      txb.sign(0, keyPair1, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(
-        txb.tx,
-        txb.uTxOutMap,
-        Interp.SCRIPT_VERIFY_P2SH
-      ).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      txb.sign(2, keyPair1) // 2-of-2 needs 2 sigs
-      txb.sign(2, keyPair2) // 2-of-2 needs 2 sigs
-
-      txb.sign(3, keyPair1) // 2-of-3 needs 2 sigs
-      txb.sign(3, keyPair2) // 2-of-3 needs 2 sigs
+      txb.sign(1, keyPair2, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
         .should.equal(saddr1.hashBuf.toString('hex'))
-      txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
-      txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[2].valueBn.eq(99991850).should.equal(true)
-      txb.tx.txOuts[2].script.chunks[2].buf
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(
-        txb.tx,
-        txb.uTxOutMap,
-        Interp.SCRIPT_VERIFY_P2SH | Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-      ).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
 
     it('should sign and verify SIGHASH_FORKID synchronously', function () {
@@ -667,25 +550,19 @@ describe('TxBuilder', function () {
       let flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
       txb.sign(0, keyPair1, undefined, nHashType, flags)
-      txb.sign(1, keyPair2, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      txb.sign(2, keyPair1, undefined, nHashType, flags) // 2-of-2 needs 2 sigs
-      txb.sign(2, keyPair2, undefined, nHashType, flags) // 2-of-2 needs 2 sigs
-
-      txb.sign(3, keyPair1, undefined, nHashType, flags) // 2-of-3 needs 2 sigs
-      txb.sign(3, keyPair2, undefined, nHashType, flags) // 2-of-3 needs 2 sigs
+      txb.sign(1, keyPair2, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
         .should.equal(saddr1.hashBuf.toString('hex'))
-      txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
-      txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[2].valueBn.eq(99991850).should.equal(true)
-      txb.tx.txOuts[2].script.chunks[2].buf
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
@@ -732,7 +609,7 @@ describe('TxBuilder', function () {
   })
 
   describe('#asyncSign', function () {
-    it('should sign and verify asynchronously', async function () {
+    it('should sign and verify no SIGHASH_FORKID asynchronously', async function () {
       // prepare
       let txb, keyPair1, keyPair2, saddr1, changeaddr
       let obj = prepareAndBuildTxBuilder()
@@ -743,38 +620,26 @@ describe('TxBuilder', function () {
       changeaddr = obj.changeaddr
 
       // begin signing
-      await txb.asyncSign(0, keyPair1)
-      await txb.asyncSign(1, keyPair2)
+      let nHashType = Sig.SIGHASH_ALL
+      let flags = Interp.SCRIPT_VERIFY_P2SH
+      await txb.asyncSign(0, keyPair1, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(
-        txb.tx,
-        txb.uTxOutMap,
-        Interp.SCRIPT_VERIFY_P2SH
-      ).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      await txb.asyncSign(2, keyPair1) // 2-of-2 needs 2 sigs
-      await txb.asyncSign(2, keyPair2) // 2-of-2 needs 2 sigs
-
-      await txb.asyncSign(3, keyPair1) // 2-of-3 needs 2 sigs
-      await txb.asyncSign(3, keyPair2) // 2-of-3 needs 2 sigs
+      await txb.asyncSign(1, keyPair2, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
         .should.equal(saddr1.hashBuf.toString('hex'))
-      txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
-      txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[2].valueBn.eq(99991850).should.equal(true)
-      txb.tx.txOuts[2].script.chunks[2].buf
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(
-        txb.tx,
-        txb.uTxOutMap,
-        Interp.SCRIPT_VERIFY_P2SH
-      ).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
 
     it('should sign and verify SIGHASH_FORKID synchronously', async function () {
@@ -792,25 +657,19 @@ describe('TxBuilder', function () {
       let flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
       await txb.asyncSign(0, keyPair1, undefined, nHashType, flags)
-      await txb.asyncSign(1, keyPair2, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      await txb.asyncSign(2, keyPair1, undefined, nHashType, flags) // 2-of-2 needs 2 sigs
-      await txb.asyncSign(2, keyPair2, undefined, nHashType, flags) // 2-of-2 needs 2 sigs
-
-      await txb.asyncSign(3, keyPair1, undefined, nHashType, flags) // 2-of-3 needs 2 sigs
-      await txb.asyncSign(3, keyPair2, undefined, nHashType, flags) // 2-of-3 needs 2 sigs
+      await txb.asyncSign(1, keyPair2, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
         .should.equal(saddr1.hashBuf.toString('hex'))
-      txb.tx.txOuts[0].valueBn.eq(2e8).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(1e8).should.equal(true)
-      txb.tx.txOuts[2].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[2].valueBn.eq(99991850).should.equal(true)
-      txb.tx.txOuts[2].script.chunks[2].buf
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 

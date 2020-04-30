@@ -487,31 +487,6 @@ describe('Script', function () {
     })
   })
 
-  describe('#fromScriptHash', function () {
-    it('should create p2sh output script', function () {
-      let hashBuf = Buffer.alloc(20)
-      hashBuf.fill(0)
-      new Script()
-        .fromScriptHash(hashBuf)
-        .toString()
-        .should.equal(
-          'OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL'
-        )
-    })
-  })
-
-  describe('@fromScriptHash', function () {
-    it('should create p2sh output script', function () {
-      let hashBuf = Buffer.alloc(20)
-      hashBuf.fill(0)
-      Script.fromScriptHash(hashBuf)
-        .toString()
-        .should.equal(
-          'OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL'
-        )
-    })
-  })
-
   describe('@sortPubKeys', function () {
     it('should sort these pubKeys in a known order', function () {
       let testPubKeysHex = [
@@ -860,17 +835,6 @@ describe('Script', function () {
         )
         .isMultiSigOut()
         .should.equal(false)
-    })
-  })
-
-  describe('#isScriptHashMultiSigIn', function () {
-    it('should know this is a valid p2sh multisig input', function () {
-      new Script()
-        .writeString(
-          'OP_0 71 0x3044022053cacd1a0720e3497b3e78dedfc3ac144b3ff8fb0e231a4121bf4c18a05e606702205d4c69f2611cbca41c8a392b4c274cb07477bae78efef45c65517e4fdea5c0d801 71 0x3044022017dda0d737a9a65b262a1a8da97e73c23550351d6337ca13a8a1dbdbeae2775d02202fe4c031050d9d4ee0a2b1d5302869e1432577129f842c952462fca92a7b012901 71 0x5221029cf97e1052008852da9d107411b2d47aad387612558fa864b723c484f89311762102f23ab919b3a4795c75552b3985982f54c4164a26948b9fe87625705f694e7aa952ae'
-        )
-        .isScriptHashMultiSigIn()
-        .should.equal(true)
     })
   })
 
