@@ -41,7 +41,6 @@ bsv.Constants = require('./lib/constants')
 bsv.Ecdsa = require('./lib/ecdsa')
 bsv.Hash = require('./lib/hash')
 bsv.Interp = require('./lib/interp')
-bsv.Kdf = require('./lib/kdf')
 bsv.KeyPair = require('./lib/key-pair')
 bsv.OpCode = require('./lib/op-code')
 bsv.Point = require('./lib/point')
@@ -78,7 +77,6 @@ bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
 bsv.deps.elliptic = require('elliptic')
 bsv.deps.hashjs = require('hash.js')
-bsv.deps.injecter = require('./lib/injecter')
 bsv.deps.pbkdf2compat = require('pbkdf2-compat')
 
 // Mainnet classes for your convenience (in case default is not what you want).

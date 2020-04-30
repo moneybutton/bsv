@@ -24,10 +24,6 @@ describe('PrivKey', function () {
       new PrivKey.Testnet().constructor
     )
 
-    let deps = {}
-    PrivKey.inject(deps).should.equal(PrivKey.inject(deps))
-    PrivKey.inject(deps).should.not.equal(PrivKey.inject({}))
-
     PrivKey.Testnet.fromRandom()
       .toString()[0]
       .should.equal('c')

@@ -193,7 +193,7 @@ describe('Struct', function () {
 
   describe('@fromFastBuffer', function () {
     it('should call fromBuffer', function () {
-      let StructMock = Struct.inject({})
+      class StructMock extends Struct { }
       StructMock.prototype.fromBuffer = sinon.spy()
       let buf = Buffer.from('00', 'hex')
       StructMock.fromFastBuffer(buf)
@@ -201,7 +201,7 @@ describe('Struct', function () {
     })
 
     it('should not call fromBuffer if buf length is zero', function () {
-      let StructMock = Struct.inject({})
+      class StructMock extends Struct { }
       StructMock.prototype.fromBuffer = sinon.spy()
       let buf = Buffer.from('', 'hex')
       StructMock.fromFastBuffer(buf)

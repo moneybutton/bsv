@@ -3,6 +3,8 @@
 let Address = require('../lib/address')
 let Bip32 = require('../lib/bip-32')
 let Bip39 = require('../lib/bip-39')
+let Bip39Jp = require('../lib/bip-39-jp')
+let Bip39En = require('../lib/bip-39-en')
 let Random = require('../lib/random')
 let should = require('should')
 let vectors = require('./vectors/bip39')
@@ -13,13 +15,11 @@ describe('Bip39', function () {
   it('should initialize the class', function () {
     should.exist(Bip39)
     should.exist(new Bip39())
-    should.exist(Bip39.En)
-    should.exist(Bip39.Jp)
   })
 
   it('should have a wordlist of length 2048', function () {
-    require('../lib/bip-39-en').length.should.equal(2048)
-    require('../lib/bip-39-jp').length.should.equal(2048)
+    require('../lib/bip-39-en-wordlist').length.should.equal(2048)
+    require('../lib/bip-39-jp-wordlist').length.should.equal(2048)
   })
 
   it('should handle this community-derived test vector', function () {
@@ -42,20 +42,20 @@ describe('Bip39', function () {
     let mnemonic
 
     // should be able to make a mnemonic with or without the default wordlist
-    let bip39 = new Bip39.En().fromRandom(128)
+    let bip39 = new Bip39En().fromRandom(128)
     bip39.check().should.equal(true)
     bip39 = new Bip39().fromRandom(128)
     bip39.check().should.equal(true)
 
     let entropy = Buffer.alloc(32)
     entropy.fill(0)
-    bip39 = new Bip39.En().fromEntropy(entropy)
+    bip39 = new Bip39En().fromEntropy(entropy)
     bip39.check().should.equal(true)
 
     mnemonic = bip39.mnemonic
 
     // mnemonics with extra whitespace do not pass the check
-    bip39 = new Bip39.En().fromString(mnemonic + ' ')
+    bip39 = new Bip39En().fromString(mnemonic + ' ')
     bip39.check().should.equal(false)
 
     // mnemonics with a word replaced do not pass the check
@@ -63,7 +63,7 @@ describe('Bip39', function () {
     words[words.length - 1].should.not.equal('zoo')
     words[words.length - 1] = 'zoo'
     mnemonic = words.join(' ')
-    new Bip39.En()
+    new Bip39En()
       .fromString(mnemonic)
       .check()
       .should.equal(false)
@@ -191,7 +191,7 @@ describe('Bip39', function () {
       let buf = Buffer.alloc(128 / 8)
       buf.fill(0)
       let mnemonic1 = new Bip39().entropy2Mnemonic(buf).mnemonic
-      let mnemonic2 = new Bip39.En().entropy2Mnemonic(buf).mnemonic
+      let mnemonic2 = new Bip39En().entropy2Mnemonic(buf).mnemonic
       mnemonic1.should.equal(mnemonic2)
     })
   })
@@ -205,7 +205,7 @@ describe('Bip39', function () {
         .fromString(mnemonic)
         .check()
         .should.equal(true)
-      new Bip39.En()
+      new Bip39En()
         .fromString(mnemonic)
         .check()
         .should.equal(true)
@@ -250,7 +250,7 @@ describe('Bip39', function () {
     vectors.english.forEach(function (vector, v) {
       it('should pass english test vector ' + v, function () {
         let entropy = Buffer.from(vector.entropy, 'hex')
-        let bip39 = new Bip39.En().fromEntropy(entropy)
+        let bip39 = new Bip39En().fromEntropy(entropy)
         bip39.toString().should.equal(vector.mnemonic)
         bip39.check().should.equal(true)
         let seed = bip39.toSeed(vector.passphrase)
@@ -265,7 +265,7 @@ describe('Bip39', function () {
     vectors.japanese.forEach(function (vector, v) {
       it('should pass japanese test vector ' + v, function () {
         let entropy = Buffer.from(vector.entropy, 'hex')
-        let bip39 = new Bip39.Jp().fromEntropy(entropy)
+        let bip39 = new Bip39Jp().fromEntropy(entropy)
         bip39.toString().should.equal(vector.mnemonic)
         bip39.check().should.equal(true)
         let seed = bip39.toSeed(vector.passphrase)
