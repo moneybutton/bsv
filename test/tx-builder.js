@@ -642,7 +642,7 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
 
-    it('should sign and verify SIGHASH_FORKID synchronously', async function () {
+    it('should sign and verify SIGHASH_FORKID asynchronously', async function () {
       // prepare
       let txb, keyPair1, keyPair2, saddr1, changeaddr
       let obj = prepareAndBuildTxBuilder()
