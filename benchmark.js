@@ -19,7 +19,7 @@ var fromAddress = Address.fromPrivKey(privateKey)
 var toAddress = fromAddress
 var changeAddress = toAddress
 
-let n = 20000
+let n = 10000
 let satoshis = 1e3
 // let total = satoshis * n - satoshis / 2
 let txb = new TxBuilder()
