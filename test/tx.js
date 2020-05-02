@@ -351,7 +351,6 @@ describe('Tx', function () {
       let tx = Tx.fromBuffer(tx2buf)
       tx
         .id()
-        .toString('hex')
         .should.equal(tx2idhex)
     })
   })
@@ -359,8 +358,8 @@ describe('Tx', function () {
   describe('#asyncId', function () {
     it('should correctly calculate the id of this known transaction', async function () {
       let tx = Tx.fromBuffer(tx2buf)
-      let idbuf = await tx.id()
-      idbuf.toString('hex').should.equal(tx2idhex)
+      let idbuf = await tx.asyncId()
+      idbuf.should.equal(tx2idhex)
     })
   })
 
@@ -392,7 +391,7 @@ describe('Tx', function () {
       let txhex = largesttxvector.txhex
       let tx = Tx.fromHex(txhex)
       let txid = tx.id()
-      txid.toString('hex').should.equal(txidhex)
+      txid.should.equal(txidhex)
     })
   })
 
@@ -412,8 +411,7 @@ describe('Tx', function () {
 
         // make sure transacion to/from buffer is isomorphic
         tx
-          .toBuffer()
-          .toString('hex')
+          .toHex()
           .should.equal(txbuf.toString('hex'))
 
         // sighash ought to be correct

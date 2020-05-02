@@ -198,15 +198,13 @@ describe('Block', function () {
       let block = new Block().fromBuffer(genesisbuf)
       block
         .id()
-        .toString('hex')
         .should.equal(genesisidhex)
     })
 
-    it('should return the correct id of block containIng the largest tx', function () {
+    it('should return the correct id of block containing the largest tx', function () {
       let block = new Block().fromHex(largesttxblockvector.blockhex)
       block
         .id()
-        .toString('hex')
         .should.equal(largesttxblockvector.blockidhex)
     })
   })
@@ -215,13 +213,13 @@ describe('Block', function () {
     it('should return the correct id of the genesis block', async function () {
       let block = new Block().fromBuffer(genesisbuf)
       let id = await block.asyncId()
-      id.toString('hex').should.equal(genesisidhex)
+      id.should.equal(genesisidhex)
     })
 
-    it('should return the correct id of block containIng the largest tx', async function () {
+    it('should return the correct id of block containing the largest tx', async function () {
       let block = new Block().fromHex(largesttxblockvector.blockhex)
       let id = await block.asyncId()
-      id.toString('hex').should.equal(largesttxblockvector.blockidhex)
+      id.should.equal(largesttxblockvector.blockidhex)
     })
   })
 
