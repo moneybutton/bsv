@@ -44,7 +44,6 @@ goals:
 * `BSV_JS_BASE_URL` - Default "/".
 * `BSV_JS_BUNDLE_FILE` - Default "bsv.js"
 * `BSV_JS_WORKER_FILE` - Default "bsv-worker.js"
-* `BSV_USE_LIB_SECP256K1` - Default "true"
 * `BSV_NETWORK` - Default "mainnet"
 
 You can change the network to run the CLI in testnet mode:

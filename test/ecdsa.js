@@ -559,9 +559,6 @@ describe('Ecdsa', function () {
   })
 
   describe('#signRandomK', function () {
-    if (process.env.BSV_USE_LIB_SECP256K1 === 'true') {
-      return
-    }
     it('should produce a signature, and be different when called twice', function () {
       ecdsa.signRandomK()
       should.exist(ecdsa.sig)
@@ -584,9 +581,6 @@ describe('Ecdsa', function () {
       ecdsa.verify().verified.should.equal(true)
     })
 
-    if (process.env.BSV_USE_LIB_SECP256K1 === 'true') {
-      return
-    }
     it('should verify this known good signature', function () {
       ecdsa.sig = new Sig()
       ecdsa.sig.fromString(
