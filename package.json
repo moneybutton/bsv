@@ -77,9 +77,9 @@
   "dependencies": {
     "aes": "0.1.0",
     "babel-polyfill": "^6.26.0",
+    "bitcoin-elliptic": "^7.0.0",
     "bs58": "4.0.1",
     "chai": "^4.2.0",
-    "elliptic": "^6.5.2",
     "is-hex": "1.1.3",
     "pbkdf2-compat": "4.0.0",
     "randombytes": "^2.1.0",

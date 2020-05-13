@@ -74,7 +74,7 @@ bsv.deps.aes = require('aes')
 bsv.deps.bnjs = require('bn.js')
 bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
-bsv.deps.elliptic = require('elliptic')
+bsv.deps.elliptic = require('bitcoin-elliptic')
 bsv.deps.hashjs = require('hash.js')
 bsv.deps.pbkdf2compat = require('pbkdf2-compat')
 
