@@ -385,6 +385,46 @@ describe('Tx', function () {
     })
   })
 
+  describe('bectors: bip69 (from bitcoinjs)', function () {
+    const fixture = require('./vectors/bip69.json')
+
+    // returns index-based order of sorted against original
+    function getIndexOrder (original, sorted) {
+      return sorted.map((value) => {
+        return original.indexOf(value)
+      })
+    }
+
+    fixture.inputs.forEach((inputSet) => {
+      it(inputSet.description, () => {
+        const tx = new Tx()
+        const txIns = inputSet.inputs.map((input) => {
+          const txHashBuf = Buffer.from(input.txId, 'hex').reverse()
+          const txOutNum = input.vout
+          const script = new Script()
+          const txIn = TxIn.fromProperties(txHashBuf, txOutNum, script)
+          return txIn
+        })
+        tx.txIns = [...txIns]
+        tx.sort()
+        getIndexOrder(txIns, tx.txIns).toString().should.equal(inputSet.expected.toString())
+      })
+    })
+
+    fixture.outputs.forEach((outputSet) => {
+      it(outputSet.description, () => {
+        const tx = new Tx()
+        const txOuts = outputSet.outputs.map(function (output) {
+          const txOut = TxOut.fromProperties(new Bn(output.value), Script.fromAsmString(output.script))
+          return txOut
+        })
+        tx.txOuts = [...txOuts]
+        tx.sort()
+        getIndexOrder(txOuts, tx.txOuts).toString().should.equal(outputSet.expected.toString())
+      })
+    })
+  })
+
   describe('vectors: a 1mb transaction', function () {
     it('should find the correct id of this (valid, on the blockchain) 1 mb transaction', function () {
       let txidhex = largesttxvector.txidhex
