@@ -43,7 +43,7 @@ let useAllInputs = true
 {
   let start = Date.now()
   for (let i = 0; i < txb.txIns.length; i++) {
-    txb.sign(i, keyPair)
+    txb.signTxIn(i, keyPair)
   }
   let finish = Date.now()
   console.log('', n, 'inputs', 'signing: ', finish - start, 'ms')
