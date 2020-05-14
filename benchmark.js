@@ -24,7 +24,7 @@ let satoshis = 1e3
 // let total = satoshis * n - satoshis / 2
 let txb = new TxBuilder()
 for (let i = 0; i < n; i++) {
-  let txOut = TxOut.fromProperties(new Bn(satoshis), fromAddress.toScript())
+  let txOut = TxOut.fromProperties(new Bn(satoshis), fromAddress.toOutputScript())
   let txHashBuf = Random.getRandomBuffer(32)
   let txOutNum = 0
   txb.inputFromPubKeyHash(txHashBuf, txOutNum, txOut, publicKey)

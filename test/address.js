@@ -4,6 +4,7 @@ let Address = require('../lib/address')
 let Constants = require('../lib/constants')
 let PrivKey = require('../lib/priv-key')
 let PubKey = require('../lib/pub-key')
+let Script = require('../lib/script')
 let should = require('should')
 
 describe('Address', function () {
@@ -267,7 +268,15 @@ describe('Address', function () {
     })
   })
 
-  describe('@fromScript', function () {
+  describe('@fromInputScript', function () {
+    it('should make this address from an input script', function () {
+      let script = Script.fromAsmString('3045022100ff812330880f443637e93ae1045985de38a29e26e4e589db84e86d0f17069f9a02203ed91e19a8cfa5e406bed1becc0e292c89346f9102358317e3238cb394a9ab0b 020536acad4d0763f39718143494811f5c0ffd39f5dc3667cfe3b4a7815b331a17')
+      let address = Address.fromInputScript(script)
+      address.toString().should.equal('1EyV93Vhz4YLdfb67UaNujrBkd9CC6zvgG')
+    })
+  })
+
+  describe('@fromOutputScript', function () {
     it('should make this address from a script', function () {
       Address.fromPubKeyHashBuf(Buffer.from('6fa5502ea094d59576898b490d866b32a61b89f6', 'hex')).toString()
         .should.equal('1BBL3TUavUCRauDreKv2JJ1CPgnyNxVHpA')
@@ -277,8 +286,8 @@ describe('Address', function () {
       let buf = Buffer.alloc(20)
       buf.fill(0)
       let address = new Address().fromPubKeyHashBuf(buf)
-      let script = address.toScript()
-      address = Address.fromScript(script)
+      let script = address.toOutputScript()
+      address = Address.fromOutputScript(script)
       address.toString().should.equal('1111111111111111111114oLvT2')
     })
   })
@@ -391,12 +400,12 @@ describe('Address', function () {
     })
   })
 
-  describe('#toScript', function () {
+  describe('#toOutputScript', function () {
     it('should convert this address into known scripts', function () {
       let addrbuf = Buffer.alloc(21)
       addrbuf.fill(0)
       let addr = new Address().fromBuffer(addrbuf)
-      let script = addr.toScript()
+      let script = addr.toOutputScript()
       script
         .toString()
         .should.equal(
