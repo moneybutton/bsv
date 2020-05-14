@@ -222,7 +222,7 @@ describe('TxBuilder', function () {
       let privKey = new PrivKey().fromRandom()
       let address = new Address().fromPrivKey(privKey)
       txb.setChangeAddress(address)
-      txb.changeScript.toString().should.equal(address.toOutputScript().toString())
+      txb.changeScript.toString().should.equal(address.toTxOutScript().toString())
     })
   })
 
@@ -232,8 +232,8 @@ describe('TxBuilder', function () {
       let txb = obj.txb
       let privKey = new PrivKey().fromRandom()
       let address = new Address().fromPrivKey(privKey)
-      txb.setChangeScript(address.toOutputScript())
-      txb.changeScript.toString().should.equal(address.toOutputScript().toString())
+      txb.setChangeScript(address.toTxOutScript())
+      txb.changeScript.toString().should.equal(address.toTxOutScript().toString())
     })
   })
 
@@ -314,9 +314,9 @@ describe('TxBuilder', function () {
       let keyPair3 = new KeyPair().fromPrivKey(privKey3)
       let addr3 = new Address().fromPubKey(keyPair3.pubKey)
 
-      let txOut1 = TxOut.fromProperties(new Bn(1e8), addr1.toOutputScript())
-      let txOut2 = TxOut.fromProperties(new Bn(1e8), addr2.toOutputScript())
-      let txOut3 = TxOut.fromProperties(new Bn(1e8), addr3.toOutputScript())
+      let txOut1 = TxOut.fromProperties(new Bn(1e8), addr1.toTxOutScript())
+      let txOut2 = TxOut.fromProperties(new Bn(1e8), addr2.toTxOutScript())
+      let txOut3 = TxOut.fromProperties(new Bn(1e8), addr3.toTxOutScript())
       // total balance: 3e8
 
       let txHashBuf = Buffer.alloc(32)

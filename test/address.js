@@ -268,15 +268,15 @@ describe('Address', function () {
     })
   })
 
-  describe('@fromInputScript', function () {
+  describe('@fromTxInScript', function () {
     it('should make this address from an input script', function () {
       let script = Script.fromAsmString('3045022100ff812330880f443637e93ae1045985de38a29e26e4e589db84e86d0f17069f9a02203ed91e19a8cfa5e406bed1becc0e292c89346f9102358317e3238cb394a9ab0b 020536acad4d0763f39718143494811f5c0ffd39f5dc3667cfe3b4a7815b331a17')
-      let address = Address.fromInputScript(script)
+      let address = Address.fromTxInScript(script)
       address.toString().should.equal('1EyV93Vhz4YLdfb67UaNujrBkd9CC6zvgG')
     })
   })
 
-  describe('@fromOutputScript', function () {
+  describe('@fromTxOutScript', function () {
     it('should make this address from a script', function () {
       Address.fromPubKeyHashBuf(Buffer.from('6fa5502ea094d59576898b490d866b32a61b89f6', 'hex')).toString()
         .should.equal('1BBL3TUavUCRauDreKv2JJ1CPgnyNxVHpA')
@@ -286,8 +286,8 @@ describe('Address', function () {
       let buf = Buffer.alloc(20)
       buf.fill(0)
       let address = new Address().fromPubKeyHashBuf(buf)
-      let script = address.toOutputScript()
-      address = Address.fromOutputScript(script)
+      let script = address.toTxOutScript()
+      address = Address.fromTxOutScript(script)
       address.toString().should.equal('1111111111111111111114oLvT2')
     })
   })
@@ -400,12 +400,12 @@ describe('Address', function () {
     })
   })
 
-  describe('#toOutputScript', function () {
+  describe('#toTxOutScript', function () {
     it('should convert this address into known scripts', function () {
       let addrbuf = Buffer.alloc(21)
       addrbuf.fill(0)
       let addr = new Address().fromBuffer(addrbuf)
-      let script = addr.toOutputScript()
+      let script = addr.toTxOutScript()
       script
         .toString()
         .should.equal(
