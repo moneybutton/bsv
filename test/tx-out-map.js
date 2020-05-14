@@ -43,9 +43,9 @@ describe('TxOutMap', function () {
   describe('#toJSON', function () {
     it('convert to json', function () {
       let txOutMap = new TxOutMap()
-        .add(txHashBuf, 0, txOut)
-        .add(txHashBuf, 1, txOut)
-        .add(txHashBuf, 2, txOut)
+        .set(txHashBuf, 0, txOut)
+        .set(txHashBuf, 1, txOut)
+        .set(txHashBuf, 2, txOut)
       let json = txOutMap.toJSON()
       Object.keys(json).length.should.equal(3)
     })
@@ -54,9 +54,9 @@ describe('TxOutMap', function () {
   describe('#fromJSON', function () {
     it('convert to/from json roundtrip', function () {
       let txOutMap = new TxOutMap()
-        .add(txHashBuf, 0, txOut)
-        .add(txHashBuf, 1, txOut)
-        .add(txHashBuf, 2, txOut)
+        .set(txHashBuf, 0, txOut)
+        .set(txHashBuf, 1, txOut)
+        .set(txHashBuf, 2, txOut)
       let txOutMap2 = new TxOutMap().fromJSON(txOutMap.toJSON())
       txOutMap2
         .get(txHashBuf, 0)
@@ -73,9 +73,9 @@ describe('TxOutMap', function () {
     })
   })
 
-  describe('#add', function () {
-    it('should add a txOut to the txOutMap', function () {
-      let txOutMap = new TxOutMap().add(txHashBuf, 0, txOut)
+  describe('#set', function () {
+    it('should set a txOut to the txOutMap', function () {
+      let txOutMap = new TxOutMap().set(txHashBuf, 0, txOut)
       should.exist(txOutMap.map.get(label))
     })
   })
@@ -90,9 +90,9 @@ describe('TxOutMap', function () {
     })
   })
 
-  describe('#addTx', function () {
-    it('should add all outputs from a tx', function () {
-      let txOutMap = new TxOutMap().addTx(tx)
+  describe('#setTx', function () {
+    it('should set all outputs from a tx', function () {
+      let txOutMap = new TxOutMap().setTx(tx)
       let txHashBuf = tx.hash()
       let txOut = tx.txOuts[0]
       txOutMap
