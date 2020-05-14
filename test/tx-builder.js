@@ -515,12 +515,12 @@ describe('TxBuilder', function () {
       // begin signing
       let nHashType = Sig.SIGHASH_ALL
       let flags = Interp.SCRIPT_VERIFY_P2SH
-      txb.signTxIn(0, keyPair1, undefined, nHashType, flags)
+      txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      txb.signTxIn(1, keyPair2, undefined, nHashType, flags)
+      txb.signTxIn(1, keyPair2, undefined, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
@@ -549,12 +549,12 @@ describe('TxBuilder', function () {
       let nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
       let flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
-      txb.signTxIn(0, keyPair1, undefined, nHashType, flags)
+      txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      txb.signTxIn(1, keyPair2, undefined, nHashType, flags)
+      txb.signTxIn(1, keyPair2, undefined, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
@@ -581,7 +581,7 @@ describe('TxBuilder', function () {
       txb.uTxOutMap = {
         get: sinon.spy()
       }
-      txb.signTxIn(0, keyPair1, txOut1, Sig.SIGHASH_ALL, 0)
+      txb.signTxIn(0, keyPair1, txOut1, undefined, Sig.SIGHASH_ALL, 0)
       txb.uTxOutMap.get.calledOnce.should.equal(false)
     })
   })
@@ -622,12 +622,12 @@ describe('TxBuilder', function () {
       // begin signing
       let nHashType = Sig.SIGHASH_ALL
       let flags = Interp.SCRIPT_VERIFY_P2SH
-      await txb.asyncSignTxIn(0, keyPair1, undefined, nHashType, flags)
+      await txb.asyncSignTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      await txb.asyncSignTxIn(1, keyPair2, undefined, nHashType, flags)
+      await txb.asyncSignTxIn(1, keyPair2, undefined, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
@@ -656,12 +656,12 @@ describe('TxBuilder', function () {
       let nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
       let flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
-      await txb.asyncSignTxIn(0, keyPair1, undefined, nHashType, flags)
+      await txb.asyncSignTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
-      await txb.asyncSignTxIn(1, keyPair2, undefined, nHashType, flags)
+      await txb.asyncSignTxIn(1, keyPair2, undefined, undefined, nHashType, flags)
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
