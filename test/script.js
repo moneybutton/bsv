@@ -22,7 +22,7 @@ describe('Script', function () {
   })
 
   describe('#fromHex', function () {
-    it('should parse this hex string containIng an OP code', function () {
+    it('should parse this hex string containing an OP code', function () {
       let buf = Buffer.alloc(1)
       buf[0] = new OpCode().fromString('OP_0').toNumber()
       let script = new Script().fromHex(buf.toString('hex'))
@@ -230,6 +230,14 @@ describe('Script', function () {
         .fromString('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
         .toString()
         .should.equal('OP_0 OP_PUSHDATA4 3 0x010203 OP_0')
+      new Script()
+        .fromString('OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIG')
+        .toString()
+        .should.equal('OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIG')
+      new Script()
+        .fromString('OP_SHA256 32 0x8cc17e2a2b10e1da145488458a6edec4a1fdb1921c2d5ccbc96aa0ed31b4d5f8 OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIGVERIFY OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIG')
+        .toString()
+        .should.equal('OP_SHA256 32 0x8cc17e2a2b10e1da145488458a6edec4a1fdb1921c2d5ccbc96aa0ed31b4d5f8 OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIGVERIFY OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIG')
       new Script()
         .fromString('OP_0 OP_PUSHDATA2 3 0x010203 OP_0')
         .toString()

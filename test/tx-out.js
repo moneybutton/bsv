@@ -99,6 +99,16 @@ describe('TxOut', function () {
         .toString('hex')
         .should.equal('050000000000000001ae')
     })
+
+    it('should work with this problematic json', function () {
+      let json = {
+        valueBn: '20000',
+        scriptVi: '56',
+        script: 'OP_SHA256 32 0x8cc17e2a2b10e1da145488458a6edec4a1fdb1921c2d5ccbc96aa0ed31b4d5f8 OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIGVERIFY OP_EQUALVERIFY OP_DUP OP_HASH160 20 0x1451baa3aad777144a0759998a03538018dd7b4b OP_EQUALVERIFY OP_CHECKSIG'
+      }
+      let txOut = TxOut.fromJSON(json)
+      txOut.toString().should.equal(TxOut.fromHex(txOut.toHex()).toString())
+    })
   })
 
   describe('#fromBuffer', function () {
