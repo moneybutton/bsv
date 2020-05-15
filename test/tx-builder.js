@@ -346,7 +346,7 @@ describe('TxBuilder', function () {
     it('should build a tx where all inputs are required', function () {
       let txb = prepareTxBuilder()
 
-      txb.build(true)
+      txb.build({ useAllInputs: true })
 
       txb.tx.txIns.length.should.equal(3)
     })
@@ -517,6 +517,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -551,6 +553,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -624,6 +628,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -658,6 +664,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -712,6 +720,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -829,6 +839,8 @@ describe('TxBuilder', function () {
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
       txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmount.toNumber().should.equal(49996250)
+      txb.feeAmount.toNumber().should.equal(3750)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
