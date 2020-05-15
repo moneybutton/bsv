@@ -293,7 +293,7 @@ describe('TxBuilder', function () {
   })
 
   describe('#build', function () {
-    function prepareTxBuilder (outAmount = new Bn(1e8)) {
+    function prepareTxBuilder (outAmountBn = new Bn(1e8)) {
       let txb = new TxBuilder()
 
       // make change address
@@ -330,7 +330,7 @@ describe('TxBuilder', function () {
       txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1, keyPair1.pubKey)
       txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2, keyPair2.pubKey)
       txb.inputFromPubKeyHash(txHashBuf, txOutNum3, txOut3, keyPair3.pubKey)
-      txb.outputToAddress(outAmount, addr1)
+      txb.outputToAddress(outAmountBn, addr1)
 
       return txb
     }
