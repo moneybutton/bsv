@@ -193,7 +193,7 @@ describe('TxBuilder', function () {
       txb.build()
       txb.tx.txOuts.length.should.equal(1)
       // amount should be entire input amount minus the fee
-      txb.tx.txOuts[0].valueBn.toString().should.equal('199996609')
+      txb.tx.txOuts[0].valueBn.toString().should.equal('199996589')
     })
 
     it('should have two outputs if dust is zero', function () {
@@ -349,17 +349,6 @@ describe('TxBuilder', function () {
       txb.build(true)
 
       txb.tx.txIns.length.should.equal(3)
-    })
-
-    it('estimate bigger size with more sigs', function () {
-      let txb = prepareTxBuilder()
-
-      txb.build()
-      txb.estimateSize().should.equal(373)
-
-      txb.setSigsPerInput(2)
-      txb.build()
-      txb.estimateSize().should.equal(515)
     })
   })
 
@@ -527,7 +516,7 @@ describe('TxBuilder', function () {
         .should.equal(saddr1.hashBuf.toString('hex'))
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -561,7 +550,7 @@ describe('TxBuilder', function () {
         .should.equal(saddr1.hashBuf.toString('hex'))
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -634,7 +623,7 @@ describe('TxBuilder', function () {
         .should.equal(saddr1.hashBuf.toString('hex'))
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -668,7 +657,7 @@ describe('TxBuilder', function () {
         .should.equal(saddr1.hashBuf.toString('hex'))
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
@@ -706,6 +695,11 @@ describe('TxBuilder', function () {
       // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.sign([keyPair1])
 
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[1].log.should.equal('successfully inserted public key')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[0].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+
       // transaction not fully signed yet, so should be invalid
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
@@ -717,7 +711,124 @@ describe('TxBuilder', function () {
         .should.equal(saddr1.hashBuf.toString('hex'))
       txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
       txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
-      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.tx.txOuts[1].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(changeaddr.hashBuf.toString('hex'))
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.sign([keyPair1, keyPair2])
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+    })
+
+    it('should sign and verify synchronously with no public key inserted at input', function () {
+      function prepareTxBuilder () {
+        let txb = new TxBuilder()
+
+        // make change address
+        let privKey = new PrivKey().fromBn(new Bn(1))
+        let keyPair = new KeyPair().fromPrivKey(privKey)
+        let changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+        // make addresses to send from
+        let privKey1 = new PrivKey().fromBn(new Bn(2))
+        let keyPair1 = new KeyPair().fromPrivKey(privKey1)
+        let addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+        let privKey2 = new PrivKey().fromBn(new Bn(3))
+        let keyPair2 = new KeyPair().fromPrivKey(privKey2)
+        let addr2 = new Address().fromPubKey(keyPair2.pubKey)
+
+        // make addresses to send to
+        let saddr1 = addr1
+
+        // txOuts that we are spending
+
+        // pubKeyHash out
+        let scriptout1 = new Script().fromString(
+          'OP_DUP OP_HASH160 20 0x' +
+            addr1.hashBuf.toString('hex') +
+            ' OP_EQUALVERIFY OP_CHECKSIG'
+        )
+
+        // pubKeyHash out
+        let scriptout2 = new Script().fromString(
+          'OP_DUP OP_HASH160 20 0x' +
+            addr2.hashBuf.toString('hex') +
+            ' OP_EQUALVERIFY OP_CHECKSIG'
+        )
+
+        let txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+        let txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+        // total balance: 2e8
+
+        let txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(0)
+        let txOutNum1 = 0
+        let txOutNum2 = 1
+
+        txb.setFeePerKbNum(0.0001e8)
+        txb.setChangeAddress(changeaddr)
+        txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1)
+        txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2)
+        txb.outputToAddress(new Bn(1.5e8), saddr1) // pubKeyHash address
+        // total sending: 2e8 (plus fee)
+        // txb.randomizeInputs()
+        // txb.randomizeOutputs()
+
+        return {
+          txb,
+          keyPair1,
+          keyPair2,
+          addr1,
+          addr2,
+          saddr1,
+          changeaddr,
+          txOut1,
+          txOut2
+        }
+      }
+
+      function prepareAndBuildTxBuilder () {
+        let obj = prepareTxBuilder()
+        obj.txb.build()
+        return obj
+      }
+
+      // prepare
+      let txb, keyPair1, keyPair2, saddr1, changeaddr
+      let obj = prepareAndBuildTxBuilder()
+      txb = obj.txb
+      keyPair1 = obj.keyPair1
+      keyPair2 = obj.keyPair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
+
+      // begin signing
+      let flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
+      txb.sign([keyPair1])
+
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[1].log.should.equal('successfully inserted public key')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[0].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // this should effectively add
+      txb.sign([keyPair2])
+
+      txb.tx.txOuts[0].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(saddr1.hashBuf.toString('hex'))
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
       txb.tx.txOuts[1].script.chunks[2].buf
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
