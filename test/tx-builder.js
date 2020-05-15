@@ -148,22 +148,22 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#dustToChangeOrFees', function () {
-    it('should set the dustToChangeOrFees', function () {
+  describe('#dustChangeToFees', function () {
+    it('should set the dustChangeToFees', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      txb.sendDustToChangeOrFees(true)
-      txb.dustToChangeOrFees.should.equal(true)
+      txb.sendDustChangeToFees(true)
+      txb.dustChangeToFees.should.equal(true)
       txb.build()
-      txb.sendDustToChangeOrFees(false)
-      txb.dustToChangeOrFees.should.equal(false)
+      txb.sendDustChangeToFees(false)
+      txb.dustChangeToFees.should.equal(false)
       txb.build()
     })
 
     it('should not be able to build a tx if dust is greater than all outputs', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      txb.sendDustToChangeOrFees(true)
+      txb.sendDustChangeToFees(true)
       txb.setDust(4e8)
       ;(function () {
         txb.build()
@@ -175,7 +175,7 @@ describe('TxBuilder', function () {
     it('should not be able to build a tx if dust is greater than all outputs', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      txb.sendDustToChangeOrFees(true)
+      txb.sendDustChangeToFees(true)
       txb.setDust(4e8 + 1)
       ;(function () {
         txb.build()
@@ -188,7 +188,7 @@ describe('TxBuilder', function () {
     it('should only have one output if only that output is greater than dust', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      txb.sendDustToChangeOrFees(true)
+      txb.sendDustChangeToFees(true)
       txb.setDust(1.5e8 + 1)
       txb.build()
       txb.tx.txOuts.length.should.equal(1)
@@ -199,7 +199,7 @@ describe('TxBuilder', function () {
     it('should have two outputs if dust is zero', function () {
       let obj = prepareTxBuilder()
       let txb = obj.txb
-      txb.sendDustToChangeOrFees(true)
+      txb.sendDustChangeToFees(true)
       txb.setDust(0)
       txb.build()
       txb.tx.txOuts.length.should.equal(2)
