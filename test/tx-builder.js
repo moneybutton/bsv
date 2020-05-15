@@ -501,7 +501,7 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#sign', function () {
+  describe('#signTxIn', function () {
     it('should sign and verify no SIGHASH_FORKID synchronously', function () {
       // prepare
       let txb, keyPair1, keyPair2, saddr1, changeaddr
@@ -608,7 +608,7 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#asyncSign', function () {
+  describe('#asyncSignTxIn', function () {
     it('should sign and verify no SIGHASH_FORKID asynchronously', async function () {
       // prepare
       let txb, keyPair1, keyPair2, saddr1, changeaddr
@@ -685,8 +685,49 @@ describe('TxBuilder', function () {
       txb.uTxOutMap = {
         get: sinon.spy()
       }
-      await txb.asyncSignTxIn(0, keyPair1, txOut1)
+      await txb.asyncSignTxIn(0, keyPair1, txOut1, undefined, Sig.SIGHASH_ALL, 0)
       txb.uTxOutMap.get.calledOnce.should.equal(false)
+    })
+  })
+
+  describe('#sign', function () {
+    it('should sign and verify synchronously', function () {
+      // prepare
+      let txb, keyPair1, keyPair2, saddr1, changeaddr
+      let obj = prepareAndBuildTxBuilder()
+      txb = obj.txb
+      keyPair1 = obj.keyPair1
+      keyPair2 = obj.keyPair2
+      saddr1 = obj.saddr1
+      changeaddr = obj.changeaddr
+
+      // begin signing
+      let flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
+      txb.sign([keyPair1])
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // this should effectively add
+      txb.sign([keyPair2])
+
+      txb.tx.txOuts[0].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(saddr1.hashBuf.toString('hex'))
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.eq(49996270).should.equal(true)
+      txb.tx.txOuts[1].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(changeaddr.hashBuf.toString('hex'))
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.sign([keyPair1, keyPair2])
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
   })
 })
