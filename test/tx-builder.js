@@ -352,6 +352,16 @@ describe('TxBuilder', function () {
     })
   })
 
+  describe('#sort', function () {
+    it('it should call tx sort', function () {
+      let txBuilder = new TxBuilder()
+      let called = 0
+      txBuilder.tx.sort = () => {called++}
+      txBuilder.sort()
+      called.should.equal(1)
+    })
+  })
+
   describe('@allSigsPresent', function () {
     it('should know all sigs are or are not present these scripts', function () {
       let script
