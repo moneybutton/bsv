@@ -168,7 +168,7 @@ describe('TxBuilder', function () {
       ;(function () {
         txb.build()
       }.should.throw(
-        'outputs length is zero - unable to create any outputs greater than dust'
+        'cannot create output lesser than dust'
       ))
     })
 
@@ -181,19 +181,8 @@ describe('TxBuilder', function () {
         txb.build()
         console.log(txb.tx.toJSON())
       }.should.throw(
-        'outputs length is zero - unable to create any outputs greater than dust'
+        'cannot create output lesser than dust'
       ))
-    })
-
-    it('should only have one output if only that output is greater than dust', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
-      txb.sendDustChangeToFees(true)
-      txb.setDust(1.5e8 + 1)
-      txb.build()
-      txb.tx.txOuts.length.should.equal(1)
-      // amount should be entire input amount minus the fee
-      txb.tx.txOuts[0].valueBn.toString().should.equal('199996589')
     })
 
     it('should have two outputs if dust is zero', function () {
@@ -356,7 +345,7 @@ describe('TxBuilder', function () {
     it('it should call tx sort', function () {
       let txBuilder = new TxBuilder()
       let called = 0
-      txBuilder.tx.sort = () => {called++}
+      txBuilder.tx.sort = () => { called++ }
       txBuilder.sort()
       called.should.equal(1)
     })
