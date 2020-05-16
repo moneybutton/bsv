@@ -18,6 +18,7 @@ import vectorsBitcoinABCSighash from './vectors/bitcoin-abc/sighash.json'
 import vectorsBitcoindTxValid from './vectors/bitcoind/tx_valid.json'
 import vectorsBitcoindTxInvalid from './vectors/bitcoind/tx_invalid.json'
 import largesttxvector from './vectors/largesttx.json'
+import fixture from './vectors/bip69.json'
 
 describe('Tx', function () {
   let txIn = new TxIn().fromBuffer(
@@ -386,8 +387,6 @@ describe('Tx', function () {
   })
 
   describe('bectors: bip69 (from bitcoinjs)', function () {
-    const fixture = require('./vectors/bip69.json')
-
     // returns index-based order of sorted against original
     function getIndexOrder (original, sorted) {
       return sorted.map((value) => {

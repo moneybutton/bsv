@@ -2,7 +2,7 @@
 'use strict'
 import { Aes } from '../lib/aes'
 import { Cbc } from '../lib/cbc'
-require('should')
+import 'should'
 
 describe('Cbc', function () {
   describe('@buf2BlocksBuf', function () {

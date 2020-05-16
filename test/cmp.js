@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
 import { cmp } from '../lib/cmp'
-require('should')
+import 'should'
 
 describe('cmp', function () {
   it('should know if these buffers are equal', function () {
