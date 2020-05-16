@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
 import should from 'should'
-import { assert } from 'assert'
+import assert from 'assert'
 import { Bn } from '../lib/bn'
 
 describe('Bn', function () {

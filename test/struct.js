@@ -2,7 +2,7 @@
 'use strict'
 import should from 'should'
 import { Struct } from '../lib/struct'
-import { sinon } from 'sinon'
+import sinon from 'sinon'
 import { Br } from '../lib/br'
 
 describe('Struct', function () {

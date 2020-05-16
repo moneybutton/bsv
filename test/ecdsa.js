@@ -9,7 +9,7 @@ import { PubKey } from '../lib/pub-key'
 import { Sig } from '../lib/sig'
 import { Point } from '../lib/point'
 import should from 'should'
-import { vectors } from './vectors/ecdsa'
+import vectors from './vectors/ecdsa.json'
 
 describe('Ecdsa', function () {
   it('should create a blank ecdsa', function () {

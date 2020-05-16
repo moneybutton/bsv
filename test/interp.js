@@ -7,9 +7,9 @@ import { Script } from '../lib/script'
 import { Bn } from '../lib/bn'
 import { KeyPair } from '../lib/key-pair'
 import { Sig } from '../lib/sig'
-import { bitcoindScriptValid } from './vectors/bitcoind/script_valid'
-import { bitcoindScriptInvalid } from './vectors/bitcoind/script_invalid'
-import { bitcoinABCScriptTests } from './vectors/bitcoin-abc/script_tests'
+import bitcoindScriptValid from './vectors/bitcoind/script_valid.json'
+import bitcoindScriptInvalid from './vectors/bitcoind/script_invalid.json'
+import bitcoinABCScriptTests from './vectors/bitcoin-abc/script_tests.json'
 
 describe('Interp', function () {
   it('should make a new interp', function () {

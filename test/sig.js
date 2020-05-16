@@ -3,7 +3,7 @@
 import { Bn } from '../lib/bn'
 import should from 'should'
 import { Sig } from '../lib/sig'
-import { vectors } from './vectors/sig'
+import vectors from './vectors/sig.json'
 
 describe('Sig', function () {
   it('should make a blank signature', function () {

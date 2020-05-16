@@ -14,7 +14,7 @@ import { TxOut } from '../lib/tx-out'
 import { TxOutMap } from '../lib/tx-out-map'
 import { TxVerifier } from '../lib/tx-verifier'
 import should from 'should'
-import { sinon } from 'sinon'
+import sinon from 'sinon'
 
 describe('TxBuilder', function () {
   it('should make a new txbuilder', function () {

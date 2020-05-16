@@ -9,10 +9,10 @@ import { TxOut } from '../lib/tx-out'
 import { TxOutMap } from '../lib/tx-out-map'
 import { TxVerifier } from '../lib/tx-verifier'
 import should from 'should'
-import { coolestTxVector } from './vectors/coolest-tx-ever-sent'
-import { sighashSingleVector } from './vectors/sighash-single-bug'
-import { txInvalid } from './vectors/bitcoind/tx_invalid'
-import { txValid } from './vectors/bitcoind/tx_valid'
+import coolestTxVector from './vectors/coolest-tx-ever-sent.json'
+import sighashSingleVector from './vectors/sighash-single-bug.json'
+import txInvalid from './vectors/bitcoind/tx_invalid.json'
+import txValid from './vectors/bitcoind/tx_valid.json'
 
 describe('TxVerifier', function () {
   it('should make a new txverifier', function () {

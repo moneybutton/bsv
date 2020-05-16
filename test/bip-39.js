@@ -7,7 +7,7 @@ import { Bip39Jp } from '../lib/bip-39-jp'
 import { Bip39En } from '../lib/bip-39-en'
 import { Random } from '../lib/random'
 import should from 'should'
-import { vectors } from './vectors/bip39'
+import vectors from './vectors/bip39.json'
 
 describe('Bip39', function () {
   this.timeout(5000)
@@ -18,8 +18,8 @@ describe('Bip39', function () {
   })
 
   it('should have a wordlist of length 2048', function () {
-    require('../lib/bip-39-en-wordlist').length.should.equal(2048)
-    require('../lib/bip-39-jp-wordlist').length.should.equal(2048)
+    require('../lib/bip-39-en-wordlist').wordList.length.should.equal(2048)
+    require('../lib/bip-39-jp-wordlist').wordList.length.should.equal(2048)
   })
 
   it('should handle this community-derived test vector', function () {

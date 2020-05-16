@@ -7,8 +7,8 @@ import { PubKey } from '../lib/pub-key'
 import { Script } from '../lib/script'
 import should from 'should'
 
-import { scriptInvalid } from './vectors/bitcoind/script_invalid'
-import { scriptValid } from './vectors/bitcoind/script_valid'
+import scriptInvalid from './vectors/bitcoind/script_invalid.json'
+import scriptValid from './vectors/bitcoind/script_valid.json'
 
 describe('Script', function () {
   it('should make a new script', function () {

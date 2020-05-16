@@ -100,7 +100,7 @@ describe('Bip32', function () {
       .should.equal(vector1mPrivate)
   })
 
-  it.only('should initialize test vector 1 from the extended public key', function () {
+  it('should initialize test vector 1 from the extended public key', function () {
     let bip32 = new Bip32().fromString(vector1mPublic)
     should.exist(bip32)
   })

@@ -11,13 +11,13 @@ import { TxOut } from '../lib/tx-out'
 import { VarInt } from '../lib/var-int'
 import { Interp } from '../lib/interp'
 import should from 'should'
-import { sinon } from 'sinon'
+import sinon from 'sinon'
 
-import { vectorsBitcoindSighash } from './vectors/bitcoind/sighash'
-import { vectorsBitcoinABCSighash } from './vectors/bitcoin-abc/sighash'
-import { vectorsBitcoindTxValid } from './vectors/bitcoind/tx_valid'
-import { vectorsBitcoindTxInvalid } from './vectors/bitcoind/tx_invalid'
-import { largesttxvector } from './vectors/largesttx'
+import vectorsBitcoindSighash from './vectors/bitcoind/sighash.json'
+import vectorsBitcoinABCSighash from './vectors/bitcoin-abc/sighash.json'
+import vectorsBitcoindTxValid from './vectors/bitcoind/tx_valid.json'
+import vectorsBitcoindTxInvalid from './vectors/bitcoind/tx_invalid.json'
+import largesttxvector from './vectors/largesttx.json'
 
 describe('Tx', function () {
   let txIn = new TxIn().fromBuffer(

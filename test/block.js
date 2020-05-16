@@ -6,7 +6,7 @@ import { Block } from '../lib/block'
 import { BlockHeader } from '../lib/block-header'
 import { Tx } from '../lib/tx'
 import { VarInt } from '../lib/var-int'
-import { largesttxblockvector } from './vectors/largesttxblock'
+import largesttxblockvector from './vectors/largesttxblock'
 import should from 'should'
 
 describe('Block', function () {
