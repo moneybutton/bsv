@@ -1,38 +1,53 @@
-export * from './lib/ach'
+/**
+ * bsv
+ * ===
+ *
+ * entry.js is the entry point for a the js bundlers.
+ * Webpack and microbundlers, both start use this file as
+ * the entry point to bundle the entire library.
+ */
+import aes from 'aes'
+import bnjs from 'bn.js'
+import bs58 from 'bs58'
+
+import elliptic from 'bitcoin-elliptic'
+import hashjs from 'hash.js'
+import pbkdf2compat from 'pbkdf2-compat'
+
+// Dependencies, subject to change.
+const deps = {
+  aes,
+  bnjs,
+  bs58,
+  elliptic,
+  hashjs,
+  pbkdf2compat
+}
+
+export { deps }
+
+// version string.
+export { version } from './package.json'
+
+// Main bitcoin library - bitcoin protocols, standards, cryptography, and
+// utilities.
 export * from './lib/address'
-export * from './lib/aescbc'
-export * from './lib/aes'
-export * from './lib/base-58-check'
-export * from './lib/base-58'
 export * from './lib/bip-32'
-export * from './lib/bip-39-en'
-export * from './lib/bip-39-en-wordlist'
-export * from './lib/bip-39-jp'
-// export * from './lib/bip-39-jp-wordlist'
 export * from './lib/bip-39'
-export * from './lib/block-header'
-export * from './lib/block'
+export * from './lib/bip-39-words'
 export * from './lib/bn'
 export * from './lib/br'
 export * from './lib/bsm'
 export * from './lib/bw'
-export * from './lib/cbc'
-export * from './lib/cmp'
-export * from './lib/config'
+export * from './lib/base-58'
+export * from './lib/base-58-check'
+export * from './lib/block'
+export * from './lib/block-header'
 export * from './lib/constants'
 export * from './lib/ecdsa'
-export * from './lib/ecies'
-export * from './lib/hash-cache'
 export * from './lib/hash'
 export * from './lib/interp'
-export * from './lib/inv'
 export * from './lib/key-pair'
-export * from './lib/mainnet-address'
-export * from './lib/mainnet-bip-32'
-export * from './lib/mainnet-key-pair'
-export * from './lib/mainnet-priv-key'
-export * from './lib/merkle'
-export * from './lib/msg'
 export * from './lib/op-code'
 export * from './lib/point'
 export * from './lib/priv-key'
@@ -40,19 +55,22 @@ export * from './lib/pub-key'
 export * from './lib/random'
 export * from './lib/script'
 export * from './lib/sig'
-export * from './lib/sig-operations'
 export * from './lib/struct'
-export * from './lib/testnet-address'
-export * from './lib/testnet-bip-32'
-export * from './lib/testnet-key-pair'
-export * from './lib/testnet-priv-key'
+export * from './lib/tx'
 export * from './lib/tx-builder'
 export * from './lib/tx-in'
-export * from './lib/tx'
 export * from './lib/tx-out'
 export * from './lib/tx-out-map'
 export * from './lib/tx-verifier'
 export * from './lib/var-int'
-export * from './lib/version'
 export * from './lib/workers'
 export * from './lib/workers-result'
+export * from './lib/cmp'
+
+// Encryption tools. Some bitcoin standards use Aes encryption, so that's why
+// these are available.
+export * from './lib/ach'
+export * from './lib/aes'
+export * from './lib/aescbc'
+export * from './lib/cbc'
+export * from './lib/ecies'
