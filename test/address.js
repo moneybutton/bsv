@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let Address = require('../lib/address')
-let Constants = require('../lib/constants')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let Script = require('../lib/script')
-let should = require('should')
+import { Address } from '../lib/address'
+import { Constants } from '../lib/constants'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { Script } from '../lib/script'
+import should from 'should'
 
 describe('Address', function () {
   let pubKeyHash = Buffer.from(

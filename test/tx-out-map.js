@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let TxOutMap = require('../lib/tx-out-map')
-let Tx = require('../lib/tx')
-let TxOut = require('../lib/tx-out')
-let Script = require('../lib/script')
-let Bn = require('../lib/bn')
+import should from 'should'
+import { TxOutMap } from '../lib/tx-out-map'
+import { Tx } from '../lib/tx'
+import { TxOut } from '../lib/tx-out'
+import { Script } from '../lib/script'
+import { Bn } from '../lib/bn'
 
 describe('TxOutMap', function () {
   let txHashBuf = Buffer.alloc(32)

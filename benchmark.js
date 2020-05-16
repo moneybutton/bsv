@@ -1,5 +1,4 @@
-
-let bsv = require('./')
+let bsv = require('./dist/bsv')
 
 let Address = bsv.Address
 let PrivKey = bsv.PrivKey
@@ -33,9 +32,10 @@ txb = txb.outputToAddress(new Bn(satoshis), toAddress)
 txb = txb.setChangeAddress(changeAddress)
 txb.setFeePerKbNum(500)
 let useAllInputs = true
+
 {
   let start = Date.now()
-  txb.build(useAllInputs)
+  txb.build({ useAllInputs })
   let finish = Date.now()
   console.log('building: ', finish - start, 'ms')
 }

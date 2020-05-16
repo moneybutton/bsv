@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Inv = require('../lib/inv')
-let Hash = require('../lib/hash')
-let Bw = require('../lib/bw')
-let should = require('should')
+import { Inv } from '../lib/inv'
+import { Hash } from '../lib/hash'
+import { Bw } from '../lib/bw'
+import should from 'should'
 
 describe('Inv', function () {
   it('should exist', function () {

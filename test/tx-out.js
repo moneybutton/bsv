@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let Br = require('../lib/br')
-let Script = require('../lib/script')
-let TxOut = require('../lib/tx-out')
-let VarInt = require('../lib/var-int')
-let should = require('should')
+import { Bn } from '../lib/bn'
+import { Br } from '../lib/br'
+import { Script } from '../lib/script'
+import { TxOut } from '../lib/tx-out'
+import { VarInt } from '../lib/var-int'
+import should from 'should'
 
 describe('TxOut', function () {
   let valueBn = new Bn(5)

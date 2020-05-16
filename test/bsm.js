@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Address = require('../lib/address')
-let Bsm = require('../lib/bsm')
-let KeyPair = require('../lib/key-pair')
-let should = require('should')
+import { Address } from '../lib/address'
+import { Bsm } from '../lib/bsm'
+import { KeyPair } from '../lib/key-pair'
+import should from 'should'
 
 describe('Bsm', function () {
   it('should make a new bsm', function () {

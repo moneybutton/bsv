@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let Merkle = require('../lib/merkle')
-let should = require('should')
+import { Merkle } from '../lib/merkle'
+import should from 'should'
 
 describe('Merkle', function () {
   it('should satisfy this basic API', function () {

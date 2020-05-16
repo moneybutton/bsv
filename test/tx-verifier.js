@@ -1,18 +1,18 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let Br = require('../lib/br')
-let Interp = require('../lib/interp')
-let Script = require('../lib/script')
-let Tx = require('../lib/tx')
-let TxOut = require('../lib/tx-out')
-let TxOutMap = require('../lib/tx-out-map')
-let TxVerifier = require('../lib/tx-verifier')
-let should = require('should')
-let coolestTxVector = require('./vectors/coolest-tx-ever-sent')
-let sighashSingleVector = require('./vectors/sighash-single-bug')
-let txInvalid = require('./vectors/bitcoind/tx_invalid')
-let txValid = require('./vectors/bitcoind/tx_valid')
+import { Bn } from '../lib/bn'
+import { Br } from '../lib/br'
+import { Interp } from '../lib/interp'
+import { Script } from '../lib/script'
+import { Tx } from '../lib/tx'
+import { TxOut } from '../lib/tx-out'
+import { TxOutMap } from '../lib/tx-out-map'
+import { TxVerifier } from '../lib/tx-verifier'
+import should from 'should'
+import coolestTxVector from './vectors/coolest-tx-ever-sent.json'
+import sighashSingleVector from './vectors/sighash-single-bug.json'
+import txInvalid from './vectors/bitcoind/tx_invalid.json'
+import txValid from './vectors/bitcoind/tx_valid.json'
 
 describe('TxVerifier', function () {
   it('should make a new txverifier', function () {

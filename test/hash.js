@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-require('should')
-let Hash = require('../lib/hash')
-let vectors = require('./vectors/hash')
+import 'should'
+import { Hash } from '../lib/hash'
+import vectors from './vectors/hash'
 
 describe('Hash', function () {
   let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])

@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let BlockHeader = require('../lib/block-header')
-let Bw = require('../lib/bw')
-let Br = require('../lib/br')
-let should = require('should')
+import { BlockHeader } from '../lib/block-header'
+import { Bw } from '../lib/bw'
+import { Br } from '../lib/br'
+import should from 'should'
 
 describe('BlockHeader', function () {
   let bh = new BlockHeader()

@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let cmp = require('../lib/cmp')
-require('should')
+import { cmp } from '../lib/cmp'
+import 'should'
 
 describe('cmp', function () {
   it('should know if these buffers are equal', function () {

@@ -1,14 +1,14 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Script = require('../lib/script')
-let TxIn = require('../lib/tx-in')
-let TxOut = require('../lib/tx-out')
-let VarInt = require('../lib/var-int')
-let Br = require('../lib/br')
-let Bn = require('../lib/bn')
-let KeyPair = require('../lib/key-pair')
-let Address = require('../lib/address')
+import should from 'should'
+import { Script } from '../lib/script'
+import { TxIn } from '../lib/tx-in'
+import { TxOut } from '../lib/tx-out'
+import { VarInt } from '../lib/var-int'
+import { Br } from '../lib/br'
+import { Bn } from '../lib/bn'
+import { KeyPair } from '../lib/key-pair'
+import { Address } from '../lib/address'
 
 describe('TxIn', function () {
   let txHashBuf = Buffer.alloc(32)

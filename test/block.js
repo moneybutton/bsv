@@ -1,13 +1,13 @@
 /* global describe,it */
 'use strict'
-let Br = require('../lib/br')
-let Bw = require('../lib/bw')
-let Block = require('../lib/block')
-let BlockHeader = require('../lib/block-header')
-let Tx = require('../lib/tx')
-let VarInt = require('../lib/var-int')
-let largesttxblockvector = require('./vectors/largesttxblock')
-let should = require('should')
+import { Br } from '../lib/br'
+import { Bw } from '../lib/bw'
+import { Block } from '../lib/block'
+import { BlockHeader } from '../lib/block-header'
+import { Tx } from '../lib/tx'
+import { VarInt } from '../lib/var-int'
+import largesttxblockvector from './vectors/largesttxblock'
+import should from 'should'
 
 describe('Block', function () {
   // let txidhex = '8c9aa966d35bfeaf031409e0001b90ccdafd8d859799eb945a3c515b8260bcf2'

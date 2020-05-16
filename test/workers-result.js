@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let WorkersResult = require('../lib/workers-result')
-let cmp = require('../lib/cmp')
-let should = require('should')
+import { WorkersResult } from '../lib/workers-result'
+import { cmp } from '../lib/cmp'
+import should from 'should'
 
 describe('WorkersResult', function () {
   it('should satisfy this basic API', function () {

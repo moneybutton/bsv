@@ -1,15 +1,15 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let Ecdsa = require('../lib/ecdsa')
-let Hash = require('../lib/hash')
-let KeyPair = require('../lib/key-pair')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let Sig = require('../lib/sig')
-let Point = require('../lib/point')
-let should = require('should')
-let vectors = require('./vectors/ecdsa')
+import { Bn } from '../lib/bn'
+import { Ecdsa } from '../lib/ecdsa'
+import { Hash } from '../lib/hash'
+import { KeyPair } from '../lib/key-pair'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { Sig } from '../lib/sig'
+import { Point } from '../lib/point'
+import should from 'should'
+import vectors from './vectors/ecdsa.json'
 
 describe('Ecdsa', function () {
   it('should create a blank ecdsa', function () {

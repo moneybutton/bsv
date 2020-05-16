@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let should = require('should')
-let Sig = require('../lib/sig')
-let vectors = require('./vectors/sig')
+import { Bn } from '../lib/bn'
+import should from 'should'
+import { Sig } from '../lib/sig'
+import vectors from './vectors/sig.json'
 
 describe('Sig', function () {
   it('should make a blank signature', function () {

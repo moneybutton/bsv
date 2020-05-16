@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let HashCache = require('../lib/hash-cache')
-let should = require('should')
+import { HashCache } from '../lib/hash-cache'
+import should from 'should'
 
 describe('HashCache', function () {
   let prevoutsHashBuf = Buffer.from('01'.repeat(32), 'hex')

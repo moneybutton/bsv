@@ -1,11 +1,11 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let SigOperations = require('../lib/sig-operations')
-let KeyPair = require('../lib/key-pair')
-let PrivKey = require('../lib/priv-key')
-let Sig = require('../lib/sig')
-let Address = require('../lib/address')
+import should from 'should'
+import { SigOperations } from '../lib/sig-operations'
+import { KeyPair } from '../lib/key-pair'
+import { PrivKey } from '../lib/priv-key'
+import { Sig } from '../lib/sig'
+import { Address } from '../lib/address'
 
 describe('SigOperations', function () {
   let txHashBuf = Buffer.alloc(32)

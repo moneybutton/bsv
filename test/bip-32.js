@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Bip32 = require('../lib/bip-32')
-let Base58Check = require('../lib/base-58-check')
-let PrivKey = require('../lib/priv-key')
-let should = require('should')
+import { Bip32 } from '../lib/bip-32'
+import { Base58Check } from '../lib/base-58-check'
+import { PrivKey } from '../lib/priv-key'
+import should from 'should'
 
 describe('Bip32', function () {
   it('should satisfy these basic API features', function () {

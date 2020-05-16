@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
-let Ecies = require('../lib/ecies')
-let should = require('should')
-let KeyPair = require('../lib/key-pair')
-let PrivKey = require('../lib/priv-key')
-let Hash = require('../lib/hash')
+import { Ecies } from '../lib/ecies'
+import should from 'should'
+import { KeyPair } from '../lib/key-pair'
+import { PrivKey } from '../lib/priv-key'
+import { Hash } from '../lib/hash'
 
 describe('#Ecies', function () {
   it('should make a new Ecies object', function () {

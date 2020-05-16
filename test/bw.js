@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Bw = require('../lib/bw')
-let Br = require('../lib/br')
-let Bn = require('../lib/bn')
-let should = require('should')
+import { Bw } from '../lib/bw'
+import { Br } from '../lib/br'
+import { Bn } from '../lib/bn'
+import should from 'should'
 
 describe('Bw', function () {
   it('should create a new buffer writer', function () {

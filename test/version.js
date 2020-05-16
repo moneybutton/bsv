@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Version = require('../lib/version')
-let Bn = require('../lib/bn')
-let should = require('should')
-let VarInt = require('../lib/var-int')
+import { Version } from '../lib/version'
+import { Bn } from '../lib/bn'
+import should from 'should'
+import { VarInt } from '../lib/var-int'
 
 describe('Version', function () {
   it('should exist', function () {

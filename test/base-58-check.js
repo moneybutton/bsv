@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Base58Check = require('../lib/base-58-check')
-let base58 = require('../lib/base-58')
+import should from 'should'
+import { Base58Check } from '../lib/base-58-check'
+import { Base58 } from '../lib/base-58'
 
 describe('Base58Check', function () {
   let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
@@ -65,9 +65,9 @@ describe('Base58Check', function () {
     })
 
     it('should throw an error when there is a checksum mismatch', function () {
-      let buf2 = base58.decode(enc)
+      let buf2 = Base58.decode(enc)
       buf2[0] = buf2[0] + 1
-      let enc2 = base58.encode(buf2)
+      let enc2 = Base58.encode(buf2)
       ;(function () {
         Base58Check.decode(enc2)
       }.should.throw('Checksum mismatch'))
