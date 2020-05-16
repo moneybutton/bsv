@@ -12,10 +12,10 @@
   "scripts": {
     "clean": "rm -rf node_modules/* package-lock.json yarn.lock",
     "lint": "standard *.js lib/**/*.js bin/**/*.js test/**/*.js",
-    "pretest": "npm run lint",
+    "pretest": "yarn run lint",
     "test:mocha": "mocha",
     "test:karma": "karma start --single-run",
-    "test": "test:mocha && test:karma",
+    "test": "yarn run test:mocha && yarn run test:karma",
     "build": "webpack && microbundle --target node -f modern,cjs"
   },
   "contributors": [
