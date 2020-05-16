@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let bsv = require('../')
+import should from 'should'
+import { bsv } from '../'
 
 describe('bsv', function () {
   it('should pass this sanity check on loading the main package', function () {

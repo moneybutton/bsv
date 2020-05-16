@@ -1,20 +1,20 @@
 /* global describe,it,before */
 'use strict'
-let Address = require('../lib/address')
-let Bn = require('../lib/bn')
-let Interp = require('../lib/interp')
-let KeyPair = require('../lib/key-pair')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let Script = require('../lib/script')
-let Sig = require('../lib/sig')
-let Tx = require('../lib/tx')
-let TxBuilder = require('../lib/tx-builder')
-let TxOut = require('../lib/tx-out')
-let TxOutMap = require('../lib/tx-out-map')
-let TxVerifier = require('../lib/tx-verifier')
-let should = require('should')
-let sinon = require('sinon')
+import { Address } from '../lib/address'
+import { Bn } from '../lib/bn'
+import { Interp } from '../lib/interp'
+import { KeyPair } from '../lib/key-pair'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { Script } from '../lib/script'
+import { Sig } from '../lib/sig'
+import { Tx } from '../lib/tx'
+import { TxBuilder } from '../lib/tx-builder'
+import { TxOut } from '../lib/tx-out'
+import { TxOutMap } from '../lib/tx-out-map'
+import { TxVerifier } from '../lib/tx-verifier'
+import should from 'should'
+import { sinon } from 'sinon'
 
 describe('TxBuilder', function () {
   it('should make a new txbuilder', function () {

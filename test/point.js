@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Point = require('../lib/point')
-let Bn = require('../lib/bn')
+import should from 'should'
+import { Point } from '../lib/point'
+import { Bn } from '../lib/bn'
 
 describe('Point', function () {
   it('should create a point', function () {

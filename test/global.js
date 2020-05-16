@@ -9,7 +9,7 @@
 
 require('../lib/config')
 
-let Workers = require('../lib/workers')
+import { Workers } from '../lib/workers'
 
 after(function () {
   Workers.endGlobalWorkers()

@@ -1,12 +1,12 @@
 /* global describe,it */
 'use strict'
-let Br = require('../lib/br')
-let Bw = require('../lib/bw')
-let Constants = require('../lib/constants').Default
-let Hash = require('../lib/hash')
-let Msg = require('../lib/msg')
-let Random = require('../lib/random')
-let should = require('should')
+import { Br } from '../lib/br'
+import { Bw } from '../lib/bw'
+import { Constants } from '../lib/constants'.Default
+import { Hash } from '../lib/hash'
+import { Msg } from '../lib/msg'
+import { Random } from '../lib/random'
+import should from 'should'
 
 describe('Msg', function () {
   let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'

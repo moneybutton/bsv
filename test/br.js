@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let Br = require('../lib/br')
-let Bw = require('../lib/bw')
-let should = require('should')
-let Bn = require('../lib/bn')
+import { Br } from '../lib/br'
+import { Bw } from '../lib/bw'
+import should from 'should'
+import { Bn } from '../lib/bn'
 
 describe('Br', function () {
   it('should make a new Br', function () {

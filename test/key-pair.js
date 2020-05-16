@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
-let KeyPair = require('../lib/key-pair')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let bn = require('../lib/bn')
-let should = require('should')
+import { KeyPair } from '../lib/key-pair'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { bn } from '../lib/bn'
+import should from 'should'
 
 describe('KeyPair', function () {
   it('should satisfy this basic API', function () {

@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let OpCode = require('../lib/op-code')
+import should from 'should'
+import { OpCode } from '../lib/op-code'
 
 describe('OpCode', function () {
   it('should create a new OpCode', function () {

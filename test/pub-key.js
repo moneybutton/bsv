@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let Point = require('../lib/point')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let should = require('should')
+import { Bn } from '../lib/bn'
+import { Point } from '../lib/point'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import should from 'should'
 
 describe('PubKey', function () {
   it('should create a blank public key', function () {

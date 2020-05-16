@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let assert = require('assert')
-let Bn = require('../lib/bn')
+import should from 'should'
+import { assert } from 'assert'
+import { Bn } from '../lib/bn'
 
 describe('Bn', function () {
   it('should create a bn', function () {

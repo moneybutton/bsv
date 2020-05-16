@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Base58Check = require('../lib/base-58-check')
-let base58 = require('../lib/base-58')
+import should from 'should'
+import { Base58Check } from '../lib/base-58-check'
+import { base58 } from '../lib/base-58'
 
 describe('Base58Check', function () {
   let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])

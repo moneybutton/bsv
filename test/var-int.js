@@ -1,10 +1,10 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let should = require('should')
-let Br = require('../lib/br')
-let Bw = require('../lib/bw')
-let VarInt = require('../lib/var-int')
+import { Bn } from '../lib/bn'
+import should from 'should'
+import { Br } from '../lib/br'
+import { Bw } from '../lib/bw'
+import { VarInt } from '../lib/var-int'
 
 describe('VarInt', function () {
   it('should make a new varInt', function () {

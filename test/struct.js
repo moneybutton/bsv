@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Struct = require('../lib/struct')
-let sinon = require('sinon')
-let Br = require('../lib/br')
+import should from 'should'
+import { Struct } from '../lib/struct'
+import { sinon } from 'sinon'
+import { Br } from '../lib/br'
 
 describe('Struct', function () {
   it('should make a new struct', function () {

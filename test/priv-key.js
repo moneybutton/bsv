@@ -1,9 +1,9 @@
 /* global describe,it */
 'use strict'
-let PrivKey = require('../lib/priv-key')
-let Bn = require('../lib/bn')
-let Point = require('../lib/point')
-let should = require('should')
+import { PrivKey } from '../lib/priv-key'
+import { Bn } from '../lib/bn'
+import { Point } from '../lib/point'
+import should from 'should'
 
 describe('PrivKey', function () {
   let hex = '96c132224121b509b7d0a16245e957d9192609c5637c6228311287b1be21627a'

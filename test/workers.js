@@ -1,13 +1,13 @@
 /* global describe,it */
 'use strict'
-let Bip32 = require('../lib/bip-32')
-let Ecies = require('../lib/ecies')
-let Hash = require('../lib/hash')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let KeyPair = require('../lib/key-pair')
-let Workers = require('../lib/workers')
-let should = require('should')
+import { Bip32 } from '../lib/bip-32'
+import { Ecies } from '../lib/ecies'
+import { Hash } from '../lib/hash'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { KeyPair } from '../lib/key-pair'
+import { Workers } from '../lib/workers'
+import should from 'should'
 
 describe('Workers', function () {
   it('should satisfy this basic API', function () {

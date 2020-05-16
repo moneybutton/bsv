@@ -1,13 +1,13 @@
 /* global describe,it */
 'use strict'
-let Address = require('../lib/address')
-let Bip32 = require('../lib/bip-32')
-let Bip39 = require('../lib/bip-39')
-let Bip39Jp = require('../lib/bip-39-jp')
-let Bip39En = require('../lib/bip-39-en')
-let Random = require('../lib/random')
-let should = require('should')
-let vectors = require('./vectors/bip39')
+import { Address } from '../lib/address'
+import { Bip32 } from '../lib/bip-32'
+import { Bip39 } from '../lib/bip-39'
+import { Bip39Jp } from '../lib/bip-39-jp'
+import { Bip39En } from '../lib/bip-39-en'
+import { Random } from '../lib/random'
+import should from 'should'
+import { vectors } from './vectors/bip39'
 
 describe('Bip39', function () {
   this.timeout(5000)

@@ -1,15 +1,15 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Interp = require('../lib/interp')
-let Tx = require('../lib/tx')
-let Script = require('../lib/script')
-let Bn = require('../lib/bn')
-let KeyPair = require('../lib/key-pair')
-let Sig = require('../lib/sig')
-let bitcoindScriptValid = require('./vectors/bitcoind/script_valid')
-let bitcoindScriptInvalid = require('./vectors/bitcoind/script_invalid')
-let bitcoinABCScriptTests = require('./vectors/bitcoin-abc/script_tests')
+import should from 'should'
+import { Interp } from '../lib/interp'
+import { Tx } from '../lib/tx'
+import { Script } from '../lib/script'
+import { Bn } from '../lib/bn'
+import { KeyPair } from '../lib/key-pair'
+import { Sig } from '../lib/sig'
+import { bitcoindScriptValid } from './vectors/bitcoind/script_valid'
+import { bitcoindScriptInvalid } from './vectors/bitcoind/script_invalid'
+import { bitcoinABCScriptTests } from './vectors/bitcoin-abc/script_tests'
 
 describe('Interp', function () {
   it('should make a new interp', function () {

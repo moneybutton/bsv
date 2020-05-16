@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
 require('should')
-let Random = require('../lib/random')
+import { Random } from '../lib/random'
 
 describe('Random', function () {
   describe('@getRandomBuffer', function () {

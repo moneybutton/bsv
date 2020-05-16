@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
-let should = require('should')
-let Aescbc = require('../lib/aescbc')
-let vectors = require('./vectors/aescbc')
+import should from 'should'
+import { Aescbc } from '../lib/aescbc'
+import vectors from './vectors/aescbc.json'
 
 describe('Aescbc', function () {
   should.exist(Aescbc)

@@ -1,7 +1,7 @@
 /* global describe,it */
 'use strict'
-let Ach = require('../lib/ach')
-let should = require('should')
+import { Ach } from '../lib/ach'
+import should from 'should'
 
 describe('Ach (Aes+Cbc+Hmac)', function () {
   this.timeout(4000)

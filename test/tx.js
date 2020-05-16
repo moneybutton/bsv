@@ -1,23 +1,23 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let Br = require('../lib/br')
-let KeyPair = require('../lib/key-pair')
-let Script = require('../lib/script')
-let Sig = require('../lib/sig')
-let Tx = require('../lib/tx')
-let TxIn = require('../lib/tx-in')
-let TxOut = require('../lib/tx-out')
-let VarInt = require('../lib/var-int')
-let Interp = require('../lib/interp')
-let should = require('should')
-let sinon = require('sinon')
+import { Bn } from '../lib/bn'
+import { Br } from '../lib/br'
+import { KeyPair } from '../lib/key-pair'
+import { Script } from '../lib/script'
+import { Sig } from '../lib/sig'
+import { Tx } from '../lib/tx'
+import { TxIn } from '../lib/tx-in'
+import { TxOut } from '../lib/tx-out'
+import { VarInt } from '../lib/var-int'
+import { Interp } from '../lib/interp'
+import should from 'should'
+import { sinon } from 'sinon'
 
-let vectorsBitcoindSighash = require('./vectors/bitcoind/sighash')
-let vectorsBitcoinABCSighash = require('./vectors/bitcoin-abc/sighash')
-let vectorsBitcoindTxValid = require('./vectors/bitcoind/tx_valid')
-let vectorsBitcoindTxInvalid = require('./vectors/bitcoind/tx_invalid')
-let largesttxvector = require('./vectors/largesttx')
+import { vectorsBitcoindSighash } from './vectors/bitcoind/sighash'
+import { vectorsBitcoinABCSighash } from './vectors/bitcoin-abc/sighash'
+import { vectorsBitcoindTxValid } from './vectors/bitcoind/tx_valid'
+import { vectorsBitcoindTxInvalid } from './vectors/bitcoind/tx_invalid'
+import { largesttxvector } from './vectors/largesttx'
 
 describe('Tx', function () {
   let txIn = new TxIn().fromBuffer(

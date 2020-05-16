@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-let cmp = require('../lib/cmp')
+import { cmp } from '../lib/cmp'
 require('should')
 
 describe('cmp', function () {

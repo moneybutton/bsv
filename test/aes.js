@@ -1,9 +1,8 @@
 /* global describe,it */
-'use strict'
-let should = require('should')
-let Hash = require('../lib/hash')
-let Aes = require('../lib/aes')
-let vectors = require('./vectors/aes')
+import should from 'should'
+import { Hash } from '../lib/hash'
+import { Aes } from '../lib/aes'
+import vectors from './vectors/aes.json'
 
 describe('Aes', function () {
   let m128 = Hash.sha256(Buffer.from('test1')).slice(0, 128 / 8)

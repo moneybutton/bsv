@@ -1,14 +1,14 @@
 /* global describe,it */
 'use strict'
-let Bn = require('../lib/bn')
-let OpCode = require('../lib/op-code')
-let PrivKey = require('../lib/priv-key')
-let PubKey = require('../lib/pub-key')
-let Script = require('../lib/script')
-let should = require('should')
+import { Bn } from '../lib/bn'
+import { OpCode } from '../lib/op-code'
+import { PrivKey } from '../lib/priv-key'
+import { PubKey } from '../lib/pub-key'
+import { Script } from '../lib/script'
+import should from 'should'
 
-let scriptInvalid = require('./vectors/bitcoind/script_invalid')
-let scriptValid = require('./vectors/bitcoind/script_valid')
+import { scriptInvalid } from './vectors/bitcoind/script_invalid'
+import { scriptValid } from './vectors/bitcoind/script_valid'
 
 describe('Script', function () {
   it('should make a new script', function () {
