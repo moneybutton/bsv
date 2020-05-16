@@ -6,9 +6,6 @@
  * hanging when the tests are done running so that the tests end properly.
  */
 'use strict'
-
-require('../lib/config')
-
 import { Workers } from '../lib/workers'
 
 after(function () {

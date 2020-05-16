@@ -1,3 +1,4 @@
 require:
-  - '@babel/register'
+  - './load-babel.js'
 reporter: 'progress'
+recursive: true

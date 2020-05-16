@@ -1,7 +1,6 @@
 /* global describe,it */
-'use strict'
-require('should')
 import { Random } from '../lib/random'
+import 'should'
 
 describe('Random', function () {
   describe('@getRandomBuffer', function () {

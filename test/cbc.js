@@ -1,8 +1,8 @@
 /* global describe,it */
 'use strict'
 import { Aes } from '../lib/aes'
-require('should')
 import { Cbc } from '../lib/cbc'
+require('should')
 
 describe('Cbc', function () {
   describe('@buf2BlocksBuf', function () {
