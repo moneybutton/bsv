@@ -84,8 +84,8 @@
   },
   "dependencies": {
     "aes": "0.1.0",
-    "bitcoin-elliptic": "^7.0.0",
-    "bn.js": "^4.4.0",
+    "bitcoin-elliptic": "^7.0.1",
+    "bn.js": "^5.1.1",
     "bs58": "4.0.1",
     "chai": "^4.2.0",
     "hash.js": "^1.1.7",

@@ -1497,12 +1497,12 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bitcoin-elliptic@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/bitcoin-elliptic/-/bitcoin-elliptic-7.0.0.tgz#d907eefc6c4629781c0311b5a7cbd7027e5bcd90"
-  integrity sha512-aaUNcevg3SDL9UZY0WVdO2LTXSDh8/Ahv468Zp34z6kLqanl7pXFvDcYOMPFsj6p2tgoDwfdh9L/557BbXxrZw==
+bitcoin-elliptic@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/bitcoin-elliptic/-/bitcoin-elliptic-7.0.1.tgz#bbdcddea28cdbbd5316c012374764d383ac59e69"
+  integrity sha512-eJIERwXIIjJK7gfVoevk0G1CbYbxezZ6ePZXIxngjyI+QQHXWqXMbY+gpxsND8FCLvWl050fw6W+PVZge5fBHw==
   dependencies:
-    bn.js "^4.4.0"
+    bn.js "^5.1.1"
     brorand "^1.0.1"
     hash.js "^1.0.0"
     hmac-drbg "^1.0.0"
