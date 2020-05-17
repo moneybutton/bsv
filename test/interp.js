@@ -37,13 +37,13 @@ describe('Interp', function () {
 
   describe('#fromJSON', function () {
     it('should convert a json to an interp', function () {
-      let interp = new Interp().fromObject({
+      const interp = new Interp().fromObject({
         script: new Script(),
         stack: ['00'],
         altStack: ['00']
       })
-      let json = interp.toJSON()
-      let interp2 = new Interp().fromJSON(json)
+      const json = interp.toJSON()
+      const interp2 = new Interp().fromJSON(json)
       should.exist(interp2.script)
       should.exist(interp2.stack[0])
       should.exist(interp2.altStack[0])
@@ -52,27 +52,27 @@ describe('Interp', function () {
 
   describe('#fromFastBuffer', function () {
     it('should convert an interp buf to an interp', function () {
-      let interp = new Interp().fromObject({
+      const interp = new Interp().fromObject({
         script: new Script(),
         stack: ['00'],
         altStack: ['00']
       })
-      let buf = interp.toFastBuffer()
-      let interp2 = new Interp().fromFastBuffer(buf)
+      const buf = interp.toFastBuffer()
+      const interp2 = new Interp().fromFastBuffer(buf)
       should.exist(interp2.script)
       should.exist(interp2.stack[0])
       should.exist(interp2.altStack[0])
     })
 
     it('should convert an interp buf to an interp', function () {
-      let interp = new Interp().fromObject({
+      const interp = new Interp().fromObject({
         script: new Script(),
         stack: ['00'],
         altStack: ['00'],
         tx: new Tx()
       })
-      let buf = interp.toFastBuffer()
-      let interp2 = new Interp().fromFastBuffer(buf)
+      const buf = interp.toFastBuffer()
+      const interp2 = new Interp().fromFastBuffer(buf)
       should.exist(interp2.script)
       should.exist(interp2.stack[0])
       should.exist(interp2.altStack[0])
@@ -81,8 +81,8 @@ describe('Interp', function () {
 
   describe('#toJSON', function () {
     it('should convert an interp to json', function () {
-      let interp = new Interp().fromObject({ script: new Script() })
-      let json = interp.toJSON()
+      const interp = new Interp().fromObject({ script: new Script() })
+      const json = interp.toJSON()
       should.exist(json.script)
       should.not.exist(json.tx)
     })
@@ -90,12 +90,12 @@ describe('Interp', function () {
 
   describe('#toFastBuffer', function () {
     it('should convert an interp to buf with no tx', function () {
-      let interp = new Interp().fromObject({ script: new Script() })
+      const interp = new Interp().fromObject({ script: new Script() })
       Buffer.isBuffer(interp.toFastBuffer()).should.equal(true)
     })
 
     it('should convert an interp to buf with a tx', function () {
-      let interp = new Interp().fromObject({
+      const interp = new Interp().fromObject({
         script: new Script(),
         tx: new Tx()
       })
@@ -114,28 +114,28 @@ describe('Interp', function () {
         true
       )
 
-      let buf = Buffer.from('00', 'hex')
-      let bool = new Bn().fromSm(buf, { endian: 'little' }).cmp(0) !== 0
+      const buf = Buffer.from('00', 'hex')
+      const bool = new Bn().fromSm(buf, { endian: 'little' }).cmp(0) !== 0
       Interp.castToBool(buf).should.equal(bool)
     })
   })
 
   describe('#getDebugObject', function () {
     it('should get a failure explanation object', function () {
-      let scriptSig = Script.fromBitcoindString(
+      const scriptSig = Script.fromBitcoindString(
         '0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01'
       )
-      let scriptPubKey = Script.fromBitcoindString(
+      const scriptPubKey = Script.fromBitcoindString(
         '0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
-      let flags =
+      const flags =
         Interp.SCRIPT_VERIFY_P2SH |
         Interp.SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY |
         Interp.SCRIPT_VERIFY_CHECKSEQUENCEVERIFY
 
-      let hashBuf = Buffer.alloc(32)
+      const hashBuf = Buffer.alloc(32)
       hashBuf.fill(0)
-      let credtx = new Tx()
+      const credtx = new Tx()
       credtx.addTxIn(
         hashBuf,
         0xffffffff,
@@ -144,14 +144,14 @@ describe('Interp', function () {
       )
       credtx.addTxOut(new Bn(0), scriptPubKey)
 
-      let idbuf = credtx.hash()
-      let spendtx = new Tx()
+      const idbuf = credtx.hash()
+      const spendtx = new Tx()
       spendtx.addTxIn(idbuf, 0, new Script(), 0xffffffff)
       spendtx.addTxOut(new Bn(0), new Script())
 
-      let interp = new Interp()
+      const interp = new Interp()
       interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-      let debugObject = interp.getDebugObject()
+      const debugObject = interp.getDebugObject()
       should.exist(debugObject.errStr)
       should.exist(debugObject.scriptStr)
       should.exist(debugObject.pc)
@@ -161,20 +161,20 @@ describe('Interp', function () {
 
   describe('#getDebugString', function () {
     it('should get a failure explanation object', function () {
-      let scriptSig = Script.fromBitcoindString(
+      const scriptSig = Script.fromBitcoindString(
         '0x47 0x3044022057292e2d4dfe775becdd0a9e6547997c728cdf35390f6a017da56d654d374e4902206b643be2fc53763b4e284845bfea2c597d2dc7759941dce937636c9d341b71ed01'
       )
-      let scriptPubKey = Script.fromBitcoindString(
+      const scriptPubKey = Script.fromBitcoindString(
         '0x41 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
-      let flags =
+      const flags =
         Interp.SCRIPT_VERIFY_P2SH |
         Interp.SCRIPT_VERIFY_CHECKLOCKTIMEVERIFY |
         Interp.SCRIPT_VERIFY_CHECKSEQUENCEVERIFY
 
-      let hashBuf = Buffer.alloc(32)
+      const hashBuf = Buffer.alloc(32)
       hashBuf.fill(0)
-      let credtx = new Tx()
+      const credtx = new Tx()
       credtx.addTxIn(
         hashBuf,
         0xffffffff,
@@ -183,14 +183,14 @@ describe('Interp', function () {
       )
       credtx.addTxOut(new Bn(0), scriptPubKey)
 
-      let idbuf = credtx.hash()
-      let spendtx = new Tx()
+      const idbuf = credtx.hash()
+      const spendtx = new Tx()
       spendtx.addTxIn(idbuf, 0, new Script(), 0xffffffff)
       spendtx.addTxOut(new Bn(0), new Script())
 
-      let interp = new Interp()
+      const interp = new Interp()
       interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
-      let debugString = interp.getDebugString()
+      const debugString = interp.getDebugString()
       debugString.should.equal(
         '{\n  "errStr": "",\n  "scriptStr": "65 0x0679be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG",\n  "pc": 1,\n  "stack": [\n    "01"\n  ],\n  "altStack": [],\n  "opCodeStr": "OP_CHECKSIG"\n}'
       )
@@ -266,14 +266,14 @@ describe('Interp', function () {
     })
 
     it('should verify this new pay-to-pubKey script', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let scriptPubKey = new Script()
+      const keyPair = new KeyPair().fromRandom()
+      const scriptPubKey = new Script()
         .writeBuffer(keyPair.pubKey.toDer(true))
         .writeString('OP_CHECKSIG')
 
-      let hashBuf = Buffer.alloc(32)
+      const hashBuf = Buffer.alloc(32)
       hashBuf.fill(0)
-      let credtx = new Tx()
+      const credtx = new Tx()
       credtx.addTxIn(
         hashBuf,
         0xffffffff,
@@ -282,31 +282,31 @@ describe('Interp', function () {
       )
       credtx.addTxOut(new Bn(0), scriptPubKey)
 
-      let idbuf = credtx.hash()
-      let spendtx = new Tx()
+      const idbuf = credtx.hash()
+      const spendtx = new Tx()
       spendtx.addTxIn(idbuf, 0, new Script(), 0xffffffff)
       spendtx.addTxOut(new Bn(0), new Script())
 
-      let sig = spendtx.sign(keyPair, Sig.SIGHASH_ALL, 0, scriptPubKey)
-      let scriptSig = new Script().writeBuffer(sig.toTxFormat())
+      const sig = spendtx.sign(keyPair, Sig.SIGHASH_ALL, 0, scriptPubKey)
+      const scriptSig = new Script().writeBuffer(sig.toTxFormat())
       spendtx.txIns[0].setScript(scriptSig)
 
-      let interp = new Interp()
-      let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0)
+      const interp = new Interp()
+      const verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0)
       verified.should.equal(true)
     })
 
     it('should verify this pay-to-pubKey script from script_valid.json', function () {
-      let scriptSig = new Script().fromBitcoindString(
+      const scriptSig = new Script().fromBitcoindString(
         '0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501'
       )
-      let scriptPubKey = new Script().fromBitcoindString(
+      const scriptPubKey = new Script().fromBitcoindString(
         '0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 CHECKSIG'
       )
 
-      let hashBuf = Buffer.alloc(32)
+      const hashBuf = Buffer.alloc(32)
       hashBuf.fill(0)
-      let credtx = new Tx()
+      const credtx = new Tx()
       credtx.addTxIn(
         hashBuf,
         0xffffffff,
@@ -315,13 +315,13 @@ describe('Interp', function () {
       )
       credtx.addTxOut(new Bn(0), scriptPubKey)
 
-      let idbuf = credtx.hash()
-      let spendtx = new Tx()
+      const idbuf = credtx.hash()
+      const spendtx = new Tx()
       spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
       spendtx.addTxOut(new Bn(0), new Script())
 
-      let interp = new Interp()
-      let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, 0)
+      const interp = new Interp()
+      const verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, 0)
       verified.should.equal(true)
     })
   })
@@ -338,14 +338,14 @@ describe('Interp', function () {
       it('should verify bitcoindScriptValid vector ' + c, function () {
         // ["Format is: [scriptSig, scriptPubKey, flags, expected_scripterror, ... comments]"],
         // Test vectors for SIGHASH_FORKID
-        let scriptSig = new Script().fromBitcoindString(vector[0])
-        let scriptPubKey = new Script().fromBitcoindString(vector[1])
-        let flags = Interp.getFlags(vector[2])
-        let expectedError = vector[3]
+        const scriptSig = new Script().fromBitcoindString(vector[0])
+        const scriptPubKey = new Script().fromBitcoindString(vector[1])
+        const flags = Interp.getFlags(vector[2])
+        const expectedError = vector[3]
 
-        let hashBuf = Buffer.alloc(32)
+        const hashBuf = Buffer.alloc(32)
         hashBuf.fill(0)
-        let credtx = new Tx()
+        const credtx = new Tx()
         credtx.addTxIn(
           hashBuf,
           0xffffffff,
@@ -354,14 +354,14 @@ describe('Interp', function () {
         )
         credtx.addTxOut(new Bn(0), scriptPubKey)
 
-        let idbuf = credtx.hash()
-        let spendtx = new Tx()
+        const idbuf = credtx.hash()
+        const spendtx = new Tx()
         spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
         spendtx.addTxOut(new Bn(0), new Script())
 
-        let interp = new Interp()
-        let valueBn = new Bn(0)
-        let verified = interp.verify(
+        const interp = new Interp()
+        const valueBn = new Bn(0)
+        const verified = interp.verify(
           scriptSig,
           scriptPubKey,
           spendtx,
@@ -389,13 +389,13 @@ describe('Interp', function () {
       }
       c++
       it('should verify bitcoindScriptValid vector ' + c, function () {
-        let scriptSig = new Script().fromBitcoindString(vector[0])
-        let scriptPubKey = new Script().fromBitcoindString(vector[1])
-        let flags = Interp.getFlags(vector[2])
+        const scriptSig = new Script().fromBitcoindString(vector[0])
+        const scriptPubKey = new Script().fromBitcoindString(vector[1])
+        const flags = Interp.getFlags(vector[2])
 
-        let hashBuf = Buffer.alloc(32)
+        const hashBuf = Buffer.alloc(32)
         hashBuf.fill(0)
-        let credtx = new Tx()
+        const credtx = new Tx()
         credtx.addTxIn(
           hashBuf,
           0xffffffff,
@@ -404,13 +404,13 @@ describe('Interp', function () {
         )
         credtx.addTxOut(new Bn(0), scriptPubKey)
 
-        let idbuf = credtx.hash()
-        let spendtx = new Tx()
+        const idbuf = credtx.hash()
+        const spendtx = new Tx()
         spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
         spendtx.addTxOut(new Bn(0), new Script())
 
-        let interp = new Interp()
-        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
+        const interp = new Interp()
+        const verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
         verified.should.equal(true)
       })
     })
@@ -422,13 +422,13 @@ describe('Interp', function () {
       }
       c++
       it('should unverify bitcoindScriptInvalid vector ' + c, function () {
-        let scriptSig = new Script().fromBitcoindString(vector[0])
-        let scriptPubKey = new Script().fromBitcoindString(vector[1])
-        let flags = Interp.getFlags(vector[2])
+        const scriptSig = new Script().fromBitcoindString(vector[0])
+        const scriptPubKey = new Script().fromBitcoindString(vector[1])
+        const flags = Interp.getFlags(vector[2])
 
-        let hashBuf = Buffer.alloc(32)
+        const hashBuf = Buffer.alloc(32)
         hashBuf.fill(0)
-        let credtx = new Tx()
+        const credtx = new Tx()
         credtx.addTxIn(
           hashBuf,
           0xffffffff,
@@ -437,13 +437,13 @@ describe('Interp', function () {
         )
         credtx.addTxOut(new Bn(0), scriptPubKey)
 
-        let idbuf = credtx.hash()
-        let spendtx = new Tx()
+        const idbuf = credtx.hash()
+        const spendtx = new Tx()
         spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
         spendtx.addTxOut(new Bn(0), new Script())
 
-        let interp = new Interp()
-        let verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
+        const interp = new Interp()
+        const verified = interp.verify(scriptSig, scriptPubKey, spendtx, 0, flags)
         verified.should.equal(false)
       })
     })

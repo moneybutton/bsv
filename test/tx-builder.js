@@ -31,49 +31,49 @@ describe('TxBuilder', function () {
   })
 
   function prepareTxBuilder () {
-    let txb = new TxBuilder()
+    const txb = new TxBuilder()
 
     // make change address
-    let privKey = new PrivKey().fromBn(new Bn(1))
-    let keyPair = new KeyPair().fromPrivKey(privKey)
-    let changeaddr = new Address().fromPubKey(keyPair.pubKey)
+    const privKey = new PrivKey().fromBn(new Bn(1))
+    const keyPair = new KeyPair().fromPrivKey(privKey)
+    const changeaddr = new Address().fromPubKey(keyPair.pubKey)
 
     // make addresses to send from
-    let privKey1 = new PrivKey().fromBn(new Bn(2))
-    let keyPair1 = new KeyPair().fromPrivKey(privKey1)
-    let addr1 = new Address().fromPubKey(keyPair1.pubKey)
+    const privKey1 = new PrivKey().fromBn(new Bn(2))
+    const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+    const addr1 = new Address().fromPubKey(keyPair1.pubKey)
 
-    let privKey2 = new PrivKey().fromBn(new Bn(3))
-    let keyPair2 = new KeyPair().fromPrivKey(privKey2)
-    let addr2 = new Address().fromPubKey(keyPair2.pubKey)
+    const privKey2 = new PrivKey().fromBn(new Bn(3))
+    const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+    const addr2 = new Address().fromPubKey(keyPair2.pubKey)
 
     // make addresses to send to
-    let saddr1 = addr1
+    const saddr1 = addr1
 
     // txOuts that we are spending
 
     // pubKeyHash out
-    let scriptout1 = new Script().fromString(
+    const scriptout1 = new Script().fromString(
       'OP_DUP OP_HASH160 20 0x' +
         addr1.hashBuf.toString('hex') +
         ' OP_EQUALVERIFY OP_CHECKSIG'
     )
 
     // pubKeyHash out
-    let scriptout2 = new Script().fromString(
+    const scriptout2 = new Script().fromString(
       'OP_DUP OP_HASH160 20 0x' +
         addr2.hashBuf.toString('hex') +
         ' OP_EQUALVERIFY OP_CHECKSIG'
     )
 
-    let txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
-    let txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+    const txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+    const txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
     // total balance: 2e8
 
-    let txHashBuf = Buffer.alloc(32)
+    const txHashBuf = Buffer.alloc(32)
     txHashBuf.fill(0)
-    let txOutNum1 = 0
-    let txOutNum2 = 1
+    const txOutNum1 = 0
+    const txOutNum2 = 1
 
     txb.setFeePerKbNum(0.0001e8)
     txb.setChangeAddress(changeaddr)
@@ -98,16 +98,16 @@ describe('TxBuilder', function () {
   }
 
   function prepareAndBuildTxBuilder () {
-    let obj = prepareTxBuilder()
+    const obj = prepareTxBuilder()
     obj.txb.build()
     return obj
   }
 
   describe('#toJSON', function () {
     it('should convert this txb to JSON', function () {
-      let obj = prepareAndBuildTxBuilder()
-      let txb = obj.txb
-      let json = txb.toJSON()
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const json = txb.toJSON()
       should.exist(json.tx)
       should.exist(json.txIns)
       should.exist(json.txIns[0])
@@ -121,11 +121,11 @@ describe('TxBuilder', function () {
 
   describe('#fromJSON', function () {
     it('should convert to/from json isomorphically', function () {
-      let obj = prepareAndBuildTxBuilder()
-      let txb = obj.txb
-      let json = txb.toJSON()
-      let txb2 = new TxBuilder().fromJSON(json)
-      let json2 = txb2.toJSON()
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const json = txb.toJSON()
+      const txb2 = new TxBuilder().fromJSON(json)
+      const json2 = txb2.toJSON()
       json2.tx.should.equal(json.tx)
       json2.txIns[0].should.equal(json.txIns[0])
       json2.txOuts[0].should.equal(json.txOuts[0])
@@ -139,8 +139,8 @@ describe('TxBuilder', function () {
 
   describe('#setDust', function () {
     it('should set the dust', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.setDust(200)
       txb.dust.should.equal(200)
       txb.setDust(400)
@@ -150,8 +150,8 @@ describe('TxBuilder', function () {
 
   describe('#dustChangeToFees', function () {
     it('should set the dustChangeToFees', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.sendDustChangeToFees(true)
       txb.dustChangeToFees.should.equal(true)
       txb.build()
@@ -161,8 +161,8 @@ describe('TxBuilder', function () {
     })
 
     it('should not be able to build a tx if dust is greater than all outputs', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.sendDustChangeToFees(true)
       txb.setDust(4e8)
       ;(function () {
@@ -173,8 +173,8 @@ describe('TxBuilder', function () {
     })
 
     it('should not be able to build a tx if dust is greater than all outputs', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.sendDustChangeToFees(true)
       txb.setDust(4e8 + 1)
       ;(function () {
@@ -186,8 +186,8 @@ describe('TxBuilder', function () {
     })
 
     it('should have two outputs if dust is zero', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.sendDustChangeToFees(true)
       txb.setDust(0)
       txb.build()
@@ -197,8 +197,8 @@ describe('TxBuilder', function () {
 
   describe('#setFeePerKbNum', function () {
     it('should set the feePerKbNum', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.setFeePerKbNum(1000)
       txb.feePerKbNum.should.equal(1000)
     })
@@ -206,10 +206,10 @@ describe('TxBuilder', function () {
 
   describe('#setChangeAddress', function () {
     it('should set the change address', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
-      let privKey = new PrivKey().fromRandom()
-      let address = new Address().fromPrivKey(privKey)
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
+      const privKey = new PrivKey().fromRandom()
+      const address = new Address().fromPrivKey(privKey)
       txb.setChangeAddress(address)
       txb.changeScript.toString().should.equal(address.toTxOutScript().toString())
     })
@@ -217,10 +217,10 @@ describe('TxBuilder', function () {
 
   describe('#setChangeScript', function () {
     it('should set the changeScript', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
-      let privKey = new PrivKey().fromRandom()
-      let address = new Address().fromPrivKey(privKey)
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
+      const privKey = new PrivKey().fromRandom()
+      const address = new Address().fromPrivKey(privKey)
       txb.setChangeScript(address.toTxOutScript())
       txb.changeScript.toString().should.equal(address.toTxOutScript().toString())
     })
@@ -228,8 +228,8 @@ describe('TxBuilder', function () {
 
   describe('#setNLocktime', function () {
     it('should set the nLockTime', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.setNLocktime(1)
       txb.build()
       txb.tx.nLockTime.should.equal(1)
@@ -238,8 +238,8 @@ describe('TxBuilder', function () {
 
   describe('#setVersion', function () {
     it('should set the versionBytesNum', function () {
-      let obj = prepareTxBuilder()
-      let txb = obj.txb
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
       txb.setVersion(2)
       txb.build()
       txb.tx.versionBytesNum.should.equal(2)
@@ -248,15 +248,15 @@ describe('TxBuilder', function () {
 
   describe('#importPartiallySignedTx', function () {
     it('should set tx', function () {
-      let tx = new Tx()
-      let txb = new TxBuilder().importPartiallySignedTx(tx)
+      const tx = new Tx()
+      const txb = new TxBuilder().importPartiallySignedTx(tx)
       should.exist(txb.tx)
     })
 
     it('should set tx and uTxOutMap', function () {
-      let tx = new Tx()
-      let uTxOutMap = new TxOutMap()
-      let txb = new TxBuilder().importPartiallySignedTx(tx, uTxOutMap)
+      const tx = new Tx()
+      const uTxOutMap = new TxOutMap()
+      const txb = new TxBuilder().importPartiallySignedTx(tx, uTxOutMap)
       should.exist(txb.tx)
       should.exist(txb.uTxOutMap)
     })
@@ -264,9 +264,9 @@ describe('TxBuilder', function () {
 
   describe('#outputToAddress', function () {
     it('should add a pubKeyHash address', function () {
-      let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
-      let address = new Address().fromPubKey(pubKey)
-      let txb = new TxBuilder()
+      const pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
+      const address = new Address().fromPubKey(pubKey)
+      const txb = new TxBuilder()
       txb.outputToAddress(new Bn(0), address)
       txb.txOuts.length.should.equal(1)
     })
@@ -274,8 +274,8 @@ describe('TxBuilder', function () {
 
   describe('#outputToScript', function () {
     it('should add an OP_RETURN output', function () {
-      let script = new Script().fromString('OP_RETURN')
-      let txb = new TxBuilder()
+      const script = new Script().fromString('OP_RETURN')
+      const txb = new TxBuilder()
       txb.outputToScript(new Bn(0), script)
       txb.txOuts.length.should.equal(1)
     })
@@ -283,36 +283,36 @@ describe('TxBuilder', function () {
 
   describe('#build', function () {
     function prepareTxBuilder (outAmountBn = new Bn(1e8)) {
-      let txb = new TxBuilder()
+      const txb = new TxBuilder()
 
       // make change address
-      let privKey = new PrivKey().fromBn(new Bn(1))
-      let keyPair = new KeyPair().fromPrivKey(privKey)
-      let changeaddr = new Address().fromPubKey(keyPair.pubKey)
+      const privKey = new PrivKey().fromBn(new Bn(1))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
 
       // make addresses to send from
-      let privKey1 = new PrivKey().fromBn(new Bn(2))
-      let keyPair1 = new KeyPair().fromPrivKey(privKey1)
-      let addr1 = new Address().fromPubKey(keyPair1.pubKey)
+      const privKey1 = new PrivKey().fromBn(new Bn(2))
+      const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+      const addr1 = new Address().fromPubKey(keyPair1.pubKey)
 
-      let privKey2 = new PrivKey().fromBn(new Bn(3))
-      let keyPair2 = new KeyPair().fromPrivKey(privKey2)
-      let addr2 = new Address().fromPubKey(keyPair2.pubKey)
+      const privKey2 = new PrivKey().fromBn(new Bn(3))
+      const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+      const addr2 = new Address().fromPubKey(keyPair2.pubKey)
 
-      let privKey3 = new PrivKey().fromBn(new Bn(4))
-      let keyPair3 = new KeyPair().fromPrivKey(privKey3)
-      let addr3 = new Address().fromPubKey(keyPair3.pubKey)
+      const privKey3 = new PrivKey().fromBn(new Bn(4))
+      const keyPair3 = new KeyPair().fromPrivKey(privKey3)
+      const addr3 = new Address().fromPubKey(keyPair3.pubKey)
 
-      let txOut1 = TxOut.fromProperties(new Bn(1e8), addr1.toTxOutScript())
-      let txOut2 = TxOut.fromProperties(new Bn(1e8), addr2.toTxOutScript())
-      let txOut3 = TxOut.fromProperties(new Bn(1e8), addr3.toTxOutScript())
+      const txOut1 = TxOut.fromProperties(new Bn(1e8), addr1.toTxOutScript())
+      const txOut2 = TxOut.fromProperties(new Bn(1e8), addr2.toTxOutScript())
+      const txOut3 = TxOut.fromProperties(new Bn(1e8), addr3.toTxOutScript())
       // total balance: 3e8
 
-      let txHashBuf = Buffer.alloc(32)
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum1 = 0
-      let txOutNum2 = 1
-      let txOutNum3 = 2
+      const txOutNum1 = 0
+      const txOutNum2 = 1
+      const txOutNum3 = 2
 
       txb.setFeePerKbNum(0.0001e8)
       txb.setChangeAddress(changeaddr)
@@ -325,7 +325,7 @@ describe('TxBuilder', function () {
     }
 
     it('should build a tx where all inputs are NOT required', function () {
-      let txb = prepareTxBuilder()
+      const txb = prepareTxBuilder()
 
       txb.build()
 
@@ -333,7 +333,7 @@ describe('TxBuilder', function () {
     })
 
     it('should build a tx where all inputs are required', function () {
-      let txb = prepareTxBuilder()
+      const txb = prepareTxBuilder()
 
       txb.build({ useAllInputs: true })
 
@@ -343,7 +343,7 @@ describe('TxBuilder', function () {
 
   describe('#sort', function () {
     it('it should call tx sort', function () {
-      let txBuilder = new TxBuilder()
+      const txBuilder = new TxBuilder()
       let called = 0
       txBuilder.tx.sort = () => { called++ }
       txBuilder.sort()
@@ -383,17 +383,17 @@ describe('TxBuilder', function () {
 
   describe('#inputFromScript', function () {
     it('should add an input from a script', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(
+      const keyPair = new KeyPair().fromRandom()
+      const address = new Address().fromPubKey(keyPair.pubKey)
+      const txOut = TxOut.fromProperties(
         new Bn(1000),
         new Script().fromPubKeyHash(address.hashBuf)
       )
-      let script = new Script().fromString('OP_RETURN')
-      let txHashBuf = Buffer.alloc(32)
+      const script = new Script().fromString('OP_RETURN')
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScript(
+      const txOutNum = 0
+      const txbuilder = new TxBuilder().inputFromScript(
         txHashBuf,
         txOutNum,
         txOut,
@@ -403,17 +403,17 @@ describe('TxBuilder', function () {
     })
 
     it('should add an input from a script and set nSequence', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(
+      const keyPair = new KeyPair().fromRandom()
+      const address = new Address().fromPubKey(keyPair.pubKey)
+      const txOut = TxOut.fromProperties(
         new Bn(1000),
         new Script().fromPubKeyHash(address.hashBuf)
       )
-      let script = new Script().fromString('OP_RETURN')
-      let txHashBuf = Buffer.alloc(32)
+      const script = new Script().fromString('OP_RETURN')
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromScript(
+      const txOutNum = 0
+      const txbuilder = new TxBuilder().inputFromScript(
         txHashBuf,
         txOutNum,
         txOut,
@@ -427,16 +427,16 @@ describe('TxBuilder', function () {
 
   describe('#inputFromPubKeyHash', function () {
     it('should add an input from a pubKeyHash output', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(
+      const keyPair = new KeyPair().fromRandom()
+      const address = new Address().fromPubKey(keyPair.pubKey)
+      const txOut = TxOut.fromProperties(
         new Bn(1000),
         new Script().fromPubKeyHash(address.hashBuf)
       )
-      let txHashBuf = Buffer.alloc(32)
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromPubKeyHash(
+      const txOutNum = 0
+      const txbuilder = new TxBuilder().inputFromPubKeyHash(
         txHashBuf,
         txOutNum,
         txOut,
@@ -449,16 +449,16 @@ describe('TxBuilder', function () {
     })
 
     it('should add an input from a pubKeyHash output and set nSequence', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(
+      const keyPair = new KeyPair().fromRandom()
+      const address = new Address().fromPubKey(keyPair.pubKey)
+      const txOut = TxOut.fromProperties(
         new Bn(1000),
         new Script().fromPubKeyHash(address.hashBuf)
       )
-      let txHashBuf = Buffer.alloc(32)
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum = 0
-      let txbuilder = new TxBuilder().inputFromPubKeyHash(
+      const txOutNum = 0
+      const txbuilder = new TxBuilder().inputFromPubKeyHash(
         txHashBuf,
         txOutNum,
         txOut,
@@ -477,14 +477,14 @@ describe('TxBuilder', function () {
     let txb, keyPair1, txOut1
 
     before(function () {
-      let obj = prepareAndBuildTxBuilder()
+      const obj = prepareAndBuildTxBuilder()
       txb = obj.txb
       keyPair1 = obj.keyPair1
       txOut1 = obj.txOut1
     })
 
     it('should sign and verify synchronously', function () {
-      let sig = txb.getSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txOut1)
+      const sig = txb.getSig(keyPair1, Sig.SIGHASH_ALL, 0, keyPair1, txOut1)
       ;(sig instanceof Sig).should.equal(true)
     })
   })
@@ -492,17 +492,16 @@ describe('TxBuilder', function () {
   describe('#signTxIn', function () {
     it('should sign and verify no SIGHASH_FORKID synchronously', function () {
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let nHashType = Sig.SIGHASH_ALL
-      let flags = Interp.SCRIPT_VERIFY_P2SH
+      const nHashType = Sig.SIGHASH_ALL
+      const flags = Interp.SCRIPT_VERIFY_P2SH
       txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
@@ -527,17 +526,16 @@ describe('TxBuilder', function () {
 
     it('should sign and verify SIGHASH_FORKID synchronously', function () {
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
-      let flags =
+      const nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
+      const flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
       txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
@@ -563,11 +561,10 @@ describe('TxBuilder', function () {
 
     it('should pass in txOut', function () {
       // prepare
-      let txb, keyPair1, txOut1
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      txOut1 = obj.txOut1
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const txOut1 = obj.txOut1
 
       txb.txOutMap = sinon.spy()
       txb.uTxOutMap = {
@@ -582,14 +579,14 @@ describe('TxBuilder', function () {
     let txb, keyPair1, txOut1
 
     before(function () {
-      let obj = prepareAndBuildTxBuilder()
+      const obj = prepareAndBuildTxBuilder()
       txb = obj.txb
       keyPair1 = obj.keyPair1
       txOut1 = obj.txOut1
     })
 
     it('should sign and verify synchronously', async function () {
-      let sig = await txb.asyncGetSig(
+      const sig = await txb.asyncGetSig(
         keyPair1,
         Sig.SIGHASH_ALL,
         0,
@@ -603,17 +600,16 @@ describe('TxBuilder', function () {
   describe('#asyncSignTxIn', function () {
     it('should sign and verify no SIGHASH_FORKID asynchronously', async function () {
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let nHashType = Sig.SIGHASH_ALL
-      let flags = Interp.SCRIPT_VERIFY_P2SH
+      const nHashType = Sig.SIGHASH_ALL
+      const flags = Interp.SCRIPT_VERIFY_P2SH
       await txb.asyncSignTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
       // transaction not fully signed yet, so should be invalid
@@ -638,17 +634,16 @@ describe('TxBuilder', function () {
 
     it('should sign and verify SIGHASH_FORKID asynchronously', async function () {
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
-      let flags =
+      const nHashType = Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID
+      const flags =
         Interp.SCRIPT_ENABLE_SIGHASH_FORKID | Interp.SCRIPT_VERIFY_P2SH
       await txb.asyncSignTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
 
@@ -673,10 +668,10 @@ describe('TxBuilder', function () {
     })
 
     it('should pass in txOut', async function () {
-      let obj = prepareAndBuildTxBuilder()
-      let txb = obj.txb
-      let keyPair1 = obj.keyPair1
-      let txOut1 = obj.txOut1
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const txOut1 = obj.txOut1
       txb.txOutMap = sinon.spy()
       txb.uTxOutMap = {
         get: sinon.spy()
@@ -689,16 +684,15 @@ describe('TxBuilder', function () {
   describe('#sign', function () {
     it('should sign and verify synchronously', function () {
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
       // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.sign([keyPair1])
 
@@ -735,49 +729,49 @@ describe('TxBuilder', function () {
 
     it('should sign and verify synchronously with no public key inserted at input', function () {
       function prepareTxBuilder () {
-        let txb = new TxBuilder()
+        const txb = new TxBuilder()
 
         // make change address
-        let privKey = new PrivKey().fromBn(new Bn(1))
-        let keyPair = new KeyPair().fromPrivKey(privKey)
-        let changeaddr = new Address().fromPubKey(keyPair.pubKey)
+        const privKey = new PrivKey().fromBn(new Bn(1))
+        const keyPair = new KeyPair().fromPrivKey(privKey)
+        const changeaddr = new Address().fromPubKey(keyPair.pubKey)
 
         // make addresses to send from
-        let privKey1 = new PrivKey().fromBn(new Bn(2))
-        let keyPair1 = new KeyPair().fromPrivKey(privKey1)
-        let addr1 = new Address().fromPubKey(keyPair1.pubKey)
+        const privKey1 = new PrivKey().fromBn(new Bn(2))
+        const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+        const addr1 = new Address().fromPubKey(keyPair1.pubKey)
 
-        let privKey2 = new PrivKey().fromBn(new Bn(3))
-        let keyPair2 = new KeyPair().fromPrivKey(privKey2)
-        let addr2 = new Address().fromPubKey(keyPair2.pubKey)
+        const privKey2 = new PrivKey().fromBn(new Bn(3))
+        const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+        const addr2 = new Address().fromPubKey(keyPair2.pubKey)
 
         // make addresses to send to
-        let saddr1 = addr1
+        const saddr1 = addr1
 
         // txOuts that we are spending
 
         // pubKeyHash out
-        let scriptout1 = new Script().fromString(
+        const scriptout1 = new Script().fromString(
           'OP_DUP OP_HASH160 20 0x' +
             addr1.hashBuf.toString('hex') +
             ' OP_EQUALVERIFY OP_CHECKSIG'
         )
 
         // pubKeyHash out
-        let scriptout2 = new Script().fromString(
+        const scriptout2 = new Script().fromString(
           'OP_DUP OP_HASH160 20 0x' +
             addr2.hashBuf.toString('hex') +
             ' OP_EQUALVERIFY OP_CHECKSIG'
         )
 
-        let txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
-        let txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+        const txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+        const txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
         // total balance: 2e8
 
-        let txHashBuf = Buffer.alloc(32)
+        const txHashBuf = Buffer.alloc(32)
         txHashBuf.fill(0)
-        let txOutNum1 = 0
-        let txOutNum2 = 1
+        const txOutNum1 = 0
+        const txOutNum2 = 1
 
         txb.setFeePerKbNum(0.0001e8)
         txb.setChangeAddress(changeaddr)
@@ -802,22 +796,21 @@ describe('TxBuilder', function () {
       }
 
       function prepareAndBuildTxBuilder () {
-        let obj = prepareTxBuilder()
+        const obj = prepareTxBuilder()
         obj.txb.build()
         return obj
       }
 
       // prepare
-      let txb, keyPair1, keyPair2, saddr1, changeaddr
-      let obj = prepareAndBuildTxBuilder()
-      txb = obj.txb
-      keyPair1 = obj.keyPair1
-      keyPair2 = obj.keyPair2
-      saddr1 = obj.saddr1
-      changeaddr = obj.changeaddr
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
 
       // begin signing
-      let flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
       // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.sign([keyPair1])
 

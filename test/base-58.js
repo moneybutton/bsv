@@ -4,16 +4,16 @@ import { Base58 } from '../lib/base-58'
 import should from 'should'
 
 describe('Base58', function () {
-  let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
-  let enc = '1W7N4RuG'
+  const buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
+  const enc = '1W7N4RuG'
 
   it('should make an instance with "new"', function () {
-    let b58 = new Base58()
+    const b58 = new Base58()
     should.exist(b58)
   })
 
   it('should make an instance without "new"', function () {
-    let b58 = new Base58()
+    const b58 = new Base58()
     should.exist(b58)
   })
 
@@ -61,7 +61,7 @@ describe('Base58', function () {
 
   describe('#fromHex', function () {
     it('should set buffer', function () {
-      let b58 = new Base58().fromHex(buf.toString('hex'))
+      const b58 = new Base58().fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -72,7 +72,7 @@ describe('Base58', function () {
     })
 
     it('should set buffer', function () {
-      let b58 = new Base58().fromBuffer(buf)
+      const b58 = new Base58().fromBuffer(buf)
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -89,14 +89,14 @@ describe('Base58', function () {
 
   describe('#toHex', function () {
     it('should return the buffer in hex', function () {
-      let b58 = new Base58(buf)
+      const b58 = new Base58(buf)
       b58.toHex().should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      let b58 = new Base58(buf)
+      const b58 = new Base58(buf)
       b58
         .toBuffer()
         .toString('hex')
@@ -106,7 +106,7 @@ describe('Base58', function () {
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      let b58 = new Base58(buf)
+      const b58 = new Base58(buf)
       b58.toString().should.equal(enc)
     })
   })

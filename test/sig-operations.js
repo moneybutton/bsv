@@ -8,39 +8,39 @@ import { Sig } from '../lib/sig'
 import { Address } from '../lib/address'
 
 describe('SigOperations', function () {
-  let txHashBuf = Buffer.alloc(32)
+  const txHashBuf = Buffer.alloc(32)
   txHashBuf.fill(0x01)
-  let txOutNum = 5
-  let nScriptChunk = 0
-  let privKey = PrivKey.fromString('L3uCzo4TtW3FX5b5L9S5dKDu21ypeRofiiNnVuYnxGs5YRQrUFP2')
-  let keyPair = KeyPair.fromPrivKey(privKey)
-  let pubKey = keyPair.pubKey
-  let addressStr = Address.fromPubKey(pubKey).toString()
-  let type = 'sig'
+  const txOutNum = 5
+  const nScriptChunk = 0
+  const privKey = PrivKey.fromString('L3uCzo4TtW3FX5b5L9S5dKDu21ypeRofiiNnVuYnxGs5YRQrUFP2')
+  const keyPair = KeyPair.fromPrivKey(privKey)
+  const pubKey = keyPair.pubKey
+  const addressStr = Address.fromPubKey(pubKey).toString()
+  const type = 'sig'
 
   it('should make a new sigOperations', function () {
-    let sigOperations = new SigOperations()
+    const sigOperations = new SigOperations()
     should.exist(sigOperations)
     should.exist(sigOperations.map)
   })
 
   describe('#setOne', function () {
     it('should set this vector', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.setOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr)
-      let arr = sigOperations.get(txHashBuf, txOutNum)
-      let obj = arr[0]
+      const arr = sigOperations.get(txHashBuf, txOutNum)
+      const obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.nHashType.should.equal(Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID)
       obj.addressStr.should.equal(addressStr)
     })
 
     it('should set this vector with type pubKey', function () {
-      let sigOperations = new SigOperations()
-      let type = 'pubKey'
+      const sigOperations = new SigOperations()
+      const type = 'pubKey'
       sigOperations.setOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr)
-      let arr = sigOperations.get(txHashBuf, txOutNum)
-      let obj = arr[0]
+      const arr = sigOperations.get(txHashBuf, txOutNum)
+      const obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.type.should.equal('pubKey')
       obj.nHashType.should.equal(Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID)
@@ -48,10 +48,10 @@ describe('SigOperations', function () {
     })
 
     it('should set this vector with a different nHashType', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.setOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr, Sig.SIGHASH_ALL)
-      let arr = sigOperations.get(txHashBuf, txOutNum)
-      let obj = arr[0]
+      const arr = sigOperations.get(txHashBuf, txOutNum)
+      const obj = arr[0]
       obj.nHashType.should.equal(Sig.SIGHASH_ALL)
       obj.nHashType.should.not.equal(Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID)
     })
@@ -59,13 +59,13 @@ describe('SigOperations', function () {
 
   describe('#setMany', function () {
     it('should set this vector', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       let arr = [
         { nScriptChunk, addressStr }
       ]
       sigOperations.setMany(txHashBuf, txOutNum, arr)
       arr = sigOperations.get(txHashBuf, txOutNum)
-      let obj = arr[0]
+      const obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       should.exist(obj.nHashType)
       obj.addressStr.should.equal(addressStr)
@@ -74,25 +74,25 @@ describe('SigOperations', function () {
 
   describe('#addOne', function () {
     it('should add this vector', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.addOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr)
-      let arr = sigOperations.get(txHashBuf, txOutNum)
-      let obj = arr[0]
+      const arr = sigOperations.get(txHashBuf, txOutNum)
+      const obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.nHashType.should.equal(Sig.SIGHASH_ALL | Sig.SIGHASH_FORKID)
       obj.addressStr.should.equal(addressStr)
     })
 
     it('should add two vectors', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.addOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr)
       let arr = sigOperations.get(txHashBuf, txOutNum)
       let obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.addressStr.should.equal(addressStr)
 
-      let nScriptChunk2 = 2
-      let addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
+      const nScriptChunk2 = 2
+      const addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
       sigOperations.addOne(txHashBuf, txOutNum, nScriptChunk2, type, addressStr2)
       arr = sigOperations.get(txHashBuf, txOutNum)
       obj = arr[1]
@@ -101,7 +101,7 @@ describe('SigOperations', function () {
     })
 
     it('should add two vectors where one has type pubKey', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.addOne(txHashBuf, txOutNum, nScriptChunk, 'pubKey', addressStr)
       let arr = sigOperations.get(txHashBuf, txOutNum)
       let obj = arr[0]
@@ -109,8 +109,8 @@ describe('SigOperations', function () {
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.addressStr.should.equal(addressStr)
 
-      let nScriptChunk2 = 2
-      let addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
+      const nScriptChunk2 = 2
+      const addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
       sigOperations.addOne(txHashBuf, txOutNum, nScriptChunk2, type, addressStr2)
       arr = sigOperations.get(txHashBuf, txOutNum)
       obj = arr[1]
@@ -121,17 +121,17 @@ describe('SigOperations', function () {
 
   describe('#get', function () {
     it('should get this vector', function () {
-      let sigOperations = new SigOperations()
+      const sigOperations = new SigOperations()
       sigOperations.setOne(txHashBuf, txOutNum, nScriptChunk, type, addressStr)
       let arr = sigOperations.get(txHashBuf, txOutNum)
       let obj = arr[0]
       obj.nScriptChunk.should.equal(nScriptChunk)
       obj.addressStr.should.equal(addressStr)
 
-      let txHashBuf2 = '05'.repeat(32)
-      let txOutNum2 = 9
-      let nScriptChunk2 = 2
-      let addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
+      const txHashBuf2 = '05'.repeat(32)
+      const txOutNum2 = 9
+      const nScriptChunk2 = 2
+      const addressStr2 = Address.fromPubKey(KeyPair.fromRandom().pubKey).toString()
       sigOperations.setOne(txHashBuf2, txOutNum2, nScriptChunk2, type, addressStr2)
       arr = sigOperations.get(txHashBuf2, txOutNum2)
       obj = arr[0]

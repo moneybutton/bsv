@@ -36,7 +36,7 @@ describe('Struct', function () {
 
     it('should throw a not implemented error', function () {
       ;(function () {
-        let br = new Br()
+        const br = new Br()
         new Struct().fromBr(br)
       }.should.throw('not implemented'))
     })
@@ -51,7 +51,7 @@ describe('Struct', function () {
 
     it('should throw a not implemented error', function () {
       ;(function () {
-        let br = new Br()
+        const br = new Br()
         Struct.fromBr(br)
       }.should.throw('not implemented'))
     })
@@ -66,7 +66,7 @@ describe('Struct', function () {
 
     it('should throw a not implemented error', function () {
       ;(function () {
-        let br = new Br()
+        const br = new Br()
         new Struct().asyncFromBr(br)
       }.should.throw('not implemented'))
     })
@@ -81,7 +81,7 @@ describe('Struct', function () {
 
     it('should throw a not implemented error', function () {
       ;(function () {
-        let br = new Br()
+        const br = new Br()
         Struct.asyncFromBr(br)
       }.should.throw('not implemented'))
     })
@@ -176,7 +176,7 @@ describe('Struct', function () {
       let struct = new Struct()
       struct.fromBuffer = sinon.spy()
       struct = Object.create(struct)
-      let buf = Buffer.from('00', 'hex')
+      const buf = Buffer.from('00', 'hex')
       struct.fromFastBuffer(buf)
       struct.fromBuffer.calledOnce.should.equal(true)
     })
@@ -185,7 +185,7 @@ describe('Struct', function () {
       let struct = new Struct()
       struct.fromBuffer = sinon.spy()
       struct = Object.create(struct)
-      let buf = Buffer.from('', 'hex')
+      const buf = Buffer.from('', 'hex')
       struct.fromFastBuffer(buf)
       struct.fromBuffer.calledOnce.should.equal(false)
     })
@@ -195,7 +195,7 @@ describe('Struct', function () {
     it('should call fromBuffer', function () {
       class StructMock extends Struct { }
       StructMock.prototype.fromBuffer = sinon.spy()
-      let buf = Buffer.from('00', 'hex')
+      const buf = Buffer.from('00', 'hex')
       StructMock.fromFastBuffer(buf)
       StructMock.prototype.fromBuffer.calledOnce.should.equal(true)
     })
@@ -203,7 +203,7 @@ describe('Struct', function () {
     it('should not call fromBuffer if buf length is zero', function () {
       class StructMock extends Struct { }
       StructMock.prototype.fromBuffer = sinon.spy()
-      let buf = Buffer.from('', 'hex')
+      const buf = Buffer.from('', 'hex')
       StructMock.fromFastBuffer(buf)
       StructMock.prototype.fromBuffer.calledOnce.should.equal(false)
     })
@@ -320,7 +320,7 @@ describe('Struct', function () {
 
   describe('#toFastHex', function () {
     it('should return an empty string for blank data', function () {
-      let hex = new Struct().toFastHex()
+      const hex = new Struct().toFastHex()
       ;(typeof hex === 'string').should.equal(true)
       hex.length.should.equal(0)
     })
@@ -432,11 +432,11 @@ describe('Struct', function () {
 
   describe('#toJSON', function () {
     it('should convert an object into a json string', function () {
-      let obj = new Struct()
+      const obj = new Struct()
       obj.arr = [1, 2, 3, 4]
       obj.anotherObj = new Struct()
 
-      let json = obj.toJSON()
+      const json = obj.toJSON()
 
       should.exist(json.arr)
       should.exist(json.anotherObj)
@@ -453,7 +453,7 @@ describe('Struct', function () {
 
   describe('#clone', function () {
     it('should call cloneByJSON', function () {
-      let struct = new Struct()
+      const struct = new Struct()
       struct.cloneByJSON = sinon.spy()
       struct.clone()
       struct.cloneByJSON.calledOnce.should.equal(true)
@@ -466,11 +466,12 @@ describe('Struct', function () {
         toBuffer () {
           return {}
         }
+
         fromBuffer (obj) {
           return this
         }
       }
-      let struct = new Struct2()
+      const struct = new Struct2()
       struct.toBuffer = sinon.spy()
       struct.cloneByBuffer()
       struct.toBuffer.calledOnce.should.equal(true)
@@ -483,11 +484,12 @@ describe('Struct', function () {
         toFastBuffer () {
           return {}
         }
+
         fromFastBuffer (obj) {
           return this
         }
       }
-      let struct = new Struct2()
+      const struct = new Struct2()
       struct.toFastBuffer = sinon.spy()
       struct.cloneByFastBuffer()
       struct.toFastBuffer.calledOnce.should.equal(true)
@@ -500,11 +502,12 @@ describe('Struct', function () {
         toHex () {
           return {}
         }
+
         fromHex (obj) {
           return this
         }
       }
-      let struct = new Struct2()
+      const struct = new Struct2()
       struct.toHex = sinon.spy()
       struct.cloneByHex()
       struct.toHex.calledOnce.should.equal(true)
@@ -517,11 +520,12 @@ describe('Struct', function () {
         toString () {
           return {}
         }
+
         fromString (obj) {
           return this
         }
       }
-      let struct = new Struct2()
+      const struct = new Struct2()
       struct.toString = sinon.spy()
       struct.cloneByString()
       struct.toString.calledOnce.should.equal(true)
@@ -534,11 +538,12 @@ describe('Struct', function () {
         toJSON () {
           return {}
         }
+
         fromJSON (obj) {
           return this
         }
       }
-      let struct = new Struct2()
+      const struct = new Struct2()
       struct.toJSON = sinon.spy()
       struct.cloneByJSON()
       struct.toJSON.calledOnce.should.equal(true)

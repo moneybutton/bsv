@@ -5,16 +5,16 @@ import { Base58Check } from '../lib/base-58-check'
 import { Base58 } from '../lib/base-58'
 
 describe('Base58Check', function () {
-  let buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
-  let enc = '14HV44ipwoaqfg'
+  const buf = Buffer.from([0, 1, 2, 3, 253, 254, 255])
+  const enc = '14HV44ipwoaqfg'
 
   it('should make an instance with "new"', function () {
-    let b58 = new Base58Check()
+    const b58 = new Base58Check()
     should.exist(b58)
   })
 
   it('should make an instance without "new"', function () {
-    let b58 = new Base58Check()
+    const b58 = new Base58Check()
     should.exist(b58)
   })
 
@@ -65,9 +65,9 @@ describe('Base58Check', function () {
     })
 
     it('should throw an error when there is a checksum mismatch', function () {
-      let buf2 = Base58.decode(enc)
+      const buf2 = Base58.decode(enc)
       buf2[0] = buf2[0] + 1
-      let enc2 = Base58.encode(buf2)
+      const enc2 = Base58.encode(buf2)
       ;(function () {
         Base58Check.decode(enc2)
       }.should.throw('Checksum mismatch'))
@@ -76,7 +76,7 @@ describe('Base58Check', function () {
 
   describe('#fromHex', function () {
     it('should set buffer from hex', function () {
-      let b58 = new Base58Check().fromHex(buf.toString('hex'))
+      const b58 = new Base58Check().fromHex(buf.toString('hex'))
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -87,7 +87,7 @@ describe('Base58Check', function () {
     })
 
     it('should set buffer', function () {
-      let b58 = new Base58Check().fromBuffer(buf)
+      const b58 = new Base58Check().fromBuffer(buf)
       b58.buf.toString('hex').should.equal(buf.toString('hex'))
     })
   })
@@ -104,14 +104,14 @@ describe('Base58Check', function () {
 
   describe('#toHex', function () {
     it('should return the buffer', function () {
-      let b58 = new Base58Check(buf)
+      const b58 = new Base58Check(buf)
       b58.toHex().should.equal(buf.toString('hex'))
     })
   })
 
   describe('#toBuffer', function () {
     it('should return the buffer', function () {
-      let b58 = new Base58Check(buf)
+      const b58 = new Base58Check(buf)
       b58
         .toBuffer()
         .toString('hex')
@@ -121,7 +121,7 @@ describe('Base58Check', function () {
 
   describe('#toString', function () {
     it('should return the buffer', function () {
-      let b58 = new Base58Check(buf)
+      const b58 = new Base58Check(buf)
       b58.toString().should.equal(enc)
     })
   })

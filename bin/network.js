@@ -1,21 +1,21 @@
 'use strict'
-let Random = require('../lib/random')
-let net = require('net')
-let MsgVersion = require('../lib/msg-version')
-let Constants = require('../lib/constants').Default
-let Version = require('../lib/version')
-let VarInt = require('../lib/var-int')
-let Bn = require('../lib/bn')
+const Random = require('../lib/random')
+const net = require('net')
+const MsgVersion = require('../lib/msg-version')
+const Constants = require('../lib/constants').Default
+const Version = require('../lib/version')
+const VarInt = require('../lib/var-int')
+const Bn = require('../lib/bn')
 
-let client = net.createConnection({ port: 8333, host: '192.168.0.105' }, () => {
-  // let hashBuf = Buffer.alloc(32)
+const client = net.createConnection({ port: 8333, host: '192.168.0.105' }, () => {
+  // const hashBuf = Buffer.alloc(32)
   // hashBuf.fill(0)
-  // let msgGetBlocks = MsgGetBlocks.fromHashes([hashBuf])
-  let versionBytesNum = Constants.Msg.versionBytesNum
-  let servicesBuf = Buffer.from('0100000000000000', 'hex')
-  let timeBn = Bn(Date.now())
-  let addrRecvServicesBuf = Buffer.from('0100000000000000', 'hex')
-  let addrRecvIpAddrBuf = Buffer.from([
+  // const msgGetBlocks = MsgGetBlocks.fromHashes([hashBuf])
+  const versionBytesNum = Constants.Msg.versionBytesNum
+  const servicesBuf = Buffer.from('0100000000000000', 'hex')
+  const timeBn = Bn(Date.now())
+  const addrRecvServicesBuf = Buffer.from('0100000000000000', 'hex')
+  const addrRecvIpAddrBuf = Buffer.from([
     0,
     0,
     0,
@@ -33,9 +33,9 @@ let client = net.createConnection({ port: 8333, host: '192.168.0.105' }, () => {
     0,
     105
   ])
-  let addrRecvPort = 8333
-  let addrTransServicesBuf = Buffer.from('0100000000000000', 'hex')
-  let addrTransIpAddrBuf = Buffer.from([
+  const addrRecvPort = 8333
+  const addrTransServicesBuf = Buffer.from('0100000000000000', 'hex')
+  const addrTransIpAddrBuf = Buffer.from([
     0,
     0,
     0,
@@ -53,13 +53,13 @@ let client = net.createConnection({ port: 8333, host: '192.168.0.105' }, () => {
     0,
     103
   ])
-  let addrTransPort = 8333
-  let nonceBuf = Random.getRandomBuffer(8)
-  let userAgentBuf = Buffer.from('/Satoshi:5.64/bitcoin-qt:0.4/')
-  let userAgentVi = VarInt.fromNumber(userAgentBuf.length)
-  let startHeightNum = 1
-  let relay = 1
-  let version = new Version(
+  const addrTransPort = 8333
+  const nonceBuf = Random.getRandomBuffer(8)
+  const userAgentBuf = Buffer.from('/Satoshi:5.64/bitcoin-qt:0.4/')
+  const userAgentVi = VarInt.fromNumber(userAgentBuf.length)
+  const startHeightNum = 1
+  const relay = 1
+  const version = new Version(
     versionBytesNum,
     servicesBuf,
     timeBn,
@@ -76,10 +76,10 @@ let client = net.createConnection({ port: 8333, host: '192.168.0.105' }, () => {
     relay
   )
   console.log('here')
-  let msgVersion = MsgVersion.fromVersion(version)
+  const msgVersion = MsgVersion.fromVersion(version)
   console.log(version)
   console.log(msgVersion)
-  let msgBuf = msgVersion.toBuffer()
+  const msgBuf = msgVersion.toBuffer()
   client.write(msgBuf)
 })
 

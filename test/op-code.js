@@ -5,13 +5,13 @@ import { OpCode } from '../lib/op-code'
 
 describe('OpCode', function () {
   it('should create a new OpCode', function () {
-    let opCode = new OpCode(5)
+    const opCode = new OpCode(5)
     should.exist(opCode)
   })
 
   it('should have 121 opCodes', function () {
     let i = 0
-    for (let key in OpCode) {
+    for (const key in OpCode) {
       if (key.indexOf('OP_') !== -1) {
         i++
       }

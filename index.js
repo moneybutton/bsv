@@ -11,7 +11,7 @@
  * every component into your project. You can simply directly require the
  * elements of the library you need, and, if your project is browser-based,
  * browserify your project. For instance:
- * let Address = require('bsv/lib/address').
+ * const Address = require('bsv/lib/address').
  */
 'use strict'
 if (!global._babelPolyfill) {
@@ -19,7 +19,7 @@ if (!global._babelPolyfill) {
 }
 require('./lib/config')
 
-let bsv = module.exports
+const bsv = module.exports
 
 bsv.version = require('./package').version
 
@@ -79,7 +79,7 @@ bsv.deps.hashjs = require('hash.js')
 bsv.deps.pbkdf2compat = require('pbkdf2-compat')
 
 // Mainnet classes for your convenience (in case default is not what you want).
-let Mainnet = {}
+const Mainnet = {}
 Object.keys(bsv).forEach(function (key) {
   Mainnet[key] = bsv[key].Mainnet
     ? bsv[key].Mainnet
@@ -87,7 +87,7 @@ Object.keys(bsv).forEach(function (key) {
 })
 
 // Testnet classes for your convenience (in case default is not what you want).
-let Testnet = {}
+const Testnet = {}
 Object.keys(bsv).forEach(function (key) {
   Testnet[key] = bsv[key].Testnet
     ? bsv[key].Testnet

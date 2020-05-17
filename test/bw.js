@@ -7,16 +7,16 @@ import should from 'should'
 
 describe('Bw', function () {
   it('should create a new buffer writer', function () {
-    let bw = new Bw()
+    const bw = new Bw()
     should.exist(bw)
   })
 
   describe('#fromObject', function () {
     it('set bufs', function () {
-      let buf1 = Buffer.from([0])
-      let buf2 = Buffer.from([1])
-      let bufs = [buf1, buf2]
-      let bw = new Bw().fromObject({ bufs: bufs })
+      const buf1 = Buffer.from([0])
+      const buf2 = Buffer.from([1])
+      const bufs = [buf1, buf2]
+      const bw = new Bw().fromObject({ bufs: bufs })
       bw
         .toBuffer()
         .toString('hex')
@@ -26,18 +26,18 @@ describe('Bw', function () {
 
   describe('#getLength', function () {
     it('should compute length correctly of two 2 byte buffers', function () {
-      let buf1 = Buffer.from('0000', 'hex')
-      let buf2 = Buffer.from('0000', 'hex')
-      let bw = new Bw().write(buf1).write(buf2)
+      const buf1 = Buffer.from('0000', 'hex')
+      const buf2 = Buffer.from('0000', 'hex')
+      const bw = new Bw().write(buf1).write(buf2)
       bw.getLength().should.equal(4)
     })
   })
 
   describe('#toBuffer', function () {
     it('should concat these two bufs', function () {
-      let buf1 = Buffer.from([0])
-      let buf2 = Buffer.from([1])
-      let bw = new Bw().fromObject({ bufs: [buf1, buf2] })
+      const buf1 = Buffer.from([0])
+      const buf2 = Buffer.from([1])
+      const bw = new Bw().fromObject({ bufs: [buf1, buf2] })
       bw
         .toBuffer()
         .toString('hex')
@@ -47,8 +47,8 @@ describe('Bw', function () {
 
   describe('#write', function () {
     it('should write a buffer', function () {
-      let buf = Buffer.from([0])
-      let bw = new Bw()
+      const buf = Buffer.from([0])
+      const bw = new Bw()
       bw.write(buf)
       bw
         .toBuffer()
@@ -59,8 +59,8 @@ describe('Bw', function () {
 
   describe('#writeReverse', function () {
     it('should write a buffer in reverse', function () {
-      let buf = Buffer.from([0, 1])
-      let bw = new Bw()
+      const buf = Buffer.from([0, 1])
+      const bw = new Bw()
       bw.writeReverse(buf)
       bw
         .toBuffer()
@@ -71,7 +71,7 @@ describe('Bw', function () {
 
   describe('#writeUInt8', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt8(1)
         .toBuffer()
@@ -82,7 +82,7 @@ describe('Bw', function () {
 
   describe('#writeInt8', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeInt8(1)
         .toBuffer()
@@ -98,7 +98,7 @@ describe('Bw', function () {
 
   describe('#writeUInt16BE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt16BE(1)
         .toBuffer()
@@ -109,7 +109,7 @@ describe('Bw', function () {
 
   describe('#writeInt16BE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeInt16BE(1)
         .toBuffer()
@@ -125,7 +125,7 @@ describe('Bw', function () {
 
   describe('#writeUInt16LE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt16LE(1)
         .toBuffer()
@@ -136,7 +136,7 @@ describe('Bw', function () {
 
   describe('#writeInt16LE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeInt16LE(1)
         .toBuffer()
@@ -152,7 +152,7 @@ describe('Bw', function () {
 
   describe('#writeUInt32BE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt32BE(1)
         .toBuffer()
@@ -163,7 +163,7 @@ describe('Bw', function () {
 
   describe('#writeInt32BE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeInt32BE(1)
         .toBuffer()
@@ -179,7 +179,7 @@ describe('Bw', function () {
 
   describe('#writeUInt32LE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt32LE(1)
         .toBuffer()
@@ -190,7 +190,7 @@ describe('Bw', function () {
 
   describe('#writeInt32LE', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeInt32LE(1)
         .toBuffer()
@@ -206,7 +206,7 @@ describe('Bw', function () {
 
   describe('#writeUInt64BEBn', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt64BEBn(new Bn(1))
         .toBuffer()
@@ -217,7 +217,7 @@ describe('Bw', function () {
 
   describe('#writeUInt64LEBn', function () {
     it('should write 1', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw
         .writeUInt64LEBn(new Bn(1))
         .toBuffer()
@@ -228,35 +228,35 @@ describe('Bw', function () {
 
   describe('#writeVarInt', function () {
     it('should write a 1 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntNum(1)
       bw.toBuffer().length.should.equal(1)
     })
 
     it('should write a 3 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntNum(1000)
       bw.toBuffer().length.should.equal(3)
     })
 
     it('should write a 5 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntNum(Math.pow(2, 16 + 1))
       bw.toBuffer().length.should.equal(5)
     })
 
     it('should write a 9 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntNum(Math.pow(2, 32 + 1))
       bw.toBuffer().length.should.equal(9)
     })
 
     it('should read back the same value it wrote for a 9 byte varInt', function () {
-      let bw = new Bw()
-      let n = Math.pow(2, 53)
+      const bw = new Bw()
+      const n = Math.pow(2, 53)
       n.should.equal(n + 1) // javascript number precision limit
       bw.writeVarIntNum(n)
-      let br = new Br(bw.toBuffer())
+      const br = new Br(bw.toBuffer())
       br
         .readVarIntBn()
         .toNumber()
@@ -266,25 +266,25 @@ describe('Bw', function () {
 
   describe('#writeVarIntBn', function () {
     it('should write a 1 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntBn(new Bn(1))
       bw.toBuffer().length.should.equal(1)
     })
 
     it('should write a 3 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntBn(new Bn(1000))
       bw.toBuffer().length.should.equal(3)
     })
 
     it('should write a 5 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntBn(new Bn(Math.pow(2, 16 + 1)))
       bw.toBuffer().length.should.equal(5)
     })
 
     it('should write a 9 byte varInt', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       bw.writeVarIntBn(new Bn(Math.pow(2, 32 + 1)))
       bw.toBuffer().length.should.equal(9)
     })

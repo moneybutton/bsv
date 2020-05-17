@@ -11,23 +11,23 @@ import should from 'should'
 const Constants = Cst.Default
 
 describe('Msg', function () {
-  let msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
-  let msgbuf = Buffer.from(msghex, 'hex')
-  let msg = new Msg().fromHex(msghex)
-  let msgjson = msg.toJSON()
-  let msgjsonstr = JSON.stringify(msgjson)
+  const msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
+  const msgbuf = Buffer.from(msghex, 'hex')
+  const msg = new Msg().fromHex(msghex)
+  const msgjson = msg.toJSON()
+  const msgjsonstr = JSON.stringify(msgjson)
 
   it('should satisfy this basic API', function () {
-    let msg = new Msg()
+    const msg = new Msg()
     should.exist(msg)
     msg.magicNum.should.equal(Constants.Msg.magicNum)
   })
 
   describe('#setCmd', function () {
     it('should set the command', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('inv')
-      let cmdbuf = Buffer.alloc(12)
+      const cmdbuf = Buffer.alloc(12)
       cmdbuf.fill(0)
       cmdbuf.write('inv')
       Buffer.compare(cmdbuf, msg.cmdbuf).should.equal(0)
@@ -36,19 +36,19 @@ describe('Msg', function () {
 
   describe('#getCmd', function () {
     it('should get the command', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('inv')
       msg.getCmd().should.equal('inv')
     })
 
     it('should get the command when the command is 12 chars', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('a'.repeat(12))
       msg.getCmd().should.equal('a'.repeat(12))
     })
 
     it('should get the command when there are extra 0s', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('a')
       msg.cmdbuf.write('a', 2)
       msg.getCmd().should.equal('a\u0000a')
@@ -57,8 +57,8 @@ describe('Msg', function () {
 
   describe('@checksum', function () {
     it('should return known value', function () {
-      let buf = Buffer.alloc(0)
-      let checksumbuf = Msg.checksum(buf)
+      const buf = Buffer.alloc(0)
+      const checksumbuf = Msg.checksum(buf)
       Buffer.compare(
         checksumbuf,
         Hash.sha256Sha256(buf).slice(0, 4)
@@ -68,20 +68,20 @@ describe('Msg', function () {
 
   describe('@asyncChecksum', function () {
     it('should return known value and compute same as @checksum', async function () {
-      let buf = Buffer.alloc(0)
-      let checksumbuf = await Msg.asyncChecksum(buf)
+      const buf = Buffer.alloc(0)
+      const checksumbuf = await Msg.asyncChecksum(buf)
       Buffer.compare(
         checksumbuf,
         Hash.sha256Sha256(buf).slice(0, 4)
       ).should.equal(0)
-      let checksumbuf2 = Msg.checksum(buf)
+      const checksumbuf2 = Msg.checksum(buf)
       Buffer.compare(checksumbuf, checksumbuf2).should.equal(0)
     })
   })
 
   describe('#setData', function () {
     it('should data to a blank buffer', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('inv')
       msg.setData(Buffer.from([]))
       msg.isValid().should.equal(true)
@@ -90,7 +90,7 @@ describe('Msg', function () {
 
   describe('#asyncSetData', function () {
     it('should data to a blank buffer', async function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('inv')
       await msg.asyncSetData(Buffer.from([]))
       msg.isValid().should.equal(true)
@@ -117,7 +117,7 @@ describe('Msg', function () {
       msgassembler.next() // should be able to place in multiple undefined buffers
       msgassembler.next(Buffer.from([])) // should be able to place zero buf
       for (let i = 0; i < msgbuf.length; i++) {
-        let onebytebuf = msgbuf.slice(i, i + 1)
+        const onebytebuf = msgbuf.slice(i, i + 1)
         next = msgassembler.next(onebytebuf)
       }
       msg.toHex().should.equal(msghex)
@@ -129,7 +129,7 @@ describe('Msg', function () {
       msgassembler = msg.genFromBuffers()
       msgassembler.next() // one blank .next() is necessary
       for (let i = 0; i < msgbuf.length; i += 3) {
-        let three = msgbuf.slice(i, i + 3)
+        const three = msgbuf.slice(i, i + 3)
         next = msgassembler.next(three)
       }
       msg.toHex().should.equal(msghex)
@@ -138,20 +138,20 @@ describe('Msg', function () {
     })
 
     it('should throw an error for invalid magicNum in strict mode', function () {
-      let msg = new Msg().fromBuffer(msgbuf)
+      const msg = new Msg().fromBuffer(msgbuf)
       msg.magicNum = 0
       ;(function () {
-        let msgassembler = new Msg().genFromBuffers({ strict: true })
+        const msgassembler = new Msg().genFromBuffers({ strict: true })
         msgassembler.next()
         msgassembler.next(msg.toBuffer())
       }.should.throw('invalid magicNum'))
     })
 
     it('should throw an error for message over max size in strict mode', function () {
-      let msgbuf2 = Buffer.from(msgbuf)
+      const msgbuf2 = Buffer.from(msgbuf)
       msgbuf2.writeUInt32BE(Constants.maxsize + 1, 4 + 12)
       ;(function () {
-        let msgassembler = new Msg().genFromBuffers({ strict: true })
+        const msgassembler = new Msg().genFromBuffers({ strict: true })
         msgassembler.next()
         msgassembler.next(msgbuf2)
       }.should.throw('message size greater than maxsize'))
@@ -160,14 +160,14 @@ describe('Msg', function () {
 
   describe('#fromBuffer', function () {
     it('should parse this known message', function () {
-      let msg = new Msg().fromBuffer(msgbuf)
+      const msg = new Msg().fromBuffer(msgbuf)
       msg.toHex().should.equal(msghex)
     })
   })
 
   describe('#toBuffer', function () {
     it('should parse this known message', function () {
-      let msg = new Msg().fromBuffer(msgbuf)
+      const msg = new Msg().fromBuffer(msgbuf)
       msg
         .toBuffer()
         .toString('hex')
@@ -177,15 +177,15 @@ describe('Msg', function () {
 
   describe('#fromBr', function () {
     it('should parse this known message', function () {
-      let br = new Br(msgbuf)
-      let msg = new Msg().fromBr(br)
+      const br = new Br(msgbuf)
+      const msg = new Msg().fromBr(br)
       msg.toHex().should.equal(msghex)
     })
   })
 
   describe('#toBw', function () {
     it('should create this known message', function () {
-      let bw = new Bw()
+      const bw = new Bw()
       new Msg()
         .fromHex(msghex)
         .toBw(bw)
@@ -229,18 +229,18 @@ describe('Msg', function () {
 
   describe('#asyncIsValid', function () {
     it('should return same as isValid', async function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('ping')
       msg.setData(Random.getRandomBuffer(8))
       msg.isValid().should.equal(true)
-      let res = await msg.asyncIsValid()
+      const res = await msg.asyncIsValid()
       res.should.equal(msg.isValid())
     })
   })
 
   describe('#asyncValidate', function () {
     it('should validate this known valid message', function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('ping')
       msg.setData(Random.getRandomBuffer(8))
       msg.validate()
@@ -249,14 +249,14 @@ describe('Msg', function () {
 
   describe('#asyncValidate', function () {
     it('should validate this known valid message', async function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('ping')
       msg.setData(Random.getRandomBuffer(8))
       await msg.asyncValidate()
     })
 
     it('should validate this known valid message', async function () {
-      let msg = new Msg()
+      const msg = new Msg()
       msg.setCmd('ping')
       msg.setData(Random.getRandomBuffer(8))
       msg.checksumbuf = Buffer.from('00000000', 'hex')

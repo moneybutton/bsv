@@ -11,13 +11,13 @@ import { KeyPair } from '../lib/key-pair'
 import { Address } from '../lib/address'
 
 describe('TxIn', function () {
-  let txHashBuf = Buffer.alloc(32)
+  const txHashBuf = Buffer.alloc(32)
   txHashBuf.fill(0)
-  let txOutNum = 0
-  let script = new Script().fromString('OP_CHECKMULTISIG')
-  let scriptVi = VarInt.fromNumber(script.toBuffer().length)
-  let nSequence = 0
-  let txIn = new TxIn().fromObject({
+  const txOutNum = 0
+  const script = new Script().fromString('OP_CHECKMULTISIG')
+  const scriptVi = VarInt.fromNumber(script.toBuffer().length)
+  const nSequence = 0
+  const txIn = new TxIn().fromObject({
     txHashBuf: txHashBuf,
     txOutNum: txOutNum,
     scriptVi: scriptVi,
@@ -30,7 +30,7 @@ describe('TxIn', function () {
     should.exist(txIn)
     txIn = new TxIn()
     should.exist(txIn)
-    let txHashBuf = Buffer.alloc(32)
+    const txHashBuf = Buffer.alloc(32)
     txHashBuf.fill(0)
     new TxIn(txHashBuf, 0).txHashBuf.length.should.equal(32)
   })
@@ -43,7 +43,7 @@ describe('TxIn', function () {
 
   describe('#fromObject', function () {
     it('should set these vars', function () {
-      let txIn = new TxIn().fromObject({
+      const txIn = new TxIn().fromObject({
         txHashBuf: txHashBuf,
         txOutNum: txOutNum,
         scriptVi: scriptVi,
@@ -60,7 +60,7 @@ describe('TxIn', function () {
 
   describe('#fromProperties', function () {
     it('should make a new txIn', function () {
-      let txIn = new TxIn().fromProperties(
+      const txIn = new TxIn().fromProperties(
         txHashBuf,
         txOutNum,
         script,
@@ -72,14 +72,14 @@ describe('TxIn', function () {
 
   describe('@fromProperties', function () {
     it('should make a new txIn', function () {
-      let txIn = TxIn.fromProperties(txHashBuf, txOutNum, script, nSequence)
+      const txIn = TxIn.fromProperties(txHashBuf, txOutNum, script, nSequence)
       should.exist(txIn.scriptVi)
     })
   })
 
   describe('#setScript', function () {
     it('should calculate the varInt size correctly', function () {
-      let txIn2 = new TxIn(txIn)
+      const txIn2 = new TxIn(txIn)
       txIn2
         .setScript(new Script().fromString('OP_RETURN OP_RETURN OP_RETURN'))
         .scriptVi.toNumber()
@@ -89,7 +89,7 @@ describe('TxIn', function () {
 
   describe('#fromJSON', function () {
     it('should set these vars', function () {
-      let txIn2 = new TxIn().fromJSON(txIn.toJSON())
+      const txIn2 = new TxIn().fromJSON(txIn.toJSON())
       should.exist(txIn2.txHashBuf)
       should.exist(txIn2.txOutNum)
       should.exist(txIn2.scriptVi)
@@ -100,7 +100,7 @@ describe('TxIn', function () {
 
   describe('#toJSON', function () {
     it('should set these vars', function () {
-      let json = txIn.toJSON()
+      const json = txIn.toJSON()
       should.exist(json.txHashBuf)
       should.exist(json.txOutNum)
       should.exist(json.scriptVi)
@@ -111,9 +111,9 @@ describe('TxIn', function () {
 
   describe('#fromHex', function () {
     it('should convert this known buffer', function () {
-      let hex =
+      const hex =
         '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let txIn = new TxIn().fromHex(hex)
+      const txIn = new TxIn().fromHex(hex)
       txIn.scriptVi.toNumber().should.equal(1)
       txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
@@ -121,10 +121,10 @@ describe('TxIn', function () {
 
   describe('#fromBuffer', function () {
     it('should convert this known buffer', function () {
-      let hex =
+      const hex =
         '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let buf = Buffer.from(hex, 'hex')
-      let txIn = new TxIn().fromBuffer(buf)
+      const buf = Buffer.from(hex, 'hex')
+      const txIn = new TxIn().fromBuffer(buf)
       txIn.scriptVi.toNumber().should.equal(1)
       txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
@@ -132,11 +132,11 @@ describe('TxIn', function () {
 
   describe('#fromBr', function () {
     it('should convert this known buffer', function () {
-      let hex =
+      const hex =
         '00000000000000000000000000000000000000000000000000000000000000000000000001ae00000000'
-      let buf = Buffer.from(hex, 'hex')
-      let br = new Br(buf)
-      let txIn = new TxIn().fromBr(br)
+      const buf = Buffer.from(hex, 'hex')
+      const br = new Br(buf)
+      const txIn = new TxIn().fromBr(br)
       txIn.scriptVi.toNumber().should.equal(1)
       txIn.script.toString().should.equal('OP_CHECKMULTISIG')
     })
@@ -177,16 +177,16 @@ describe('TxIn', function () {
 
   describe('#fromPubKeyHashTxOut', function () {
     it('should convert from pubKeyHash out', function () {
-      let keyPair = new KeyPair().fromRandom()
-      let address = new Address().fromPubKey(keyPair.pubKey)
-      let txOut = TxOut.fromProperties(
+      const keyPair = new KeyPair().fromRandom()
+      const address = new Address().fromPubKey(keyPair.pubKey)
+      const txOut = TxOut.fromProperties(
         new Bn(1000),
         new Script().fromPubKeyHash(address.hashBuf)
       )
-      let txHashBuf = Buffer.alloc(32)
+      const txHashBuf = Buffer.alloc(32)
       txHashBuf.fill(0)
-      let txOutNum = 0
-      let txIn = new TxIn().fromPubKeyHashTxOut(
+      const txOutNum = 0
+      const txIn = new TxIn().fromPubKeyHashTxOut(
         txHashBuf,
         txOutNum,
         txOut,

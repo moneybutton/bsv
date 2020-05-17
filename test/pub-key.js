@@ -8,19 +8,19 @@ import should from 'should'
 
 describe('PubKey', function () {
   it('should create a blank public key', function () {
-    let pk = new PubKey()
+    const pk = new PubKey()
     should.exist(pk)
   })
 
   it('should create a public key with a point', function () {
-    let p = new Point()
-    let pk = new PubKey({ point: p })
+    const p = new Point()
+    const pk = new PubKey({ point: p })
     should.exist(pk.point)
   })
 
   it('should create a public key with a point with this convenient method', function () {
-    let p = new Point()
-    let pk = new PubKey(p)
+    const p = new Point()
+    const pk = new PubKey(p)
     should.exist(pk.point)
     pk.point.toString().should.equal(p.toString())
   })
@@ -33,7 +33,7 @@ describe('PubKey', function () {
 
   describe('#fromJSON', function () {
     it('should input this public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromJSON(
         '00041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       )
@@ -54,8 +54,8 @@ describe('PubKey', function () {
 
   describe('#toJSON', function () {
     it('should output this pubKey', function () {
-      let pk = new PubKey()
-      let hex =
+      const pk = new PubKey()
+      const hex =
         '01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       pk
         .fromJSON(hex)
@@ -64,8 +64,8 @@ describe('PubKey', function () {
     })
 
     it('should output this uncompressed pubKey', function () {
-      let pk = new PubKey()
-      let hex =
+      const pk = new PubKey()
+      const hex =
         '00041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       pk
         .fromJSON(hex)
@@ -88,39 +88,39 @@ describe('PubKey', function () {
 
   describe('#asyncFromPrivKey', function () {
     it('should result the same as fromPrivKey', async function () {
-      let privKey = new PrivKey().fromRandom()
-      let pubKey1 = new PubKey().fromPrivKey(privKey)
-      let pubKey2 = await new PubKey().asyncFromPrivKey(privKey)
+      const privKey = new PrivKey().fromRandom()
+      const pubKey1 = new PubKey().fromPrivKey(privKey)
+      const pubKey2 = await new PubKey().asyncFromPrivKey(privKey)
       pubKey1.toString().should.equal(pubKey2.toString())
     })
 
     it('should result the same as fromPrivKey', async function () {
-      let privKey = new PrivKey().fromBn(new Bn(5))
-      let pubKey1 = new PubKey().fromPrivKey(privKey)
-      let pubKey2 = await new PubKey().asyncFromPrivKey(privKey)
+      const privKey = new PrivKey().fromBn(new Bn(5))
+      const pubKey1 = new PubKey().fromPrivKey(privKey)
+      const pubKey2 = await new PubKey().asyncFromPrivKey(privKey)
       pubKey1.toString().should.equal(pubKey2.toString())
     })
   })
 
   describe('@asyncFromPrivKey', function () {
     it('should result the same as fromPrivKey', async function () {
-      let privKey = new PrivKey().fromRandom()
-      let pubKey1 = PubKey.fromPrivKey(privKey)
-      let pubKey2 = await PubKey.asyncFromPrivKey(privKey)
+      const privKey = new PrivKey().fromRandom()
+      const pubKey1 = PubKey.fromPrivKey(privKey)
+      const pubKey2 = await PubKey.asyncFromPrivKey(privKey)
       pubKey1.toString().should.equal(pubKey2.toString())
     })
 
     it('should result the same as fromPrivKey', async function () {
-      let privKey = new PrivKey().fromBn(new Bn(5))
-      let pubKey1 = PubKey.fromPrivKey(privKey)
-      let pubKey2 = await PubKey.asyncFromPrivKey(privKey)
+      const privKey = new PrivKey().fromBn(new Bn(5))
+      const pubKey1 = PubKey.fromPrivKey(privKey)
+      const pubKey2 = await PubKey.asyncFromPrivKey(privKey)
       pubKey1.toString().should.equal(pubKey2.toString())
     })
   })
 
   describe('#fromHex', function () {
     it('should parse this uncompressed public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromHex(
         '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       )
@@ -141,7 +141,7 @@ describe('PubKey', function () {
 
   describe('#fromBuffer', function () {
     it('should parse this uncompressed public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromBuffer(
         Buffer.from(
           '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341',
@@ -163,7 +163,7 @@ describe('PubKey', function () {
     })
 
     it('should parse this compressed public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromBuffer(
         Buffer.from(
           '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
@@ -185,7 +185,7 @@ describe('PubKey', function () {
     })
 
     it('should throw an error on this invalid public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       ;(function () {
         pk.fromBuffer(
           Buffer.from(
@@ -199,25 +199,25 @@ describe('PubKey', function () {
 
   describe('#asyncFromBuffer', function () {
     it('should derive the same as fromBuffer', async function () {
-      let pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
-      let pubKey1 = new PubKey().fromBuffer(pubKey.toBuffer())
-      let pubKey2 = await new PubKey().asyncFromBuffer(pubKey.toBuffer())
+      const pubKey = new PubKey().fromPrivKey(new PrivKey().fromRandom())
+      const pubKey1 = new PubKey().fromBuffer(pubKey.toBuffer())
+      const pubKey2 = await new PubKey().asyncFromBuffer(pubKey.toBuffer())
       pubKey1.toString().should.equal(pubKey2.toString())
     })
   })
 
   describe('@asyncFromBuffer', function () {
     it('should derive the same as fromBuffer', async function () {
-      let pubKey = PubKey.fromPrivKey(new PrivKey().fromRandom())
-      let pubKey1 = PubKey.fromBuffer(pubKey.toBuffer())
-      let pubKey2 = await PubKey.asyncFromBuffer(pubKey.toBuffer())
+      const pubKey = PubKey.fromPrivKey(new PrivKey().fromRandom())
+      const pubKey1 = PubKey.fromBuffer(pubKey.toBuffer())
+      const pubKey2 = await PubKey.asyncFromBuffer(pubKey.toBuffer())
       pubKey1.toString().should.equal(pubKey2.toString())
     })
   })
 
   describe('#fromFastBuffer', function () {
     it('should convert from this known fast buffer', function () {
-      let pubKey = new PubKey().fromFastBuffer(
+      const pubKey = new PubKey().fromFastBuffer(
         Buffer.from(
           '01041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341',
           'hex'
@@ -234,7 +234,7 @@ describe('PubKey', function () {
 
   describe('#fromDer', function () {
     it('should parse this uncompressed public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromDer(
         Buffer.from(
           '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341',
@@ -256,7 +256,7 @@ describe('PubKey', function () {
     })
 
     it('should parse this compressed public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromDer(
         Buffer.from(
           '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
@@ -278,7 +278,7 @@ describe('PubKey', function () {
     })
 
     it('should throw an error on this invalid public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       ;(function () {
         pk.fromDer(
           Buffer.from(
@@ -292,7 +292,7 @@ describe('PubKey', function () {
 
   describe('@fromDer', function () {
     it('should parse this uncompressed public key', function () {
-      let pk = PubKey.fromDer(
+      const pk = PubKey.fromDer(
         Buffer.from(
           '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341',
           'hex'
@@ -313,7 +313,7 @@ describe('PubKey', function () {
     })
 
     it('should parse this compressed public key', function () {
-      let pk = PubKey.fromDer(
+      const pk = PubKey.fromDer(
         Buffer.from(
           '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
@@ -347,7 +347,7 @@ describe('PubKey', function () {
 
   describe('#fromString', function () {
     it('should parse this known valid public key', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromString(
         '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a7baad41d04514751e6851f5304fd243751703bed21b914f6be218c0fa354a341'
       )
@@ -368,13 +368,13 @@ describe('PubKey', function () {
 
   describe('#fromX', function () {
     it('should create this known public key', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk.point
         .getX()
@@ -393,13 +393,13 @@ describe('PubKey', function () {
 
   describe('@fromX', function () {
     it('should create this known public key', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk.point
         .getX()
@@ -418,10 +418,10 @@ describe('PubKey', function () {
 
   describe('#toHex', function () {
     it('should return this compressed DER format', function () {
-      let x = new Bn().fromHex(
+      const x = new Bn().fromHex(
         '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk
         .toHex()
@@ -433,13 +433,13 @@ describe('PubKey', function () {
 
   describe('#toBuffer', function () {
     it('should return this compressed DER format', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk
         .toBuffer()
@@ -452,13 +452,13 @@ describe('PubKey', function () {
 
   describe('#toFastBuffer', function () {
     it('should return fast buffer', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk
         .toFastBuffer()
@@ -472,13 +472,13 @@ describe('PubKey', function () {
 
   describe('#toDer', function () {
     it('should return this compressed DER format', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk
         .toDer(true)
@@ -489,13 +489,13 @@ describe('PubKey', function () {
     })
 
     it('should return this uncompressed DER format', function () {
-      let x = Bn.fromBuffer(
+      const x = Bn.fromBuffer(
         Buffer.from(
           '1ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a',
           'hex'
         )
       )
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromX(true, x)
       pk
         .toDer(false)
@@ -508,9 +508,9 @@ describe('PubKey', function () {
 
   describe('#toString', function () {
     it('should print this known public key', function () {
-      let hex =
+      const hex =
         '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromString(hex)
       pk.toString().should.equal(hex)
     })
@@ -518,17 +518,17 @@ describe('PubKey', function () {
 
   describe('#validate', function () {
     it('should not throw an error if pubKey is valid', function () {
-      let hex =
+      const hex =
         '031ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a'
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromString(hex)
       should.exist(pk.validate())
     })
 
     it('should not throw an error if pubKey is invalid', function () {
-      let hex =
+      const hex =
         '041ff0fe0f7b15ffaa85ff9f4744d539139c252a49710fb053bb9f2b933173ff9a0000000000000000000000000000000000000000000000000000000000000000'
-      let pk = new PubKey()
+      const pk = new PubKey()
       pk.fromString(hex)
       ;(function () {
         pk.validate()
@@ -536,7 +536,7 @@ describe('PubKey', function () {
     })
 
     it('should throw an error if pubKey is infinity', function () {
-      let pk = new PubKey()
+      const pk = new PubKey()
       let errm = ''
       try {
         pk.point = Point.getG().mul(Point.getN())

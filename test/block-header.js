@@ -6,15 +6,15 @@ import { Br } from '../lib/br'
 import should from 'should'
 
 describe('BlockHeader', function () {
-  let bh = new BlockHeader()
-  let versionBytesNum = 1
-  let prevBlockHashBuf = Buffer.alloc(32)
+  const bh = new BlockHeader()
+  const versionBytesNum = 1
+  const prevBlockHashBuf = Buffer.alloc(32)
   prevBlockHashBuf.fill(5)
-  let merkleRootBuf = Buffer.alloc(32)
+  const merkleRootBuf = Buffer.alloc(32)
   merkleRootBuf.fill(9)
-  let time = 2
-  let bits = 3
-  let nonce = 4
+  const time = 2
+  const bits = 3
+  const nonce = 4
   bh.fromObject({
     versionBytesNum: versionBytesNum,
     prevBlockHashBuf: prevBlockHashBuf,
@@ -23,9 +23,9 @@ describe('BlockHeader', function () {
     bits: bits,
     nonce: nonce
   })
-  let bhhex =
+  const bhhex =
     '0100000005050505050505050505050505050505050505050505050505050505050505050909090909090909090909090909090909090909090909090909090909090909020000000300000004000000'
-  let bhbuf = Buffer.from(bhhex, 'hex')
+  const bhbuf = Buffer.from(bhhex, 'hex')
 
   it('should make a new blockHeader', function () {
     let blockHeader = new BlockHeader()
@@ -55,7 +55,7 @@ describe('BlockHeader', function () {
 
   describe('#fromJSON', function () {
     it('should set all the variables', function () {
-      let bh = new BlockHeader().fromJSON({
+      const bh = new BlockHeader().fromJSON({
         versionBytesNum: versionBytesNum,
         prevBlockHashBuf: prevBlockHashBuf.toString('hex'),
         merkleRootBuf: merkleRootBuf.toString('hex'),
@@ -74,7 +74,7 @@ describe('BlockHeader', function () {
 
   describe('#toJSON', function () {
     it('should set all the variables', function () {
-      let json = bh.toJSON()
+      const json = bh.toJSON()
       should.exist(json.versionBytesNum)
       should.exist(json.prevBlockHashBuf)
       should.exist(json.merkleRootBuf)
@@ -141,7 +141,7 @@ describe('BlockHeader', function () {
         .toBuffer()
         .toString('hex')
         .should.equal(bhhex)
-      let bw = new Bw()
+      const bw = new Bw()
       new BlockHeader().fromBuffer(bhbuf).toBw(bw)
       bw
         .toBuffer()

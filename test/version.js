@@ -13,7 +13,7 @@ describe('Version', function () {
 
   describe('#toBuffer', function () {
     it('should convert to buffer', function () {
-      let version = Version.fromObject({
+      const version = Version.fromObject({
         versionBytesNum: 0,
         servicesBuf: Buffer.alloc(8),
         timeBn: new Bn(0),

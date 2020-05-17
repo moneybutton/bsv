@@ -4,12 +4,12 @@ import { HashCache } from '../lib/hash-cache'
 import should from 'should'
 
 describe('HashCache', function () {
-  let prevoutsHashBuf = Buffer.from('01'.repeat(32), 'hex')
-  let sequenceHashBuf = Buffer.from('02'.repeat(32), 'hex')
-  let outputsHashBuf = Buffer.from('03'.repeat(32), 'hex')
+  const prevoutsHashBuf = Buffer.from('01'.repeat(32), 'hex')
+  const sequenceHashBuf = Buffer.from('02'.repeat(32), 'hex')
+  const outputsHashBuf = Buffer.from('03'.repeat(32), 'hex')
 
   it('should satisfy this basic API', function () {
-    let hashCache = new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf)
+    const hashCache = new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf)
     should.exist(hashCache)
     hashCache.prevoutsHashBuf.length.should.equal(32)
     hashCache.sequenceHashBuf.length.should.equal(32)
@@ -18,14 +18,14 @@ describe('HashCache', function () {
 
   describe('#fromBuffer', function () {
     it('should parse this known message', function () {
-      let hashCache = new HashCache().fromBuffer(new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf).toBuffer())
+      const hashCache = new HashCache().fromBuffer(new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf).toBuffer())
       hashCache.toHex().should.equal('7b22707265766f75747348617368427566223a2230313031303130313031303130313031303130313031303130313031303130313031303130313031303130313031303130313031303130313031303130313031222c2273657175656e636548617368427566223a2230323032303230323032303230323032303230323032303230323032303230323032303230323032303230323032303230323032303230323032303230323032222c226f75747075747348617368427566223a2230333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033227d')
     })
   })
 
   describe('#toBuffer', function () {
     it('should parse this known message', function () {
-      let hashCache = new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf)
+      const hashCache = new HashCache(prevoutsHashBuf, sequenceHashBuf, outputsHashBuf)
       hashCache
         .toBuffer()
         .toString('hex')

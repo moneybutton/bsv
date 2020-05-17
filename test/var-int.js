@@ -8,7 +8,7 @@ import { VarInt } from '../lib/var-int'
 
 describe('VarInt', function () {
   it('should make a new varInt', function () {
-    let buf = Buffer.from('00', 'hex')
+    const buf = Buffer.from('00', 'hex')
     let varInt = new VarInt(buf)
     should.exist(varInt)
     varInt.buf.toString('hex').should.equal('00')
@@ -33,8 +33,8 @@ describe('VarInt', function () {
 
   describe('#fromObject', function () {
     it('should set a buffer', function () {
-      let buf = Buffer.from('00', 'hex')
-      let varInt = new VarInt().fromObject({ buf: buf })
+      const buf = Buffer.from('00', 'hex')
+      const varInt = new VarInt().fromObject({ buf: buf })
       varInt.buf.toString('hex').should.equal('00')
       varInt.fromObject({})
       varInt.buf.toString('hex').should.equal('00')
@@ -43,69 +43,69 @@ describe('VarInt', function () {
 
   describe('#fromJSON', function () {
     it('should set a buffer', function () {
-      let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt().fromJSON(buf.toString('hex'))
+      const buf = new Bw().writeVarIntNum(5).toBuffer()
+      const varInt = new VarInt().fromJSON(buf.toString('hex'))
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#toJSON', function () {
     it('should return a buffer', function () {
-      let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt().fromJSON(buf.toString('hex'))
+      const buf = new Bw().writeVarIntNum(5).toBuffer()
+      const varInt = new VarInt().fromJSON(buf.toString('hex'))
       varInt.toJSON().should.equal('05')
     })
   })
 
   describe('#fromBuffer', function () {
     it('should set a buffer', function () {
-      let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt().fromBuffer(buf)
+      const buf = new Bw().writeVarIntNum(5).toBuffer()
+      const varInt = new VarInt().fromBuffer(buf)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromBr', function () {
     it('should set a buffer reader', function () {
-      let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let br = new Br(buf)
-      let varInt = new VarInt().fromBr(br)
+      const buf = new Bw().writeVarIntNum(5).toBuffer()
+      const br = new Br(buf)
+      const varInt = new VarInt().fromBr(br)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromBn', function () {
     it('should set a number', function () {
-      let varInt = new VarInt().fromBn(new Bn(5))
+      const varInt = new VarInt().fromBn(new Bn(5))
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('@fromBn', function () {
     it('should set a number', function () {
-      let varInt = VarInt.fromBn(new Bn(5))
+      const varInt = VarInt.fromBn(new Bn(5))
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#fromNumber', function () {
     it('should set a number', function () {
-      let varInt = new VarInt().fromNumber(5)
+      const varInt = new VarInt().fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('@fromNumber', function () {
     it('should set a number', function () {
-      let varInt = VarInt.fromNumber(5)
+      const varInt = VarInt.fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })
 
   describe('#toBuffer', function () {
     it('should return a buffer', function () {
-      let buf = new Bw().writeVarIntNum(5).toBuffer()
-      let varInt = new VarInt(buf)
+      const buf = new Bw().writeVarIntNum(5).toBuffer()
+      const varInt = new VarInt(buf)
       varInt
         .toBuffer()
         .toString('hex')
@@ -115,7 +115,7 @@ describe('VarInt', function () {
 
   describe('#toBn', function () {
     it('should return a buffer', function () {
-      let varInt = VarInt.fromNumber(5)
+      const varInt = VarInt.fromNumber(5)
       varInt
         .toBn()
         .toString()
@@ -125,7 +125,7 @@ describe('VarInt', function () {
 
   describe('#toNumber', function () {
     it('should return a buffer', function () {
-      let varInt = VarInt.fromNumber(5)
+      const varInt = VarInt.fromNumber(5)
       varInt.toNumber().should.equal(5)
     })
   })
