@@ -178,7 +178,7 @@ describe('Block', function () {
       hash.toString('hex').should.equal(genesishashhex)
     })
 
-    it('should return the correct hash of block containIng the largest tx', async function () {
+    it('should return the correct hash of block containing the largest tx', async function () {
       let block = new Block().fromHex(largesttxblockvector.blockhex)
       let buf = block.toBuffer()
       block = block.fromBuffer(buf)
