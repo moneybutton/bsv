@@ -1,7 +1,7 @@
 {
   "name": "bsv",
   "description": "Javascript library for Bitcoin SV (BSV).",
-  "version": "2.0.0-beta.29",
+  "version": "2.0.0-beta.30",
   "author": "Yours Inc.",
   "homepage": "https://github.com/moneybutton/bsv",
   "source": "entry.js",
@@ -16,7 +16,8 @@
     "test:mocha": "mocha",
     "test:karma": "karma start --single-run",
     "test": "yarn run test:mocha && yarn run test:karma",
-    "build": "webpack && microbundle --target node -f modern,cjs"
+    "build": "webpack && microbundle --target node -f modern,cjs",
+    "prepublish": "yarn build"
   },
   "contributors": [
     {
