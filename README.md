@@ -1,89 +1,62 @@
-bsv
-===
+# bsv
 
-Javascript Bitcoin SV library.
+bsv is a javascript library for Bitcoin SV (BSV) intended to satisfy certain
+goals:
 
-Documentation is available on the [Money Button Documentation Page](https://docs.moneybutton.com/docs/bsv-overview.html).
+1. Support ease-of-use by being internally consistent. It should not be
+   necessary to read the source code of a class or function to know how to use it.
+   Once you know how to use part of the library, the other parts should feel
+   natural.
 
-Changelog
----------
-**1.5.0**
-* Add build files into repo.
+2. Have 100% test coverage, or nearly so, so that the library is known to be
+   reliable. This should include running standard test vectors from the reference
+   implementation.
 
-**1.4.0**
-* Change default fee to 0.5 sat/byte
+3. Library objects have an interface suitable for use with a command-line
+   interface or other libraries and tools, in particular having toString,
+   fromString, toJSON, fromJSON, toBuffer, fromBuffer, toHex, fromHex methods.
 
-**1.3.0**
-* Remove limit on OP_RETURN size
+4. All standard features of the blockchain are implemented (or will be) and
+   saved in lib/. All BIPs are correctly implemented and, where appropriate, saved
+   as bip-xx.js in lib/ (since that is their standard name). In order to allow
+   rapid development, Yours Bitcoin includes non-standard and experimental
+   features. Any non-standard features (such as colored coins or stealth
+   addresses) are labeled as such in index.js as well as in comments.
 
-**1.1.0**
-* Refactor code related to buffers and get rid of bufferUtil
-* Deprecate p2sh
-* Add .Mnemonic to bsv object
+5. Expose everything, including dependencies. This makes it possible to develop
+   apps that require fine-grained control over the basics, such as big numbers and
+   points. However, it also means that you can hurt yourself if you misuse these
+   primitives.
 
-**1.0.0**
-* Bump to 1.0 release as per the suggestion of @mathiasrw
+6. Use standard javascript conventions wherever possible so that other
+   developers find the code easy to understand.
 
-**0.30.2**
-* Added addSafeData to Transaction.
+7. Minimize the use of dependencies so that all code can be easily audited.
 
-**0.30.1**
-* Enforce buffer check for Electrum ECIES decryption.
-* Clean up script folder (no API breaking changes).
-* Documentation improvements.
+8. All instance methods modify the state of the object and return the object,
+   unless there is a good reason to do something different. To access the result
+   of an instance method, you must access the object property(s) that it modifies.
 
-**0.30.0**
-* Fix transaction size calculation.
+9. Support web workers to unblock web wallet UIs when performing cryptography.
 
-**0.29.2**
-* Throw error on invalid hex strings in script
+## Environment Variables
 
-**0.29.1**
-* Add support for new OP_RETURN style: buildSafeDataOut and isSafeDataOut (and getData)
+* `BSV_JS_BASE_URL` - Default "/".
+* `BSV_JS_BUNDLE_FILE` - Default "bsv.js"
+* `BSV_JS_WORKER_FILE` - Default "bsv-worker.js"
+* `NETWORK` - Default "mainnet"
 
-**0.27.2**
-* Add support for Stress Test Network (STN).
+You can change the network to run the CLI in testnet mode:
 
-**v0.27.1**
-* Replace lodash methods with inline pure javascript methods.
+```
+NETWORK=testnet ./bin/bsv.js
+```
 
-**v0.27.0**
-* Remove version guard. This should fix the "two versions of bsv" error that
-  people often get. Note that it is poor practice to use incompatible versions
-  of bsv. To send objects from one version of the library to another, always
-  serialize to a string or buffer first. Do not send objects from one version to
-  another. This due to frequent use of "instanceof" inside the library.
+## Documentation
 
-**v0.26.5**
-* lodash optimization and overall size optimization of bsv.min.js
-* fix isFinal
-* fix non-dust amount example
-* minor ECIES API issue
+There is some documentation, and it can be built with groc:
 
-**v0.26.4**
-* Use ECDSA.signWithCalcI(...) convenience method inside Message.
-
-**v0.26.3**
-* Add ECDSA.signWithCalcI(...) convenience method.
-
-**v0.26.2**
-* Add Mnemonic.fromString(string).
-* Add convenience method for ECDSA.signRandomK (mostly for demo purposes).
-* Add convenience methods Message.sign and message.verify.
-* Move large portions of the documentation to [docs.moneybutton.com](https://docs.moneybutton.com).
-
-**v0.26.1**
-* Add .fromRandom() method for Mnemonic.
-
-**v0.26.0**
-* Remove the (already deprecated) .derive() method from HDPrivateKey and HDPublicKey. If you rely on this, please switch to .deriveNonCompliantChild(). If you do not already rely on this, you should use .deriveChild() instead.
-* Move large portions of the documentation to [docs.moneybutton.com](https://docs.moneybutton.com).
-* HDPrivateKey / HDPublicKey toHex() and fromHex()
-* HDPrivateKey.fromRandom()
-* Remove Base32 (this was only used for cashaddr and is now obsolete).
-
-**v0.25.0**
-* Remove support for cashaddr completely. This saves size in the bundle.
-* Private key .toString() method now returns WIF, which makes it compatible with the corresponding .fromString(wif) method.
-* Private key and public key classes now have toHex() and fromHex(hex) methods.
-* Move large portions of the documentation to [docs.moneybutton.com](https://docs.moneybutton.com).
+```
+npm install -g groc
+groc
+```

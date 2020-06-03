@@ -1,13 +1,12 @@
-var path = require('path')
+const path = require('path')
 
 module.exports = {
-  entry: path.join(__dirname, '/index.js'),
-  externals: {
-    crypto: 'crypto'
-  },
+  entry: './entry.js',
   output: {
-    library: 'bsv',
-    path: path.join(__dirname, '/'),
-    filename: 'bsv.min.js'
-  }
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bsv.bundle.js',
+    library: 'bsvjs'
+  },
+  devtool: 'source-map',
+  mode: 'production'
 }

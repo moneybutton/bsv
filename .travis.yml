@@ -1,5 +1,7 @@
+dist: bionic
 language: node_js
 node_js:
-- '10'
-install:
-  - npm install
+- '12'
+addons:
+  chrome: stable
+  firefox: stable

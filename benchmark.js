@@ -1,33 +1,50 @@
-let bsv = require('./')
-let Transaction = bsv.Transaction
-let Random = bsv.crypto.Random
-let Script = bsv.Script
+const bsv = require('./dist/bsv')
 
-var fromAddress = 'mszYqVnqKoQx4jcTdJXxwKAissE3Jbrrc1'
-var toAddress = 'mrU9pEmAx26HcbKVrABvgL7AwA5fjNFoDc'
-var changeAddress = 'mgBCJAsvzgT2qNNeXsoECg2uPKrUsZ76up'
-var privateKey = 'cSBnVM4xvxarwGQuAfQFwqDg9k5tErHUHzgWsEfD4zdwUasvqRVY'
+const Address = bsv.Address
+const PrivKey = bsv.PrivKey
+const PubKey = bsv.PubKey
+const TxBuilder = bsv.TxBuilder
+const TxOut = bsv.TxOut
+const Random = bsv.Random
+const Bn = bsv.Bn
+const KeyPair = bsv.KeyPair
 
-let n = 10000
-let satoshis = 1e3
-let total = satoshis * n - satoshis / 2
-let tx = new Transaction()
+var randhex = 'adf4953b2e679fdc453d9cec93ba26c3bd9f0fb875975f3d72ed0c6c6835e26e'
+var randbn = new Bn().fromHex(randhex)
+var privateKey = PrivKey.fromBn(randbn)
+var publicKey = PubKey.fromPrivKey(privateKey)
+var keyPair = new KeyPair(privateKey, publicKey)
+var fromAddress = Address.fromPrivKey(privateKey)
+var toAddress = fromAddress
+var changeAddress = toAddress
+
+const n = 10000
+const satoshis = 1e3
+// const total = satoshis * n - satoshis / 2
+let txb = new TxBuilder()
 for (let i = 0; i < n; i++) {
-  tx = tx.from({
-    txId: Random.getRandomBuffer(32).toString('hex'),
-    outputIndex: 0,
-    script: Script.buildPublicKeyHashOut(fromAddress).toString(),
-    satoshis: satoshis
-  })
+  const txOut = TxOut.fromProperties(new Bn(satoshis), fromAddress.toTxOutScript())
+  const txHashBuf = Random.getRandomBuffer(32)
+  const txOutNum = 0
+  txb.inputFromPubKeyHash(txHashBuf, txOutNum, txOut, publicKey)
 }
-tx = tx.to([{
-  address: toAddress,
-  satoshis: total
-}])
-  .change(changeAddress)
+txb = txb.outputToAddress(new Bn(satoshis), toAddress)
+txb = txb.setChangeAddress(changeAddress)
+txb.setFeePerKbNum(500)
+const useAllInputs = true
 
-let start = Date.now()
-tx.sign(privateKey)
-let finish = Date.now()
+{
+  const start = Date.now()
+  txb.build({ useAllInputs })
+  const finish = Date.now()
+  console.log('building: ', finish - start, 'ms')
+}
 
-console.log('', n, 'inputs', 'signing:', finish - start, 'ms')
+{
+  const start = Date.now()
+  for (let i = 0; i < txb.txIns.length; i++) {
+    txb.signTxIn(i, keyPair)
+  }
+  const finish = Date.now()
+  console.log('', n, 'inputs', 'signing: ', finish - start, 'ms')
+}
