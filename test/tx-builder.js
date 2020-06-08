@@ -1271,5 +1271,80 @@ describe('TxBuilder', function () {
       txb.signWithKeyPairs(keyPairs)
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
+
+    it('should sign and verify a large number of inputs and outputs, with incrementing amounts, with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 50
+      const nOuts = 30
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1e8 * (i + 1)), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(0.999e8 * (i + 1)), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = txb.fromJSON(txb.toJSON())
+
+      // partially sign - deliberately resulting in invalid tx
+      txb.signWithKeyPairs([
+        keyPairs[0],
+        keyPairs[1],
+        keyPairs[2]
+      ])
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.signWithKeyPairs(keyPairs)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
   })
 })
