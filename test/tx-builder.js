@@ -692,8 +692,6 @@ describe('TxBuilder', function () {
       const changeaddr = obj.changeaddr
 
       // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.signWithKeyPairs([keyPair1])
 
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
@@ -702,7 +700,7 @@ describe('TxBuilder', function () {
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // this should effectively add
       txb.signWithKeyPairs([keyPair2])
@@ -719,12 +717,12 @@ describe('TxBuilder', function () {
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
       txb.signWithKeyPairs([keyPair1, keyPair2])
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify synchronously with no public key inserted at input', function () {
@@ -810,8 +808,6 @@ describe('TxBuilder', function () {
       const changeaddr = obj.changeaddr
 
       // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.signWithKeyPairs([keyPair1])
 
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
@@ -820,7 +816,7 @@ describe('TxBuilder', function () {
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // this should effectively add
       txb.signWithKeyPairs([keyPair2])
@@ -837,12 +833,12 @@ describe('TxBuilder', function () {
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
       txb.signWithKeyPairs([keyPair1, keyPair2])
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify a lot of inputs and outputs', function () {
@@ -965,9 +961,6 @@ describe('TxBuilder', function () {
 
       txb.build()
 
-      // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-
       // partially sign - deliberately resulting in invalid tx
       txb.signWithKeyPairs([
         keyPair1,
@@ -976,7 +969,7 @@ describe('TxBuilder', function () {
       ])
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // fully sign
       txb.signWithKeyPairs([
@@ -996,7 +989,7 @@ describe('TxBuilder', function () {
       // txb.changeAmountBn.toNumber().should.equal(49996250)
       // txb.feeAmountBn.toNumber().should.equal(3750)
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
@@ -1013,7 +1006,7 @@ describe('TxBuilder', function () {
         keyPair10,
         keyPair11,
       ])
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify synchronously with no public key inserted at input', function () {
@@ -1099,8 +1092,6 @@ describe('TxBuilder', function () {
       const changeaddr = obj.changeaddr
 
       // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
       txb.signWithKeyPairs([keyPair1])
 
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
@@ -1109,7 +1100,7 @@ describe('TxBuilder', function () {
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // this should effectively add
       txb.signWithKeyPairs([keyPair2])
@@ -1126,12 +1117,12 @@ describe('TxBuilder', function () {
         .toString('hex')
         .should.equal(changeaddr.hashBuf.toString('hex'))
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
       txb.signWithKeyPairs([keyPair1, keyPair2])
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify a really large number of inputs and outputs', function () {
@@ -1185,9 +1176,6 @@ describe('TxBuilder', function () {
       txb.tx.txIns.length.should.equal(nIns)
       txb.tx.txOuts.length.should.equal(nOuts + 1)
 
-      // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-
       // partially sign - deliberately resulting in invalid tx
       txb.signWithKeyPairs([
         keyPairs[0],
@@ -1196,17 +1184,17 @@ describe('TxBuilder', function () {
       ])
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // fully sign
       txb.signWithKeyPairs(keyPairs)
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
       txb.signWithKeyPairs(keyPairs)
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify a large number of inputs and outputs with converting to/from JSON', function () {
@@ -1260,9 +1248,6 @@ describe('TxBuilder', function () {
       txb.tx.txIns.length.should.equal(nIns)
       txb.tx.txOuts.length.should.equal(nOuts + 1)
 
-      // begin signing
-      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
-
       // before signing, convert to/from JSON, simulating real-world wallet use-case
       txb = txb.fromJSON(txb.toJSON())
 
@@ -1274,17 +1259,17 @@ describe('TxBuilder', function () {
       ])
 
       // transaction not fully signed yet, so should be invalid
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(false)
 
       // fully sign
       txb.signWithKeyPairs(keyPairs)
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
       txb.signWithKeyPairs(keyPairs)
-      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
   })
 })
