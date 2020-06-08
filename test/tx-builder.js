@@ -694,7 +694,7 @@ describe('TxBuilder', function () {
       // begin signing
       const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
       // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
-      txb.sign([keyPair1])
+      txb.signWithKeyPairs([keyPair1])
 
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[1].log.should.equal('successfully inserted public key')
@@ -705,7 +705,7 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
       // this should effectively add
-      txb.sign([keyPair2])
+      txb.signWithKeyPairs([keyPair2])
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
@@ -723,7 +723,7 @@ describe('TxBuilder', function () {
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
-      txb.sign([keyPair1, keyPair2])
+      txb.signWithKeyPairs([keyPair1, keyPair2])
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
 
@@ -812,7 +812,7 @@ describe('TxBuilder', function () {
       // begin signing
       const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
       // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
-      txb.sign([keyPair1])
+      txb.signWithKeyPairs([keyPair1])
 
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
       txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[1].log.should.equal('successfully inserted public key')
@@ -823,7 +823,7 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
       // this should effectively add
-      txb.sign([keyPair2])
+      txb.signWithKeyPairs([keyPair2])
 
       txb.tx.txOuts[0].script.chunks[2].buf
         .toString('hex')
@@ -841,7 +841,7 @@ describe('TxBuilder', function () {
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
-      txb.sign([keyPair1, keyPair2])
+      txb.signWithKeyPairs([keyPair1, keyPair2])
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
 
@@ -969,7 +969,7 @@ describe('TxBuilder', function () {
       const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
 
       // partially sign - deliberately resulting in invalid tx
-      txb.sign([
+      txb.signWithKeyPairs([
         keyPair1,
         keyPair2,
         keyPair3
@@ -979,7 +979,7 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
 
       // fully sign
-      txb.sign([
+      txb.signWithKeyPairs([
         keyPair1,
         keyPair2,
         keyPair3,
@@ -1000,7 +1000,7 @@ describe('TxBuilder', function () {
 
       // re-signing just puts the same signatures back into the same place and
       // thus should still be valid
-      txb.sign([
+      txb.signWithKeyPairs([
         keyPair1,
         keyPair2,
         keyPair3,
