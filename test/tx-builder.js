@@ -681,7 +681,7 @@ describe('TxBuilder', function () {
     })
   })
 
-  describe('#sign', function () {
+  describe('#signWithKeyPairs', function () {
     it('should sign and verify synchronously', function () {
       // prepare
       const obj = prepareAndBuildTxBuilder()
@@ -1013,6 +1013,277 @@ describe('TxBuilder', function () {
         keyPair10,
         keyPair11,
       ])
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+    })
+
+    it('should sign and verify synchronously with no public key inserted at input', function () {
+      function prepareTxBuilder () {
+        const txb = new TxBuilder()
+
+        // make change address
+        const privKey = new PrivKey().fromBn(new Bn(1))
+        const keyPair = new KeyPair().fromPrivKey(privKey)
+        const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+        // make addresses to send from
+        const privKey1 = new PrivKey().fromBn(new Bn(2))
+        const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+        const addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+        const privKey2 = new PrivKey().fromBn(new Bn(3))
+        const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+        const addr2 = new Address().fromPubKey(keyPair2.pubKey)
+
+        // make addresses to send to
+        const saddr1 = addr1
+
+        // txOuts that we are spending
+
+        // pubKeyHash out
+        const scriptout1 = new Script().fromString(
+          'OP_DUP OP_HASH160 20 0x' +
+            addr1.hashBuf.toString('hex') +
+            ' OP_EQUALVERIFY OP_CHECKSIG'
+        )
+
+        // pubKeyHash out
+        const scriptout2 = new Script().fromString(
+          'OP_DUP OP_HASH160 20 0x' +
+            addr2.hashBuf.toString('hex') +
+            ' OP_EQUALVERIFY OP_CHECKSIG'
+        )
+
+        const txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+        const txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+        // total balance: 2e8
+
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(0)
+        const txOutNum1 = 0
+        const txOutNum2 = 1
+
+        txb.setFeePerKbNum(0.0001e8)
+        txb.setChangeAddress(changeaddr)
+        txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1)
+        txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2)
+        txb.outputToAddress(new Bn(1.5e8), saddr1) // pubKeyHash address
+        // total sending: 2e8 (plus fee)
+        // txb.randomizeInputs()
+        // txb.randomizeOutputs()
+
+        return {
+          txb,
+          keyPair1,
+          keyPair2,
+          addr1,
+          addr2,
+          saddr1,
+          changeaddr,
+          txOut1,
+          txOut2
+        }
+      }
+
+      function prepareAndBuildTxBuilder () {
+        const obj = prepareTxBuilder()
+        obj.txb.build()
+        return obj
+      }
+
+      // prepare
+      const obj = prepareAndBuildTxBuilder()
+      const txb = obj.txb
+      const keyPair1 = obj.keyPair1
+      const keyPair2 = obj.keyPair2
+      const saddr1 = obj.saddr1
+      const changeaddr = obj.changeaddr
+
+      // begin signing
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+      // txb.signTxIn(0, keyPair1, undefined, undefined, nHashType, flags)
+      txb.signWithKeyPairs([keyPair1])
+
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[0].log.should.equal('successfully inserted signature')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:0')[1].log.should.equal('successfully inserted public key')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[0].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+      txb.sigOperations.map.get('0000000000000000000000000000000000000000000000000000000000000000:1')[1].log.should.equal('cannot find keyPair for addressStr 1CUNEBjYrCn2y1SdiUMohaKUi4wpP326Lb')
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // this should effectively add
+      txb.signWithKeyPairs([keyPair2])
+
+      txb.tx.txOuts[0].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(saddr1.hashBuf.toString('hex'))
+      txb.tx.txOuts[0].valueBn.eq(1.5e8).should.equal(true)
+      txb.tx.txOuts[1].valueBn.gt(546).should.equal(true)
+      txb.tx.txOuts[1].valueBn.toNumber().should.equal(49996250)
+      txb.changeAmountBn.toNumber().should.equal(49996250)
+      txb.feeAmountBn.toNumber().should.equal(3750)
+      txb.tx.txOuts[1].script.chunks[2].buf
+        .toString('hex')
+        .should.equal(changeaddr.hashBuf.toString('hex'))
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.signWithKeyPairs([keyPair1, keyPair2])
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+    })
+
+    it('should sign and verify a really large number of inputs and outputs', function () {
+      this.timeout(10000)
+      const nIns = 100
+      const nOuts = 100
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1e8), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      const txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(0.999e8), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // begin signing
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+
+      // partially sign - deliberately resulting in invalid tx
+      txb.signWithKeyPairs([
+        keyPairs[0],
+        keyPairs[1],
+        keyPairs[2]
+      ])
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.signWithKeyPairs(keyPairs)
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+    })
+
+    it('should sign and verify a large number of inputs and outputs with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 50
+      const nOuts = 50
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1e8), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(0.999e8), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // begin signing
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = txb.fromJSON(txb.toJSON())
+
+      // partially sign - deliberately resulting in invalid tx
+      txb.signWithKeyPairs([
+        keyPairs[0],
+        keyPairs[1],
+        keyPairs[2]
+      ])
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.signWithKeyPairs(keyPairs)
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
   })
