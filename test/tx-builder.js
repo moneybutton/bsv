@@ -844,5 +844,176 @@ describe('TxBuilder', function () {
       txb.sign([keyPair1, keyPair2])
       TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
     })
+
+    it('should sign and verify a lot of inputs and outputs', function () {
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKey1 = new PrivKey().fromBn(new Bn(1))
+      const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+      const addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+      const privKey2 = new PrivKey().fromBn(new Bn(2))
+      const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+      const addr2 = new Address().fromPubKey(keyPair2.pubKey)
+
+      const privKey3 = new PrivKey().fromBn(new Bn(3))
+      const keyPair3 = new KeyPair().fromPrivKey(privKey3)
+      const addr3 = new Address().fromPubKey(keyPair3.pubKey)
+
+      const privKey4 = new PrivKey().fromBn(new Bn(4))
+      const keyPair4 = new KeyPair().fromPrivKey(privKey4)
+      const addr4 = new Address().fromPubKey(keyPair4.pubKey)
+
+      const privKey5 = new PrivKey().fromBn(new Bn(5))
+      const keyPair5 = new KeyPair().fromPrivKey(privKey5)
+      const addr5 = new Address().fromPubKey(keyPair5.pubKey)
+
+      const privKey6 = new PrivKey().fromBn(new Bn(6))
+      const keyPair6 = new KeyPair().fromPrivKey(privKey6)
+      const addr6 = new Address().fromPubKey(keyPair6.pubKey)
+
+      const privKey7 = new PrivKey().fromBn(new Bn(7))
+      const keyPair7 = new KeyPair().fromPrivKey(privKey7)
+      const addr7 = new Address().fromPubKey(keyPair7.pubKey)
+
+      const privKey8 = new PrivKey().fromBn(new Bn(8))
+      const keyPair8 = new KeyPair().fromPrivKey(privKey8)
+      const addr8 = new Address().fromPubKey(keyPair8.pubKey)
+
+      const privKey9 = new PrivKey().fromBn(new Bn(9))
+      const keyPair9 = new KeyPair().fromPrivKey(privKey9)
+      const addr9 = new Address().fromPubKey(keyPair9.pubKey)
+
+      const privKey10 = new PrivKey().fromBn(new Bn(10))
+      const keyPair10 = new KeyPair().fromPrivKey(privKey10)
+      const addr10 = new Address().fromPubKey(keyPair10.pubKey)
+
+      const privKey11 = new PrivKey().fromBn(new Bn(11))
+      const keyPair11 = new KeyPair().fromPrivKey(privKey11)
+      const addr11 = new Address().fromPubKey(keyPair11.pubKey)
+
+      // txOuts that we are spending
+      const scriptout1 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout2 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout3 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr3.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout4 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr4.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout5 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr5.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout6 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr6.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout7 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr7.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout8 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr8.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout9 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr9.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout10 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr10.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout11 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr11.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+
+      const txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+      const txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+      const txOut3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
+      const txOut4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
+      const txOut5 = TxOut.fromProperties(new Bn(1e8), scriptout5)
+      const txOut6 = TxOut.fromProperties(new Bn(1e8), scriptout6)
+      const txOut7 = TxOut.fromProperties(new Bn(1e8), scriptout7)
+      const txOut8 = TxOut.fromProperties(new Bn(1e8), scriptout8)
+      const txOut9 = TxOut.fromProperties(new Bn(1e8), scriptout9)
+      const txOut10 = TxOut.fromProperties(new Bn(1e8), scriptout10)
+      const txOut11 = TxOut.fromProperties(new Bn(1e8), scriptout11)
+      // total balance: 11e8
+
+      const txHashBuf = Buffer.alloc(32)
+      txHashBuf.fill(1)
+      const txOutNum1 = 0
+      const txOutNum2 = 1
+      const txOutNum3 = 2
+      const txOutNum4 = 3
+      const txOutNum5 = 4
+      const txOutNum6 = 5
+      const txOutNum7 = 6
+      const txOutNum8 = 7
+      const txOutNum9 = 8
+      const txOutNum10 = 9
+      const txOutNum11 = 10
+
+      const txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum3, txOut3)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum4, txOut4)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum5, txOut5)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum6, txOut6)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum7, txOut7)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum8, txOut8)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum9, txOut9)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum10, txOut10)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum11, txOut11)
+      txb.outputToAddress(new Bn(0.999e8), addr1)
+      txb.outputToAddress(new Bn(0.999e8), addr2)
+      txb.outputToAddress(new Bn(0.999e8), addr3)
+      txb.outputToAddress(new Bn(0.999e8), addr4)
+      txb.outputToAddress(new Bn(0.999e8), addr5)
+      txb.outputToAddress(new Bn(0.999e8), addr6)
+      txb.outputToAddress(new Bn(0.999e8), addr7)
+      txb.outputToAddress(new Bn(0.999e8), addr8)
+      txb.outputToAddress(new Bn(0.999e8), addr9)
+      txb.outputToAddress(new Bn(0.999e8), addr10)
+      txb.outputToAddress(new Bn(0.999e8), addr11)
+      // total sending: 10.989e8 (plus fee)
+
+      txb.build()
+
+      // begin signing
+      const flags = Interp.SCRIPT_ENABLE_SIGHASH_FORKID
+
+      // partially sign - deliberately resulting in invalid tx
+      txb.sign([
+        keyPair1,
+        keyPair2,
+        keyPair3
+      ])
+
+      // transaction not fully signed yet, so should be invalid
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(false)
+
+      // fully sign
+      txb.sign([
+        keyPair1,
+        keyPair2,
+        keyPair3,
+        keyPair4,
+        keyPair5,
+        keyPair6,
+        keyPair7,
+        keyPair8,
+        keyPair9,
+        keyPair10,
+        keyPair11,
+      ])
+
+      // txb.changeAmountBn.toNumber().should.equal(49996250)
+      // txb.feeAmountBn.toNumber().should.equal(3750)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+
+      // re-signing just puts the same signatures back into the same place and
+      // thus should still be valid
+      txb.sign([
+        keyPair1,
+        keyPair2,
+        keyPair3,
+        keyPair4,
+        keyPair5,
+        keyPair6,
+        keyPair7,
+        keyPair8,
+        keyPair9,
+        keyPair10,
+        keyPair11,
+      ])
+      TxVerifier.verify(txb.tx, txb.uTxOutMap, flags).should.equal(true)
+    })
   })
 })
