@@ -1249,7 +1249,7 @@ describe('TxBuilder', function () {
       txb.tx.txOuts.length.should.equal(nOuts + 1)
 
       // before signing, convert to/from JSON, simulating real-world wallet use-case
-      txb = txb.fromJSON(txb.toJSON())
+      txb = TxBuilder.fromJSON(txb.toJSON())
 
       // partially sign - deliberately resulting in invalid tx
       txb.signWithKeyPairs([
@@ -1324,7 +1324,7 @@ describe('TxBuilder', function () {
       txb.tx.txOuts.length.should.equal(nOuts + 1)
 
       // before signing, convert to/from JSON, simulating real-world wallet use-case
-      txb = txb.fromJSON(txb.toJSON())
+      txb = TxBuilder.fromJSON(txb.toJSON())
 
       // partially sign - deliberately resulting in invalid tx
       txb.signWithKeyPairs([
