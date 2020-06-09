@@ -1009,6 +1009,83 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
+    it('should be able to add more inputs to pay the fee', function () {
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKey1 = new PrivKey().fromBn(new Bn(1))
+      const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+      const addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+      const privKey2 = new PrivKey().fromBn(new Bn(2))
+      const keyPair2 = new KeyPair().fromPrivKey(privKey2)
+      const addr2 = new Address().fromPubKey(keyPair2.pubKey)
+
+      const privKey3 = new PrivKey().fromBn(new Bn(3))
+      const keyPair3 = new KeyPair().fromPrivKey(privKey3)
+      const addr3 = new Address().fromPubKey(keyPair3.pubKey)
+
+      const privKey4 = new PrivKey().fromBn(new Bn(4))
+      const keyPair4 = new KeyPair().fromPrivKey(privKey4)
+      const addr4 = new Address().fromPubKey(keyPair4.pubKey)
+
+      // txOuts that we are spending
+      const scriptout1 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout2 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr2.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout3 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr3.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      const scriptout4 = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr4.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+
+      const txOut1 = TxOut.fromProperties(new Bn(1e8), scriptout1)
+      const txOut2 = TxOut.fromProperties(new Bn(1e8), scriptout2)
+      const txOut3 = TxOut.fromProperties(new Bn(1e8), scriptout3)
+      const txOut4 = TxOut.fromProperties(new Bn(1e8), scriptout4)
+      // total balance: 4e8
+
+      const txHashBuf = Buffer.alloc(32)
+      txHashBuf.fill(1)
+      const txOutNum1 = 0
+      const txOutNum2 = 1
+      const txOutNum3 = 2
+      const txOutNum4 = 3
+
+      const txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum1, txOut1)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum2, txOut2)
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum3, txOut3)
+      // don't add fourth input yet
+      // txb.inputFromPubKeyHash(txHashBuf, txOutNum4, txOut4)
+
+      // amount is sum of first three, but requires the fourth input to pay the fees
+      txb.outputToAddress(new Bn(3e8), addr1)
+
+      // first try failure
+      let errors = 0
+      try {
+        txb.build()
+      } catch (err) {
+        errors++
+      }
+      errors.should.equal(1)
+
+      // add fourth input. this should succeed.
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum4, txOut4)
+      txb.build()
+      // fully sign
+      txb.signWithKeyPairs([
+        keyPair1,
+        keyPair2,
+        keyPair3,
+        keyPair4
+      ])
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
     it('should sign and verify synchronously with no public key inserted at input', function () {
       function prepareTxBuilder () {
         const txb = new TxBuilder()
@@ -1190,11 +1267,6 @@ describe('TxBuilder', function () {
       txb.signWithKeyPairs(keyPairs)
 
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
-
-      // re-signing just puts the same signatures back into the same place and
-      // thus should still be valid
-      txb.signWithKeyPairs(keyPairs)
-      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify a large number of inputs and outputs with converting to/from JSON', function () {
@@ -1264,11 +1336,6 @@ describe('TxBuilder', function () {
       // fully sign
       txb.signWithKeyPairs(keyPairs)
 
-      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
-
-      // re-signing just puts the same signatures back into the same place and
-      // thus should still be valid
-      txb.signWithKeyPairs(keyPairs)
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
@@ -1340,11 +1407,6 @@ describe('TxBuilder', function () {
       txb.signWithKeyPairs(keyPairs)
 
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
-
-      // re-signing just puts the same signatures back into the same place and
-      // thus should still be valid
-      txb.signWithKeyPairs(keyPairs)
-      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
     it('should sign and verify a large number of inputs and outputs, with the same key, with converting to/from JSON', function () {
@@ -1405,10 +1467,127 @@ describe('TxBuilder', function () {
       txb.signWithKeyPairs(keyPairs)
 
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
 
-      // re-signing just puts the same signatures back into the same place and
-      // thus should still be valid
+    it('should sign and verify a large number of inputs and outputs, with BIP 69 sorting, with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 50
+      const nOuts = 30
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1e8), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(0.999e8), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+      txb.sort()
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
       txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
+    it('should sign and verify a large number of inputs and outputs, with BIP 69 sorting with incrementing amounts, with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 50
+      const nOuts = 30
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1e8 + i), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8...plus a bit due to incrementing amounts
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(0.999e8), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+      txb.sort()
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
@@ -1471,11 +1650,298 @@ describe('TxBuilder', function () {
       txb.signWithKeyPairs(keyPairs)
 
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
 
-      // re-signing just puts the same signatures back into the same place and
-      // thus should still be valid
+    it('should sign and verify a large number of inputs and outputs, with very small amounts for inputs (1000 satoshis), with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 100
+      const nOuts = 1
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1000), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0000500e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(1000), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
       txb.signWithKeyPairs(keyPairs)
+
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
+    it('should sign and verify a large number of inputs and outputs, with very small amounts for inputs (1000 satoshis, 0.01 sat/byte fee), with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 100
+      const nOuts = 1
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1000), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0000010e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(1000), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
+    it('should sign and verify a large number of inputs and outputs, with very small amounts for inputs (1499 satoshis, 0.01 sat/byte fee), with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 100
+      const nOuts = 1
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1499), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0000010e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(1000), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
+    it('should sign and verify a large number of inputs and outputs, with very small amounts for inputs (1499 satoshis, 0.5 sat/byte fee), with converting to/from JSON', function () {
+      this.timeout(10000)
+      const nIns = 100
+      const nOuts = 1
+
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKeys = []
+      const keyPairs = []
+      const addrs = []
+      for (let i = 0; i < nIns; i++) {
+        privKeys.push(new PrivKey().fromBn(new Bn(i + 1)))
+        keyPairs.push(new KeyPair().fromPrivKey(privKeys[i]))
+        addrs.push(new Address().fromPubKey(keyPairs[i].pubKey))
+      }
+
+      // txOuts that we are spending
+      const scriptouts = []
+      const txOuts = []
+      for (let i = 0; i < nIns; i++) {
+        scriptouts.push(new Script().fromString('OP_DUP OP_HASH160 20 0x' + addrs[i].hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG'))
+        txOuts.push(TxOut.fromProperties(new Bn(1499), scriptouts[i]))
+      }
+      // total input amount: nIns * 1e8
+
+      let txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0000500e8)
+      txb.setChangeAddress(changeaddr)
+
+      // put inputs into tx
+      for (let i = 0; i < nIns; i++) {
+        const txHashBuf = Buffer.alloc(32)
+        txHashBuf.fill(i + 1)
+        txb.inputFromPubKeyHash(txHashBuf, i, txOuts[i])
+      }
+
+      // put outputs into tx
+      for (let i = 0; i < nOuts; i++) {
+        txb.outputToAddress(new Bn(1000), addrs[i])
+      }
+      // total sending: nOuts * 0.999e8
+
+      txb.build({ useAllInputs: true })
+
+      txb.tx.txIns.length.should.equal(nIns)
+      txb.tx.txOuts.length.should.equal(nOuts + 1)
+
+      // before signing, convert to/from JSON, simulating real-world wallet use-case
+      txb = TxBuilder.fromJSON(txb.toJSON())
+
+      // fully sign
+      txb.signWithKeyPairs(keyPairs)
+
+      TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
+    })
+
+    it('should not mess up with bip 69 sorting with this known txbuilder object', function () {
+      this.timeout(10000)
+      const txbJSON = '{"tx":"0100000005b27d77a351245f3ed2c38e40114d432ffecee69d8c64dc06fe427a1ac09f1b40000000006b483045022100f7831904c76f49e23bdd5d2813cd708074ec77d345a0311ee7150fcfcd494cf3022058cbce7ea22b8d759c35d37a375ce0c73b9e1e87d047cb7748ade1fd082370d1412102bf0925d874daedbc1e0abdffa399b2b2042fddbba1cca850cdfdfc3ec9f218ffffffffff98f1664e4ad769225b39033b5a7269afdff54cc676908724d74d4efdebc2ee59000000006b483045022100f2e3195d6c104aacbf04589916d3e529414abbc8379b7d92fa6d32c32c297f05022024775901b5d71cb639297cf9b757d97738b16715023320ef9a51311bb1a97e94412102cd925e193fe4e0848e1f99e0975904a73eea7f779ff0e870115ad16b784803ceffffffff011ac299dce0415097d1fd67287e83cb92fbd2b9b7efe2c91751eb454e05c394000000006a4730440220739794fc726b205a34569c590d32e13459f5127fcf71d2169fc5944a727de8be0220505d2cbedc63514a6147fe756d45f7faf9bd5852df446fa35b62b554fb2d32514121034828cbbf04f9ae5608fdcf47598e191846b4970c1b6eda66519661ca75035a9dffffffffe85c87e34ed16ab8988fc398c16b9738f6032e9a4377b6636e2ec6a0ee752fcb000000006a473044022030e01c5bda4da0d4aadec98c5ece7b3529509b0aef6f437a14417abaf833956002207d8ece580800807132bca535ce06398ac5c68c68acd20566ecd3db0ecd58d7114121033fb03af6776d59cdb6ae78dff502d36b5a51429f243116f827e3d7438343b213ffffffff19cc6850ec0e9b8a01ef6ea0ef9888fbdc0e6794b9a6b7c7c36621d80665a0ec000000006b4830450221009f25a7e50bc857eb75f6dd06b55ec495a3f11c73f1f0151190bbb417f051978b02207169bb7aaa05d58dcc50f091d9b0a584157420cc2e4c3d841cafddf891356a95412103582a67dd32baefe4063e0408809bc740df4233c44dc2e5e3737de5c2249f0863ffffffff028d160000000000001976a914821972770205b3466023acd90790f95aee37914488accc580300000000001976a9145ff56ab8054c9e038254ee92f9ba364f84c2736188ac00000000","txIns":["98f1664e4ad769225b39033b5a7269afdff54cc676908724d74d4efdebc2ee5900000000020000ffffffff","011ac299dce0415097d1fd67287e83cb92fbd2b9b7efe2c91751eb454e05c39400000000020000ffffffff","b27d77a351245f3ed2c38e40114d432ffecee69d8c64dc06fe427a1ac09f1b4000000000020000ffffffff","e85c87e34ed16ab8988fc398c16b9738f6032e9a4377b6636e2ec6a0ee752fcb00000000020000ffffffff","19cc6850ec0e9b8a01ef6ea0ef9888fbdc0e6794b9a6b7c7c36621d80665a0ec00000000020000ffffffff"],"txOuts":["cc580300000000001976a9145ff56ab8054c9e038254ee92f9ba364f84c2736188ac"],"uTxOutMap":{"98f1664e4ad769225b39033b5a7269afdff54cc676908724d74d4efdebc2ee59:0":"f9140000000000001976a9145629fb19a3c46420707f61785c1b63cc69b7da3288ac","011ac299dce0415097d1fd67287e83cb92fbd2b9b7efe2c91751eb454e05c394:0":"1ad70000000000001976a91462698da42f87021fc8cdb4c945d09d93e82480a088ac","b27d77a351245f3ed2c38e40114d432ffecee69d8c64dc06fe427a1ac09f1b40:0":"acd60000000000001976a9144c6daa9f0afa439dc98075c531e1fb614139818e88ac","e85c87e34ed16ab8988fc398c16b9738f6032e9a4377b6636e2ec6a0ee752fcb:0":"1ad70000000000001976a914841067d1f0abdd78ef8feb3aa42b52c0d7ee83a188ac","19cc6850ec0e9b8a01ef6ea0ef9888fbdc0e6794b9a6b7c7c36621d80665a0ec:0":"1ad70000000000001976a914d3647137576bc3561444a2c84018c942796ab5bb88ac"},"sigOperations":{"98f1664e4ad769225b39033b5a7269afdff54cc676908724d74d4efdebc2ee59:0":[{"nScriptChunk":0,"type":"sig","addressStr":"18rbQNxxgYdpMnsvNjvbXJP1TBZ9zQM3WJ","nHashType":65,"log":"successfully inserted signature"},{"nScriptChunk":1,"type":"pubKey","addressStr":"18rbQNxxgYdpMnsvNjvbXJP1TBZ9zQM3WJ","nHashType":65,"log":"successfully inserted public key"}],"011ac299dce0415097d1fd67287e83cb92fbd2b9b7efe2c91751eb454e05c394:0":[{"nScriptChunk":0,"type":"sig","addressStr":"19yMfmgJAEsGHUS4J6ZXqtv3Z4hG3NT4pA","nHashType":65,"log":"successfully inserted signature"},{"nScriptChunk":1,"type":"pubKey","addressStr":"19yMfmgJAEsGHUS4J6ZXqtv3Z4hG3NT4pA","nHashType":65,"log":"successfully inserted public key"}],"b27d77a351245f3ed2c38e40114d432ffecee69d8c64dc06fe427a1ac09f1b40:0":[{"nScriptChunk":0,"type":"sig","addressStr":"17y7jLk1f1oQcV78pRsnv7dUNBLnFUzakZ","nHashType":65,"log":"successfully inserted signature"},{"nScriptChunk":1,"type":"pubKey","addressStr":"17y7jLk1f1oQcV78pRsnv7dUNBLnFUzakZ","nHashType":65,"log":"successfully inserted public key"}],"e85c87e34ed16ab8988fc398c16b9738f6032e9a4377b6636e2ec6a0ee752fcb:0":[{"nScriptChunk":0,"type":"sig","addressStr":"1D3HrCYVc1fybgtY4e8Yhg1k1KF7X9C725","nHashType":65,"log":"successfully inserted signature"},{"nScriptChunk":1,"type":"pubKey","addressStr":"1D3HrCYVc1fybgtY4e8Yhg1k1KF7X9C725","nHashType":65,"log":"successfully inserted public key"}],"19cc6850ec0e9b8a01ef6ea0ef9888fbdc0e6794b9a6b7c7c36621d80665a0ec:0":[{"nScriptChunk":0,"type":"sig","addressStr":"1LGjuKv9eqPUzg2YsMdfzJWckuAwfcnmZo","nHashType":65,"log":"successfully inserted signature"},{"nScriptChunk":1,"type":"pubKey","addressStr":"1LGjuKv9eqPUzg2YsMdfzJWckuAwfcnmZo","nHashType":65,"log":"successfully inserted public key"}]},"changeScript":"76a914821972770205b3466023acd90790f95aee37914488ac","changeAmountBn":5773,"feeAmountBn":410,"feePerKbNum":500,"sigsPerInput":1,"dust":546,"dustChangeToFees":true,"hashCache":{"prevoutsHashBuf":"1d67bdef4b743591ada4922b5af092d7cce85efcf8f630e94afcde068f6fa2d0","sequenceHashBuf":"99399659a6e129b6497faa061be7d8f6558a8594b5dd80474859a12d6ccf0b20","outputsHashBuf":"bcda35b250afaa69c8ffe37021ebece36afbe749c1935f69de3eab93e450fd3d"}}'
+      const txb = TxBuilder.fromJSON(JSON.parse(txbJSON))
+
+      const keyPairs = []
+      keyPairs.push(KeyPair.fromJSON(JSON.parse('{"privKey":"8032334c28c99a38fce22a6d4224e766d894e727a0a9cccfd2038fe4d4ca23ec9901","pubKey":"0104cd925e193fe4e0848e1f99e0975904a73eea7f779ff0e870115ad16b784803ce70874550b3e86a8d670422d4e138c9f7700e4903f1d1e4af35eac9fba6377ef4"}')))
+      keyPairs.push(KeyPair.fromJSON(JSON.parse('{"privKey":"803f50e990b3518c654c022f6bc8ee9464db857aee821133bbe8090c035f81851201","pubKey":"01044828cbbf04f9ae5608fdcf47598e191846b4970c1b6eda66519661ca75035a9dd6228621b4462f6a6791897b6d60b2ec1492509ba871a707b34bf94eade868e5"}')))
+      keyPairs.push(KeyPair.fromJSON(JSON.parse('{"privKey":"80f7744e00816dc306b7c452fef77883317efbd59863f7adcac0a0d95b489b196701","pubKey":"0104bf0925d874daedbc1e0abdffa399b2b2042fddbba1cca850cdfdfc3ec9f218ff0bdb932b2ced35cefc0988116b426cbb68f563c401329e77e9eaae29256aad5c"}')))
+      keyPairs.push(KeyPair.fromJSON(JSON.parse('{"privKey":"805d3c50621207fc5783c82bf7e7f090161154818467258c49368dfbf95a6cb5a301","pubKey":"01043fb03af6776d59cdb6ae78dff502d36b5a51429f243116f827e3d7438343b213ab07f6bc08e1a0afba025e0cd34395afedce01bf8e9b6b7c6d385eaaee57403d"}')))
+      keyPairs.push(KeyPair.fromJSON(JSON.parse('{"privKey":"80aaf1703f957b80a023088c5a04c9fb4d4950705dcd8b7aaf6cd9eea66e807f8801","pubKey":"0104582a67dd32baefe4063e0408809bc740df4233c44dc2e5e3737de5c2249f08630bb6640376b7ed60ed12ec161a458c8bbb3417a7e3474a3e9436cc32d9296627"}')))
+
+      let txVerifier = new TxVerifier(txb.tx, txb.uTxOutMap)
+
+      // txb.uTxOutMap.map.forEach((txOut, label) => {
+      //   console.log(label, Address.fromTxOutScript(txOut.script).toString(), txOut.valueBn.toNumber())
+      // })
+
+      // txb.tx.txIns.forEach((txIn, nIn) => {
+      //   const verified = txVerifier.verifyNIn(nIn, Interp.SCRIPT_ENABLE_SIGHASH_FORKID)
+      //   console.log(txIn.txHashBuf.toString('hex'), txIn.txOutNum, Address.fromTxInScript(txIn.script).toString(), verified)
+      // })
+
+      txVerifier.verify().should.equal(false) // this was computed with signatures in the wrong place; it should be invalid
+
+      const txb2 = new TxBuilder()
+      txb2.sendDustChangeToFees(true)
+      txb2.setChangeAddress(Address.fromTxOutScript(txb.changeScript))
+      txb2.inputFromPubKeyHash(txb.txIns[0].txHashBuf, txb.txIns[0].txOutNum, txb.uTxOutMap.get(txb.txIns[0].txHashBuf, txb.txIns[0].txOutNum))
+      txb2.inputFromPubKeyHash(txb.txIns[1].txHashBuf, txb.txIns[1].txOutNum, txb.uTxOutMap.get(txb.txIns[1].txHashBuf, txb.txIns[1].txOutNum))
+      txb2.inputFromPubKeyHash(txb.txIns[2].txHashBuf, txb.txIns[2].txOutNum, txb.uTxOutMap.get(txb.txIns[2].txHashBuf, txb.txIns[2].txOutNum))
+      txb2.inputFromPubKeyHash(txb.txIns[3].txHashBuf, txb.txIns[3].txOutNum, txb.uTxOutMap.get(txb.txIns[3].txHashBuf, txb.txIns[3].txOutNum))
+      txb2.inputFromPubKeyHash(txb.txIns[4].txHashBuf, txb.txIns[4].txOutNum, txb.uTxOutMap.get(txb.txIns[4].txHashBuf, txb.txIns[4].txOutNum))
+
+      txb2.build({ useAllInputs: true })
+      txb2.sort() // NOT sorting should lead to valid tx
+      txb2.signWithKeyPairs(keyPairs)
+
+      let txVerifier2 = new TxVerifier(txb2.tx, txb2.uTxOutMap)
+
+      // txb2.uTxOutMap.map.forEach((txOut, label) => {
+      //   console.log(label, Address.fromTxOutScript(txOut.script).toString(), txOut.valueBn.toNumber())
+      // })
+
+      // txb2.tx.txIns.forEach((txIn, nIn) => {
+      //   const verified = txVerifier2.verifyNIn(nIn, Interp.SCRIPT_ENABLE_SIGHASH_FORKID)
+      //   console.log(txIn.txHashBuf.toString('hex'), txIn.txOutNum, Address.fromTxInScript(txIn.script).toString(), verified)
+      // })
+
+      txVerifier2.verify().should.equal(true)
     })
   })
 })
