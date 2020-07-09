@@ -274,6 +274,12 @@ describe('Address', function () {
       const address = Address.fromTxInScript(script)
       address.toString().should.equal('1EyV93Vhz4YLdfb67UaNujrBkd9CC6zvgG')
     })
+
+    it('should make this address from a zero length public key', function () {
+      const script = Script.fromAsmString('3045022100ff812330880f443637e93ae1045985de38a29e26e4e589db84e86d0f17069f9a02203ed91e19a8cfa5e406bed1becc0e292c89346f9102358317e3238cb394a9ab0b 0')
+      const address = Address.fromTxInScript(script)
+      address.toString().should.equal('1HqoNfpAJFMy9E36DBSk1ktPQ9o9fn2RxX')
+    })
   })
 
   describe('@fromTxOutScript', function () {
