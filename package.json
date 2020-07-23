@@ -10,14 +10,15 @@
   "unpkg": "dist/bsv.bundle.js",
   "library": "bsvjs",
   "scripts": {
-    "clean": "rm -rf node_modules/* package-lock.json yarn.lock",
+    "clean": "rm -rf node_modules/* yarn.lock",
     "lint": "standard *.js lib/**/*.js bin/**/*.js test/**/*.js",
     "pretest": "yarn run lint",
     "test:mocha": "mocha",
     "test:karma": "karma start --single-run",
     "test": "yarn run test:mocha && yarn run test:karma",
     "build": "webpack && microbundle --target node -f modern,cjs",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "doc": "documentation build entry.js -f html -o doc"
   },
   "contributors": [
     {
@@ -101,6 +102,7 @@
     "@babel/runtime": "^7.9.6",
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
+    "documentation": "^13.0.2",
     "karma": "^5.0.7",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.3.0",
