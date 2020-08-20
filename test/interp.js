@@ -327,7 +327,7 @@ describe('Interp', function () {
     })
   })
 
-  describe('Sighash Interp vectors', function () {
+  describe('Interp vectors', function () {
     let c
 
     c = 0
