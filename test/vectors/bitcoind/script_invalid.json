@@ -217,9 +217,6 @@
   ["1 2 0 IF XOR ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "XOR disabled"],
   ["2 0 IF 2MUL ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "2MUL disabled"],
   ["2 0 IF 2DIV ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "2DIV disabled"],
-  ["2 2 0 IF MUL ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "MUL disabled"],
-  ["2 2 0 IF DIV ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "DIV disabled"],
-  ["2 2 0 IF MOD ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "MOD disabled"],
   ["2 2 0 IF LSHIFT ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "LSHIFT disabled"],
   ["2 2 0 IF RSHIFT ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "RSHIFT disabled"],
 
@@ -259,11 +256,8 @@
   ],
   ["'abcdef' NOT", "0 EQUAL", "P2SH,STRICTENC", "NOT is an arithmetic operand"],
 
-  ["2 DUP MUL", "4 EQUAL", "P2SH,STRICTENC", "disabled"],
-  ["2 DUP DIV", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
   ["2 2MUL", "4 EQUAL", "P2SH,STRICTENC", "disabled"],
   ["2 2DIV", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
-  ["7 3 MOD", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
   ["2 2 LSHIFT", "8 EQUAL", "P2SH,STRICTENC", "disabled"],
   ["2 1 RSHIFT", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
 

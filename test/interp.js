@@ -10,6 +10,7 @@ import { Sig } from '../lib/sig'
 import bitcoindScriptValid from './vectors/bitcoind/script_valid.json'
 import bitcoindScriptInvalid from './vectors/bitcoind/script_invalid.json'
 import bitcoinABCScriptTests from './vectors/bitcoin-abc/script_tests.json'
+import bitcoinSVScriptTests from './vectors/bitcoin-sv/script_tests.json'
 
 describe('Interp', function () {
   it('should make a new interp', function () {
@@ -338,6 +339,58 @@ describe('Interp', function () {
       it('should verify bitcoindScriptValid vector ' + c, function () {
         // ["Format is: [scriptSig, scriptPubKey, flags, expected_scripterror, ... comments]"],
         // Test vectors for SIGHASH_FORKID
+        const scriptSig = new Script().fromBitcoindString(vector[0])
+        const scriptPubKey = new Script().fromBitcoindString(vector[1])
+        const flags = Interp.getFlags(vector[2])
+        const expectedError = vector[3]
+
+        const hashBuf = Buffer.alloc(32)
+        hashBuf.fill(0)
+        const credtx = new Tx()
+        credtx.addTxIn(
+          hashBuf,
+          0xffffffff,
+          new Script().writeString('OP_0 OP_0'),
+          0xffffffff
+        )
+        credtx.addTxOut(new Bn(0), scriptPubKey)
+
+        const idbuf = credtx.hash()
+        const spendtx = new Tx()
+        spendtx.addTxIn(idbuf, 0, scriptSig, 0xffffffff)
+        spendtx.addTxOut(new Bn(0), new Script())
+
+        const interp = new Interp()
+        const valueBn = new Bn(0)
+        const verified = interp.verify(
+          scriptSig,
+          scriptPubKey,
+          spendtx,
+          0,
+          flags,
+          valueBn
+        )
+        try {
+          if (expectedError === 'OK') {
+            verified.should.equal(true)
+          } else {
+            verified.should.equal(false)
+          }
+        } catch (err) {
+          console.log(vector)
+          throw new Error('failure', err)
+        }
+      })
+    })
+
+    c = 0
+    bitcoinSVScriptTests.forEach(function (vector, i) {
+      if (vector.length === 1) {
+        return
+      }
+      c++
+      it('should verify bitcoinSVScriptTests vector ' + c, function () {
+        // ["Format is: [scriptSig, scriptPubKey, flags, expected_scripterror, ... comments]"],
         const scriptSig = new Script().fromBitcoindString(vector[0])
         const scriptPubKey = new Script().fromBitcoindString(vector[1])
         const flags = Interp.getFlags(vector[2])
