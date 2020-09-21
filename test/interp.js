@@ -430,6 +430,7 @@ describe('Interp', function () {
           }
         } catch (err) {
           console.log(vector)
+          console.log(interp)
           throw new Error('failure', err)
         }
       })
