@@ -197,13 +197,6 @@
   ["NOP", "2SWAP 1", "P2SH,STRICTENC"],
   ["1", "2 3 2SWAP 1", "P2SH,STRICTENC"],
 
-  ["'abc' 1 1", "SUBSTR", "P2SH,STRICTENC", "SUBSTR disabled"],
-  [
-    "'abc' 1 1 0",
-    "IF SUBSTR ELSE 1 ENDIF",
-    "P2SH,STRICTENC",
-    "SUBSTR disabled"
-  ],
   ["'abc' 2 0", "IF LEFT ELSE 1 ENDIF", "P2SH,STRICTENC", "LEFT disabled"],
   ["'abc' 2 0", "IF RIGHT ELSE 1 ENDIF", "P2SH,STRICTENC", "RIGHT disabled"],
 
