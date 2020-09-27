@@ -205,8 +205,6 @@
   ["'abc'", "IF INVERT ELSE 1 ENDIF", "P2SH,STRICTENC", "INVERT disabled"],
   ["2 0 IF 2MUL ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "2MUL disabled"],
   ["2 0 IF 2DIV ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "2DIV disabled"],
-  ["2 2 0 IF LSHIFT ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "LSHIFT disabled"],
-  ["2 2 0 IF RSHIFT ELSE 1 ENDIF", "NOP", "P2SH,STRICTENC", "RSHIFT disabled"],
 
   [
     "",
@@ -246,8 +244,6 @@
 
   ["2 2MUL", "4 EQUAL", "P2SH,STRICTENC", "disabled"],
   ["2 2DIV", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
-  ["2 2 LSHIFT", "8 EQUAL", "P2SH,STRICTENC", "disabled"],
-  ["2 1 RSHIFT", "1 EQUAL", "P2SH,STRICTENC", "disabled"],
 
   [
     "1",
