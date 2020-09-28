@@ -199,6 +199,14 @@ describe('Interp', function () {
   })
 
   describe('#verify', function () {
+    it('should has correct stack size after verify', function () {
+      const interp = new Interp()
+      const script = Script.fromAsmString('OP_1')
+      interp.script = script
+      interp.verify()
+      should.equal(interp.stack.length, 1)
+    })
+
     it('should verify or unverify these trivial scripts from script_valid.json', function () {
       let verified
       verified = new Interp().verify(
