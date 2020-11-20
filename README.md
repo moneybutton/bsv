@@ -51,12 +51,3 @@ You can change the network to run the CLI in testnet mode:
 ```
 NETWORK=testnet ./bin/bsv.js
 ```
-
-## Documentation
-
-There is some documentation, and it can be built with groc:
-
-```
-npm install -g groc
-groc
-```
