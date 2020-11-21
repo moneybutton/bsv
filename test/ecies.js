@@ -84,6 +84,15 @@ describe('#Ecies', function () {
       Ecies.electrumEncrypt(message, bobKeyPair.pubKey, aliceKeyPair).toString('base64').should.equal('QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap53XHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbvZJHgyAzxA6SoujduvJXv+A9ri3po9veilrmc8p6dwo=')
       Ecies.electrumEncrypt(message, aliceKeyPair.pubKey, bobKeyPair).toString('base64').should.equal('QklFMQOGFyMXLo9Qv047K3BYJhmnJgt58EC8skYP/R2QU/U0yXXHOt6L3tKmrXho6yj6phfoiMkBOhUldRPnEI4fSZXbiaH4FsxKIOOvzolIFVAS0FplUmib2HnlAM1yP/iiPsU=')
     })
+
+    it('should encrypt and decrypt symmetrically with matching strings in ECDH noKey mode', function () {
+      const message = Buffer.from('this is my ECDH test message')
+      const ecdhMessageEncryptedBob = Ecies.electrumEncrypt(message, bobKeyPair.pubKey, aliceKeyPair, true)
+      const ecdhMessageEncryptedAlice = Ecies.electrumEncrypt(message, aliceKeyPair.pubKey, bobKeyPair, true)
+      ecdhMessageEncryptedBob.toString("base64").should.equal(ecdhMessageEncryptedAlice.toString("base64"))
+      Ecies.electrumDecrypt(ecdhMessageEncryptedAlice, bobPrivKey, aliceKeyPair.pubKey).toString().should.equal('this is my ECDH test message')
+      Ecies.electrumDecrypt(ecdhMessageEncryptedBob, alicePrivKey, bobKeyPair.pubKey).toString().should.equal('this is my ECDH test message')
+    })
     /*
     const message = 'attack at dawn'
     const encrypted = 'QklFMQM55QTWSSsILaluEejwOXlrBs1IVcEB4kkqbxDz4Fap56+ajq0hzmnaQJXwUMZ/DUNgEx9i2TIhCA1mpBFIfxWZy+sH6H+sqqfX3sPHsGu0ug=='
