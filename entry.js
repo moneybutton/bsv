@@ -12,7 +12,7 @@ import bs58 from 'bs58'
 
 import elliptic from 'bitcoin-elliptic'
 import hashjs from 'hash.js'
-import pbkdf2compat from 'pbkdf2-compat'
+import pbkdf2 from 'pbkdf2'
 
 // Dependencies, subject to change.
 const deps = {
@@ -21,7 +21,7 @@ const deps = {
   bs58,
   elliptic,
   hashjs,
-  pbkdf2compat
+  pbkdf2
 }
 
 export { deps }

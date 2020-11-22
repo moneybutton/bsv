@@ -2,16 +2,16 @@
 'use strict'
 import { Br } from '../lib/br'
 import { Bw } from '../lib/bw'
-import { Constants as Cst } from '../lib/constants'
 import { Hash } from '../lib/hash'
 import { Msg } from '../lib/msg'
 import { Random } from '../lib/random'
 import should from 'should'
-
-const Constants = Cst.Default
+import { Constants } from '../lib/constants'
 
 describe('Msg', function () {
-  const msghex = 'f9beb4d976657261636b000000000000000000005df6e0e2'
+  const msghex = 'e3e1f3e876657261636b000000000000000000005df6e0e2'
+  const msgtesthex = 'f4e5f3f476657261636b000000000000000000005df6e0e2'
+  const msgregtesthex = 'dab5bffa76657261636b000000000000000000005df6e0e2'
   const msgbuf = Buffer.from(msghex, 'hex')
   const msg = new Msg().fromHex(msghex)
   const msgjson = msg.toJSON()
@@ -20,7 +20,7 @@ describe('Msg', function () {
   it('should satisfy this basic API', function () {
     const msg = new Msg()
     should.exist(msg)
-    msg.magicNum.should.equal(Constants.Msg.magicNum)
+    msg.magicNum.should.equal(msg.constants.Msg.magicNum)
   })
 
   describe('#setCmd', function () {
@@ -148,13 +148,36 @@ describe('Msg', function () {
     })
 
     it('should throw an error for message over max size in strict mode', function () {
+      const msg = new Msg();
       const msgbuf2 = Buffer.from(msgbuf)
-      msgbuf2.writeUInt32BE(Constants.maxsize + 1, 4 + 12)
+      msgbuf2.writeUInt32BE(msg.constants.MaxSize + 1, 4 + 12)
       ;(function () {
         const msgassembler = new Msg().genFromBuffers({ strict: true })
         msgassembler.next()
         msgassembler.next(msgbuf2)
       }.should.throw('message size greater than maxsize'))
+    })
+  })
+  
+  describe('#STN', function() {
+    it('should match initialized magicNum against STN magicnum', function () {
+      const msg = new Msg.STN();
+      msg.magicNum.should.equal(Constants.STN.Msg.magicNum);
+      msg.magicNum.should.not.equal(Constants.Mainnet.Msg.magicNum);
+    })
+  })
+
+  describe('#Testnet', function () {
+    it('should parse this known message', function () {
+      const msg = new Msg().fromBuffer(Buffer.from(msgtesthex, 'hex'))
+      msg.magicNum.should.equal(Constants.Testnet.Msg.magicNum)
+    })
+  })
+
+  describe('#Regtest', function () {
+    it('should parse this known message', function () {
+      const msg = new Msg().fromBuffer(Buffer.from(msgregtesthex, 'hex'))
+      msg.magicNum.should.equal(Constants.Regtest.Msg.magicNum)
     })
   })
 
