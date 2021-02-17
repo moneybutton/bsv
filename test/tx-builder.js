@@ -202,6 +202,13 @@ describe('TxBuilder', function () {
       txb.setFeePerKbNum(1000)
       txb.feePerKbNum.should.equal(1000)
     })
+
+    it('allows zero', function () {
+      const obj = prepareTxBuilder()
+      const txb = obj.txb
+      txb.setFeePerKbNum(0)
+      should(txb.feePerKbNum).be.eql(0)
+    })
   })
 
   describe('#setChangeAddress', function () {
@@ -338,6 +345,34 @@ describe('TxBuilder', function () {
       txb.build({ useAllInputs: true })
 
       txb.tx.txIns.length.should.equal(3)
+    })
+
+    it('should buld a tx with zero fees', function () {
+      const txb = new TxBuilder()
+
+      const changePrivKey = new PrivKey().fromBn(new Bn(1))
+      const changeKeyPair = new KeyPair().fromPrivKey(changePrivKey)
+      const changeAddr = new Address().fromPubKey(changeKeyPair.pubKey)
+
+      const inputPrivKey = new PrivKey().fromBn(new Bn(2))
+      const inputKeyPair = new KeyPair().fromPrivKey(inputPrivKey)
+      const inputAddress = new Address().fromPubKey(inputKeyPair.pubKey)
+  
+
+      const txHashBuf = Buffer.alloc(32).fill(1)
+      const txOutNum = 0
+      const inputAmount = Bn().fromNumber(1000)
+      const inputScript = inputAddress.toTxOutScript()
+      const txOut = TxOut.fromProperties(inputAmount, inputScript)
+
+      txb.inputFromPubKeyHash(txHashBuf, txOutNum, txOut, inputKeyPair.pubKey)
+      txb.setChangeAddress(changeAddr)
+      txb.setFeePerKbNum(0)
+
+      should(() => txb.build()).not.throw()
+
+      const tx = txb.tx
+      should(tx.txOuts[0].valueBn.toString()).be.eql(inputAmount.toString())
     })
   })
 
