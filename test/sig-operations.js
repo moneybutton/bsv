@@ -138,5 +138,12 @@ describe('SigOperations', function () {
       obj.nScriptChunk.should.equal(nScriptChunk2)
       obj.addressStr.should.equal(addressStr2.toString())
     })
+
+    it('should return empty list when no sig operation was registered', function () {
+      const sigOperations = new SigOperations()
+      const txHashBuf = Buffer.alloc(32).fill(1)
+      const result = sigOperations.get(txHashBuf, 0)
+      should(result).be.eql([])
+    })
   })
 })

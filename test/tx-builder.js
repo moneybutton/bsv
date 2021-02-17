@@ -876,6 +876,38 @@ describe('TxBuilder', function () {
       TxVerifier.verify(txb.tx, txb.uTxOutMap).should.equal(true)
     })
 
+    it('should work with custom scripts', () => {
+      // make change address
+      const privKey = new PrivKey().fromBn(new Bn(100))
+      const keyPair = new KeyPair().fromPrivKey(privKey)
+      const changeaddr = new Address().fromPubKey(keyPair.pubKey)
+
+      // make addresses to send from (and to)
+      const privKey1 = new PrivKey().fromBn(new Bn(1))
+      const keyPair1 = new KeyPair().fromPrivKey(privKey1)
+      const addr1 = new Address().fromPubKey(keyPair1.pubKey)
+
+      const customScript = new Script().fromString('OP_DUP OP_HASH160 20 0x' + addr1.hashBuf.toString('hex') + ' OP_EQUALVERIFY OP_CHECKSIG')
+      
+      const txOut1 = TxOut.fromProperties(new Bn(1e8), customScript)
+      
+      const txHashBuf = Buffer.alloc(32)
+      txHashBuf.fill(1)
+      
+
+      const txb = new TxBuilder()
+      txb.setFeePerKbNum(0.0001e8)
+      txb.setChangeAddress(changeaddr)
+      txb.inputFromScript(
+        txHashBuf, 
+        0, 
+        txOut1, 
+        customScript
+      )
+      txb.build()
+      should(() => txb.signWithKeyPairs([keyPair1])).not.throw()
+    })
+
     it('should sign and verify a lot of inputs and outputs', function () {
       // make change address
       const privKey = new PrivKey().fromBn(new Bn(100))
