@@ -1197,6 +1197,11 @@ describe('Script', function () {
         .writeOpCode(OpCode.OP_FALSE)
       should(script.isOpReturn()).be.true()
     })
+
+    it('returns true if the script starts OP_RETURN and then has a 0 push data', () => {
+      const script = Script.fromAsmString('OP_RETURN 0')
+      should(script.isOpReturn()).be.true()
+    })
   })
 
   describe('vectors', function () {
