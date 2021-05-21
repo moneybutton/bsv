@@ -1202,6 +1202,16 @@ describe('Script', function () {
       const script = Script.fromAsmString('OP_RETURN 0')
       should(script.isOpReturn()).be.true()
     })
+
+    it('returns false for empty script', () => {
+      const script = new Script()
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false for only push data script', () => {
+      const script = new Script().writeBuffer(Buffer.from("I'm a lonely buffer"))
+      should(script.isOpReturn()).be.false()
+    })
   })
 
   describe('vectors', function () {
