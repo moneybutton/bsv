@@ -18,7 +18,8 @@
     "test": "yarn run test:mocha && yarn run test:karma",
     "build": "webpack && microbundle --target node -f modern,cjs",
     "prepublish": "yarn build",
-    "doc": "documentation build entry.js -f html -o doc"
+    "doc": "documentation build entry.js -f html -o doc",
+    "doc:readme": "documentation readme entry.js --section=API"
   },
   "contributors": [
     {
