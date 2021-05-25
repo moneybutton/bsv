@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "aes-js": "^3.1.2",
-    "bn.js": "=4.11.8",
+    "bn.js": "=4.11.9",
     "bs58": "=4.0.1",
     "clone-deep": "^4.0.1",
     "elliptic": "6.5.4",
