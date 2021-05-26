@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 // Karma configuration
 // Generated on Sat May 16 2020 20:12:10 GMT-0300 (Argentina Standard Time)
 
@@ -9,7 +10,7 @@ module.exports = function (config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
+    frameworks: [ 'webpack', 'mocha'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -23,6 +24,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'lib/**/*.js': [],
       'test/**/*.js': ['webpack']
     },
 
@@ -60,7 +62,13 @@ module.exports = function (config) {
     singleRun: false,
 
     webpack: {
-      mode: 'production'
+      mode: 'production',
+      plugins: [
+        new webpack.ProvidePlugin({
+          process: 'process/browser',
+          Buffer: ['buffer', 'Buffer']
+        })
+      ]
     },
 
     // Concurrency level
@@ -68,3 +76,4 @@ module.exports = function (config) {
     concurrency: Infinity
   })
 }
+

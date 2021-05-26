@@ -14,6 +14,9 @@ import elliptic from 'bitcoin-elliptic'
 import hashjs from 'hash.js'
 import pbkdf2 from 'pbkdf2'
 
+// version string.
+import pkgInfo from './package.json'
+
 // Dependencies, subject to change.
 const deps = {
   aes,
@@ -25,9 +28,8 @@ const deps = {
 }
 
 export { deps }
-
-// version string.
-export { version } from './package.json'
+const version = pkgInfo.version
+export { version }
 
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
 // utilities.
