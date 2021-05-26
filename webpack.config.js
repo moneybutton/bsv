@@ -11,18 +11,18 @@ module.exports = [
       library: {
         name: 'bsvjs',
         type: 'umd2'
-      },
+      }
     },
     resolve: {
       alias: {
-        process: "process/browser"
+        process: 'process/browser'
       }
     },
     plugins: [
       new webpack.ProvidePlugin({
         process: 'process/browser',
         Buffer: ['buffer', 'Buffer']
-      }),
+      })
     ],
     devtool: 'source-map',
     mode: 'production'
