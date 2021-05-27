@@ -9,5 +9,6 @@ module.exports = {
     library: 'bsv',
     path: path.join(__dirname, '/'),
     filename: 'bsv.min.js'
-  }
+  },
+  mode: 'production'
 }
