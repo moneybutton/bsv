@@ -24,7 +24,8 @@ const deps = {
   bs58,
   elliptic,
   hashjs,
-  pbkdf2
+  pbkdf2,
+  Buffer
 }
 
 export { deps }

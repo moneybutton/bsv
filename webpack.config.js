@@ -34,7 +34,7 @@ module.exports = [
       path: path.resolve(__dirname, 'dist'),
       filename: 'bsv.cjs.js',
       library: {
-        type: 'system'
+        type: 'commonjs2'
       }
     },
     devtool: 'source-map',
