@@ -18,6 +18,7 @@
     "test": "yarn run test:mocha && yarn run test:karma",
     "build": "webpack",
     "prepublish": "yarn build",
+    "prepack": "yarn build",
     "doc": "documentation build entry.js -f html -o doc"
   },
   "contributors": [
