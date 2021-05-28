@@ -1,8 +1,7 @@
 *.swp
-coverage
 node_modules
 npm-debug.log
-doc
 .cache
 package-lock.json
 .DS_Store
+.vscode

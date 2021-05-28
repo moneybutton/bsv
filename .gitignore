@@ -1,14 +1,9 @@
 *.swp
-coverage
 node_modules
-build/bsv.js
-build/bsv-worker.js
-build/bsv-min.js
-build/bsv-worker-min.js
-build/tests.js
 npm-debug.log
-doc
 .cache
-dist
 package-lock.json
 .DS_Store
+.vscode
+
+dist
