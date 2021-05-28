@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+// const pkg = require('package.json')
 
 module.exports = [
   {
@@ -24,6 +25,19 @@ module.exports = [
         Buffer: ['buffer', 'Buffer']
       })
     ],
+    devtool: 'source-map',
+    mode: 'production'
+  },
+  {
+    entry: './entry.js',
+    target: 'node',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'bsv.module.js',
+      library: {
+        type: 'commonjs-module'
+      }
+    },
     devtool: 'source-map',
     mode: 'production'
   },

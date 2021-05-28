@@ -1,5 +1,8 @@
 *.swp
-build
 coverage
-test
+node_modules
+npm-debug.log
+doc
 .cache
+package-lock.json
+.DS_Store

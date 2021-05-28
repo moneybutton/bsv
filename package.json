@@ -5,8 +5,8 @@
   "author": "Yours Inc.",
   "homepage": "https://github.com/moneybutton/bsv",
   "source": "entry.js",
-  "main": "dist/bsv.js",
-  "module": "dist/bsv.modern.js",
+  "main": "dist/bsv.cjs.js",
+  "module": "dist/bsv.module.js",
   "unpkg": "dist/bsv.bundle.js",
   "library": "bsvjs",
   "scripts": {
@@ -104,7 +104,6 @@
     "@babel/runtime": "^7.9.6",
     "assert": "2.0.0",
     "babel-loader": "8.2.2",
-    "babel-polyfill": "6.26.0",
     "documentation": "^13.1.1",
     "karma": "^6.3.2",
     "karma-chrome-launcher": "^3.1.0",
