@@ -357,7 +357,6 @@ describe('TxBuilder', function () {
       const inputPrivKey = new PrivKey().fromBn(new Bn(2))
       const inputKeyPair = new KeyPair().fromPrivKey(inputPrivKey)
       const inputAddress = new Address().fromPubKey(inputKeyPair.pubKey)
-  
 
       const txHashBuf = Buffer.alloc(32).fill(1)
       const txOutNum = 0
@@ -373,6 +372,36 @@ describe('TxBuilder', function () {
 
       const tx = txb.tx
       should(tx.txOuts[0].valueBn.toString()).be.eql(inputAmount.toString())
+    })
+
+    it('builds a tx whith unspendable output containing OP_FALSE and output less than dust', () => {
+      const txb = new TxBuilder()
+      txb.setDust(145)
+
+      // input
+      const inputPrivKey = new PrivKey().fromBn(new Bn(2))
+      const inputKeyPair = new KeyPair().fromPrivKey(inputPrivKey)
+      const inputAddress = new Address().fromPubKey(inputKeyPair.pubKey)
+      const txHashBuf = Buffer.alloc(32).fill(1)
+      const inputAmount = Bn().fromNumber(1000)
+      const inputScript = inputAddress.toTxOutScript()
+      const txOut = TxOut.fromProperties(inputAmount, inputScript)
+      txb.inputFromPubKeyHash(txHashBuf, 0, txOut, inputKeyPair.pubKey)
+
+      // change
+      const changePrivKey = new PrivKey().fromBn(new Bn(1))
+      const changeKeyPair = new KeyPair().fromPrivKey(changePrivKey)
+      const changeAddr = new Address().fromPubKey(changeKeyPair.pubKey)
+      txb.setChangeAddress(changeAddr)
+
+      // build
+      txb.outputToScript(new Bn().fromNumber(0), Script.fromAsmString('OP_FALSE OP_RETURN 0'))
+
+      // assertions
+      should(() => txb.build()).not.throw()
+      const tx = txb.tx
+      should(tx.txOuts[0].valueBn).be.eql(new Bn().fromNumber(0))
+      should(tx.txOuts[0].script).be.eql(Script.fromAsmString('OP_FALSE OP_RETURN 0'))
     })
   })
 

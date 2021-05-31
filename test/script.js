@@ -1206,7 +1206,7 @@ describe('Script', function () {
     })
   })
 
-  describe.only('#isNonSpendable', () => {
+  describe('#isNonSpendable', () => {
     it('returns false when OP_TRUE only', () => {
       const script = new Script().writeOpCode(OpCode.OP_TRUE)
       should(script.isNonSpendable()).be.false()
