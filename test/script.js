@@ -1150,6 +1150,136 @@ describe('Script', function () {
     })
   })
 
+  describe('#isOpReturn', () => {
+    it('returns true if the script its only an OP_RETURN opcode', () => {
+      const script = new Script().writeOpCode(OpCode.OP_RETURN)
+      should(script.isOpReturn()).be.true()
+    })
+
+    it('returns false if the script starts with an opcode that is not OP_RETURN', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_ADD)
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false if the script starts with a push data', () => {
+      const script = new Script()
+        .writeBuffer(Buffer.from("I'm a buffer"))
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false if the script starts with "OP_FALSE OP_RETURN"', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false if the script starts OP_RETURN and is followed by an OP_FALSE', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeOpCode(OpCode.OP_FALSE)
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false if the script starts OP_RETURN and is followed by data and then OP_FALSE', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeBuffer(Buffer.from("I'm a buffer"))
+        .writeOpCode(OpCode.OP_FALSE)
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('returns false for the asm script "OP_RETURN 0"', () => {
+      const script = Script.fromAsmString('OP_RETURN 0')
+      should(script.isOpReturn()).be.false()
+    })
+
+    it('throws for empty script', () => {
+      const script = new Script()
+      should(() => script.isOpReturn()).throw()
+    })
+
+    it('returns false for only push data script', () => {
+      const script = new Script().writeBuffer(Buffer.from("I'm a lonely buffer"))
+      should(script.isOpReturn()).be.false()
+    })
+  })
+
+  describe('#isNonSpendable', () => {
+    it('returns false when OP_TRUE only', () => {
+      const script = new Script().writeOpCode(OpCode.OP_TRUE)
+      should(script.isNonSpendable()).be.false()
+    })
+
+    it('returns true when "OP_FALSE OP_RETURN"', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+      should(script.isNonSpendable()).be.true()
+    })
+
+    it('returns false when starts with OP_FALSE but is followed by opcode that is not OP_RETURN', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_ADD)
+      should(script.isNonSpendable()).be.false()
+    })
+
+    it('returns false when is only OP_FALSE', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+      should(script.isNonSpendable()).be.false()
+    })
+
+    it('returns true when is OP_FALSE OP_RETURN and then data', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeBuffer(Buffer.from('some'))
+        .writeBuffer(Buffer.from('data'))
+
+      should(script.isNonSpendable()).be.true()
+    })
+
+    it('returns true when is OP_FALSE OP_RETURN and then data plus opcodes', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeBuffer(Buffer.from('some'))
+        .writeBuffer(Buffer.from('data'))
+        .writeOpCode(OpCode.OP_ADD)
+        .writeBuffer(Buffer.from('more data'))
+
+      should(script.isNonSpendable()).be.true()
+    })
+
+    it('returns true when is OP_FALSE OP_RETURN and then opcodes', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeOpCode(OpCode.OP_ADD)
+        .writeOpCode(OpCode.OP_MUL)
+
+      should(script.isNonSpendable()).be.true()
+    })
+
+    it('returns true when is OP_FALSE OP_RETURN and then OP_FALSE', () => {
+      const script = new Script()
+        .writeOpCode(OpCode.OP_FALSE)
+        .writeOpCode(OpCode.OP_RETURN)
+        .writeOpCode(OpCode.OP_FALSE)
+
+      should(script.isNonSpendable()).be.true()
+    })
+
+    it('returns true when for asm script "OP_FALSE OP_RETURN 0"', () => {
+      const script = new Script().fromAsmString('OP_FALSE OP_RETURN 0')
+
+      should(script.isNonSpendable()).be.true()
+    })
+  })
+
   describe('vectors', function () {
     scriptValid.forEach(function (a, i) {
       if (a.length === 1) {
