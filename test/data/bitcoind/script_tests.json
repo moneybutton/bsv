@@ -753,7 +753,7 @@
 ["0 0", "NOTIF IF 1 ELSE 0 ENDIF ELSE IF 0 ELSE 1 ENDIF ENDIF", "P2SH,STRICTENC", "EVAL_FALSE"],
 
 ["1", "IF RETURN ELSE ELSE 1 ENDIF", "P2SH,STRICTENC", "OP_RETURN", "Multiple ELSEs"],
-["1", "IF 1 ELSE ELSE RETURN ENDIF", "P2SH,STRICTENC", "OP_RETURN"],
+["1", "IF 1 ELSE ELSE RETURN ENDIF", "P2SH,STRICTENC", "OK"],
 
 ["1", "ENDIF", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL", "Malformed IF/ELSE/ENDIF sequence"],
 ["1", "ELSE ENDIF", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL"],
@@ -764,10 +764,10 @@
 ["1", "IF ENDIF ENDIF", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL"],
 ["1", "IF ELSE ELSE ENDIF ENDIF", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL"],
 
-["1", "RETURN", "P2SH,STRICTENC", "OP_RETURN"],
-["1", "DUP IF RETURN ENDIF", "P2SH,STRICTENC", "OP_RETURN"],
+["1", "RETURN", "P2SH,STRICTENC", "OK"],
+["1", "DUP IF RETURN ENDIF", "P2SH,STRICTENC", "OK"],
 
-["1", "RETURN 'data'", "P2SH,STRICTENC", "OP_RETURN", "canonical prunable txout format"],
+["1", "RETURN 'data'", "P2SH,STRICTENC", "OK", "canonical prunable txout format"],
 ["0 IF", "RETURN ENDIF 1", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL", "still prunable because IF/ENDIF can't span scriptSig/scriptPubKey"],
 
 ["0", "VERIFY 1", "P2SH,STRICTENC", "VERIFY"],
@@ -1085,8 +1085,8 @@
 ["1", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "INVALID_STACK_OPERATION", "Not enough operands"],
 ["0", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "INVALID_STACK_OPERATION", "Not enough operands"],
 ["1 1", "DIV 1 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK"],
-["2147483648 1", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
-["1 2147483648", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
+["2147483648 1", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "We can do math on 5-byte integers"],
+["1 2147483648", "DIV", "P2SH,STRICTENC,MONOLITH_OPCODES", "OP_DIV", "Result of 0"],
 
 ["MOD"],
 ["1 1", "MOD 0 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK"],
@@ -1098,8 +1098,8 @@
 ["1 1", "MOD DEPTH 1 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "Stack depth correct"],
 ["1", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "INVALID_STACK_OPERATION", "Not enough operands"],
 ["0", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "INVALID_STACK_OPERATION", "Not enough operands"],
-["2147483648 1", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
-["1 2147483648", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
+["2147483648 1", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "OP_MOD", "Result of 0"],
+["1 2147483648", "MOD", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "We can do math on 5-byte integers"],
 
 ["EQUAL"],
 ["", "EQUAL NOT", "P2SH,STRICTENC", "INVALID_STACK_OPERATION", "EQUAL must error when there are no stack items"],
@@ -1108,10 +1108,7 @@
 ["1 1 ADD", "0 EQUAL", "P2SH,STRICTENC", "EVAL_FALSE"],
 ["11 1 ADD 12 SUB", "11 EQUAL", "P2SH,STRICTENC", "EVAL_FALSE"],
 
-["2147483648 0 ADD", "NOP", "P2SH,STRICTENC", "UNKNOWN_ERROR", "arithmetic operands must be in range [-2^31...2^31] "],
-["-2147483648 0 ADD", "NOP", "P2SH,STRICTENC", "UNKNOWN_ERROR", "arithmetic operands must be in range [-2^31...2^31] "],
-["2147483647 DUP ADD", "4294967294 NUMEQUAL", "P2SH,STRICTENC", "UNKNOWN_ERROR", "NUMEQUAL must be in numeric range"],
-["'abcdef' NOT", "0 EQUAL", "P2SH,STRICTENC", "UNKNOWN_ERROR", "NOT is an arithmetic operand"],
+["'abcdef' NOT", "0 EQUAL", "P2SH,STRICTENC", "OK"],
 
 ["2 DUP MUL", "4 EQUAL", "P2SH,STRICTENC", "DISABLED_OPCODE", "disabled"],
 ["2 DUP MUL", "4 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "DISABLED_OPCODE", "disabled"],
@@ -1249,14 +1246,14 @@
 ["1","RESERVED2", "P2SH,STRICTENC", "BAD_OPCODE", "OP_RESERVED2 is reserved"],
 ["1","0xba", "P2SH,STRICTENC", "BAD_OPCODE", "0xba === FIRST_UNDEFINED_OP_VALUE"],
 
-["2147483648", "1ADD 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
-["2147483648", "NEGATE 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers"],
-["-2147483648", "1ADD 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "Because we use a sign bit, -2147483648 is also 5 bytes"],
-["2147483647", "1ADD 1SUB 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers, even if the result is 4-bytes"],
-["2147483648", "1SUB 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do math on 5-byte integers, even if the result is 4-bytes"],
+["2147483648", "1ADD 1", "P2SH,STRICTENC", "OK", "We can do math on 5-byte integers"],
+["2147483648", "NEGATE 1", "P2SH,STRICTENC", "OK", "We can do math on 5-byte integers"],
+["-2147483648", "1ADD 1", "P2SH,STRICTENC", "OK", "Because we use a sign bit, -2147483648 is also 5 bytes"],
+["2147483647", "1ADD 1SUB 1", "P2SH,STRICTENC", "OK", "We can do math on 5-byte integers, even if the result is 4-bytes"],
+["2147483648", "1SUB 1", "P2SH,STRICTENC", "OK", "We can do math on 5-byte integers, even if the result is 4-bytes"],
 
-["2147483648 1", "BOOLOR 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do BOOLOR on 5-byte integers (but we can still do IF etc)"],
-["2147483648 1", "BOOLAND 1", "P2SH,STRICTENC", "UNKNOWN_ERROR", "We cannot do BOOLAND on 5-byte integers"],
+["2147483648 1", "BOOLOR 1", "P2SH,STRICTENC", "OK", "We can do BOOLOR on 5-byte integers (but we can still do IF etc)"],
+["2147483648 1", "BOOLAND 1", "P2SH,STRICTENC", "OK", "We can do BOOLAND on 5-byte integers"],
 
 ["1", "1 ENDIF", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL", "ENDIF without IF"],
 ["1", "IF 1", "P2SH,STRICTENC", "UNBALANCED_CONDITIONAL", "IF without ENDIF"],
