@@ -852,11 +852,6 @@
     "CAT 'zngyivniryrgefgnvqwfwqplmramujzilzyrsdvinxfkfmuowdpuzycnzbupwwpzrfxsbyrhdlsyixyzysodseayvvrtbsfxtikrjwkbduulrjyjlwlaigomhyohsukawdwbrpuacdijzzgxhataguajvuopuktvtklwhsxqvzzfttpdgnxtnbpsiqecxurlczqmoxznlsuejvneiyejetcxlblzrydscnrbydnqytorstjtuzlbbtbyzfiniuehbisqnqhvexylhohjiyiknzgjowvobsrwcxyfowqcvakgdolwpltfcxtrhuysrrvtprzpsucgogsjapdkrbobpxccqgkdumskaleycwsbkabdkuukqiyizceduplmauszwjdzptvmthxocwrignxjogxsvrsjrrlecvdmazlpfkgmskiqqitrevuwiisvpxvkeypzaqjwwiozvmahmtvtjpbolwrymvzfstopzcexalirwbbcqgjvfjfuirrcnlgcfyqnafhh' EQUAL",
     "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "CAT, maximum length with empty string"
 ],
-[
-    "'a' 'zngyivniryrgefgnvqwfwqplmramujzilzyrsdvinxfkfmuowdpuzycnzbupwwpzrfxsbyrhdlsyixyzysodseayvvrtbsfxtikrjwkbduulrjyjlwlaigomhyohsukawdwbrpuacdijzzgxhataguajvuopuktvtklwhsxqvzzfttpdgnxtnbpsiqecxurlczqmoxznlsuejvneiyejetcxlblzrydscnrbydnqytorstjtuzlbbtbyzfiniuehbisqnqhvexylhohjiyiknzgjowvobsrwcxyfowqcvakgdolwpltfcxtrhuysrrvtprzpsucgogsjapdkrbobpxccqgkdumskaleycwsbkabdkuukqiyizceduplmauszwjdzptvmthxocwrignxjogxsvrsjrrlecvdmazlpfkgmskiqqitrevuwiisvpxvkeypzaqjwwiozvmahmtvtjpbolwrymvzfstopzcexalirwbbcqgjvfjfuirrcnlgcfyqnafhh'",
-    "CAT",
-    "P2SH,STRICTENC,MONOLITH_OPCODES", "PUSH_SIZE", "CAT oversized result"
-],
 
 ["SPLIT"],
 ["", "SPLIT", "P2SH,STRICTENC,MONOLITH_OPCODES", "INVALID_STACK_OPERATION", "SPLIT, empty stack"],
@@ -894,7 +889,6 @@
 ["-42 2", "NUM2BIN 0x02 0x2a80 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "NUM2BIN, canonical argument "],
 ["-42 10", "NUM2BIN 0x0a 0x2a000000000000000080 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "NUM2BIN, large materialization"],
 ["-42 520", "NUM2BIN", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "Pushing 520 bytes is ok"],
-["-42 521", "NUM2BIN", "P2SH,STRICTENC,MONOLITH_OPCODES", "PUSH_SIZE", "Pushing 521 bytes is not"],
 ["-42 -3", "NUM2BIN", "P2SH,STRICTENC,MONOLITH_OPCODES", "PUSH_SIZE", "Negative size"],
 ["0x05 0xabcdef4280 4", "NUM2BIN 0x04 0xabcdefc2 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "Item size reduction"],
 ["0x01 0x80 0", "NUM2BIN 0 EQUAL", "P2SH,STRICTENC,MONOLITH_OPCODES", "OK", "Negative zero"],
@@ -1234,16 +1228,6 @@
 ["NOP", "HASH160", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 ["NOP", "HASH256", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 
-["NOP",
-"'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'",
-"P2SH,STRICTENC",
-"PUSH_SIZE",
-">520 byte push"],
-["0",
-"IF 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' ENDIF 1",
-"P2SH,STRICTENC",
-"PUSH_SIZE",
-">520 byte push in non-executed IF branch"],
 ["1",
 "0x61616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161616161",
 "P2SH,STRICTENC",
