@@ -35,9 +35,9 @@ export { version }
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
 // utilities.
 export * from './lib/address'
-export * from './lib/bip-32'
-export * from './lib/bip-39'
-export * from './lib/bip-39-words'
+export * from './lib/hd-wallet'
+export * from './lib/mnemonic'
+export * from './lib/mnemonic/bip-39-words'
 export * from './lib/bn'
 export * from './lib/br'
 export * from './lib/bsm'

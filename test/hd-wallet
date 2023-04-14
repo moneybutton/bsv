@@ -1,26 +1,26 @@
 /* global describe,it */
 'use strict'
-import { Bip32 } from '../lib/bip-32'
+import { HDWallet } from '../lib/hd-wallet'
 import { Base58Check } from '../lib/base-58-check'
 import { PrivKey } from '../lib/priv-key'
 import should from 'should'
 
-describe('Bip32', function () {
+describe('HDWallet', function () {
   it('should satisfy these basic API features', function () {
-    Bip32.fromRandom()
+    HDWallet.fromRandom()
       .toString()
       .slice(0, 4)
       .should.equal('xprv')
-    Bip32.fromRandom()
+    HDWallet.fromRandom()
       .toPublic()
       .toString()
       .slice(0, 4)
       .should.equal('xpub')
-    Bip32.Testnet.fromRandom()
+    HDWallet.Testnet.fromRandom()
       .toString()
       .slice(0, 4)
       .should.equal('tprv')
-    Bip32.Testnet.fromRandom()
+    HDWallet.Testnet.fromRandom()
       .toPublic()
       .toString()
       .slice(0, 4)
@@ -82,36 +82,36 @@ describe('Bip32', function () {
 
   it('should make a new a bip32', function () {
     let bip32
-    bip32 = new Bip32()
+    bip32 = new HDWallet()
     should.exist(bip32)
-    bip32 = new Bip32()
+    bip32 = new HDWallet()
     should.exist(bip32)
-    new Bip32()
+    new HDWallet()
       .fromString(vector1mPrivate)
       .toString()
       .should.equal(vector1mPrivate)
-    new Bip32()
+    new HDWallet()
       .fromString(vector1mPrivate)
       .toString()
       .should.equal(vector1mPrivate)
-    new Bip32()
-      .fromString(new Bip32().fromString(vector1mPrivate).toString())
+    new HDWallet()
+      .fromString(new HDWallet().fromString(vector1mPrivate).toString())
       .toString()
       .should.equal(vector1mPrivate)
   })
 
   it('should initialize test vector 1 from the extended public key', function () {
-    const bip32 = new Bip32().fromString(vector1mPublic)
+    const bip32 = new HDWallet().fromString(vector1mPublic)
     should.exist(bip32)
   })
 
   it('should initialize test vector 1 from the extended private key', function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     should.exist(bip32)
   })
 
   it('should get the extended public key from the extended private key for test vector 1', function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     bip32
       .toPublic()
       .toString()
@@ -119,21 +119,21 @@ describe('Bip32', function () {
   })
 
   it("should get m/0' ext. private key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'")
     should.exist(child)
     child.toString().should.equal(vector1m0hPrivate)
   })
 
   it("should asynchronously get m/0' ext. private key from test vector 1", async function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = await bip32.asyncDerive("m/0'")
     should.exist(child)
     child.toString().should.equal(vector1m0hPrivate)
   })
 
   it("should get m/0' ext. public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'")
     should.exist(child)
     child
@@ -143,14 +143,14 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1 ext. private key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1")
     should.exist(child)
     child.toString().should.equal(vector1m0h1Private)
   })
 
   it("should get m/0'/1 ext. public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1")
     should.exist(child)
     child
@@ -160,9 +160,9 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1 ext. public key from m/0' public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/1')
     should.exist(child2)
     child2
@@ -172,9 +172,9 @@ describe('Bip32', function () {
   })
 
   it("should asynchronously get m/0'/1 ext. public key from m/0' public key from test vector 1", async function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = await childPub.asyncDerive('m/1')
     should.exist(child2)
     child2
@@ -184,14 +184,14 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2h ext. private key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'")
     should.exist(child)
     child.toString().should.equal(vector1m0h12hPrivate)
   })
 
   it("should get m/0'/1/2h ext. public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'")
     should.exist(child)
     child
@@ -201,16 +201,16 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2h/2 ext. private key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'/2")
     should.exist(child)
     child.toString().should.equal(vector1m0h12h2Private)
   })
 
   it("should get m/0'/1/2'/2 ext. public key from m/0'/1/2' public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/2')
     should.exist(child2)
     child2
@@ -220,7 +220,7 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2h/2 ext. public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'/2")
     should.exist(child)
     child
@@ -230,14 +230,14 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2h/2/1000000000 ext. private key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'/2/1000000000")
     should.exist(child)
     child.toString().should.equal(vector1m0h12h21000000000Private)
   })
 
   it("should get m/0'/1/2h/2/1000000000 ext. public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'/2/1000000000")
     should.exist(child)
     child
@@ -247,9 +247,9 @@ describe('Bip32', function () {
   })
 
   it("should get m/0'/1/2'/2/1000000000 ext. public key from m/0'/1/2'/2 public key from test vector 1", function () {
-    const bip32 = new Bip32().fromString(vector1mPrivate)
+    const bip32 = new HDWallet().fromString(vector1mPrivate)
     const child = bip32.derive("m/0'/1/2'/2")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/1000000000')
     should.exist(child2)
     child2
@@ -259,17 +259,17 @@ describe('Bip32', function () {
   })
 
   it('should initialize test vector 2 from the extended public key', function () {
-    const bip32 = new Bip32().fromString(vector2mPublic)
+    const bip32 = new HDWallet().fromString(vector2mPublic)
     should.exist(bip32)
   })
 
   it('should initialize test vector 2 from the extended private key', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     should.exist(bip32)
   })
 
   it('should get the extended public key from the extended private key for test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     bip32
       .toPublic()
       .toString()
@@ -277,14 +277,14 @@ describe('Bip32', function () {
   })
 
   it('should get m/0 ext. private key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive('m/0')
     should.exist(child)
     child.toString().should.equal(vector2m0Private)
   })
 
   it('should get m/0 ext. public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive('m/0')
     should.exist(child)
     child
@@ -294,9 +294,9 @@ describe('Bip32', function () {
   })
 
   it('should get m/0 ext. public key from m public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive('m')
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/0')
     should.exist(child2)
     child2
@@ -306,14 +306,14 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h ext. private key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647hPrivate)
   })
 
   it('should get m/0/2147483647h ext. public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'")
     should.exist(child)
     child
@@ -323,14 +323,14 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h/1 ext. private key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h1Private)
   })
 
   it('should get m/0/2147483647h/1 ext. public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1")
     should.exist(child)
     child
@@ -340,9 +340,9 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h/1 ext. public key from m/0/2147483647h public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/1')
     should.exist(child2)
     child2
@@ -352,14 +352,14 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h/1/2147483646h ext. private key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1/2147483646'")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h12147483646hPrivate)
   })
 
   it('should get m/0/2147483647h/1/2147483646h ext. public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1/2147483646'")
     should.exist(child)
     child
@@ -369,14 +369,14 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. private key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1/2147483646'/2")
     should.exist(child)
     child.toString().should.equal(vector2m02147483647h12147483646h2Private)
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1/2147483646'/2")
     should.exist(child)
     child
@@ -386,9 +386,9 @@ describe('Bip32', function () {
   })
 
   it('should get m/0/2147483647h/1/2147483646h/2 ext. public key from m/0/2147483647h/2147483646h public key from test vector 2', function () {
-    const bip32 = new Bip32().fromString(vector2mPrivate)
+    const bip32 = new HDWallet().fromString(vector2mPrivate)
     const child = bip32.derive("m/0/2147483647'/1/2147483646'")
-    const childPub = new Bip32().fromString(child.toPublic().toString())
+    const childPub = new HDWallet().fromString(child.toPublic().toString())
     const child2 = childPub.derive('m/2')
     should.exist(child2)
     child2
@@ -398,11 +398,11 @@ describe('Bip32', function () {
   })
 
   describe('testnet', function () {
-    it('should initialize a new Bip32 correctly from a random Bip32', function () {
-      const b1 = new Bip32.Testnet()
+    it('should initialize a new HDWallet correctly from a random Bip32', function () {
+      const b1 = new HDWallet.Testnet()
       b1.fromRandom()
-      ;(b1.privKey instanceof PrivKey.Testnet).should.equal(true)
-      const b2 = new Bip32.Testnet().fromString(b1.toPublic().toString())
+        ; (b1.privKey instanceof PrivKey.Testnet).should.equal(true)
+      const b2 = new HDWallet.Testnet().fromString(b1.toPublic().toString())
       b2
         .toPublic()
         .toString()
@@ -410,9 +410,9 @@ describe('Bip32', function () {
     })
 
     it('should generate valid ext pub key for testnet', function () {
-      const b = new Bip32.Testnet()
+      const b = new HDWallet.Testnet()
       b.fromRandom()
-      ;(b.privKey instanceof PrivKey.Testnet).should.equal(true)
+        ; (b.privKey instanceof PrivKey.Testnet).should.equal(true)
       b
         .toPublic()
         .toString()
@@ -423,8 +423,8 @@ describe('Bip32', function () {
 
   describe('#fromObject', function () {
     it('should set this bip32', function () {
-      const bip32 = new Bip32().fromString(vector1mPrivate)
-      const bip322 = new Bip32().fromObject({
+      const bip32 = new HDWallet().fromString(vector1mPrivate)
+      const bip322 = new HDWallet().fromObject({
         versionBytesNum: bip32.versionBytesNum,
         depth: bip32.depth,
         parentFingerPrint: bip32.parentFingerPrint,
@@ -444,24 +444,24 @@ describe('Bip32', function () {
 
   describe('#fromRandom', function () {
     it('should not return the same one twice', function () {
-      const bip32a = new Bip32().fromRandom()
-      const bip32b = new Bip32().fromRandom()
+      const bip32a = new HDWallet().fromRandom()
+      const bip32b = new HDWallet().fromRandom()
       bip32a.toString().should.not.equal(bip32b.toString())
     })
   })
 
   describe('@fromRandom', function () {
     it('should not return the same one twice', function () {
-      const bip32a = Bip32.fromRandom()
-      const bip32b = Bip32.fromRandom()
+      const bip32a = DWallet.fromRandom()
+      const bip32b = DWallet.fromRandom()
       bip32a.toString().should.not.equal(bip32b.toString())
     })
   })
 
   describe('#fromSeed', function () {
-    it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
+    it('should initialize a new HDWallet correctly from test vector 1 seed', function () {
       const hex = vector1master
-      const bip32 = new Bip32().fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = new HDWallet().fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector1mPrivate)
       bip32
@@ -470,9 +470,9 @@ describe('Bip32', function () {
         .should.equal(vector1mPublic)
     })
 
-    it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
+    it('should initialize a new HDWallet correctly from test vector 2 seed', function () {
       const hex = vector2master
-      const bip32 = new Bip32().fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = new HDWallet().fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector2mPrivate)
       bip32
@@ -483,9 +483,9 @@ describe('Bip32', function () {
   })
 
   describe('@fromSeed', function () {
-    it('should initialize a new Bip32 correctly from test vector 1 seed', function () {
+    it('should initialize a new HDWallet correctly from test vector 1 seed', function () {
       const hex = vector1master
-      const bip32 = Bip32.fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = DWallet.fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector1mPrivate)
       bip32
@@ -494,9 +494,9 @@ describe('Bip32', function () {
         .should.equal(vector1mPublic)
     })
 
-    it('should initialize a new Bip32 correctly from test vector 2 seed', function () {
+    it('should initialize a new HDWallet correctly from test vector 2 seed', function () {
       const hex = vector2master
-      const bip32 = Bip32.fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = DWallet.fromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector2mPrivate)
       bip32
@@ -507,9 +507,9 @@ describe('Bip32', function () {
   })
 
   describe('#asyncFromSeed', function () {
-    it('should initialize a new Bip32 correctly from test vector 1 seed', async function () {
+    it('should initialize a new HDWallet correctly from test vector 1 seed', async function () {
       const hex = vector1master
-      const bip32 = await new Bip32().asyncFromSeed(
+      const bip32 = await new HDWallet().asyncFromSeed(
         Buffer.from(hex, 'hex'),
         'mainnet'
       )
@@ -521,9 +521,9 @@ describe('Bip32', function () {
         .should.equal(vector1mPublic)
     })
 
-    it('should initialize a new Bip32 correctly from test vector 2 seed', async function () {
+    it('should initialize a new HDWallet correctly from test vector 2 seed', async function () {
       const hex = vector2master
-      const bip32 = await new Bip32().asyncFromSeed(
+      const bip32 = await new HDWallet().asyncFromSeed(
         Buffer.from(hex, 'hex'),
         'mainnet'
       )
@@ -537,9 +537,9 @@ describe('Bip32', function () {
   })
 
   describe('@asyncFromSeed', function () {
-    it('should initialize a new Bip32 correctly from test vector 1 seed', async function () {
+    it('should initialize a new HDWallet correctly from test vector 1 seed', async function () {
       const hex = vector1master
-      const bip32 = await Bip32.asyncFromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = await HDWallet.asyncFromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector1mPrivate)
       bip32
@@ -548,9 +548,9 @@ describe('Bip32', function () {
         .should.equal(vector1mPublic)
     })
 
-    it('should initialize a new Bip32 correctly from test vector 2 seed', async function () {
+    it('should initialize a new HDWallet correctly from test vector 2 seed', async function () {
       const hex = vector2master
-      const bip32 = await Bip32.asyncFromSeed(Buffer.from(hex, 'hex'), 'mainnet')
+      const bip32 = await HDWallet.asyncFromSeed(Buffer.from(hex, 'hex'), 'mainnet')
       should.exist(bip32)
       bip32.toString().should.equal(vector2mPrivate)
       bip32
@@ -566,12 +566,12 @@ describe('Bip32', function () {
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       const buf = Base58Check.decode(str)
       const hex = buf.toString('hex')
-      let bip32 = new Bip32().fromHex(hex)
+      let bip32 = new HDWallet().fromHex(hex)
       should.exist(bip32)
       bip32.toString().should.equal(str)
       bip32 = bip32.toPublic()
       const xpub = bip32.toString()
-      bip32 = new Bip32().fromHex(bip32.toHex())
+      bip32 = new HDWallet().fromHex(bip32.toHex())
       bip32.toString().should.equal(xpub)
     })
   })
@@ -581,12 +581,12 @@ describe('Bip32', function () {
       const str =
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       const buf = Base58Check.decode(str)
-      let bip32 = new Bip32().fromBuffer(buf)
+      let bip32 = new HDWallet().fromBuffer(buf)
       should.exist(bip32)
       bip32.toString().should.equal(str)
       bip32 = bip32.toPublic()
       const xpub = bip32.toString()
-      bip32 = new Bip32().fromBuffer(bip32.toBuffer())
+      bip32 = new HDWallet().fromBuffer(bip32.toBuffer())
       bip32.toString().should.equal(xpub)
     })
   })
@@ -596,7 +596,7 @@ describe('Bip32', function () {
       const str =
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       const hex = Base58Check.decode(str).toString('hex')
-      const bip32 = new Bip32().fromString(str)
+      const bip32 = new HDWallet().fromString(str)
       bip32.toHex().should.equal(hex)
     })
   })
@@ -606,7 +606,7 @@ describe('Bip32', function () {
       const str =
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
       const buf = Base58Check.decode(str)
-      const bip32 = new Bip32().fromString(str)
+      const bip32 = new HDWallet().fromString(str)
       bip32
         .toBuffer()
         .toString('hex')
@@ -618,7 +618,7 @@ describe('Bip32', function () {
     it('should make a bip32 from a string', function () {
       const str =
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
-      const bip32 = new Bip32().fromString(str)
+      const bip32 = new HDWallet().fromString(str)
       should.exist(bip32)
       bip32.toString().should.equal(str)
     })
@@ -628,18 +628,18 @@ describe('Bip32', function () {
     it('should make a bip32 from a string asynchronously', async function () {
       const str =
         'xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi'
-      const bip32 = new Bip32().fromString(str)
+      const bip32 = new HDWallet().fromString(str)
       should.exist(bip32)
-      const bip32b = await new Bip32().asyncFromString(str)
+      const bip32b = await new HDWallet().asyncFromString(str)
       bip32.toString().should.equal(str)
       bip32.toString().should.equal(bip32b.toString())
     })
   })
 
   describe('#toString', function () {
-    const bip32 = new Bip32()
+    const bip32 = new HDWallet()
     bip32.fromRandom()
-    const tip32 = new Bip32.Testnet()
+    const tip32 = new HDWallet.Testnet()
     tip32.fromRandom()
 
     it('should return an xprv string', function () {
@@ -662,7 +662,7 @@ describe('Bip32', function () {
         .toString()
         .slice(0, 4)
         .should.equal('tprv')
-      ;(tip32.privKey instanceof PrivKey.Testnet).should.equal(true)
+        ; (tip32.privKey instanceof PrivKey.Testnet).should.equal(true)
     })
 
     it('should return a tpub string', function () {
@@ -676,7 +676,7 @@ describe('Bip32', function () {
 
   describe('#asyncToString', function () {
     it('should convert to a string same as toString', async function () {
-      const bip32 = new Bip32().fromRandom()
+      const bip32 = new HDWallet().fromRandom()
       const str1 = bip32.toString()
       const str2 = await bip32.asyncToString()
       str1.should.equal(str2)
@@ -685,34 +685,34 @@ describe('Bip32', function () {
 
   describe('#toJSON', function () {
     it('should be the same as toFastHex', function () {
-      const bip32 = Bip32.fromRandom()
+      const bip32 = DWallet.fromRandom()
       bip32.toJSON().should.equal(bip32.toFastHex())
     })
   })
 
   describe('#fromJSON', function () {
     it('should be the same as fromFastHex', function () {
-      const bip32 = Bip32.fromRandom()
+      const bip32 = DWallet.fromRandom()
       const hex = bip32.toHex()
-      const bip32a = new Bip32().fromJSON(hex)
-      const bip32b = new Bip32().fromFastHex(hex)
+      const bip32a = new HDWallet().fromJSON(hex)
+      const bip32b = new HDWallet().fromFastHex(hex)
       bip32a.toString().should.equal(bip32b.toString())
     })
   })
 
   describe('@fromJSON', function () {
     it('should be the same as fromFastHex', function () {
-      const bip32 = Bip32.fromRandom()
+      const bip32 = DWallet.fromRandom()
       const hex = bip32.toHex()
-      const bip32a = Bip32.fromJSON(hex)
-      const bip32b = Bip32.fromFastHex(hex)
+      const bip32a = DWallet.fromJSON(hex)
+      const bip32b = DWallet.fromFastHex(hex)
       bip32a.toString().should.equal(bip32b.toString())
     })
   })
 
   describe('#isPrivate', function () {
     it('should know if this bip32 is private', function () {
-      const bip32priv = new Bip32().fromRandom()
+      const bip32priv = new HDWallet().fromRandom()
       const bip32pub = bip32priv.toPublic()
       bip32priv.isPrivate().should.equal(true)
       bip32pub.isPrivate().should.equal(false)

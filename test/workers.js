@@ -1,6 +1,6 @@
 /* global describe,it */
 'use strict'
-import { Bip32 } from '../lib/bip-32'
+import { HDWallet } from '../lib/hd-wallet'
 import { Ecies } from '../lib/ecies'
 import { Hash } from '../lib/hash'
 import { PrivKey } from '../lib/priv-key'
@@ -19,12 +19,12 @@ describe('Workers', function () {
   it('should handle a bunch of things at the same time', async function () {
     this.timeout(6000)
     const n = 100
-    const str = Bip32.fromString(
+    const str = HDWallet.fromString(
       'xprv9s21ZrQH143K2SX7qL4vxLnbDHtupmfrkv96s1N3eeqKa4LnS5ZNMzhiSQWqL1fmkeF1rF7ndtvDoYH4sKJLMMpaJup21c7C3kyAg8DfbPQ'
     ).toString()
     const arr = []
     for (let i = 0; i < n; i++) {
-      arr[i] = Bip32.asyncFromString(str)
+      arr[i] = HDWallet.asyncFromString(str)
     }
     arr.length.should.equal(n)
     await Promise.all(arr)
@@ -59,7 +59,7 @@ describe('Workers', function () {
 
   describe('#asyncObjectMethod', function () {
     it('should compute this method in the workers', async function () {
-      const bip32 = new Bip32().fromRandom()
+      const bip32 = new HDWallet().fromRandom()
       const workersResult = await Workers.asyncObjectMethod(bip32, 'toString', [])
       const str = JSON.parse(workersResult.resbuf.toString())
       str[0].should.equal('x')
