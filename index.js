@@ -26,8 +26,6 @@ bsv.version = require('./package').version
 // Main bitcoin library - bitcoin protocols, standards, cryptography, and
 // utilities.
 bsv.Address = require('./lib/address')
-bsv.Bip32 = require('./lib/bip-32')
-bsv.Bip39 = require('./lib/bip-39')
 bsv.Bn = require('./lib/bn')
 bsv.Br = require('./lib/br')
 bsv.Bsm = require('./lib/bsm')
@@ -60,6 +58,10 @@ bsv.VarInt = require('./lib/var-int')
 bsv.Workers = require('./lib/workers')
 bsv.WorkersResult = require('./lib/workers-result')
 bsv.cmp = require('./lib/cmp')
+
+// BIPs, accessible by their functional names
+bsv.HDWallet = require('./lib/hd-wallet')
+bsv.Mnemonic = require('./lib/mnemonic')
 
 // Encryption tools. Some bitcoin standards use Aes encryption, so that's why
 // these are available.

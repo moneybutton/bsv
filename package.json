@@ -1,7 +1,7 @@
 {
   "name": "bsv",
   "description": "Javascript library for Bitcoin SV (BSV).",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "author": "Yours Inc.",
   "homepage": "https://github.com/moneybutton/bsv",
   "source": "entry.js",
@@ -73,6 +73,7 @@
     "blockchain",
     "bip32",
     "bip39",
+    "mnemonic",
     "bip68",
     "multisig",
     "ecies"
