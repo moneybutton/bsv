@@ -10,7 +10,7 @@ import aes from 'aes'
 import bnjs from 'bn.js'
 import bs58 from 'bs58'
 
-import elliptic from 'bitcoin-elliptic'
+import elliptic from 'elliptic'
 import hashjs from 'hash.js'
 import pbkdf2 from 'pbkdf2'
 
